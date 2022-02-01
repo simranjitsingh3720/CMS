@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       id: {
         type: DataTypes.UUID,
         primaryKey: true,
+        allowNull: false,
         defaultValue: DataTypes.UUIDV4,
       },
       username: { type: DataTypes.STRING },
@@ -46,6 +47,5 @@ module.exports = (sequelize, DataTypes) => {
       deletedAt: "deleted_at",
     }
   );
-
   return User;
 };
