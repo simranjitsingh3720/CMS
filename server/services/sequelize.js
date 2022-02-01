@@ -1,7 +1,7 @@
 require("dotenv").config();
 const db = require("../../db/models/index");
 
-const authenticate=async()=>{
+const authenticate= async()=>{
   await db.sequelize
   .authenticate()
   .then(() => {

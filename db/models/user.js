@@ -30,3 +30,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   return User;
 };
+
+
+// use underscored
+// change ass
