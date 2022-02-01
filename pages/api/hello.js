@@ -1,4 +1,3 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import db from "../../db/models";
 
 const handler = async (req, res) => {
@@ -11,13 +10,20 @@ const handler = async (req, res) => {
   //   deleted_by: "a0b1fdb2-1c43-4408-a643-c7f454589ce4",
   // });
 
-  const jane = await db.Schema.findAll();
-  const users = await db.User.findAll({
-    where: {
-      id: jane[0].created_by,
-    },
+  const jane = await db.User.create({
+    email:"as@gmail.com",
+    password:"ass",
+    name:"sfff"
+
   });
-  res.status(200).json({ name: users });
+
+  // const jane = await db.Schema.findAll();
+  // const users = await db.User.findAll({
+  //   where: {
+  //     id: jane[0].created_by,
+  //   },
+  // });
+  res.status(200).json({ name: jane });
 };
 
 export default handler;

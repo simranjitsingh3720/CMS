@@ -1,6 +1,8 @@
 require("dotenv").config();
 const db = require("../../db/models/index");
-db.sequelize
+
+const authenticate=async()=>{
+  await db.sequelize
   .authenticate()
   .then(() => {
     console.log("CONNECTED TO DATABASE");
@@ -8,5 +10,8 @@ db.sequelize
   .catch((err) => {
     console.log("error ", err);
   });
+};
+
+authenticate();
 
 module.exports = db.sequelize;
