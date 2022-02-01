@@ -1,9 +1,6 @@
 require("dotenv").config();
-const { Sequelize } = require("sequelize");
-const config = require("../../db/config");
-const sequelize = new Sequelize(config);
-
-sequelize
+const db = require("../../db/models/index");
+db.sequelize
   .authenticate()
   .then(() => {
     console.log("CONNECTED TO DATABASE");
@@ -12,4 +9,4 @@ sequelize
     console.log("error ", err);
   });
 
-module.exports = sequelize;
+module.exports = db.sequelize;
