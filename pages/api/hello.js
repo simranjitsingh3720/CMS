@@ -1,28 +1,35 @@
 import db from "../../db/models";
 
 const handler = async (req, res) => {
+  
+  // const jane = await db.User.create({
+  //   email:"mohit271232@gmail.com",
+  //   password:"9934408804@",
+  //   firstName:"Rohit",
+  //   lastName:"Singh"
+  // });
+  
   // const jane = await db.Schema.create({
   //   slug: "articles",
-  //   schema: { name: "Rahul" },
-  //   createdBy: "dad6dcf0-3549-45c9-8f00-f45ce032d8f2",
+  //   schema: { name: "Mohit" },
+  //   createdBy: "775db353-6c2c-4a31-a080-9e54b9a6e789",
   // });
 
-  // const jane = await db.User.create({
-  //   email:"ankit@gmail.com",
-  //   firstName:'Ankit',
-  //   lastName:'Kaushal',
-  //   password:"password",
+  
+
+  // const jane = await db.Content.create({
+  //   schemaId:"e04a9d96-e52a-4b94-83e4-059fa487ef80",
+  //   data:{ "name":"mohit" },
+  //   status:"draft"
   // });
 
-const jane = await db.Schema.findAll();
-
-const users = await db.User.findAll({
-    where: {
-      id: jane[0].createdBy,
-    },
-  });
-
-  res.status(200).json({ name: users });
+  // const jane = await db.Schema.findAll();
+  // const users = await db.User.findAll({
+  //   where: {
+  //     id: jane[1].createdBy,
+  //   },
+  // });
+  res.status(200).json({ name: jane });
 };
 
 export default handler;
