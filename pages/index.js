@@ -1,1 +1,1 @@
-export { default } from '../page-components/Home';
+export { default } from "../ui/page-components/Home/index";
