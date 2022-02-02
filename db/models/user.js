@@ -11,14 +11,13 @@ module.exports = (sequelize, DataTypes) => {
   User.init(
     {
       id: { type: DataTypes.UUID,primaryKey: true,allowNull: false,defaultValue: DataTypes.UUIDV4, },
-      username: { type: DataTypes.STRING },
       email: { type: DataTypes.STRING, allowNull: false },
-      phone: { type: DataTypes.BIGINT(11) },
+      phone: { type: DataTypes.STRING },
       password: { type: DataTypes.STRING, allowNull: false },
-      name: { type: DataTypes.STRING, allowNull: false },
-      address: { type: DataTypes.STRING },
-      avatar: { type: DataTypes.STRING },
-      profile_completed: { type: DataTypes.BOOLEAN, defaultValue: false },
+      firstName: { type: DataTypes.STRING, allowNull: false },
+      lastName: { type: DataTypes.STRING, allowNull: false },
+
+      profilePicture: { type: DataTypes.STRING },
     },
     {
       sequelize,
@@ -30,7 +29,3 @@ module.exports = (sequelize, DataTypes) => {
   );
   return User;
 };
-
-
-// use underscored
-// change ass
