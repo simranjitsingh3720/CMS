@@ -3,6 +3,7 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Schema extends Model {
     static associate(models) {
+      
       models.Schema.belongsTo(models.User, { foreignKey: "createdBy" });
       models.Schema.belongsTo(models.User, { foreignKey: "updatedBy" });
       models.Schema.belongsTo(models.User, { foreignKey: "deletedBy" });

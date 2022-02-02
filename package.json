@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@sentry/nextjs": "^6.17.3",
     "dotenv": "^15.0.0",
     "express": "^4.17.2",
     "mysql2": "^2.3.3",
