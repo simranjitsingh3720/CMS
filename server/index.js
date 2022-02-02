@@ -6,15 +6,22 @@ const db = require("../db/models/index");
 const { PORT, APP_NAME, NODE_ENV } = process.env;
 const app = next({ dev: NODE_ENV !== "production" });
 const handle = app.getRequestHandler();
+const cors = require("cors");
+
 
 const main = async () => {
   try {
     await app.prepare();
     const server = express();
+    server.use(cors())
     server.use("/", handle);
 
     // syncing database tables
     db.sequelize.sync();
+    server.get('/signedUrl', async (req, res) => {
+      const url = await generateUploadURL()
+      res.send(url);
+  })
 
     // running customised server at specified port
     server.listen(PORT, (err) => {
