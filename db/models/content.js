@@ -16,11 +16,16 @@ module.exports = (sequelize, DataTypes) => {
       id: { type: DataTypes.UUID,primaryKey: true,defaultValue: DataTypes.UUIDV4 },
       schemaId: { type: DataTypes.UUID },
       data: { type: DataTypes.JSON },
-      status: { type: DataTypes.STRING },
+      status: { type: DataTypes.ENUM("draft","published") },
       createdBy: { type: DataTypes.UUID },
-      publishedAt: { type: DataTypes.DATE },
+      createdAt: { type: DataTypes.DATE },
+      updatedBy: { type: DataTypes.UUID },
+      updatedAt: { type: DataTypes.DATE },
       publishedBy: { type: DataTypes.UUID },
+      publishedAt: { type: DataTypes.DATE },
       deletedBy: { type: DataTypes.UUID },
+      deletedAt: { type: DataTypes.DATE },
+
     },
     {
       sequelize,
