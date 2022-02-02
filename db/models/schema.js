@@ -6,7 +6,6 @@ module.exports = (sequelize, DataTypes) => {
       models.Schema.belongsTo(models.User, { foreignKey: "createdBy" });
       models.Schema.belongsTo(models.User, { foreignKey: "updatedBy" });
       models.Schema.belongsTo(models.User, { foreignKey: "deletedBy" });
-      models.Schema.belongsTo(models.User, { foreignKey: "publishedBy" });
     }
   }
 
@@ -17,12 +16,12 @@ module.exports = (sequelize, DataTypes) => {
       schema: { type: DataTypes.JSON },
       title: { type: DataTypes.STRING },
       description: { type: DataTypes.STRING },
-      status: { type: DataTypes.STRING },
-      publishedAt: { type: DataTypes.DATE },
-      publishedBy: { type: DataTypes.UUID },
       createdBy: { type: DataTypes.UUID },
+      createdAt: { type: DataTypes.DATE },
       updatedBy: { type: DataTypes.UUID },
+      updatedAt: { type: DataTypes.DATE },
       deletedBy: { type: DataTypes.UUID },
+      deletedAt: { type: DataTypes.DATE },
     },
     {
       sequelize,

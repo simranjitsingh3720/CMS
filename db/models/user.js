@@ -10,14 +10,18 @@ module.exports = (sequelize, DataTypes) => {
 
   User.init(
     {
-      id: { type: DataTypes.UUID,primaryKey: true,allowNull: false,defaultValue: DataTypes.UUIDV4, },
+      id: { type: DataTypes.UUID, primaryKey: true,allowNull: false, defaultValue: DataTypes.UUIDV4, },
       email: { type: DataTypes.STRING, allowNull: false },
       phone: { type: DataTypes.STRING },
       password: { type: DataTypes.STRING, allowNull: false },
       firstName: { type: DataTypes.STRING, allowNull: false },
       lastName: { type: DataTypes.STRING, allowNull: false },
-
       profilePicture: { type: DataTypes.STRING },
+      createdAt: { type: DataTypes.DATE },
+      updatedBy: { type: DataTypes.UUID },
+      updatedAt: { type: DataTypes.DATE },
+      deletedBy: { type: DataTypes.UUID },
+      deletedAt: { type: DataTypes.DATE }
     },
     {
       sequelize,
