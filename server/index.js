@@ -1,7 +1,6 @@
 require("dotenv").config();
 const express = require("express");
 const next = require("next");
-// const sequelize = require("./services/sequelize");
 const db = require("../db/models/index");
 const { PORT, APP_NAME, NODE_ENV } = process.env;
 const app = next({ dev: NODE_ENV !== "production" });

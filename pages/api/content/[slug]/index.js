@@ -1,23 +1,13 @@
-const { listContents,addContent }= require("../../../../server/cotrollers/content_cotroller");
+const { listContents,addContent }= require("../../../../api-controllers/content-controller");
 
-const handler = async (req, res) => {
+const contentHandler = async (req, res) => {
     switch (req.method) {
         case "GET":
             return listContents(req,res);
-            
+
         case "POST":
             return addContent(req,res);
-        default:
-            // handleError(req,res);
-            break;
     }
-
-  res.status(200).json({ name: req.method });
 };
 
-
-
-
-
-
-export default handler;
+export default contentHandler;
