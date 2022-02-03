@@ -29,7 +29,7 @@ const handler = async (req, res) => {
   //     id: jane[1].createdBy,
   //   },
   // });
-  res.status(200).json({ name: jane });
+  // res.status(200).json({ name: jane });
 };
 
 export default handler;
