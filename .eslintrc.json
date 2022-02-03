@@ -1,6 +1,7 @@
 {
   "extends": ["airbnb", "airbnb/hooks"],
   "rules": {
+    "no-restricted-exports": "off",
     "react/jsx-filename-extension": "off",
     "react/react-in-jsx-scope": "off"
   }

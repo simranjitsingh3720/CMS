@@ -9,7 +9,7 @@ const assetHandler = (req, res) => {
     case 'PATCH':
       return updateAsset(req, res);
     default:
-      break;
+      return res.status(404).json({ name: req.method });
   }
 };
 

@@ -9,10 +9,8 @@ const handler = async (req, res) => {
       return addContent(req, res);
     default:
       // handleError(req,res);
-      break;
+      return res.status(404).json({ name: req.method });
   }
-
-  res.status(200).json({ name: req.method });
 };
 
 export default handler;
