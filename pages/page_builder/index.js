@@ -1,4 +1,4 @@
-import React,{useEffect,useState} from 'react'
+import React,{ useEffect,useState } from 'react';
 import 'grapesjs/dist/css/grapes.min.css';
 import GrapesJS from 'grapesjs';
 import gjsPresetWebpage from 'grapesjs-preset-webpage'; 
@@ -17,40 +17,39 @@ function Page_Builder() {
         if(len){
             obj = JSON.parse(res.data.data[0].data);
         }
-        console.log(obj); 
         setCode(obj);
-        // console.log(code);
         if(code){
+
                 const LandingPage = {
-                    html: obj["CMS-html"],
-                    css: obj["CMS-css"],
-                    components: obj["CMS-components"],
-                    style: obj["CMS-styles"],
+                    html: obj && obj["CMS-html"],
+                    css: obj && obj["CMS-css"],
+                    components: obj && obj["CMS-components"],
+                    style: obj && obj["CMS-styles"],
                 };
                 if (!editor) {
                     const e = GrapesJS.init({
                         container: `#editor`,
                         fromElement: false,
                         plugins: [gjsPresetWebpage],
-                        components:  LandingPage.html,
-                        style: LandingPage.css,
+                        components:  LandingPage.html || '<span><span/>',
+                        style: LandingPage.css || '<></>',
                         // components: "<div id=\"i0e8\">Insert your text here</div>",
                         // style: "[{\"selectors\":[\"#i0e8\"],\"style\":{\"padding\":\"10px\"}}]",
                         storageManager: {
-                        id: 'CMS-',             // Prefix identifier that will be used on parameters
-                        type: 'remote',          // Type of the storage
-                        autosave: true,         // Store data automatically
-                        autoload: false,         // Autoload stored data on init
-                        stepsBeforeSave: 1,     // If autosave enabled, indicates how many changes are necessary before store method is triggered
-                        storeHtml: true,
-                        storeCss: true,
-                        urlStore: 'http://localhost:8000/api/page',
-                        headers:{
-                            'Content-Type':'application/json',
-                            origin: "http://localhost:8000/page_builder",
-                            credentials:true,        
-                            optionSuccessStatus:200
-                            }
+                            id: 'CMS-',             
+                            type: 'remote',          
+                            autosave: true,         
+                            autoload: false,         
+                            stepsBeforeSave: 1,     
+                            storeHtml: true,
+                            storeCss: true,
+                            urlStore: 'http://localhost:8000/api/page',
+                            headers:{
+                                'Content-Type':'application/json',
+                                origin: "http://localhost:8000/page_builder",
+                                credentials:true,        
+                                optionSuccessStatus:200
+                                }
                         }
                     });
                     console.log(e);
@@ -58,7 +57,7 @@ function Page_Builder() {
                 }
         } 
     });
-  }, []);
+  },[]);
   
   return (
     <div>
