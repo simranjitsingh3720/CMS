@@ -18,10 +18,6 @@ const main = async () => {
 
     // syncing database tables
     db.sequelize.sync();
-    server.get('/signedUrl', async (req, res) => {
-      const url = await generateUploadURL()
-      res.send(url);
-  })
 
     // running customised server at specified port
     server.listen(PORT, (err) => {

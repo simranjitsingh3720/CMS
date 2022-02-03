@@ -13,6 +13,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
       url: { type: DataTypes.STRING },
+      name : {type:DataTypes.STRING},
+      description : {type : DataTypes.STRING},
       createdBy: { type: DataTypes.UUID },
       createdAt: { type: DataTypes.DATE },
       updatedBy: { type: DataTypes.UUID },
@@ -25,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
       paranoid: true,
       modelName: "Asset",
-      tableName: "datastore_assets",
+      tableName: "assets",
     }
   );
 

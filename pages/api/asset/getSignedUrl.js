@@ -1,13 +1,15 @@
-
+const dotenv = require("dotenv")
 const aws = require('aws-sdk')
 const crypto = require('crypto')
 const { promisify } = require("util")
 const randomBytes = promisify(crypto.randomBytes)
 
-const region = "us-east-1"
-const bucketName = "my-first-aws-bucket-creation"
-const accessKeyId = 'AKIASXF74XJXHJZEHSPH'
-const secretAccessKey = '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'
+dotenv.config()
+
+const region = process.env.AWS_REGION;
+const bucketName = process.env.AWS_BUCKET_NAME;
+const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
+const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
 
 const s3 = new aws.S3({
   region,
@@ -16,7 +18,7 @@ const s3 = new aws.S3({
   signatureVersion: 'v4'
 })
 
- async function generateUploadURL() {
+ const generateUploadURL=async(req,res)=> {
   const rawBytes = await randomBytes(16)
   const imageName = rawBytes.toString('hex')
 
@@ -28,7 +30,7 @@ const s3 = new aws.S3({
   
   const uploadURL = await s3.getSignedUrlPromise('putObject', params)
 
-  return uploadURL
+  res.status(200).json(uploadURL);
 }
 
-  module.exports.generateUploadURL=generateUploadURL;
+  export default generateUploadURL;
