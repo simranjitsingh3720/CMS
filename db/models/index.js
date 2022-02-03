@@ -4,6 +4,7 @@ const config = require("../config");
 const userModel = require("./user");
 const contentModel = require("./content");
 const schemaModel = require("./schema");
+const pageModel = require("./page");
 
 
 const db = {};
@@ -17,6 +18,7 @@ const requireModel = (schema) => {
 requireModel(userModel);
 requireModel(contentModel);
 requireModel(schemaModel);
+requireModel(pageModel);
 
 
 Object.keys(db).forEach((modelName) => {
