@@ -1,59 +1,58 @@
-const db = require("../db/models/index");
+const db = require('../db/models/index');
 
 const listAssets = async (req, res) => {
-    const assets = await db.Asset.findAll();
-    return res.status(200).json(assets);
-}
+  const assets = await db.Asset.findAll();
+  return res.status(200).json(assets);
+};
 
 const createAsset = async (req, res) => {
-    const { body } = req;
-    const asset = await db.Asset.create(body);
-    return res.status(201).json({ id: asset.id });
-}
+  const { body } = req;
+  const asset = await db.Asset.create(body);
+  return res.status(201).json({ id: asset.id });
+};
 
-const findAsset = async (req,res)=>{
-    const id=req.query.id;
+const findAsset = async (req, res) => {
+  const { id } = req.query;
 
-    const asset = await db.Asset.findOne({
-        where: {
-          id:id
-        }, 
-      });
+  const asset = await db.Asset.findOne({
+    where: {
+      id,
+    },
+  });
 
-      if(asset==null){
-          res.send('no asset found');
-      }
-      else{
-        res.status(200).json({ asset });
-      } 
-}
+  if (asset == null) {
+    res.send('no asset found');
+  } else {
+    res.status(200).json({ asset });
+  }
+};
 
-const deleteAsset = async (req,res)=>{
-    const id=req.query.id;
+const deleteAsset = async (req, res) => {
+  const { id } = req.query;
 
-    await db.Asset.destroy(
-        { where: { id: id} }		
-      )
-   
-    res.status(204).json(console.log('successfully deleted'));
-}
+  await db.Asset.destroy(
+    { where: { id } },
+  );
 
-const updateAsset =async(req,res)=>{
-    const id=req.query.id
-    const data=req.body
+  res.status(204);
+};
 
-    const updatedAsset = await db.Asset.update(
-        data,	
-        { where: { id: id} }		
-      )
+const updateAsset = async (req, res) => {
+  const { id } = req.query;
+  const data = req.body;
 
-    res.status(200).json(updatedAsset );
-}
+  const updatedAsset = await db.Asset.update(
+    data,
+    { where: { id } },
+  );
+
+  res.status(200).json(updatedAsset);
+};
 
 module.exports = {
-    listAssets,
-    createAsset,
-    findAsset,
-    deleteAsset,
-    updateAsset
-}
+  listAssets,
+  createAsset,
+  findAsset,
+  deleteAsset,
+  updateAsset,
+};
