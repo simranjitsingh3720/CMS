@@ -1,6 +1,6 @@
 const { Model } = require("sequelize");
 const bcrypt = require('bcrypt');
-const {AuthGen} = require('./AuthToken')
+//const {AuthGen} = require('./AuthToken')
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -11,21 +11,21 @@ module.exports = (sequelize, DataTypes) => {
   }
   
   
-  User.prototype.authorize = async function () {
-    const { AuthToken } = sequelize.models;
-    const user = this
+  // User.prototype.authorize = async function () {
+  //   const { AuthToken } = sequelize.models;
+  //   const user = this
 
-    // create a new auth token associated to 'this' user
-    // by calling the AuthToken class method we created earlier
-    // and passing it the user id
-    const authToken = await AuthGen(this.id);
+  //   // create a new auth token associated to 'this' user
+  //   // by calling the AuthToken class method we created earlier
+  //   // and passing it the user id
+  //   //const authToken = await AuthGen(this.id);
 
-    // addAuthToken is a generated method provided by
-    // sequelize which is made for any 'hasMany' relationships
-    await user.addAuthToken(authToken);
+  //   // addAuthToken is a generated method provided by
+  //   // sequelize which is made for any 'hasMany' relationships
+  //   //await user.addAuthToken(authToken);
 
-    return { user, authToken };
-  };
+  //   return { user };//, authToken };
+  // };
 
   User.init(
     {

@@ -63,7 +63,7 @@ const signIn = async (req, res) => {
     const user = await db.User.findOne({ where: { email } });
     if (bcrypt.compare(password, user.password)) {
         
-        return user.authorize();
+        return res.status(202).json(user);
     }
     else{
         res.status(200).json("Invalid Password");
