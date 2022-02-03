@@ -22,9 +22,11 @@ const main = async () => {
     // running customised server at specified port
     server.listen(PORT, (err) => {
       if (err) throw err;
+      // eslint-disable-next-line no-console
       console.log(`${APP_NAME} started at http://localhost:${PORT}`);
     });
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.log('error in starting server', err);
     process.exit(1);
   }
