@@ -34,7 +34,7 @@ const deleteAsset = async (req, res) => {
     { where: { id } },
   );
 
-  res.status(204);
+  res.status(200).json(id);
 };
 
 const updateAsset = async (req, res) => {
@@ -46,7 +46,7 @@ const updateAsset = async (req, res) => {
     { where: { id } },
   );
 
-  res.status(200).json(updatedAsset);
+  res.status(200).json(updatedAsset.id);
 };
 
 module.exports = {
