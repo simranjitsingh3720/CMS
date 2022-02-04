@@ -1,63 +1,59 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 export default function Dashboard() {
+  const [pages, setPages] = useState([]);
+  const [pageDetails, setPageDetails] = useState({ name: '', slug: '' });
 
-    const [pages, setPages] = useState([]);
-    const [pageDetails, setPageDetails] = useState({ pageName:'',slugName:'' });
-
-    useEffect(() => {
-        axios.get('http://localhost:8000/api/page').then( res => {
-            setPages(res.data.data);
-        });
-    }, []);
-    
-    const slugs = pages.map((slug,key) => {
-        return (
-                <li key={key}>
-                    <a href={`${slug.slug}`}>{slug.slug}</a>
-                </li>
-        );
+  useEffect(() => {
+    axios.get('http://localhost:8000/api/page').then((res) => {
+      setPages(res.data.data);
     });
+  }, []);
 
-    // const handleOnChange = (e) =>{
-    //     console.log(e.target.value);
-    //     setPageDetails({ pageName:e.target.value, slugName:e.target.value });
-    //     console.log(pageDetails);
-    // };
+  // const handleClick = (e) => {
+  //   // e.preventDefault();
+  //   const len = e.target.href.split('/').length;
+  //   const slug = e.target.href.split('/')[len - 1];
+  // };
+  const slugs = pages.map((slug, key) => (
+    <li key={key}>
+      <a href={`${slug.slug}`}>{slug.slug}</a>
+    </li>
+  ));
 
-    const handleCreatePage = (e) =>{
-        e.preventDefault();
-        console.log(pageDetails);
-        axios.post('http://localhost:8000/api/createPage', pageDetails).then(res =>{
-            console.log(res.data);
-        });
-    };
+  const handleCreatePage = (e) => {
+    e.preventDefault();
+    axios.post('http://localhost:8000/api/createPage', pageDetails).then((res) => {
+    });
+  };
 
-    return (
-        <div>
-            <form>
-                <input 
-                    type="text" 
-                    name="page" 
-                    value = {pageDetails.pageName} 
-                    onChange={(e) => setPageDetails({...pageDetails, pageName:e.target.value })} 
-                    placeholder="Enter name of page"/>
+  return (
+    <div>
+      <form>
+        <input
+          type="text"
+          name="page"
+          value={pageDetails.name}
+          onChange={(e) => setPageDetails({ ...pageDetails, name: e.target.value })}
+          placeholder="Enter name of page"
+        />
 
-                <input 
-                    type="text" 
-                    name="slug" 
-                    value = {pageDetails.slugName} 
-                    onChange={(e) => setPageDetails({...pageDetails, slugName:e.target.value })}  
-                    placeholder="Enter name of slug"/>
+        <input
+          type="text"
+          name="slug"
+          value={pageDetails.slug}
+          onChange={(e) => setPageDetails({ ...pageDetails, slug: e.target.value })}
+          placeholder="Enter name of slug"
+        />
 
-                <button onClick={handleCreatePage}>Create New Page</button>
-            </form>
-            
-            <ul>
-                {slugs}
-            </ul>
-        </div>
-    );
-  }
-  
+        <button type="submit" onClick={handleCreatePage}>Create New Page</button>
+      </form>
+
+      <ul>
+        {slugs}
+      </ul>
+      <div />
+    </div>
+  );
+}
