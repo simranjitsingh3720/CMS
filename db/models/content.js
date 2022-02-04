@@ -1,22 +1,22 @@
-const { Model } = require("sequelize");
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Content extends Model {
     static associate(models) {
-      models.Content.belongsTo(models.Schema, { foreignKey: "schemaId" });
-      models.Content.belongsTo(models.User, { foreignKey: "createdBy" });
-      models.Content.belongsTo(models.User, { foreignKey: "updatedBy" });
-      models.Content.belongsTo(models.User, { foreignKey: "deletedBy" });
-      models.Content.belongsTo(models.User, { foreignKey: "publishedBy" });
+      models.Content.belongsTo(models.Schema, { foreignKey: 'schemaId' });
+      models.Content.belongsTo(models.User, { foreignKey: 'createdBy' });
+      models.Content.belongsTo(models.User, { foreignKey: 'updatedBy' });
+      models.Content.belongsTo(models.User, { foreignKey: 'deletedBy' });
+      models.Content.belongsTo(models.User, { foreignKey: 'publishedBy' });
     }
   }
 
   Content.init(
     {
-      id: { type: DataTypes.UUID,primaryKey: true,defaultValue: DataTypes.UUIDV4 },
+      id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
       schemaId: { type: DataTypes.UUID },
       data: { type: DataTypes.JSON },
-      status: { type: DataTypes.ENUM("draft","published") },
+      status: { type: DataTypes.ENUM('draft', 'published') },
       createdBy: { type: DataTypes.UUID },
       createdAt: { type: DataTypes.DATE },
       updatedBy: { type: DataTypes.UUID },
@@ -31,9 +31,9 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       timestamps: true,
       paranoid: true,
-      modelName: "Content",
-      tableName: "datastore_contents",
-    }
+      modelName: 'Content',
+      tableName: 'datastore_contents',
+    },
   );
 
   return Content;

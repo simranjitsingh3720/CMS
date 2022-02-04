@@ -1,71 +1,125 @@
-const db = require("../db/models/index");
+const db = require('../db/models');
 
-const getContent = async (req,res)=>{
-    const { slug,dataId }=req.query;
-    const content = await db.Content.findOne({
-        where:{
-            schemaId : slug,
-            id : dataId
-        }
-    });
-    return res.status(200).json({ data : content });
+const getContent = async (req, res) => {
+  const { schemaSlug, contentId } = req.query;
+
+  let content = await db.Content.findOne({
+    where: {
+      id: contentId,
+    },
+    include: {
+      model: db.Schema,
+      attributes: ['id'],
+      where: {
+        slug: schemaSlug,
+      },
+    },
+  });
+
+  if (content && content.Schema) {
+    content = { ...content.toJSON() };
+    return res.status(200).json(content);
+  }
+  return res.status(400).json({ message: 'Schema slug not found' });
 };
 
+const listContents = async (req, res) => {
+  const { schemaSlug } = req.query;
+  if (schemaSlug) {
+    const contents = await db.Content.findAll({
+      include: {
+        model: db.Schema,
+        attributes: ['id'],
+        where: {
+          slug: schemaSlug,
+        },
+      },
+    });
 
-const listContents = async (req,res)=>{
+    return res.status(200).json({ list: contents });
+  }
+  return res.status(400).json({ message: 'invalid request' });
+};
 
-    const { slug }=req.query;
+const addContent = async (req, res) => {
+  const { body, query } = req;
+  const { schemaSlug } = query;
 
-    if(slug){
-        const contents=await db.Content.findAll({ where : { schemaId:slug } });
-        return res.status(200).json({ data : contents });
+  // to get schema id from schema table
+  const schema = await db.Schema.findOne({
+    where: {
+      slug: schemaSlug,
+    },
+  });
+
+  if (schema) {
+    const content = await db.Content.create({
+      ...body,
+      schemaId: schema.toJSON().id,
+    });
+
+    return res.status(201).json({ id: content.id });
+  }
+  return res.status(201).json({ message: 'Schema slug not found' });
+};
+
+const updateContent = async (req, res) => {
+  const { body, query } = req;
+  const { schemaSlug, contentId } = query;
+
+  const schema = await db.Schema.findOne({
+    where: {
+      slug: schemaSlug,
+    },
+  });
+
+  if (schema) {
+    const updatedContent = await db.Content.update(body, {
+      where: {
+        schemaId: schema.toJSON().id,
+        id: contentId,
+      },
+    });
+
+    if (updatedContent[0]) {
+      return res.status(201).json({ id: contentId });
     }
-    return res.status(400).json({ error : "invalid request" });
+    return res.status(400).json({ message: 'No Data exists' });
+  }
+
+  return res.status(200).json({ message: 'Schema slug not found' });
 };
 
-const addContent = async (req,res)=>{
-    
-    const body=req.body;
-    const { slug }=req.query;
+const deleteContent = async (req, res) => {
+  const { schemaSlug, contentId } = req.query;
 
-    const data=await db.Content.create({
-        ...body,
-        schemaId:slug
+  const schema = await db.Schema.findOne({
+    where: {
+      slug: schemaSlug,
+    },
+  });
+
+  if (schema) {
+    const deletedContent = await db.Content.destroy({
+      where: {
+        schemaId: schema.toJSON().id,
+        id: contentId,
+      },
     });
 
-    return res.status(201).json({ dataId : data.id });
+    if (deletedContent) {
+      return res.status(201).json({ id: contentId });
+    }
+    return res.status(400).json({ message: 'No Data exists' });
+  }
+
+  return res.status(400).json({ message: 'Schema slug not found' });
 };
 
-const updateContent = async (req,res)=>{
-    const body =req.body;
-    const { slug,dataId }=req.query;
-
-   const updatedContent= await db.Content.update({ ...body },{
-        where:{
-            schemaId:slug,
-            id:dataId
-        }
-    });
-
-    return res.status(200).json({ data : updatedContent });
-};
-
-const deleteContent=async (req,res)=>{
-
-    const { slug,dataId }=req.query;
-    const content = await db.Content.destroy({
-        where:{
-            schemaId:slug,
-            id:dataId
-        }
-    });
-    return res.status(200).json({ data: content });
-};
-
-module.exports={
-    getContent,
-    listContents,
-    addContent,
-    updateContent,
-    deleteContent
+module.exports = {
+  getContent,
+  listContents,
+  addContent,
+  updateContent,
+  deleteContent,
 };
