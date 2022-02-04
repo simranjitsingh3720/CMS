@@ -1,31 +1,40 @@
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 export default function Dashboard() {
   const [pages, setPages] = useState([]);
   const [pageDetails, setPageDetails] = useState({ name: '', slug: '' });
 
+  const { push } = useRouter();
+
   useEffect(() => {
     axios.get('http://localhost:8000/api/page').then((res) => {
       setPages(res.data.data);
+      console.log(res.data);
     });
   }, []);
 
-  // const handleClick = (e) => {
-  //   // e.preventDefault();
-  //   const len = e.target.href.split('/').length;
-  //   const slug = e.target.href.split('/')[len - 1];
-  // };
-  const slugs = pages.map((slug, key) => (
-    <li key={key}>
-      <a href={`${slug.slug}`}>{slug.slug}</a>
+  const handleClick = (newSlug) => {
+    push('/page_builder/[pageID]', `page_builder/${newSlug}`);
+  }; // handle Click Ends
+
+  const slugs = pages.map((slug) => (
+    <li key={slug.slug}>
+      <button onClick={() => { handleClick(slug.slug); }} type="button">{slug.slug}</button>
+      {/* <a href="http://localhost:8000/page_builder/home" onClick={handleClick}>{slug.slug}</a> */}
     </li>
   ));
 
   const handleCreatePage = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:8000/api/createPage', pageDetails).then((res) => {
-    });
+    axios.post('http://localhost:8000/api/createPage', pageDetails)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log('Error => ', err);
+      });
   };
 
   return (
