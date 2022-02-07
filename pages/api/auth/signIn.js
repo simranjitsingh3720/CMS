@@ -1,15 +1,12 @@
-
-const {signIn} = require("../../../controllers/auth_controller");
-
+const { signin } = require('../../../controllers/auth-controller');
 
 const signInHandler = (req, res) => {
-    switch(req.method) {
-        case 'POST':
-            return signIn(req, res);
-            break;
-        default:
-            res.send("IN DEFAULT");
-    }
-}
+  switch (req.method) {
+    case 'POST':
+      return signin(req, res);
+    default:
+      return res.send('IN DEFAULT');
+  }
+};
 
 module.exports = signInHandler;

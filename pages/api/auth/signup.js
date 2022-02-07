@@ -1,4 +1,3 @@
-
 // export default (req, res) => {
 //   res.status(200).json([
 //     {
@@ -24,15 +23,16 @@
 // 5. if exists then prompt("already exists")
 // 6. go to db and check whether user inserted? (testing)
 // 7. maintaing session also with help of express-session and print the token (POSTMAN).
-const {signUp} = require("../../../controllers/auth_controller");
+const { signUp } = require('../../../controllers/auth-controller');
+
 const signUpHandler = (req, res) => {
-  switch(req.method) {
-      case 'POST':
-          return signUp(req, res);
-          break;
-      default:
-          res.send("IN DEFAULT");
+  switch (req.method) {
+    case 'POST':
+      return signUp(req, res);
+      // break;
+    default:
+      return res.send('IN DEFAULT');
   }
-}
+};
 
 module.exports = signUpHandler;
