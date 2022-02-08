@@ -1,9 +1,6 @@
 const { Model } = require('sequelize');
-<<<<<<< HEAD
 // const bcrypt = require('bcrypt');
 // const {AuthGen} = require('./AuthToken')
-=======
->>>>>>> 3dadd087843284cbb5e88571c979c1c68d49579e
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
