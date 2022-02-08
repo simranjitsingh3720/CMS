@@ -5,20 +5,25 @@ import GrapesJS from 'grapesjs';
 import gjsPresetWebpage from 'grapesjs-preset-webpage';
 import axios from 'axios';
 
-function PageBuilder() {
+function PageID() {
   const [editor, setEditor] = useState(null);
   const router = useRouter();
+
   const getApi = () => {
     axios.get(`http://localhost:8000/api/page/${router.query.pageID}`)
       .then((res) => {
         let obj = null;
-        obj = JSON.parse(res.data.data[0].data);
-        const LandingPage = {
-          html: obj && obj['CMS-html'],
-          css: obj && obj['CMS-css'],
-          components: obj && obj['CMS-components'],
-          style: obj && obj['CMS-styles'],
-        };
+
+        let LandingPage = {};
+        if (router.query.pageID) {
+          obj = JSON.parse(res.data.data[0].data);
+          LandingPage = {
+            html: obj && obj['CMS-html'],
+            css: obj && obj['CMS-css'],
+            components: obj && obj['CMS-components'],
+            style: obj && obj['CMS-styles'],
+          };
+        }
 
         if (!editor) {
           const e = GrapesJS.init({
@@ -38,26 +43,30 @@ function PageBuilder() {
               urlStore: `http://localhost:8000/api/page/${router.query.pageID}`,
               headers: {
                 'Content-Type': 'application/json',
-                // origin: 'http://localhost:8000/page_builder',
                 credentials: true,
                 optionSuccessStatus: 200,
               },
             },
+
           });
+
           setEditor(e);
         }
-      // }
       });
   };
+
   useEffect(() => {
     getApi();
-  }, []);
+  }, [router.query.pageID]);
 
   return (
     <div>
       <div id="editor" />
+      <div className="panel__top">
+        <div className="panel__basic-actions" />
+      </div>
     </div>
   );
 }
 
-export default PageBuilder;
+export default PageID;
