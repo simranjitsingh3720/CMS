@@ -6,7 +6,7 @@ const getSchema = async (req, res) => {
   if (schema) {
     return res.status(200).json(schema);
   }
-  return res.status(200).json(schema);
+  return res.status(404).json({ message: 'Schema not found' });
 };
 
 const listSchemas = async (req, res) => {
@@ -28,7 +28,7 @@ const updateSchema = async (req, res) => {
   if (updatedSchema[0]) {
     return res.status(200).json({ id: schemaId });
   }
-  return res.status(200).json({ message: 'Schema not Found' });
+  return res.status(404).json({ message: 'Schema not found' });
 };
 
 const deleteSchema = async (req, res) => {
@@ -37,7 +37,7 @@ const deleteSchema = async (req, res) => {
   if (deletedSchema) {
     return res.status(200).json({ id: schemaId });
   }
-  return res.status(400).json({ message: 'No Schema Found' });
+  return res.status(404).json({ message: 'Schema not found' });
 };
 
 module.exports = {
