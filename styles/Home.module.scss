@@ -1,0 +1,6 @@
+@import "mixins";
+$color-primary: blueviolet;
+.design {
+    color: $color-primary;
+    @include desktop(100px);
+}
