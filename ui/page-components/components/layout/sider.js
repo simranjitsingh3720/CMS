@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import navData from './sideNavContent';
 
+const { Header } = Layout;
+
 function PageSider() {
   const Router = useRouter();
   const { Sider } = Layout;
@@ -13,8 +15,19 @@ function PageSider() {
     setCollapsed(isCollapsed);
   };
   return (
-    <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
+    <Sider
+      collapsible
+      collapsed={collapsed}
+      onCollapse={onCollapse}
+      style={{
+        overflow: 'auto',
+        height: '100vh',
+      }}
+    >
       <Menu theme="dark" mode="inline" selectedKeys={Router.pathname}>
+        <Header className="site-layout-background" style={{ color: 'white' }}>
+          <Link href="/">CMS</Link>
+        </Header>
 
         {navData.map((data) => (
           <Menu.Item key={data.path} icon={data.icon}>

@@ -7,15 +7,15 @@ const { Header, Footer } = Layout;
 
 function PageLayout({ children = null }) {
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Header className="site-layout-background" style={{ color: 'white' }}>
-        <Link href="/">COGO-CMS</Link>
-      </Header>
+    <Layout style={{ minHeight: '100vh' }} hasSider>
+
+      <Sidebar />
+
       <Layout className="site-layout">
-        <Sidebar />
         <Content style={{ textAlign: 'center' }}>{children}</Content>
+        <Footer style={{ textAlign: 'center', padding: 0 }}>Footer</Footer>
+
       </Layout>
-      <Footer style={{ textAlign: 'center', padding: 0 }}>Footer</Footer>
     </Layout>
   );
 }

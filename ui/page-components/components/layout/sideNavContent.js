@@ -1,31 +1,28 @@
 import {
-  LayoutOutlined, TableOutlined, PictureOutlined, FormOutlined, DatabaseOutlined,
+  LayoutOutlined, TableOutlined, PictureOutlined, UserOutlined,
 } from '@ant-design/icons';
 
 const navData = [{
-  name: 'page-builder',
-  path: '/page-builder',
+  name: 'Page-builder',
+  path: '/admin/page-builder',
   icon: <LayoutOutlined />,
 }, {
-  name: 'content-manager',
-  path: '/content-manager',
+  name: 'Datastore',
+  path: '/admin/datastore',
   icon: <TableOutlined />,
 },
 {
-  name: 'content-builder',
-  path: '/content-builder',
-  icon: <DatabaseOutlined />,
+  name: 'Assets',
+  path: '/admin/assets',
+  icon: <PictureOutlined />,
+
 },
 {
-  name: 'form-builder',
-  path: '/form-builder',
-  icon: <FormOutlined />,
+  name: 'Users',
+  path: '/admin/users',
+  icon: <UserOutlined />,
+
 },
-{
-  name: 'assets',
-  path: '/assets',
-  icon: <PictureOutlined />
-  ,
-},
+
 ];
 export default navData;
