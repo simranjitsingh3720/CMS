@@ -12,11 +12,27 @@ const createAsset = async (req, res) => {
 };
 
 const findAsset = async (req, res) => {
-  const { id } = req.query;
+  const data = req.query;
 
   const asset = await db.Asset.findOne({
     where: {
-      id,
+      ...data
+    },
+  });
+
+  if (asset == null) {
+    res.send('no asset found');
+  } else {
+    res.status(200).json({ asset });
+  }
+};
+
+const findAssetByName = async (req, res) => {
+  const {name} = req.query;
+
+  const asset = await db.Asset.findAll({
+    where: {
+      name
     },
   });
 
@@ -55,4 +71,5 @@ module.exports = {
   findAsset,
   deleteAsset,
   updateAsset,
+  findAssetByName
 };

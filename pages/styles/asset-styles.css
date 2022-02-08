@@ -1,0 +1,107 @@
+.header{
+  height: 50px;
+  background-color: rgb(76, 106, 150);
+}
+
+.article{
+  display: flex;
+  height: 10000;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.sidebar{
+  width: 20%;
+  height: 10000;
+  background-color: rgb(76, 106, 150);
+  
+}
+.article-body{
+  width: 75%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.article-body-header{
+  width:100%;
+  height: 40px;
+  /* background-color: skyblue; */
+  /* margin:35px */
+  margin-bottom: 35px;
+  display: flex;
+  justify-content: space-between;
+}
+.button1{
+  width:100px;
+  height:35px;
+  padding: auto;
+  color: white;
+  font-size: 15px;
+  background-color: orangered;
+  border-radius: 10px;
+  border:none;
+  cursor: pointer;
+  margin-top: 0px;
+  
+}
+.button2{
+  width:35px;
+  height:35px;
+  padding: auto;
+  color: white;
+  font-size: 15px;
+  background-color: gray;
+  cursor: pointer;
+  /* border-radius: 10px; */
+  border:none;
+  cursor: pointer;
+  margin-top: 0px;
+}
+.article-body-header input{
+  height:28px;
+  width: 200px;
+}
+.article-body-form{
+  width: 75%;
+}
+.form-button{
+  width:100px;
+  height:40px;
+  color: white;
+  font-size: 15px;
+  background-color: red;
+  border-radius: 10px;
+  border:none;
+  cursor: pointer;
+}
+.delete{ 
+  cursor: pointer;
+  display: inline-block;
+  color: red;
+}
+
+.popup{
+  border: 2px solid;
+  background-color: blue;
+}
+.Card-style{
+  width:300px;
+  height:280px;
+  background-color:white;
+  margin-bottom:40px;
+  border-radius:15px;
+  padding:20px
+}
+.ant-card-meta-title{
+  color: rgb(20, 71, 92);
+  font-size: 20px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.ant-card-meta-description{
+  color: gray;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
