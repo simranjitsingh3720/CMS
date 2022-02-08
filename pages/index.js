@@ -1,3 +1,1 @@
-import Home from '../ui/page-components/Home/index';
-
-export default Home;
+export { default } from '../ui/page-components/Home/index';
