@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
   Schema.init(
     {
       id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
-      slug: { type: DataTypes.STRING },
+      slug: { type: DataTypes.STRING, unique: true },
       schema: { type: DataTypes.JSON },
       title: { type: DataTypes.STRING },
       description: { type: DataTypes.STRING },

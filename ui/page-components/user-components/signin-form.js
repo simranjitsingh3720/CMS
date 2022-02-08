@@ -20,7 +20,10 @@ function SigninForm() {
       email: name,
       password,
     })
-      .then((er) => console.log(er))
+      .then((er) => {
+        console.log(er);
+        alert('sucessfully signed in');
+      })
       .catch((er) => console.log(er));
   };
 

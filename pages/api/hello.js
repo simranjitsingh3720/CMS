@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // import db from '../../db/models';
 
 const handler = async (req, res) => {
@@ -27,6 +28,10 @@ const handler = async (req, res) => {
   //   },
   // });
   res.status(200).json({ name: 'hi' });
+=======
+const handler = async (req, res) => {
+  res.status(200).json({ name: 'HELLO' });
+>>>>>>> 3dadd087843284cbb5e88571c979c1c68d49579e
 };
 
 export default handler;
