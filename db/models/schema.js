@@ -1,19 +1,18 @@
-const { Model } = require("sequelize");
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Schema extends Model {
     static associate(models) {
-      
-      models.Schema.belongsTo(models.User, { foreignKey: "createdBy" });
-      models.Schema.belongsTo(models.User, { foreignKey: "updatedBy" });
-      models.Schema.belongsTo(models.User, { foreignKey: "deletedBy" });
+      models.Schema.belongsTo(models.User, { foreignKey: 'createdBy' });
+      models.Schema.belongsTo(models.User, { foreignKey: 'updatedBy' });
+      models.Schema.belongsTo(models.User, { foreignKey: 'deletedBy' });
     }
   }
 
   Schema.init(
     {
       id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
-      slug: { type: DataTypes.STRING },
+      slug: { type: DataTypes.STRING, unique: true },
       schema: { type: DataTypes.JSON },
       title: { type: DataTypes.STRING },
       description: { type: DataTypes.STRING },
@@ -28,9 +27,9 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       timestamps: true,
       paranoid: true,
-      modelName: "Schema",
-      tableName: "datastore_schemas",
-    }
+      modelName: 'Schema',
+      tableName: 'datastore_schemas',
+    },
   );
 
   return Schema;

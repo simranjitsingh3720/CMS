@@ -1,10 +1,9 @@
-const Sequelize = require("sequelize");
+const Sequelize = require('sequelize');
 
-const config = require("../config");
-const userModel = require("./user");
-const contentModel = require("./content");
-const schemaModel = require("./schema");
-
+const config = require('../config');
+const userModel = require('./user');
+const contentModel = require('./content');
+const schemaModel = require('./schema');
 
 const db = {};
 const sequelize = new Sequelize(config);
@@ -17,7 +16,6 @@ const requireModel = (schema) => {
 requireModel(userModel);
 requireModel(contentModel);
 requireModel(schemaModel);
-
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
