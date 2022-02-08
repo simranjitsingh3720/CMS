@@ -1,8 +1,6 @@
 require('dotenv').config();
-const cors = require('cors');
 const express = require('express');
 const next = require('next');
-// const sequelize = require("./services/sequelize");
 const db = require('../db/models/index');
 
 const { PORT, APP_NAME, NODE_ENV } = process.env;
@@ -13,7 +11,6 @@ const main = async () => {
   try {
     await app.prepare();
     const server = express();
-    server.use(cors());
     server.use('/', handle);
 
     // syncing database tables
@@ -26,7 +23,6 @@ const main = async () => {
       console.log(`${APP_NAME} started at http://localhost:${PORT}`);
     });
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.log('error in starting server', err);
     process.exit(1);
   }

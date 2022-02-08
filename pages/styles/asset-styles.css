@@ -88,11 +88,14 @@
 }
 .Card-style{
   width:300px;
-  height:280px;
+  height:350px;
   background-color:white;
   margin-bottom:40px;
   border-radius:15px;
   padding:20px
+}
+.ant-card-body{
+  padding: 0px;
 }
 .ant-card-meta-title{
   color: rgb(20, 71, 92);

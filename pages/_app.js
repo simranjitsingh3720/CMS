@@ -1,11 +1,8 @@
+import 'antd/dist/antd.css';
+import './styles/asset-styles.css'
+import './styles/form-styles.css'
 
-import './../pages/styles/asset-styles.css'
-import './../pages/styles/form-styles.css'
-
-
-
-export default function MyApp({ Component, pageProps }) {
-
-return <Component {...pageProps} />;
-
+function MyApp({ Component, pageProps }) {
+  return <Component {...pageProps} />;
 }
+export default MyApp;

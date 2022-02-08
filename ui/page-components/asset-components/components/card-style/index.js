@@ -20,7 +20,7 @@ axios.delete(`http://localhost:8000/api/asset/${e.id}`)
     <Card
     hoverable
     className='Card-style'
-    cover={<img alt="example"  style={{ width:"300px",height:"200px",borderStartEndRadius:"15px",borderStartStartRadius:"15px",marginBottom:"10px"}} src={e.data1.url} />}
+    cover={<img alt="example"  style={{ width:"100%",height:"200px",borderStartEndRadius:"15px",borderStartStartRadius:"15px",marginBottom:"10px"}} src={e.data1.url} />}
   >
     <Meta title={e.data1.name} description={e.data1.description} />
     <div className='delete' onClick={()=>handleClick(e.data1)}>
