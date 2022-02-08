@@ -15,7 +15,6 @@ const getContent = async (req, res) => {
       },
     },
   });
-  // console.log(content.toJSON());
 
   if (content && content.Schema) {
     content = { ...content.toJSON() };

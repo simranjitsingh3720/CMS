@@ -1,4 +1,5 @@
-import '../styles.css';
+import 'antd/dist/antd.css';
+
 import PageLayout from '../ui/page-components/components/layout/layout';
 
 function MyApp({ Component, pageProps }) {
