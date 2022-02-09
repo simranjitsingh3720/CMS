@@ -3,7 +3,12 @@ import { Content } from 'antd/lib/layout/layout';
 
 function PageContent({ children }) {
   return (
-    <Content style={{ margin: '0 16px' }}>
+    <Content style={{
+      margin: '0 16px',
+      overflow: 'auto',
+      height: '100vh',
+    }}
+    >
 
       <div
         className="site-layout-background"

@@ -1,5 +1,9 @@
 import React from 'react';
 
-const index = () => <div>HELLO CONTENT BUILDERs</div>;
+const index = () => (
+  <div>
+    content builder
+  </div>
+);
 
 export default index;

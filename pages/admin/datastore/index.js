@@ -1,5 +1,9 @@
 import React from 'react';
 
-const index = () => <div>HELLO Datastore</div>;
+const index = () => (
+  <div>
+    DATASTORE
+  </div>
+);
 
 export default index;
