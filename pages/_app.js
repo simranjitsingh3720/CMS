@@ -1,5 +1,28 @@
-// import './page/style.css';
+import 'antd/dist/antd.css';
+import Head from 'next/head';
+import PageLayout from '../ui/page-components/components/layout/PageLayout';
+import '../styles/globals.scss';
 
-export default function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+function MyApp({ Component, pageProps }) {
+  const { title: propTitle } = pageProps || {};
+  const content = <Component {...pageProps} />;
+
+  let title = 'COGO-CMS';
+
+  if (propTitle) {
+    title = `${title} | ${propTitle}`;
+  }
+
+  return (
+    <>
+      <Head>
+        <title>{title}</title>
+      </Head>
+      <PageLayout>
+        {content}
+      </PageLayout>
+    </>
+  );
 }
+
+export default MyApp;
