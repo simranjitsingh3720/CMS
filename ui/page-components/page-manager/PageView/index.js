@@ -18,8 +18,12 @@ function PageView() {
           if (router.query.pageView) {
             setIsData(true);
             const code = JSON.parse(res.data.data.data);
-            setHtml(code['CMS-html']);
-            setCss(code['CMS-css']);
+            if (code) {
+              setHtml(code['CMS-html']);
+              setCss(code['CMS-css']);
+            } else {
+              setHtml('');
+            }
           } else {
             setIsData(false);
           }

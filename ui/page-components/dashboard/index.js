@@ -1,8 +1,12 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { Button } from 'antd';
+import { Button, Card, Avatar } from 'antd';
 import Link from 'next/link';
+import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
+import Item from 'antd/lib/list/Item';
+
+const { Meta } = Card;
 
 export default function Dashboard() {
   const [pages, setPages] = useState([]);
@@ -77,6 +81,31 @@ export default function Dashboard() {
       <ul>
         {slugs}
       </ul>
+      {pages.map((item, i) => (
+        <div key={i}>
+          <Card
+            style={{ width: 300 }}
+            cover={(
+              <img
+                alt="example"
+                src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+              />
+        )}
+            actions={[
+              <SettingOutlined key="setting" />,
+              <EditOutlined key="edit" />,
+              <EllipsisOutlined key="ellipsis" />,
+            ]}
+          >
+            <Meta
+              avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
+              title={item.name}
+              description={[<span>Slug: </span>, <span>{item.slug}</span>]}
+            />
+          </Card>
+        </div>
+      ))}
+
       <div />
     </div>
   );
