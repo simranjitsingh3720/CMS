@@ -20,7 +20,7 @@ function Asset() {
         setData(res.data.list);
         // console.log(res.data.list);
       })
-      .catch((e) => console.log(e));
+      .catch(() => {});
   }, []);
 
   const assetClick = () => {
@@ -37,13 +37,14 @@ function Asset() {
       axios.get('http://localhost:8000/api/asset')
         .then((res) => {
           setFlag(true);
-          setData(res.data);
+          setData(res.data.list);
         });
     } else {
       axios.get(`http://localhost:8000/api/asset/findByName/${searchData}`)
         .then((res) => {
           if (res.data.asset.length > 0) {
             setFlag(true);
+            // console.log(res.data.asset);
             setData(res.data.asset);
           } else setFlag(false);
         });
@@ -57,25 +58,26 @@ function Asset() {
         <div className="sidebar" />
         <div className="article-body" style={set1}>
           <div className="article-body-header">
-            <button onClick={assetClick} className="button1">Add Asset</button>
+            <button type="button" onClick={assetClick} className="button1">Add Asset</button>
             <div>
               <input type="text" placeholder="search" onChange={(e) => setSearchData(e.target.value)} />
-              <button className="button2" onClick={FindByName}><SearchOutlined /></button>
+              <button aria-label="Mute volume" type="button" className="button2" onClick={FindByName}><SearchOutlined /></button>
             </div>
           </div>
+          <div className='article-list'>
           {
           flag ? (
             <>
               {
-            data.map((e, i) => <CardStyle key={i} data1={e} />)
+            data.map((e) => <CardStyle key={e.id} data1={e} />)
           }
             </>
           ) : <h1>No asset found</h1>
-}
+}</div>
         </div>
         <div className="article-body-form" style={set2}>
           <UploadForm />
-          <button className="form-button" onClick={formClick}>Close</button>
+          <button type="button" className="form-button" onClick={formClick}>Close</button>
         </div>
       </div>
     </div>

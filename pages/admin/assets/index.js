@@ -1,1 +1,1 @@
-export { default } from './../../../ui/page-components/asset-components';
+export { default } from '../../../ui/page-components/asset-components';

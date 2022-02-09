@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       url: { type: DataTypes.STRING },
       name: { type: DataTypes.STRING },
       description: { type: DataTypes.STRING },
-      asset_type: { type: DataTypes.STRING },
+      type: { type: DataTypes.STRING },
       mime_type: { type: DataTypes.STRING },
       createdBy: { type: DataTypes.UUID },
       createdAt: { type: DataTypes.DATE },

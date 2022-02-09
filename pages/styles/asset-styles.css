@@ -14,16 +14,22 @@
 .sidebar{
   width: 20%;
   height: 10000;
+  min-height: 100vh;
   background-color: rgb(76, 106, 150);
   
 }
 .article-body{
   width: 75%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.article-list{
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-}
 
+}
 .article-body-header{
   width:100%;
   height: 40px;
@@ -60,8 +66,9 @@
   margin-top: 0px;
 }
 .article-body-header input{
-  height:28px;
+  height:34px;
   width: 200px;
+  /* text-align: center; */
 }
 .article-body-form{
   width: 75%;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
 
 function UploadForm() {
@@ -6,28 +6,26 @@ function UploadForm() {
     display: 'flex', flexDirection: 'column', width: '300px', margin: '100px auto',
   };
   const [colorchange, setChange] = useState({});
-  const [file, setFile] = useState();
+  const [file, setFile] = useState(null);
   const [name, setName] = useState('select file');
-  const [url, setUrl] = useState('');
+  const [filename, setFilename] = useState('');
+  const [desc, setDesc] = useState('');
 
-  const uploadFile = (e) => {
+  const SubmitDetails = (e) => {
     e.preventDefault();
-    Axios.get('http://127.0.0.1:8000/api/asset/get-signed-url')
+    //sending user given data to table expect the url
+    if(file && name ){
+    Axios.post('http://localhost:8000/api/asset', {
+      name: filename, description: desc, mime_type: file.type, type: file.type.split('/')[0],
+    })
       .then((res) => {
-        const objecturl = res.data.split('?')[0];
-        // console.log('upload file', file)
-        Axios.put(res.data, file, {
-          headers: {
-            'Content-Type': file.type,
-          },
-        })
-          .then(() => {
-            Axios.post('http://localhost:8000/api/asset', { url: objecturl, description: ' ', name })
-              .then((res) => { console.log(res); })
-              .catch((e) => console.log(e));
-          })
-          .catch((e) => console.log('error', e));
+        Axios.put(res.data.writeUrl,file,{headers:{type:file.type}})
+        .then((res)=>{console.log(res)})
       });
+    }
+    else {
+      alert("please fill all details")
+    }
   };
 
   const handleInput = (e) => {
@@ -39,15 +37,16 @@ function UploadForm() {
       setName(`${e.target.files[0].name.substr(0, 10)}...${e.target.files[0].name.substr(s - 7, 7)}`);
     }
   };
-  // console.log({file})
 
   return (
-    <form id="imageForm" style={styleset} onSubmit={uploadFile}>
+    <form id="imageForm" style={styleset} onSubmit={SubmitDetails}>
+      <input type="text" className='input-box' value={filename} placeholder="name" onChange={(e) => setFilename(e.target.value)} />
+      <input type="search" className='input-box' value={desc} placeholder="description" onChange={(e) => setDesc(e.target.value)} />
       <div className="button-green" style={colorchange}>
         <input className="file-upload" type="file" onChange={(e) => handleInput(e)} />
         {name}
       </div>
-      <button type="submit" className="file-button">Upload</button>
+      <button type="submit" className="file-button">Submit</button>
 
     </form>
   );

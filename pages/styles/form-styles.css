@@ -2,6 +2,7 @@
   border-radius: 10px;
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
   width: 300px;
   margin: 100px auto
 }
@@ -35,7 +36,7 @@ input#imageInput {
     overflow: hidden;
     color: white;
     border-radius: 5px;
-    width: 227px; 
+    width: 250px; 
     height: 40px;
     position: relative; 
     padding: 10px;
@@ -55,8 +56,14 @@ input#imageInput {
     opacity: 0;
     /* visibility: hidden; */
     width: 250px;
-    height: 50px;
+    height: 40px;
     position: absolute;
     top: 0px;
     left: 0px;
+}
+.input-box{
+  width: 250px; 
+    height: 40px;
+    margin-bottom: 10px;
+
 }
