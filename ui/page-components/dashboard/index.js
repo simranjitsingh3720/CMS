@@ -1,9 +1,15 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { Button, Card, Avatar } from 'antd';
+import {
+  Button, Card, Avatar, Drawer, Form, Input, message, Image, Tooltip,
+} from 'antd';
 import Link from 'next/link';
-import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
+import {
+  DeleteOutlined,
+  ExpandAltOutlined,
+  FormOutlined,
+} from '@ant-design/icons';
 import Item from 'antd/lib/list/Item';
 
 const { Meta } = Card;
@@ -20,34 +26,37 @@ export default function Dashboard() {
     });
   }, []);
 
-  const handleClick = (newSlug) => {
+  const [visible, setVisible] = useState(false);
+
+  const showDrawer = () => {
+    setVisible(true);
+  };
+
+  const onClose = () => {
+    setVisible(false);
+  };
+
+  const handleEdit = (newSlug) => {
     push('/page-builder/[pageID]', `page-builder/${newSlug}`);
   };
 
-  const handlePreview = (newSlug) => {
+  const handleView = (newSlug) => {
     push('/[pageView]', `/${newSlug}`);
   };
 
-  const slugs = pages.map((page) => (
-    <li
-      key={page.slug}
-      style={{
-        display: 'flex', justifyContent: 'space-between', width: '50vw', border: '1px solid black', padding: '10px', margin: '5px', borderRadius: '10px',
-      }}
-    >
-      <span>
-        {page.name}
-      </span>
-      <Button onClick={() => { handleClick(page.slug); }} style={{ cursor: 'pointer' }} type="primary">Edit</Button>
-      <Button onClick={() => { handlePreview(page.slug); }} style={{ cursor: 'pointer' }} type="primary">Preview</Button>
-    </li>
-  ));
+  const handleDelete = (newSlug) => {
+    axios.delete(`http://localhost:8000/api/page/${newSlug}`);
+    window.location.reload(false);
+  };
 
   const handleCreatePage = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     axios.post('http://localhost:8000/api/createPage', pageDetails)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
+        setVisible(false);
+        window.location.reload(false);
+        message.info('Page Created Successfully', 10);
       })
       .catch((err) => {
         console.log('Error => ', err);
@@ -56,55 +65,79 @@ export default function Dashboard() {
 
   return (
     <div>
-      <form>
-        <input
-          type="text"
-          name="page"
-          value={pageDetails.name}
-          onChange={(e) => setPageDetails({ ...pageDetails, name: e.target.value })}
-          style={{ padding: '5px 10px', fontSize: '18px' }}
-          placeholder="Enter name of page"
-        />
+      <Button type="primary" onClick={showDrawer}>
+        Create New Page
+      </Button>
 
-        <input
-          type="text"
-          name="slug"
-          value={pageDetails.slug}
-          onChange={(e) => setPageDetails({ ...pageDetails, slug: e.target.value })}
-          style={{ padding: '5px 10px', fontSize: '18px' }}
-          placeholder="Enter name of slug"
-        />
-
-        <button type="submit" style={{ padding: '10px', cursor: 'pointer' }} onClick={handleCreatePage}>Create New Page</button>
-      </form>
-
-      <ul>
-        {slugs}
-      </ul>
-      {pages.map((item, i) => (
-        <div key={i}>
-          <Card
-            style={{ width: 300 }}
-            cover={(
-              <img
-                alt="example"
-                src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+      <div className="card-container">
+        {pages.map((page, i) => (
+          <div className="card-component" key={i}>
+            <Card
+              style={{ width: 300 }}
+              cover={(
+                <Image
+                  src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                />
+              )}
+              actions={[
+                <Tooltip title="View Page">
+                  <ExpandAltOutlined key="view" onClick={() => { handleView(page.slug); }} />
+                </Tooltip>,
+                <Tooltip title="Edit Page">
+                  <FormOutlined key="edit" onClick={() => { handleEdit(page.slug); }} />
+                </Tooltip>,
+                <Tooltip title="Delete Page">
+                  <DeleteOutlined key="delete" onClick={() => { handleDelete(page.slug); }} />
+                </Tooltip>,
+              ]}
+            >
+              <Meta
+                avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
+                title={page.name}
+                description={[<span>Slug: </span>, <span>{page.slug}</span>]}
               />
-        )}
-            actions={[
-              <SettingOutlined key="setting" />,
-              <EditOutlined key="edit" />,
-              <EllipsisOutlined key="ellipsis" />,
-            ]}
+            </Card>
+          </div>
+        ))}
+      </div>
+
+      <Drawer title="Create New Page" placement="right" onClose={onClose} visible={visible}>
+        <Form
+          name="basic"
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
+          initialValues={{ remember: true }}
+          // onFinish={onFinish}
+          // onFinishFailed={onFinishFailed}
+          autoComplete="off"
+        >
+          <Form.Item
+            label="Page Name"
+            name="page"
+            value={pageDetails.name}
+            onChange={(e) => setPageDetails({ ...pageDetails, name: e.target.value })}
+            rules={[{ required: true, message: 'Please enter Page Name!' }]}
           >
-            <Meta
-              avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-              title={item.name}
-              description={[<span>Slug: </span>, <span>{item.slug}</span>]}
-            />
-          </Card>
-        </div>
-      ))}
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Slug"
+            name="slug"
+            value={pageDetails.slug}
+            onChange={(e) => setPageDetails({ ...pageDetails, slug: e.target.value })}
+            rules={[{ required: true, message: 'Please enter Page Slug!' }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+            <Button type="primary" htmlType="submit" onClick={handleCreatePage}>
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </Drawer>
 
       <div />
     </div>
