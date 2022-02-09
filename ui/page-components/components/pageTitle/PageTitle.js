@@ -1,6 +1,5 @@
 import React from 'react';
-import { PageHeader } from 'antd';
-import styles from '../../../../styles/pageTitle.module.scss';
+import { Divider, PageHeader } from 'antd';
 
 function PageTitle({
   title = null, onBack, subTitle = null, extra = [],
@@ -8,11 +7,11 @@ function PageTitle({
   return (
     <div>
       <PageHeader
-        className={styles.pageTitle}
         onBack={onBack || function goBack() { window.history.back(); }}
         title={title}
         subTitle={subTitle}
         extra={extra}
+        style={{ fontSize: '200px' }}
       />
       {/* <Divider style={{ padding: 0, margin: 0, border: '2px solid red' }} /> */}
     </div>
