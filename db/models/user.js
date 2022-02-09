@@ -7,25 +7,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       models.User.hasMany(models.Content, { foreignKey: 'createdBy' });
       models.User.hasMany(models.Schema, { foreignKey: 'createdBy' });
+      models.User.hasMany(models.Page, { foreignKey: 'createdBy' });
     }
   }
-
-  // User.prototype.authorize = async function () {
-  //   const { AuthToken } = sequelize.models;
-  //   const user = this
-
-  //   // create a new auth token associated to 'this' user
-  //   // by calling the AuthToken class method we created earlier
-  //   // and passing it the user id
-  //   //const authToken = await AuthGen(this.id);
-
-  //   // addAuthToken is a generated method provided by
-  //   // sequelize which is made for any 'hasMany' relationships
-  //   //await user.addAuthToken(authToken);
-
-  //   return { user };//, authToken };
-  // };
-
   User.init(
     {
       id: {
