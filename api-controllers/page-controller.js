@@ -37,3 +37,12 @@ export const updateData = async (req, res) => {
   }
   return res.status(404).json({ message: 'Page Not Found' });
 };
+
+export const deletePage = async (req, res) => {
+  const { pageSlug } = req.query;
+  const deletedPage = await db.Page.destroy({ where: { slug: pageSlug } });
+  if (deletedPage) {
+    return res.status(200).json({ id: pageSlug });
+  }
+  return res.status(404).json({ message: 'Page not found' });
+};
