@@ -1,5 +1,5 @@
-// require('dotenv').config();
-console.log(process.env.MYSQL_DIALECT);
+require('../helpers/init-env')();
+
 const {
   MYSQL_USERNAME,
   MYSQL_PASSWORD,
