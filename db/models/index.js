@@ -4,7 +4,7 @@ const config = require('../config');
 const userModel = require('./user');
 const contentModel = require('./content');
 const schemaModel = require('./schema');
-const assetModel = require("./asset")
+const assetModel = require('./asset');
 
 const db = {};
 const sequelize = new Sequelize(config);

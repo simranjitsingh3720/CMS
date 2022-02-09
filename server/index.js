@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const next = require('next');
+const cors = require('cors');
 const db = require('../db/models/index');
 
 const { PORT, APP_NAME, NODE_ENV } = process.env;
@@ -11,6 +12,7 @@ const main = async () => {
   try {
     await app.prepare();
     const server = express();
+    server.use(cors());
     server.use('/', handle);
 
     // syncing database tables

@@ -7,7 +7,7 @@ const assetHandler = (req, res) => {
     case 'POST':
       return createAsset(req, res);
     default:
-      return res.status(404).json({ name: req.method });
+      return res.status(404).json({ message: 'not valid request' });
   }
 };
 
