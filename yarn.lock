@@ -797,6 +797,7 @@ domutils@^1.5.1:
     dom-serializer "0"
     domelementtype "1"
 
+<<<<<<< Updated upstream
 dotenv@^15.0.0:
   version "15.0.1"
 <<<<<<< HEAD
@@ -805,6 +806,17 @@ dotenv@^15.0.0:
   resolved "https://registry.npmjs.org/dotenv/-/dotenv-15.0.1.tgz"
 >>>>>>> b2160438394f86a2b759e9b1d5585e8300548fee
   integrity sha512-4OnbwRfzR+xQThp7uq1xpUS9fmgZ//njexOtPjPSbK3yHGrSHSJnaJRsXderSSm2elfvVj+Y5awDC0I8Oy8rkA==
+=======
+dotenv-expand@^8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/dotenv-expand/-/dotenv-expand-8.0.1.tgz#332aa17c14b12e28e2e230f8d183eecc1c014fdc"
+  integrity sha512-j/Ih7bIERDR5PzI89Zu8ayd3tXZ6E3dbY0ljQ9Db0K87qBO8zdLsi2dIvDHMWtjC3Yxb8XixOTHAtia0fDHRpg==
+
+dotenv@^16.0.0:
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.0.0.tgz#c619001253be89ebb638d027b609c75c26e47411"
+  integrity sha512-qD9WU0MPM4SWLPJy/r2Be+2WgQj8plChsyrCNQzW/0WjvcJQiKQJ9mH3ZgB3fxbUUxgc/11ZJ0Fi5KiimWGz2Q==
+>>>>>>> Stashed changes
 
 dottie@^2.0.2:
   version "2.0.2"

@@ -1,5 +1,5 @@
-require('dotenv').config();
-
+// require('dotenv').config();
+console.log(process.env.MYSQL_DIALECT);
 const {
   MYSQL_USERNAME,
   MYSQL_PASSWORD,
