@@ -1,7 +1,7 @@
 import { Button, Input } from 'antd';
 import React from 'react';
 
-const index = ({ children = null, actions = {} }) => {
+function ActionBar({ children = null, actions = {} }) {
   let buttons = null;
   let search = null;
   if (actions.buttons) {
@@ -38,6 +38,6 @@ const index = ({ children = null, actions = {} }) => {
       </div>
     </div>
   );
-};
+}
 
-export default index;
+export default ActionBar;

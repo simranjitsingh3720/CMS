@@ -10,7 +10,7 @@ function MyApp({ Component, pageProps }) {
   let title = 'COGO-CMS';
 
   if (propTitle) {
-    title = `${propTitle}`;
+    title = `${title} | ${propTitle}`;
   }
 
   return (
