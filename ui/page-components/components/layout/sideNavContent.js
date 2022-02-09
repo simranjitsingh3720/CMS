@@ -3,7 +3,7 @@ import {
 } from '@ant-design/icons';
 
 const navData = [{
-  name: 'Page-builder',
+  name: 'Page Manager',
   path: '/admin/page-builder',
   icon: <LayoutOutlined />,
 }, {

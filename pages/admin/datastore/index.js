@@ -7,3 +7,12 @@ const index = () => (
 );
 
 export default index;
+
+export async function getServerSideProps() {
+  return {
+    props: {
+      title: 'Datastore',
+      breadcrumb: { crumbs: [{ title: 'datastore' }] },
+    },
+  };
+}
