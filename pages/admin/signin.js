@@ -1,4 +1,4 @@
-export { default } from '../../../ui/page-components/user-components/signin-form';
+export { default } from '../../ui/page-components/auth/SigninForm';
 
 // import { NextPage } from 'next'
 // import Head from 'next/head'

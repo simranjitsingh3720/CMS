@@ -1,12 +1,7 @@
 import { useState } from 'react';
 import Axios from 'axios';
-// or 'antd/dist/antd.less'
-// import {
-//   Form, Input, Button, Checkbox,
-// } from 'antd';
-// import 'antd/dist/antd.css';
 
-export default function Postform() {
+export default function SignupForm() {
   const url = 'http://localhost:8000/api/auth/signup';
   const [data, setData] = useState({
     firstName: '',
@@ -19,7 +14,7 @@ export default function Postform() {
   const submit = (e) => {
     e.preventDefault();
     if (data.password !== data.confirmPassword) {
-      return console.log('Passwords not matched');
+      return console.log('Passwords do not match');
     }
     Axios.post(url, {
       firstName: data.firstName,
@@ -27,9 +22,10 @@ export default function Postform() {
       email: data.email,
       password: data.password,
     })
-      .then((res) => {
-        console.log(res.data);
+      .then((obj) => {
+        console.log(obj);
       });
+    return null;
   };
 
   const handle = (e) => {
