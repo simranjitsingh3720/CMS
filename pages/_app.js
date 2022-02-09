@@ -7,13 +7,8 @@ import PageLayout from '../ui/page-components/components/layout/PageLayout';
 function MyApp({ Component, pageProps }) {
   const { title: propTitle } = pageProps || {};
   const content = <Component {...pageProps} />;
-  // const router = useRouter();
   let title = 'COGO-CMS';
-  // let layoutPreset = null;
-  // if (router.pathname.startsWith('/admin')) {
-  //   console.log('HELLLLLLL');
-  //   layoutPreset = 'app';
-  // }
+
   if (propTitle) {
     title = `${title} | ${propTitle}`;
   }
