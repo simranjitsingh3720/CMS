@@ -1,7 +1,8 @@
 import 'antd/dist/antd.css';
+import '../ui/globals.scss';
+
 import Head from 'next/head';
 import PageLayout from '../ui/page-components/components/layout/PageLayout';
-import '../styles/globals.scss';
 
 function MyApp({ Component, pageProps }) {
   const { title: propTitle } = pageProps || {};

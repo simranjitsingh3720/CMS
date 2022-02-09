@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('../helpers/init-env')();
 
 const {
   MYSQL_USERNAME,
