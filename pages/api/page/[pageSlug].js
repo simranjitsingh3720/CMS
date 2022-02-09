@@ -1,4 +1,4 @@
-const { renderSingleData, updateData } = require('../../../api-controllers/page_controller');
+const { renderSingleData, updateData } = require('../../../api-controllers/page-controller');
 
 const handler = async (req, res) => {
   switch (req.method) {

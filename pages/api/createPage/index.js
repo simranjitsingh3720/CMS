@@ -1,10 +1,13 @@
-const db = require('../../../db/models/index');
+const { createPage } = require('../../../api-controllers/page-controller');
 
 const handler = async (req, res) => {
-  if (req.method === 'POST') {
-    const pageDetails = req.body;
-    const result = await db.Page.create(pageDetails);
-    res.status(201).json({ data: result });
+  switch (req.method) {
+    case 'POST':
+      return createPage(req, res);
+    default:
+      // handleError(req,res);
+      return '';
   }
 };
+
 export default handler;

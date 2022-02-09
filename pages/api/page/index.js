@@ -1,11 +1,9 @@
-const { listPageSlug } = require('../../../api-controllers/page_controller');
+const { listPagesBySlug } = require('../../../api-controllers/page-controller');
 
 const handler = async (req, res) => {
   switch (req.method) {
     case 'GET':
-      return listPageSlug(req, res);
-    // case 'POST':
-    //   return updateData(req, res);
+      return listPagesBySlug(req, res);
     default:
       // handleError(req,res);
       return '';

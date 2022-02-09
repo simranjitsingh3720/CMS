@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { Button } from 'antd';
+import Link from 'next/link';
 
 export default function Dashboard() {
   const [pages, setPages] = useState([]);
@@ -10,7 +12,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     axios.get('http://localhost:8000/api/page').then((res) => {
-      setPages(res.data.data);
+      setPages(res.data.list);
     });
   }, []);
 
@@ -19,7 +21,7 @@ export default function Dashboard() {
   };
 
   const handlePreview = (newSlug) => {
-    push('/[preview_page]', `/${newSlug}`);
+    push('/[pageView]', `/${newSlug}`);
   };
 
   const slugs = pages.map((page) => (
@@ -32,8 +34,8 @@ export default function Dashboard() {
       <span>
         {page.name}
       </span>
-      <button onClick={() => { handleClick(page.slug); }} style={{ padding: '10px', cursor: 'pointer' }} type="button">Edit</button>
-      <button onClick={() => { handlePreview(page.slug); }} style={{ padding: '10px', cursor: 'pointer' }} type="button">Preview</button>
+      <Button onClick={() => { handleClick(page.slug); }} style={{ cursor: 'pointer' }} type="primary">Edit</Button>
+      <Button onClick={() => { handlePreview(page.slug); }} style={{ cursor: 'pointer' }} type="primary">Preview</Button>
     </li>
   ));
 
