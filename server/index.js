@@ -17,6 +17,8 @@ const app = next({
 });
 const handle = app.getRequestHandler();
 
+console.log(process.env);
+
 const main = async () => {
   try {
     await app.prepare();
