@@ -1,8 +1,7 @@
-import React from 'react';
+import Asset from '../../../ui/page-components/asset-components';
 
-const index = () => <div>ASSESTS</div>;
+export default Asset;
 
-export default index;
 export async function getServerSideProps() {
   return {
     props: {
