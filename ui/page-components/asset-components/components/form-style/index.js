@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Axios from 'axios';
 
 function UploadForm() {
@@ -13,18 +13,17 @@ function UploadForm() {
 
   const SubmitDetails = (e) => {
     e.preventDefault();
-    //sending user given data to table expect the url
-    if(file && name ){
-    Axios.post('http://localhost:8000/api/asset', {
-      name: filename, description: desc, mime_type: file.type, type: file.type.split('/')[0],
-    })
-      .then((res) => {
-        Axios.put(res.data.writeUrl,file,{headers:{type:file.type}})
-        .then((res)=>{console.log(res)})
-      });
-    }
-    else {
-      alert("please fill all details")
+    // sending user given data to table expect the url
+    if (file && name) {
+      Axios.post('http://localhost:8000/api/asset', {
+        name: filename, description: desc, mime_type: file.type, type: file.type.split('/')[0],
+      })
+        .then((res) => {
+          Axios.put(res.data.writeUrl, file, { headers: { type: file.type } })
+            .then((re) => { console.log(re); });
+        });
+    } else {
+      alert('please fill all details');
     }
   };
 
@@ -40,8 +39,8 @@ function UploadForm() {
 
   return (
     <form id="imageForm" style={styleset} onSubmit={SubmitDetails}>
-      <input type="text" className='input-box' value={filename} placeholder="name" onChange={(e) => setFilename(e.target.value)} />
-      <input type="search" className='input-box' value={desc} placeholder="description" onChange={(e) => setDesc(e.target.value)} />
+      <input type="text" className="input-box" value={filename} placeholder="name" onChange={(e) => setFilename(e.target.value)} />
+      <input type="search" className="input-box" value={desc} placeholder="description" onChange={(e) => setDesc(e.target.value)} />
       <div className="button-green" style={colorchange}>
         <input className="file-upload" type="file" onChange={(e) => handleInput(e)} />
         {name}

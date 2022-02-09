@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       name: { type: DataTypes.STRING },
       description: { type: DataTypes.STRING },
       type: { type: DataTypes.STRING },
-      mime_type: { type: DataTypes.STRING },
+      mimeType: { type: DataTypes.STRING },
       createdBy: { type: DataTypes.UUID },
       createdAt: { type: DataTypes.DATE },
       updatedBy: { type: DataTypes.UUID },
