@@ -2,86 +2,76 @@
 // import Axios from 'axios';
 // import ReactDOM from 'react-dom';
 import {
-  Form, Input, Button, Checkbox,
+  Form, Input, Button, Checkbox, message,
 } from 'antd';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import 'antd/dist/antd.css';
 import styles from '../../../styles/signinForm.module.scss';
 
-function Demo() {
+const success = () => {
+  message.success('This is a prompt message for success, and it will disappear in 10 seconds', 10);
+};
+function signinForm() {
   const onFinish = (values) => {
-    console.log('Success:', values);
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    console.log('Received values of form: ', values);
   };
 
   return (
     <Form
-      name="basic"
-      labelCol={{
-        span: 8,
-      }}
-      wrapperCol={{
-        span: 16,
-      }}
+      name="signin"
+      className={styles.signinForm}
       initialValues={{
         remember: true,
       }}
       onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      autoComplete="off"
     >
+      <h1 className={styles.header}>SignIn Here</h1>
       <Form.Item
-        label="email"
         name="email"
         rules={[
           {
             required: true,
-            message: 'Please input your email id!',
+            message: 'Please input your email!',
           },
         ]}
       >
-        <Input />
+        <Input prefix={<UserOutlined className={styles.siteForm} />} placeholder="Email" />
       </Form.Item>
-
       <Form.Item
-        label="Password"
         name="password"
         rules={[
           {
             required: true,
-            message: 'Please input your password!',
+            message: 'Please input your Password!',
           },
         ]}
       >
-        <Input.Password />
+        <Input
+          prefix={<LockOutlined className={styles.siteForm} />}
+          type="password"
+          placeholder="Password"
+        />
       </Form.Item>
-
-      <Form.Item
-        name="remember"
-        valuePropName="checked"
-        wrapperCol={{
-          offset: 8,
-          span: 16,
-        }}
-      >
-        <Checkbox>Remember me</Checkbox>
+      <Form.Item>
+        <Form.Item name="remember" valuePropName="checked" noStyle>
+          <Checkbox>Remember me</Checkbox>
+        </Form.Item>
       </Form.Item>
-
-      <Form.Item
-        wrapperCol={{
-          offset: 8,
-          span: 16,
-        }}
-      >
-        <Button type="primary" htmlType="submit">
-          Submit
+      <Form.Item>
+        <Button type="primary" htmlType="submit" className={styles.signinFormButton} onClick={location.href = '/admin'}>
+          SIGN IN
         </Button>
+        <div className={styles.signinFormForgot}>
+          Forgot your password or email ?
+        </div>
+        <br />
+        <a href="/admin/signup">signup now!</a>
       </Form.Item>
     </Form>
   );
 }
-export default Demo;
+
+export default signinForm;
 
 // export function SigninForm() {
 //   const [name, setName] = useState('');
