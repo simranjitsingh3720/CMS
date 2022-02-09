@@ -1,19 +1,21 @@
 const { Model } = require('sequelize');
+// const bcrypt = require('bcrypt');
+// const {AuthGen} = require('./AuthToken')
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
       models.User.hasMany(models.Content, { foreignKey: 'createdBy' });
       models.User.hasMany(models.Schema, { foreignKey: 'createdBy' });
+      models.User.hasMany(models.Page, { foreignKey: 'createdBy' });
     }
   }
-
   User.init(
     {
       id: {
         type: DataTypes.UUID, primaryKey: true, allowNull: false, defaultValue: DataTypes.UUIDV4,
       },
-      email: { type: DataTypes.STRING, allowNull: false },
+      email: { type: DataTypes.STRING, allowNull: false, unique: true },
       phone: { type: DataTypes.STRING },
       password: { type: DataTypes.STRING, allowNull: false },
       firstName: { type: DataTypes.STRING, allowNull: false },
