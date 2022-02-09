@@ -1,6 +1,6 @@
 const dotenv = require('dotenv');
 const aws = require('aws-sdk');
-const db = require('../db/models/index');
+const db = require('../../db/models/index');
 
 dotenv.config();
 

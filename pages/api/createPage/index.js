@@ -1,4 +1,4 @@
-const { createPage } = require('../../../api-controllers/page-controller');
+const { createPage } = require('../../../server/api-controllers/page-controller');
 
 const handler = async (req, res) => {
   switch (req.method) {
