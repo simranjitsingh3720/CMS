@@ -1,14 +1,50 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { Button } from 'antd';
-import Link from 'next/link';
+import {
+  Button,
+  Drawer, Form, Input,
+} from 'antd';
 
 export default function Dashboard() {
   const [pages, setPages] = useState([]);
+  const [visible, setVisible] = useState(false);
+
   const [pageDetails, setPageDetails] = useState({ name: '', slug: '' });
 
   const { push } = useRouter();
+
+  const layout = {
+    labelCol: {
+      span: 8,
+    },
+    wrapperCol: {
+      span: 16,
+    },
+  };
+
+  const showDrawer = () => {
+    setVisible(true);
+  };
+
+  const onClose = () => {
+    setVisible(false);
+  };
+
+  const onFinish = (values) => {
+    console.log(values);
+  };
+
+  const validateMessages = {
+    required: '${label} is required!',
+    types: {
+      email: '${label} is not a valid email!',
+      number: '${label} is not a valid number!',
+    },
+    number: {
+      range: '${label} must be between ${min} and ${max}',
+    },
+  };
 
   useEffect(() => {
     axios.get('http://localhost:8000/api/page').then((res) => {
@@ -40,7 +76,7 @@ export default function Dashboard() {
   ));
 
   const handleCreatePage = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     axios.post('http://localhost:8000/api/createPage', pageDetails)
       .then((res) => {
         console.log(res);
@@ -52,7 +88,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      <form>
+      {/* <form>
         <input
           type="text"
           name="page"
@@ -72,12 +108,51 @@ export default function Dashboard() {
         />
 
         <button type="submit" style={{ padding: '10px', cursor: 'pointer' }} onClick={handleCreatePage}>Create New Page</button>
-      </form>
+      </form> */}
 
       <ul>
         {slugs}
       </ul>
       <div />
+      <Button type="primary" onClick={showDrawer}>
+        New Page
+      </Button>
+      <Drawer title="Add New Page" placement="right" onClose={onClose} visible={visible}>
+        <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
+          <Form.Item
+            name="name"
+            label="Name"
+            value={pageDetails.name}
+            onChange={(e) => setPageDetails({ ...pageDetails, name: e.target.value })}
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="slug"
+            label="Slug"
+            value={pageDetails.slug}
+            onChange={(e) => setPageDetails({ ...pageDetails, slug: e.target.value })}
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
+            <Button type="primary" htmlType="submit" onClick={handleCreatePage}>
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </Drawer>
     </div>
   );
 }

@@ -10,16 +10,22 @@ function PageView() {
 
   const [isData, setIsData] = useState(false);
   const router = useRouter();
+  // console.log(router.query.pageView);
 
   useEffect(() => {
+    console.log(router.query.pageView);
     if (router.query.pageView) {
       axios.get(`http://localhost:8000/api/page/${router.query.pageView}`)
         .then((res) => {
           if (router.query.pageView) {
             setIsData(true);
             const code = JSON.parse(res.data.data.data);
-            setHtml(code['CMS-html']);
-            setCss(code['CMS-css']);
+            if (code) {
+              setHtml(code['CMS-html']);
+              setCss(code['CMS-css']);
+            } else {
+              setHtml('');
+            }
           } else {
             setIsData(false);
           }
