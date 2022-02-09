@@ -1,4 +1,5 @@
-require('dotenv').config();
+require('../helpers/init-env')();
+
 const express = require('express');
 const next = require('next');
 const db = require('../db/models/index');
@@ -15,8 +16,6 @@ const app = next({
   port: APP_PORT,
 });
 const handle = app.getRequestHandler();
-
-console.log(process.env);
 
 const main = async () => {
   try {
