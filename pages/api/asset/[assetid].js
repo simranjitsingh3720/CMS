@@ -1,4 +1,4 @@
-import { findAsset, deleteAsset, updateAsset } from '../../../server/api-controllers/asset-controller';
+const { findAsset, deleteAsset, updateAsset } = require('../../../server/api-controllers/asset-controller');
 
 const assetHandler = (req, res) => {
   switch (req.method) {
@@ -13,4 +13,4 @@ const assetHandler = (req, res) => {
   }
 };
 
-export default assetHandler;
+module.exports = assetHandler;
