@@ -15,7 +15,21 @@ function PageAsset() {
 
   useEffect(() => {
     // make api call according to searchvalue
-
+    if (searchValue === '') {
+      axios.get('http://localhost:8000/api/asset')
+        .then((res) => {
+          setFlag(true);
+          setData(res.data.list);
+        });
+    } else {
+      axios.get(`http://localhost:8000/api/asset/findByName/${searchValue}`)
+        .then((res) => {
+          if (res.data.asset.length > 0) {
+            setFlag(true);
+            setData(res.data.asset);
+          } else setFlag(false);
+        });
+    }
   }, [searchValue]);
 
   const showDrawer = () => {
@@ -48,25 +62,7 @@ function PageAsset() {
         setData(res.data.list);
       })
       .catch(() => { });
-  }, [data]);
-
-  const onSearch = (value) => {
-    if (value === '') {
-      axios.get('http://localhost:8000/api/asset')
-        .then((res) => {
-          setFlag(true);
-          setData(res.data.list);
-        });
-    } else {
-      axios.get(`http://localhost:8000/api/asset/findByName/${value}`)
-        .then((res) => {
-          if (res.data.asset.length > 0) {
-            setFlag(true);
-            setData(res.data.asset);
-          } else setFlag(false);
-        });
-    }
-  };
+  }, []);
 
   return (
     <div>

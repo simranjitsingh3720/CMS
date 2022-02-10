@@ -1,4 +1,4 @@
-const { findAssetByName } = require('../../../../api-controllers/asset-controller');
+const { findAssetByName } = require('../../../../server/api-controllers/asset-controller');
 
 const assetHandler = (req, res) => {
   switch (req.method) {

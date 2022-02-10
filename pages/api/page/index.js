@@ -1,4 +1,4 @@
-const { listPagesBySlug } = require('../../../server/api-controllers/page-controller');
+const { listPagesBySlug } = require('../../../server/api-controllers/auth-controller');
 
 const handler = async (req, res) => {
   switch (req.method) {
