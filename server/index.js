@@ -1,7 +1,7 @@
-require('dotenv').config();
+require('../helpers/init-env')();
+
 const express = require('express');
 const next = require('next');
-// const sequelize = require("./services/sequelize");
 const db = require('../db/models/index');
 
 const sessionMiddleware = require('./middlewares/session-middleware');
@@ -17,12 +17,11 @@ const app = next({
 });
 const handle = app.getRequestHandler();
 
-console.log(process.env);
-
 const main = async () => {
   try {
     await app.prepare();
     const server = express();
+    server.use('/', handle);
 
     // middlewares
     server.use(sessionMiddleware);
