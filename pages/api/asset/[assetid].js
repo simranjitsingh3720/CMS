@@ -1,4 +1,4 @@
-const { findAsset, deleteAsset, updateAsset } = require('../../../server/api-controllers/asset-controller');
+const { findAsset, deleteAsset, updateAsset } = require('../../../api-controllers/asset-controller');
 
 const assetHandler = (req, res) => {
   switch (req.method) {

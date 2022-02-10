@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import Axios from 'axios';
+import { Alert } from 'antd';
 
-function UploadForm() {
+function FormStyle() {
   const styleset = {
     display: 'flex', flexDirection: 'column', width: '300px', margin: '100px auto',
   };
@@ -10,10 +11,10 @@ function UploadForm() {
   const [name, setName] = useState('select file');
   const [filename, setFilename] = useState('');
   const [desc, setDesc] = useState('');
+  const [flag, setFlag] = useState(false);
 
   const SubmitDetails = (e) => {
     e.preventDefault();
-    // sending user given data to table expect the url
     if (file && name) {
       Axios.post('http://localhost:8000/api/asset', {
         name: filename, description: desc, mime_type: file.type, type: file.type.split('/')[0],
@@ -23,7 +24,7 @@ function UploadForm() {
             .then((re) => { console.log(re); });
         });
     } else {
-      alert('please fill all details');
+      setFlag(true);
     }
   };
 
@@ -46,9 +47,18 @@ function UploadForm() {
         {name}
       </div>
       <button type="submit" className="file-button">Submit</button>
+      {flag ? (
+        <Alert
+          message="Warning"
+          description="This is a warning notice about copywriting."
+          type="warning"
+          showIcon
+          closable
+        />
+      ) : null}
 
     </form>
   );
 }
 
-export default UploadForm;
+export default FormStyle;

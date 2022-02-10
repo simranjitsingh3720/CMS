@@ -1,4 +1,4 @@
-const db = require('../../db/models');
+const db = require('../db/models/index');
 
 export const createPage = async (req, res) => {
   const pageDetails = req.body;

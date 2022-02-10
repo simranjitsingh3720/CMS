@@ -1,7 +1,7 @@
 import 'antd/dist/antd.css';
 
-// import './styles/asset-styles.css';
-// import './styles/form-styles.css';
+import './styles/asset-styles.css';
+import './styles/form-styles.css';
 
 import '../ui/globals.scss';
 

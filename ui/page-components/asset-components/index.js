@@ -1,50 +1,48 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { SearchOutlined } from '@ant-design/icons';
-import CardStyle from './components/card-style';
-import UploadForm from './components/form-style';
-// import './style.css'
+import { Modal, Button, Input } from 'antd';
+import CardStyle from './components/CardStyle';
+import FormStyle from './components/FormStyle';
+
+const { Search } = Input;
 
 function Asset() {
   const [data, setData] = useState([]);
-  const [set1, setSet1] = useState();
-  const [set2, setSet2] = useState({ display: 'none' });
-  const [searchData, setSearchData] = useState('');
   const [flag, setFlag] = useState(true);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
   useEffect(() => {
-    // let data=[];
     axios.get('http://localhost:8000/api/asset')
       .then((res) => {
-        // data=res.data;
         setData(res.data.list);
-        // console.log(res.data.list);
       })
-      .catch(() => {});
-  }, []);
+      .catch(() => { });
+  }, [data]);
 
-  const assetClick = () => {
-    setSet1({ display: 'none' });
-    setSet2({});
-  };
-
-  const formClick = () => {
-    setSet2({ display: 'none' });
-    setSet1({});
-  };
-  const FindByName = () => {
-    if (searchData === '') {
+  const onSearch = (value) => {
+    if (value === '') {
       axios.get('http://localhost:8000/api/asset')
         .then((res) => {
           setFlag(true);
           setData(res.data.list);
         });
     } else {
-      axios.get(`http://localhost:8000/api/asset/findByName/${searchData}`)
+      axios.get(`http://localhost:8000/api/asset/findByName/${value}`)
         .then((res) => {
           if (res.data.asset.length > 0) {
             setFlag(true);
-            // console.log(res.data.asset);
             setData(res.data.asset);
           } else setFlag(false);
         });
@@ -52,32 +50,29 @@ function Asset() {
   };
 
   return (
-    <div style={{ backgroundColor: '#EFEFEF' }}>
-      <div className="header" />
+    <div>
       <div className="article">
-        <div className="sidebar" />
-        <div className="article-body" style={set1}>
+        <div className="article-body">
           <div className="article-body-header">
-            <button type="button" onClick={assetClick} className="button1">Add Asset</button>
+            <Button type="button" onClick={showModal} className="button1">Add Asset</Button>
+            <Modal title="Upload Form" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+              <FormStyle />
+            </Modal>
             <div>
-              <input type="text" placeholder="search" onChange={(e) => setSearchData(e.target.value)} />
-              <button aria-label="Mute volume" type="button" className="button2" onClick={FindByName}><SearchOutlined /></button>
+              <Search placeholder="input search text" onSearch={onSearch} enterButton />
             </div>
           </div>
-          <div className='article-list'>
-          {
-          flag ? (
-            <>
-              {
-            data.map((e) => <CardStyle key={e.id} data1={e} />)
-          }
-            </>
-          ) : <h1>No asset found</h1>
-}</div>
-        </div>
-        <div className="article-body-form" style={set2}>
-          <UploadForm />
-          <button type="button" className="form-button" onClick={formClick}>Close</button>
+          <div className="article-list">
+            {
+              flag ? (
+                <>
+                  {' '}
+                  {data.map((e) => <CardStyle key={e.id} data={e} />)}
+                </>
+              ) : <h1>No asset found....</h1>
+            }
+
+          </div>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-const { listAssets, createAsset } = require('../../../server/api-controllers/asset-controller');
+const { listAssets, createAsset } = require('../../../api-controllers/asset-controller');
 
 const assetHandler = (req, res) => {
   switch (req.method) {
