@@ -46,7 +46,7 @@ function PageManager() {
   return (
     <div>
       <ActionBar actions={actions} />
-      <PageCard />
+      <PageCard handleCreatePage={handleCreatePage} />
       <PageFormDrawer
         onFormClose={onClose}
         pageDetails={pageDetails}

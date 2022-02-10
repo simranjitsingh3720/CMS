@@ -1,6 +1,6 @@
 import {
   DeleteOutlined,
-  ExpandAltOutlined,
+  EyeOutlined,
   FormOutlined,
 } from '@ant-design/icons';
 import axios from 'axios';
@@ -11,7 +11,7 @@ import styles from './style.module.scss';
 
 const { Meta } = Card;
 
-function PageCard() {
+function PageCard(props) {
   const [pages, setPages] = useState([]);
 
   const { push } = useRouter();
@@ -20,7 +20,7 @@ function PageCard() {
     axios.get('http://localhost:8000/api/page').then((res) => {
       setPages(res.data.list);
     });
-  }, []);
+  }, [props.handleCreatePage]);
 
   const handleEdit = (newSlug) => {
     push('/admin/page-builder/[pageID]', `/admin/page-builder/${newSlug}`);
@@ -39,7 +39,8 @@ function PageCard() {
     <div className={styles.card_component}>
       {pages.map((page, index) => (
         <Card
-          style={{ width: 250 }}
+          key={index}
+          style={{ width: 260, margin: 15 }}
           cover={(
             <Image
               src="https://assets-global.website-files.com/5e57ba59552cf400c593fd16/5e7fbdeb3efd72446c9d54b7_5e7fbc1243a59ded3e14959c_placeholder.jpeg"
@@ -47,7 +48,7 @@ function PageCard() {
               )}
           actions={[
             <Tooltip title="View Page">
-              <ExpandAltOutlined key="view" onClick={() => { handleView(page.slug); }} />
+              <EyeOutlined key="view" onClick={() => { handleView(page.slug); }} />
             </Tooltip>,
             <Tooltip title="Edit Page">
               <FormOutlined key="edit" onClick={() => { handleEdit(page.slug); }} />
