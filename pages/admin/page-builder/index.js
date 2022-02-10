@@ -1,6 +1,6 @@
 import { PlusOutlined } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
-import Actionbar from '../../../ui/page-components/components/ActionBar/ActionBar';
+import Actionbar from '../../../ui/components/ActionBar/ActionBar';
 
 function Index() {
   const [searchValue, setSearchValue] = useState('');
