@@ -14,7 +14,6 @@ function PageAsset() {
   const [searchValue, setSearchValue] = useState('');
 
   useEffect(() => {
-    // make api call according to searchvalue
     if (searchValue === '') {
       axios.get('http://localhost:8000/api/asset')
         .then((res) => {
@@ -35,8 +34,6 @@ function PageAsset() {
   const showDrawer = () => {
     setVisible(true);
   };
-
-  // action bar
 
   const actions = {
     searchBar: {
