@@ -1,7 +1,7 @@
 import { Layout } from 'antd';
 import { useRouter } from 'next/router';
-import Sidebar from './sider';
-import PageContent from './content';
+import Sidebar from './Pagesider';
+import PageContent from './PageContent';
 
 const { Footer } = Layout;
 
