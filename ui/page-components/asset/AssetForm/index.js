@@ -19,7 +19,7 @@ function AssetForm() {
 
   const SubmitDetails = (values) => {
     Axios.post('http://localhost:8000/api/asset', {
-      name: values.name, description: values.description, mime_type: values.upload[0].originFileObj.type, type: values.upload[0].originFileObj.type.split('/')[0],
+      name: values.name, description: values.description, mimeType: values.upload[0].originFileObj.type, type: values.upload[0].originFileObj.type.split('/')[0],
     })
       .then((res) => {
         Axios.put(

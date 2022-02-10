@@ -5,7 +5,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import AssetCard from './AssetCard';
 import AssetForm from './AssetForm';
 import Styles from './style.module.scss';
-import ActionBar from '../components/ActionBar/ActionBar';
+import ActionBar from '../../components/ActionBar';
 
 function PageAsset() {
   const [data, setData] = useState([]);
