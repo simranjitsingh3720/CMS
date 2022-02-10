@@ -64,8 +64,8 @@ function Asset() {
               <button aria-label="Mute volume" type="button" className="button2" onClick={FindByName}><SearchOutlined /></button>
             </div>
           </div>
-          <div className='article-list'>
-          {
+          <div className="article-list">
+            {
           flag ? (
             <>
               {
@@ -73,7 +73,9 @@ function Asset() {
           }
             </>
           ) : <h1>No asset found</h1>
-}</div>
+}
+
+          </div>
         </div>
         <div className="article-body-form" style={set2}>
           <UploadForm />

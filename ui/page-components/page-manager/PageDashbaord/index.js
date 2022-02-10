@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { message } from 'antd';
-import ActionBar from '../../components/ActionBar';
+import ActionBar from '../../../components/ActionBar';
 import PageCard from './PageCard';
 import PageFormDrawer from './PageFormDrawer';
 
-function PageManager() {
+function PageDashboard() {
   const [searchValue, setSearchValue] = useState('');
   const [pageDetails, setPageDetails] = useState({ name: '', slug: '' });
 
@@ -60,4 +60,4 @@ function PageManager() {
   );
 }
 
-export default PageManager;
+export default PageDashboard;

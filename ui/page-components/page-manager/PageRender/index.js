@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import { Spin } from 'antd';
 
-function PageView() {
+function PageRender() {
   const [html, setHtml] = useState(null);
   const [css, setCss] = useState(null);
 
@@ -50,4 +50,4 @@ function PageView() {
   );
 }
 
-export default PageView;
+export default PageRender;

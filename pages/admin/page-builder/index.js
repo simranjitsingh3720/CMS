@@ -1,4 +1,4 @@
-export { default } from '../../../ui/page-components/page-manager';
+import PageDashboard from '../../../ui/page-components/page-manager/PageDashbaord';
 
 export async function getServerSideProps() {
   return {
@@ -8,3 +8,5 @@ export async function getServerSideProps() {
     },
   };
 }
+
+export default PageDashboard;
