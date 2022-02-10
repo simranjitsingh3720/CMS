@@ -1,18 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import useAxios from 'axios-hooks';
+import SchemaCard from './SchemaCard';
 
 function ListSchema() {
-  const [schemas, setSchemas] = useState([]);
+  const showSchema = () => {
+  };
+  const deleteSchema = () => {
+    console.log('DELETE SCHEMA');
+  };
 
-  useEffect(() => {
-    const [{ data, loading, error }, refetch] = useAxios(
-      'https://reqres.in/api/users?delay=1',
-    );
-  }, []);
+  const [{ data, loading, error }, refetch] = useAxios(
+    'http://localhost:8000/api/schema',
+  );
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error!</p>;
 
   return (
     <div>
-      hello
+      {data.list.map((schema) => <SchemaCard key={schema.id} schemaName={schema.slug} showSchema={showSchema} deleteSchema={deleteSchema} />)}
     </div>
   );
 }

@@ -1,6 +1,6 @@
-import SchemaCard from '../../../ui/page-components/dynamic-datastore/ListSchemas/SchemaCard';
+import ListSchema from '../../../ui/page-components/dynamic-datastore/ListSchemas';
 
-export default SchemaCard;
+export default ListSchema;
 
 export async function getServerSideProps() {
   return {
