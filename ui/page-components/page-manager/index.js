@@ -17,19 +17,40 @@ const { Meta } = Card;
 
 function Index() {
   const [searchValue, setSearchValue] = useState('');
-
+  const [state, setState] = useState(true);
   const [pages, setPages] = useState([]);
   const [pageDetails, setPageDetails] = useState({ name: '', slug: '' });
+  const [visible, setVisible] = useState(false);
 
   const { push } = useRouter();
+
+  useEffect(() => {
+    setState(false);
+    if (state) {
+      axios.get('http://localhost:8000/api/page').then((res) => {
+        setPages(res.data.list);
+        setState(false);
+      });
+    }
+  }, [state]);
+
+  const showDrawer = () => {
+    setVisible(true);
+  };
+
+  const onClose = () => {
+    setVisible(false);
+  };
 
   const handleCreatePage = () => {
     // e.preventDefault();
     axios.post('http://localhost:8000/api/createPage', pageDetails)
       .then(() => {
-        // eslint-disable-next-line no-use-before-define
         setVisible(false);
         message.info('Page Created Successfully', 5);
+        setState(false);
+        push('/page-builder/[pageID]', `/page-builder/${pageDetails.slug}`);
+        setState(false);
       })
       .catch((err) => {
         console.log('Error => ', err);
@@ -38,25 +59,10 @@ function Index() {
 
   const handleDelete = (newSlug) => {
     axios.delete(`http://localhost:8000/api/page/${newSlug}`).then(() => {
-      console.log('Hi');
+      console.log('Page Deleted');
+      setState(true);
     });
     message.warning('Page Deleted Successfully', 5);
-  };
-
-  useEffect(() => {
-    axios.get('http://localhost:8000/api/page').then((res) => {
-      setPages(res.data.list);
-    });
-  }, []);
-
-  const [visible, setVisible] = useState(false);
-
-  const showDrawer = () => {
-    setVisible(true);
-  };
-
-  const onClose = () => {
-    setVisible(false);
   };
 
   const handleEdit = (newSlug) => {
