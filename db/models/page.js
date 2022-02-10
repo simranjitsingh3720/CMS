@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notEmpty: true,
         },
+        unique: true,
       },
       data: { type: DataTypes.JSON },
       status: { type: DataTypes.ENUM('draft', 'published'), allowNull: false, defaultValue: 'draft' },

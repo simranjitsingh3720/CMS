@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, PageHeader } from 'antd';
+import { PageHeader } from 'antd';
 
 function PageTitle({
   title = null, onBack, subTitle = null, extra = [],
