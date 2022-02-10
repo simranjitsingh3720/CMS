@@ -1,12 +1,6 @@
-import React from 'react';
+import SchemaCard from '../../../ui/page-components/dynamic-datastore/ListSchemas/SchemaCard';
 
-const index = () => (
-  <div>
-    DATASTORE
-  </div>
-);
-
-export default index;
+export default SchemaCard;
 
 export async function getServerSideProps() {
   return {
