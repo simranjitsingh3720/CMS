@@ -1,7 +1,7 @@
 import React from 'react';
 import { Content } from 'antd/lib/layout/layout';
 import { useRouter } from 'next/router';
-import PageTitle from '../pageTitle/PageTitle';
+import PageTitle from '../PageTitle/PageTitle';
 
 const blockRoute = ['/', '/admin/signin', '/admin/signup'];
 
