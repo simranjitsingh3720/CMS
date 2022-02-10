@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ant-design/icons": "4.0.0",
+    "@ant-design/icons": "^4.7.0",
     "antd": "^4.18.6",
     "axios": "^0.25.0",
     "bcrypt": "^5.0.1",

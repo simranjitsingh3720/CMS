@@ -17,6 +17,8 @@ const app = next({
 });
 const handle = app.getRequestHandler();
 
+console.log(process.env);
+
 const main = async () => {
   try {
     await app.prepare();
@@ -24,7 +26,7 @@ const main = async () => {
 
     // middlewares
     server.use(sessionMiddleware);
-    server.use('/', authMiddleware, handle);
+    server.use('/admin', authMiddleware, handle);
 
     // syncing database tables
     db.sequelize.sync();
