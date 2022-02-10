@@ -1,1 +1,5 @@
-export { default } from '../ui/page-components/Home';
+import React from 'react';
+
+const index = () => <div>HELLLLLLL</div>;
+
+export default index;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { message } from 'antd';
-import Actionbar from '../components/ActionBar/ActionBar';
+import ActionBar from '../../components/ActionBar';
 import PageCard from './PageCard';
 import PageFormDrawer from './PageFormDrawer';
 
@@ -45,7 +45,7 @@ function PageManager() {
 
   return (
     <div>
-      <Actionbar actions={actions} />
+      <ActionBar actions={actions} />
       <PageCard />
       <PageFormDrawer
         onFormClose={onClose}
