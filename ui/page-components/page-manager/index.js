@@ -1,21 +1,23 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 import {
-  Button, Card, Avatar, Drawer, Form, Input, message, Image, Tooltip,
-} from 'antd';
-import Link from 'next/link';
-import {
+  PlusOutlined,
   DeleteOutlined,
   ExpandAltOutlined,
   FormOutlined,
 } from '@ant-design/icons';
-import Item from 'antd/lib/list/Item';
+import React, { useEffect, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import {
+  Button, Card, Avatar, Drawer, Form, Input, message, Image, Tooltip,
+} from 'antd';
+import Actionbar from '../components/ActionBar/ActionBar';
 
 const { Meta } = Card;
 
-export default function Dashboard() {
+function Index() {
+  const [searchValue, setSearchValue] = useState('');
+
   const [pages, setPages] = useState([]);
   const [pageDetails, setPageDetails] = useState({ name: '', slug: '' });
 
@@ -35,7 +37,9 @@ export default function Dashboard() {
   };
 
   const handleDelete = (newSlug) => {
-    axios.delete(`http://localhost:8000/api/page/${newSlug}`);
+    axios.delete(`http://localhost:8000/api/page/${newSlug}`).then(() => {
+      console.log('Hi');
+    });
     message.warning('Page Deleted Successfully', 5);
   };
 
@@ -43,7 +47,7 @@ export default function Dashboard() {
     axios.get('http://localhost:8000/api/page').then((res) => {
       setPages(res.data.list);
     });
-  }, [handleCreatePage, handleDelete]);
+  }, []);
 
   const [visible, setVisible] = useState(false);
 
@@ -63,12 +67,21 @@ export default function Dashboard() {
     push('/[pageView]', `/${newSlug}`);
   };
 
+  const actions = {
+    searchBar: {
+      searchValue,
+      setSearchValue,
+    },
+    buttons: [{
+      name: 'New page',
+      icon: <PlusOutlined />,
+      onClick: showDrawer,
+    }],
+  };
+
   return (
     <div>
-      <Button type="primary" onClick={showDrawer}>
-        Create New Page
-      </Button>
-
+      <Actionbar actions={actions} />
       <div className="card-container">
         {pages.map((page, i) => (
           <div className="card-component" key={i}>
@@ -143,3 +156,5 @@ export default function Dashboard() {
     </div>
   );
 }
+
+export default Index;
