@@ -26,7 +26,7 @@ function ActionBar({ children = null, actions = {} }) {
 
   return (
     <div style={{
-      marginTop: '10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      marginTop: '10px', display: 'flex', alignItems: 'center', padding: '0 24px', justifyContent: 'space-between',
     }}
     >
       <div>

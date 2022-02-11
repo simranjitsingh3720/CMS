@@ -6,7 +6,7 @@ import ActionBar from '../../../components/ActionBar';
 import PageCard from './PageCard';
 import PageFormDrawer from './PageFormDrawer';
 
-function PageDashboard() {
+function PageManager() {
   const [searchValue, setSearchValue] = useState('');
   const [pageDetails, setPageDetails] = useState({ name: '', slug: '' });
 
@@ -46,7 +46,7 @@ function PageDashboard() {
   return (
     <div>
       <ActionBar actions={actions} />
-      <PageCard handleCreatePage={handleCreatePage} />
+      <PageCard handleCreatePage={handleCreatePage} searchValue={searchValue} />
       <PageFormDrawer
         onFormClose={onClose}
         pageDetails={pageDetails}
@@ -60,4 +60,4 @@ function PageDashboard() {
   );
 }
 
-export default PageDashboard;
+export default PageManager;
