@@ -17,7 +17,7 @@ function PageDashboard() {
       .then(() => {
         setVisible(false);
         message.info('Page Created Successfully', 5);
-        push('/admin/page-builder/[pageID]', `/admin/page-builder/${pageDetails.slug}`);
+        push('/admin/page-manager/builder/[pageID]', `/admin/page-manager/builder/${pageDetails.slug}`);
       })
       .catch((err) => {
         console.log('Error => ', err);

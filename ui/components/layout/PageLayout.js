@@ -5,17 +5,21 @@ import PageContent from './PageContent';
 
 const { Footer } = Layout;
 
-const blockRoute = ['/', '/admin/signin', '/admin/signup'];
-
 function PageLayout({
   children = null,
 }) {
   const router = useRouter();
 
+  const blockRoute = ['/', '/admin/signin', '/admin/signup', '/about'];
+
+  // console.log(blockRoute);
+  // console.log(router.query);
+
   const { pathname } = router;
 
   return (
     <Layout style={{ minHeight: '100vh' }} hasSider>
+
       {!blockRoute.includes(pathname) ? <Sidebar /> : null}
       <Layout className="site-layout">
         <PageContent>{children}</PageContent>
