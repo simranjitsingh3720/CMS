@@ -1,4 +1,4 @@
-import PageUser from '../../../ui/page-components/auth/PageUser';
+import PageUser from '../../../ui/page-components/user/PageUser';
 
 export default PageUser;
 export async function getServerSideProps() {
