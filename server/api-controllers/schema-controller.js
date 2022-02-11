@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const db = require('../../db/models');
 
 const getSchema = async (req, res) => {
@@ -10,7 +11,15 @@ const getSchema = async (req, res) => {
 };
 
 const listSchemas = async (req, res) => {
-  const schemas = await db.Schema.findAll();
+  const { query } = req;
+  const { q } = query;
+  const schemas = await db.Schema.findAll({
+    where: {
+      slug: {
+        [Op.substring]: q,
+      },
+    },
+  });
   return res.status(200).json({ list: schemas });
 };
 

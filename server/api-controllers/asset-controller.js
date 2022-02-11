@@ -1,5 +1,6 @@
 const dotenv = require('dotenv');
 const aws = require('aws-sdk');
+const { Op } = require('sequelize');
 const db = require('../../db/models/index');
 
 dotenv.config();
@@ -17,7 +18,15 @@ const s3 = new aws.S3({
 });
 
 const listAssets = async (req, res) => {
-  const assets = await db.Asset.findAll();
+  const { query } = req;
+  const { q } = query;
+  const assets = await db.Asset.findAll({
+    where: {
+      name: {
+        [Op.substring]: q,
+      },
+    },
+  });
   return res.status(200).json({ list: assets });
 };
 
@@ -40,19 +49,9 @@ const createAsset = async (req, res) => {
 };
 
 const findAsset = async (req, res) => {
-  const { assetid } = req.query;
+  const { assetId } = req.query;
 
-  const asset = await db.Asset.findOne({ where: { id: assetid } });
-  if (!asset) {
-    return res.status(404).send({ message: 'no asset found' });
-  }
-  return res.status(200).json({ asset });
-};
-
-const findAssetByName = async (req, res) => {
-  const { name } = req.query;
-
-  const asset = await db.Asset.findAll({ where: { name } });
+  const asset = await db.Asset.findOne({ where: { id: assetId } });
   if (!asset) {
     return res.status(404).send({ message: 'no asset found' });
   }
@@ -60,17 +59,17 @@ const findAssetByName = async (req, res) => {
 };
 
 const deleteAsset = async (req, res) => {
-  const { assetid } = req.query;
+  const { assetId } = req.query;
 
-  await db.Asset.destroy({ where: { id: assetid } });
-  res.status(200).json({ id: assetid });
+  await db.Asset.destroy({ where: { id: assetId } });
+  res.status(200).json({ id: assetId });
 };
 
 const updateAsset = async (req, res) => {
-  const { assetid } = req.query;
+  const { assetId } = req.query;
   const data = req.body;
 
-  const updatedAsset = await db.Asset.update({ ...data }, { where: { id: assetid } });
+  const updatedAsset = await db.Asset.update({ ...data }, { where: { id: assetId } });
   res.status(200).json({ id: updatedAsset.id });
 };
 
@@ -80,5 +79,4 @@ module.exports = {
   findAsset,
   deleteAsset,
   updateAsset,
-  findAssetByName,
 };

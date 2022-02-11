@@ -1,6 +1,6 @@
-import ListSchema from '../../../ui/page-components/dynamic-datastore/ListSchemas';
+import ContentBuilder from '../../../../ui/page-components/dynamic-datastore/ContentBuilder';
 
-export default ListSchema;
+export default ContentBuilder;
 
 export async function getServerSideProps() {
   return {

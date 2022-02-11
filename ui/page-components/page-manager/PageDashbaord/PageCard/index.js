@@ -3,25 +3,35 @@ import {
   EyeOutlined,
   FormOutlined,
 } from '@ant-design/icons';
-import axios from 'axios';
 import { Card, Avatar, message, Image, Tooltip } from 'antd';
-import React, { useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import useAxios from 'axios-hooks';
 import styles from './style.module.scss';
+import 'antd/dist/antd.css';
 
 const { Meta } = Card;
 
-function PageCard({ searchValue }) {
+function PageCard({ handleCreatePage, searchValue }) {
+  const [ssImage, setSsImage] = useState(null);
+
   const { push } = useRouter();
 
-  const [{ data, loading, error }] = useAxios({
+  useEffect(() => {
+    setSsImage(localStorage.getItem('image'));
+  }, []);
+
+  const [{ data, loading, error }, refetch] = useAxios({
     url: 'http://localhost:8000/api/page',
     method: 'GET',
     params: {
       q: searchValue,
     },
   });
+
+  // useEffect(() => {
+  //   // refetch();
+  // }, [handleCreatePage]);
 
   const handleEdit = (newSlug) => {
     push('/admin/page-manager/builder/[pageID]', `/admin/page-manager/builder/${newSlug}`);
@@ -36,43 +46,59 @@ function PageCard({ searchValue }) {
     message.warning('Page Deleted Successfully', 5);
   };
 
-  if (loading) return <p>loading</p>;
-  if (error) return <p>error</p>;
-  return (
-    <div className={styles.card_component}>
-      {((data.list) || []).map((page, index) => (
-        <Card
-          key={index}
-          style={{ width: 260, margin: 15 }}
-          cover={(
-            <Image
-              src="https://assets-global.website-files.com/5e57ba59552cf400c593fd16/5e7fbdeb3efd72446c9d54b7_5e7fbc1243a59ded3e14959c_placeholder.jpeg"
-            />
-              )}
-          actions={[
-            <Tooltip title="View Page">
-              <EyeOutlined key="view" onClick={() => { handleView(page.slug); }} />
-            </Tooltip>,
-            <Tooltip title="Edit Page">
-              <FormOutlined key="edit" onClick={() => { handleEdit(page.slug); }} />
-            </Tooltip>,
-            <Tooltip title="Delete Page">
-              <DeleteOutlined key="delete" onClick={() => { handleDelete(page.slug); }} />
-            </Tooltip>,
-          ]}
-        >
-          <Meta
-            avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-            title={page.name}
-            description={[<span>Slug: </span>, <span>
-              /
-              {page.slug}
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error!</p>;
 
-                                               </span>]}
-          />
-        </Card>
-      ))}
-    </div>
+  return (
+    <div>
+      <div className={styles.card_component}>
+        {
+         data.list.map((page, index) => (
+           <Card
+             key={index}
+             style={{ width: 260, margin: 15 }}
+             cover={(
+               <div
+                 className={styles.card_image}
+                style={{backgroundImage:`url(${ssImage})`,backgroundSize:'cover'}}
+                 alt="Card View"
+               />
+
+              )}
+             actions={[
+               <Tooltip title="View Page">
+                 <EyeOutlined key="view" onClick={() => { handleView(page.slug); }} />
+               </Tooltip>,
+               <Tooltip title="Edit Page">
+                 <FormOutlined key="edit" onClick={() => { handleEdit(page.slug); }} />
+               </Tooltip>,
+               <Tooltip title="Delete Page">
+                 <DeleteOutlined key="delete" onClick={() => { handleDelete(page.slug); }} />
+               </Tooltip>,
+             ]}
+           >
+             <Meta
+               title={(
+                 <p className={styles.card_title}>
+                   <span style={{ fontWeight: 'bold' }}>Title:</span>
+                   {' '}
+                   {page.name}
+                 </p>
+                  )}
+               description={(
+                 <p className={styles.card_description}>
+                   <span style={{ fontWeight: 'bold' }}>Slug:</span>
+                   {' '}
+                   /
+                   {page.slug}
+                 </p>
+                  )}
+             />
+           </Card>
+         ))
+        }
+      </div>
+    </div>,
   );
 }
 
