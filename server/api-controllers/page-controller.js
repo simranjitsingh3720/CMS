@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const db = require('../../db/models');
 
 export const createPage = async (req, res) => {
@@ -10,8 +11,15 @@ export const createPage = async (req, res) => {
 };
 
 export const listPagesBySlug = async (req, res) => {
+  const { query } = req;
+  const { q } = query || '';
   const data = await db.Page.findAll({
     attributes: ['slug', 'name'],
+    where: {
+      name: {
+        [Op.substring]: q,
+      },
+    },
   });
   return res.status(200).json({ list: data });
 };
