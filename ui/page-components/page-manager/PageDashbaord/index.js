@@ -49,7 +49,7 @@ function PageDashboard() {
   return (
     <div>
       <ActionBar actions={actions} />
-      <PageCard handleCreatePage={handleCreatePage} />
+      <PageCard handleCreatePage={handleCreatePage} searchValue={searchValue} />
       <PageFormDrawer
         onFormClose={onClose}
         pageDetails={pageDetails}

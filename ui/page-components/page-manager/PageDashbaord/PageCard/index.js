@@ -11,7 +11,7 @@ import styles from './style.module.scss';
 
 const { Meta } = Card;
 
-function PageCard(props) {
+function PageCard({ handleCreatePage, searchValue }) {
   const [pages, setPages] = useState([]);
   const [query, setQuery] = useState('');
 
@@ -21,7 +21,7 @@ function PageCard(props) {
     axios.get('http://localhost:8000/api/page').then((res) => {
       setPages(res.data.list);
     });
-  }, [props.handleCreatePage]);
+  }, [handleCreatePage]);
 
   const handleEdit = (newSlug) => {
     push('/admin/page-builder/[pageID]', `/admin/page-builder/${newSlug}`);
@@ -38,13 +38,12 @@ function PageCard(props) {
 
   return (
     <div>
-      <input placeholder="Search Pages" onChange={(event) => setQuery(event.target.value)} />
       <div className={styles.card_component}>
         {
          pages.filter((post) => {
-           if (query === '') {
+           if (searchValue === '') {
              return post;
-           } if (post.name.toLowerCase().includes(query.toLowerCase())) {
+           } if (post.name.toLowerCase().startsWith(searchValue.toLowerCase())) {
              return post;
            }
          })
