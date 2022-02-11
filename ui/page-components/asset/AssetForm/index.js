@@ -10,10 +10,10 @@ import {
 function AssetForm() {
   const formItemLayout = {
     labelCol: {
-      span: 6,
+      span: 8,
     },
     wrapperCol: {
-      span: 14,
+      span: 17,
     },
   };
 
@@ -36,14 +36,15 @@ function AssetForm() {
           { headers: { type: values.upload[0].originFileObj.type } },
         );
       });
+    // props.onModalClose();
   };
 
   return (
-    <Form name="validate_other" {...formItemLayout} onFinish={SubmitDetails} initialValues={{ 'input-number': 3, 'checkbox-group': ['A', 'B'], rate: 3.5 }}>
-      <Form.Item name="name" label="name" rules={[{ required: true, message: 'Please select your country!' }]}>
+    <Form name="validate_other" {...formItemLayout} onFinish={SubmitDetails} initialValues={{ 'input-number': 3 }}>
+      <Form.Item name="name" label="name" rules={[{ required: true, message: 'Please enter name!!' }]}>
         <Input />
       </Form.Item>
-      <Form.Item name="description" label="description" rules={[{ required: true, message: 'Please select your country!' }]}>
+      <Form.Item name="description" label="description" rules={[{ required: true, message: 'Please enter description!!' }]}>
         <Input />
       </Form.Item>
       <Form.Item name="upload" label="Upload" valuePropName="fileList" rules={[{ required: true }]} getValueFromEvent={normFile}>

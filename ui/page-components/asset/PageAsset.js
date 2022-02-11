@@ -49,7 +49,7 @@ function PageAsset() {
     ],
   };
 
-  const onClose = () => {
+  const onModalClose = () => {
     setVisible(false);
   };
 
@@ -68,8 +68,8 @@ function PageAsset() {
       <div>
         <div>
           <div className={Styles.article_body_header}>
-            <Drawer title="Upload Form" placement="right" onClose={onClose} visible={visible}>
-              <AssetForm />
+            <Drawer title="Add Asset" placement="right" onClose={onModalClose} visible={visible}>
+              <AssetForm onModalClose={onModalClose} />
             </Drawer>
             <div />
           </div>
