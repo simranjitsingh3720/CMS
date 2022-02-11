@@ -44,13 +44,5 @@ const listUser = async (req, res) => {
   const users = await db.User.findAll();
   return res.status(200).json({ list: users });
 };
-const findUserByName = async (req, res) => {
-  const { name } = req.query;
-  const user = await db.Asset.findAll({ where: { name } });
-  if (!user) {
-    return res.status(404).send({ message: 'no user found' });
-  }
-  return res.status(200).json({ user });
-};
 
-module.exports = { signup, signin, listUser };
+module.exports = { signup, signin };

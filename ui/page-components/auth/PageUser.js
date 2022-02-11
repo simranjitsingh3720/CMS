@@ -1,32 +1,23 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Table } from 'antd';
-import ActionBar from '../components/ActionBar/ActionBar';
+import ActionBar from '../../components/ActionBar';
 
 function PageUser() {
   const [searchValue, setSearchValue] = useState('');
   const [data, setData] = useState([]);
-  // const [flag, setFlag] = useState(false);
+
   useEffect(() => {
-    if (searchValue === '') {
-      axios.get('http://localhost:8000/api/auth')
+    axios.get('http://localhost:8000/api/user', {
+      params: {
+        q: searchValue,
+      },
+    })
+      .then((res) => {
+        setData(res.data.list);
+      }).catch((err) => {
 
-        .then((res) => {
-          // setFlag(true);
-          setData(res.data.list);
-        });
-    } else {
-      axios.get(`http://localhost:8000/api/auth/findByName/${searchValue}`)
-
-        .then((res) => {
-          if (res.data.asset.length > 0) {
-            // setFlag(true);
-            console.log(data);
-            // setData(res.data.);
-          // } else setFlag(false);
-          }
-        });
-    }
+      });
   }, [searchValue]);
 
   const actions = {
@@ -55,13 +46,6 @@ function PageUser() {
     },
 
   ];
-
-  useEffect(() => {
-    axios.get('/api/auth')
-      .then((res) => {
-        setData(res.data.list);
-      });
-  }, []);
 
   return (
     <>

@@ -1,1 +1,3 @@
-export { default } from '../ui/page-components/page-manager/PageView';
+import PageRender from '../ui/page-components/page-manager/PageRender';
+
+export default PageRender;

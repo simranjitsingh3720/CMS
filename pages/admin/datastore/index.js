@@ -1,12 +1,6 @@
-import React from 'react';
+import ListSchema from '../../../ui/page-components/dynamic-datastore/ListSchemas';
 
-const index = () => (
-  <div>
-    DATASTORE
-  </div>
-);
-
-export default index;
+export default ListSchema;
 
 export async function getServerSideProps() {
   return {

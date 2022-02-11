@@ -1,6 +1,6 @@
-import Asset from '../../../ui/page-components/asset-components';
+import PageAsset from '../../../ui/page-components/asset/PageAsset';
 
-export default Asset;
+export default PageAsset;
 
 export async function getServerSideProps() {
   return {
