@@ -6,8 +6,27 @@ import ActionBar from '../components/ActionBar/ActionBar';
 function PageUser() {
   const [searchValue, setSearchValue] = useState('');
   const [data, setData] = useState([]);
+  // const [flag, setFlag] = useState(false);
   useEffect(() => {
-    // make api call according to searchvalue
+    if (searchValue === '') {
+      axios.get('http://localhost:8000/api/auth')
+
+        .then((res) => {
+          // setFlag(true);
+          setData(res.data.list);
+        });
+    } else {
+      axios.get(`http://localhost:8000/api/auth/findByName/${searchValue}`)
+
+        .then((res) => {
+          if (res.data.asset.length > 0) {
+            // setFlag(true);
+            console.log(data);
+            // setData(res.data.);
+          // } else setFlag(false);
+          }
+        });
+    }
   }, [searchValue]);
 
   const actions = {

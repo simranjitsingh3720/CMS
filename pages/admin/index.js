@@ -1,5 +1,5 @@
 export default function () {
   return (
-    <div>Your Successfully SignedIn!!</div>
+    <div>Welcome to the main page :)</div>
   );
 }
