@@ -13,8 +13,13 @@ const { Meta } = Card;
 
 function PageCard(props) {
   const [pages, setPages] = useState([]);
+  const [ssImage, setSsImage] = useState(null);
 
   const { push } = useRouter();
+
+  useEffect(() => {
+    setSsImage(localStorage.getItem('image'));
+  }, []);
 
   useEffect(() => {
     axios.get('http://localhost:8000/api/page').then((res) => {
@@ -23,7 +28,7 @@ function PageCard(props) {
   }, [props.handleCreatePage]);
 
   const handleEdit = (newSlug) => {
-    push('/admin/page-builder/[pageID]', `/admin/page-builder/${newSlug}`);
+    push('/admin/page-manager/builder/[pageID]', `/admin/page-manager/builder/${newSlug}`);
   };
 
   const handleView = (newSlug) => {
@@ -43,7 +48,9 @@ function PageCard(props) {
           style={{ width: 260, margin: 15 }}
           cover={(
             <Image
-              src="https://assets-global.website-files.com/5e57ba59552cf400c593fd16/5e7fbdeb3efd72446c9d54b7_5e7fbc1243a59ded3e14959c_placeholder.jpeg"
+
+              src={ssImage}
+              // src="https://assets-global.website-files.com/5e57ba59552cf400c593fd16/5e7fbdeb3efd72446c9d54b7_5e7fbc1243a59ded3e14959c_placeholder.jpeg"
             />
               )}
           actions={[
@@ -65,7 +72,7 @@ function PageCard(props) {
               /
               {page.slug}
 
-            </span>]}
+                                               </span>]}
           />
         </Card>
       ))}

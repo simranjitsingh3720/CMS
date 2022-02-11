@@ -4,7 +4,7 @@ import {
 
 const navData = [{
   name: 'Page Manager',
-  path: '/admin/page-builder',
+  path: '/admin/page-manager',
   icon: <LayoutOutlined />,
 }, {
   name: 'Datastore',

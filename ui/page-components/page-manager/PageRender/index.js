@@ -1,19 +1,29 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, createRef } from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import { Spin } from 'antd';
+// import html2canvas from 'html2canvas';
+import { useScreenshot } from 'use-react-screenshot';
 
 function PageRender() {
+  const ref = createRef(null);
+  const [image, takeScreenshot] = useScreenshot();
+  const getImage = () => takeScreenshot(ref.current);
+
   const [html, setHtml] = useState(null);
   const [css, setCss] = useState(null);
 
   const [isData, setIsData] = useState(false);
   const router = useRouter();
-  // console.log(router.query.pageView);
 
   useEffect(() => {
-    console.log(router.query.pageView);
+    getImage();
+    localStorage.setItem('image', image);
+  }, [image]);
+
+  useEffect(() => {
+    // console.log(router.query.pageView);
     if (router.query.pageView) {
       axios.get(`http://localhost:8000/api/page/${router.query.pageView}`)
         .then((res) => {
@@ -34,7 +44,8 @@ function PageRender() {
   }, [router.query.pageView]);
 
   return (
-    <>
+    <div ref={ref}>
+
       <style>{css}</style>
       {isData ? (
         <div>
@@ -45,8 +56,7 @@ function PageRender() {
           <Spin size="large" />
         </div>
       )}
-
-    </>
+    </div>
   );
 }
 
