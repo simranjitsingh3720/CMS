@@ -22,94 +22,102 @@ function PageSignup() {
     message.error('Some Error!!');
   };
   return (
-    <div className={styles.signupForm}>
-      <h1 className={styles.header}>Sign Up Form</h1>
-      <Form
-        name="basic"
-        labelCol={{
-          span: 8,
-        }}
-        wrapperCol={{
-          span: 32,
-        }}
-        initialValues={{
-          remember: true,
-        }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
-      >
-        <Form.Item
-          name="firstName"
-          rules={[
-            {
-              required: true,
-              message: 'Cannot be empty',
-            },
-          ]}
-        >
-          <Input placeholder="First Name" className={styles.siteForm} />
-        </Form.Item>
+    <div className={styles.out_container}>
+      <div>
+        <h>Hello, Welcome</h>
+        <p>Reprehenderit sint duis nulla magna quis nulla eu reprehenderit magna proident labore ex labore id. Proident aliquip eiusmod deserunt dolor enim cillum quis exercitation exercitation irure ad est tempor fugiat. Laborum nisi duis non cupidatat. Occaecat dolor nostrud voluptate ullamco.</p>
+        <button>Sign in</button>
+      </div>
 
-        <Form.Item
-          name="lastName"
-          rules={[
-            {
-              required: true,
-              message: 'Cannot be empty',
-            },
-          ]}
-        >
-          <Input placeholder="Last Name" className={styles.siteForm} />
-        </Form.Item>
-
-        <Form.Item
-          name="email"
-          rules={[
-            {
-              required: true,
-              message: 'Cannot be empty',
-            },
-          ]}
-        >
-          <Input type="email" placeholder="Email" className={styles.siteForm} />
-        </Form.Item>
-
-        <Form.Item
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: 'Cannot be empty',
-            },
-          ]}
-        >
-          <Input.Password placeholder="Password" className={styles.siteForm} />
-        </Form.Item>
-
-        <Form.Item
-          name="confirmPassword"
-          rules={[
-            {
-              required: true,
-              message: 'Cannot be empty',
-            },
-          ]}
-        >
-          <Input.Password placeholder="Confirm Password" className={styles.siteForm} />
-        </Form.Item>
-
-        <Form.Item
+      <div className={styles.signupForm}>
+        <h1 className={styles.header}>Sign Up Form</h1>
+        <Form
+          name="basic"
+          labelCol={{
+            span: 8,
+          }}
           wrapperCol={{
-            offset: 0,
             span: 32,
           }}
+          initialValues={{
+            remember: true,
+          }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
         >
-          <Button type="primary" htmlType="submit" className={styles.signupFormButton}>
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
+          <Form.Item
+            name="firstName"
+            rules={[
+              {
+                required: true,
+                message: 'Cannot be empty',
+              },
+            ]}
+          >
+            <Input placeholder="First Name" className={styles.siteForm} />
+          </Form.Item>
+
+          <Form.Item
+            name="lastName"
+            rules={[
+              {
+                required: true,
+                message: 'Cannot be empty',
+              },
+            ]}
+          >
+            <Input placeholder="Last Name" className={styles.siteForm} />
+          </Form.Item>
+
+          <Form.Item
+            name="email"
+            rules={[
+              {
+                required: true,
+                message: 'Cannot be empty',
+              },
+            ]}
+          >
+            <Input type="email" placeholder="Email" className={styles.siteForm} />
+          </Form.Item>
+
+          <Form.Item
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: 'Cannot be empty',
+              },
+            ]}
+          >
+            <Input.Password placeholder="Password" className={styles.siteForm} />
+          </Form.Item>
+
+          <Form.Item
+            name="confirmPassword"
+            rules={[
+              {
+                required: true,
+                message: 'Cannot be empty',
+              },
+            ]}
+          >
+            <Input.Password placeholder="Confirm Password" className={styles.siteForm} />
+          </Form.Item>
+
+          <Form.Item
+            wrapperCol={{
+              offset: 0,
+              span: 32,
+            }}
+          >
+            <Button type="primary" htmlType="submit" className={styles.signupFormButton}>
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
     </div>
   );
 }
