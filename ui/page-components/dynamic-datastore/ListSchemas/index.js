@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import useAxios from 'axios-hooks';
 import { PlusOutlined } from '@ant-design/icons';
+import { useRouter } from 'next/router';
 import SchemaCard from './SchemaCard';
 import SchemaDrawer from './SchemaDrawer';
 import ActionBar from '../../../components/ActionBar';
 
 function ListSchema() {
+  const { push } = useRouter();
   const [searchValue, setSearchValue] = useState('');
   const [isDrawer, setIsDrawer] = useState(false);
 
@@ -28,7 +30,8 @@ function ListSchema() {
     }],
   };
 
-  const showSchema = () => {
+  const showSchema = (slug) => {
+    push('/admin/datastore/content-builder/[schemaId]', `/admin/datastore/content-builder/${slug}`);
   };
   const deleteSchema = () => {
   };
@@ -65,6 +68,7 @@ function ListSchema() {
           ((data && data.list) || []).map((schema) => (
             <SchemaCard
               key={schema.id}
+              id={schema.id}
               schemaName={schema.slug}
               showSchema={showSchema}
               deleteSchema={deleteSchema}
