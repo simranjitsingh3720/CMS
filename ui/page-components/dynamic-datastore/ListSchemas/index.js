@@ -24,7 +24,7 @@ function ListSchema() {
       setSearchValue,
     },
     buttons: [{
-      name: 'New page',
+      name: 'New Schema',
       icon: <PlusOutlined />,
       onClick: showDrawer,
     }],
