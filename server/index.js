@@ -1,5 +1,4 @@
 require('../helpers/init-env')();
-
 const express = require('express');
 const next = require('next');
 const db = require('../db/models/index');
@@ -21,7 +20,7 @@ const main = async () => {
   try {
     await app.prepare();
     const server = express();
-    server.use('/', handle);
+    // server.use('/', handle);
 
     // middlewares
     server.use(sessionMiddleware);

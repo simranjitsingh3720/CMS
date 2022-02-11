@@ -1,14 +1,10 @@
-import React from 'react';
+import PageUser from '../../../ui/page-components/user/PageUser';
 
-const index = () => <div>USERS</div>;
-
-export default index;
-
+export default PageUser;
 export async function getServerSideProps() {
   return {
     props: {
       title: 'Users',
-      breadcrumb: { crumbs: [{ title: 'users' }] },
     },
   };
 }
