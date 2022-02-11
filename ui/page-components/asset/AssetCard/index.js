@@ -30,9 +30,9 @@ function AssetCard({ data }) {
         okText="Yes"
         cancelText="No"
       >
-        <div className={Styles.delete}>
+        <span className={Styles.delete}>
           <DeleteOutlined />
-        </div>
+        </span>
       </Popconfirm>
     </Card>
   );
