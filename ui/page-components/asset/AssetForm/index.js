@@ -5,9 +5,10 @@ import {
   Input,
   Button,
   Upload,
+  message,
 } from 'antd';
 
-function AssetForm() {
+function AssetForm(props) {
   const formItemLayout = {
     labelCol: {
       span: 8,
@@ -34,7 +35,12 @@ function AssetForm() {
           res.data.writeUrl,
           values.upload[0].originFileObj,
           { headers: { type: values.upload[0].originFileObj.type } },
-        );
+        )
+          .then(() => {
+            props.CloseDrawer();
+            message.success('Asset Added');
+          })
+          .catch(() => message.error('Asset Not Added'));
       });
     // props.onModalClose();
   };
