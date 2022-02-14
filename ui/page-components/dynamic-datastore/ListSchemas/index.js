@@ -102,8 +102,8 @@ function ListSchema() {
             <SchemaCard
               key={schema.id}
               id={schema.id}
-              schemaSlug={schema.title}
-              schemaName={schema.slug}
+              schemaSlug={schema.slug}
+              schemaName={schema.title}
               showSchema={showSchema}
               deleteSchema={deleteSchema}
             />

@@ -9,7 +9,7 @@ function SchemaCard({ schemaName, deleteSchema, showSchema, schemaSlug }) {
         <div>
           <h1>{schemaName}</h1>
           <p>
-            {`Slug : ${schemaName}`}
+            {`Slug : ${schemaSlug}`}
           </p>
         </div>
         <div>
