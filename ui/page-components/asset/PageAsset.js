@@ -1,35 +1,22 @@
-import axios from 'axios';
-import { useState, useEffect } from 'react';
-import { Drawer } from 'antd';
+import { useState } from 'react';
+import useAxios from 'axios-hooks';
+import { Drawer, List } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import AssetCard from './AssetCard';
 import AssetForm from './AssetForm';
-import Styles from './style.module.scss';
 import ActionBar from '../../components/ActionBar';
 
 function PageAsset() {
-  const [data, setData] = useState([]);
-  const [flag, setFlag] = useState(true);
   const [visible, setVisible] = useState(false);
   const [searchValue, setSearchValue] = useState('');
 
-  useEffect(() => {
-    if (searchValue === '') {
-      axios.get('http://localhost:8000/api/asset')
-        .then((res) => {
-          setFlag(true);
-          setData(res.data.list);
-        });
-    } else {
-      axios.get(`http://localhost:8000/api/asset/findByName/${searchValue}`)
-        .then((res) => {
-          if (res.data.asset.length > 0) {
-            setFlag(true);
-            setData(res.data.asset);
-          } else setFlag(false);
-        });
-    }
-  }, [searchValue]);
+  const [{ data }] = useAxios({
+    method: 'GET',
+    url: 'http://localhost:8000/api/asset',
+    params: {
+      q: searchValue,
+    },
+  });
 
   const showDrawer = () => {
     setVisible(true);
@@ -49,43 +36,28 @@ function PageAsset() {
     ],
   };
 
-  const onModalClose = () => {
+  const onDrawerClose = () => {
     setVisible(false);
   };
 
-  useEffect(() => {
-    axios.get('http://localhost:8000/api/asset')
-      .then((res) => {
-        setData(res.data.list);
-      })
-      .catch(() => { });
-  }, []);
-
   return (
-    <div>
+    <>
       <ActionBar actions={actions} />
-
-      <div>
-        <div>
-          <div className={Styles.article_body_header}>
-            <Drawer title="Add Asset" placement="right" onClose={onModalClose} visible={visible}>
-              <AssetForm onModalClose={onModalClose} />
-            </Drawer>
-            <div />
-          </div>
-          <div className={Styles.article_list}>
-            {
-              flag ? (
-                <>
-                  {data.map((e) => <AssetCard key={e.id} data={e} />)}
-                </>
-              ) : <h1>No asset found....</h1>
-            }
-
-          </div>
-        </div>
+      <div style={{ marginBottom: '35px' }}>
+        <Drawer title="Add Asset" placement="right" onClose={onDrawerClose} visible={visible}>
+          <AssetForm CloseDrawer={onDrawerClose} />
+        </Drawer>
       </div>
-    </div>
+      <List
+        grid={{ gutter: 16, column: 4 }}
+        dataSource={data && (data.list || [])}
+        renderItem={(item) => (
+          <List.Item>
+            <AssetCard key={item.id} data={item} />
+          </List.Item>
+        )}
+      />
+    </>
   );
 }
 
