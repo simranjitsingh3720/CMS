@@ -7,8 +7,11 @@ import {
   Upload,
   message,
 } from 'antd';
+import { useState } from 'react';
 
-function AssetForm(props) {
+function AssetForm({ CloseDrawer, refetch }) {
+  const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
   const formItemLayout = {
     labelCol: {
       span: 8,
@@ -27,6 +30,7 @@ function AssetForm(props) {
   };
 
   const SubmitDetails = (values) => {
+    setLoading(true);
     Axios.post('http://localhost:8000/api/asset', {
       name: values.name, description: values.description, mimeType: values.upload[0].originFileObj.type, type: values.upload[0].originFileObj.type.split('/')[0],
     })
@@ -37,16 +41,18 @@ function AssetForm(props) {
           { headers: { type: values.upload[0].originFileObj.type } },
         )
           .then(() => {
-            props.CloseDrawer();
+            setLoading(false);
+            form.resetFields();
+            CloseDrawer();
             message.success('Asset Added');
+            refetch();
           })
           .catch(() => message.error('Asset Not Added'));
       });
-    // props.onModalClose();
   };
 
   return (
-    <Form name="validate_other" {...formItemLayout} onFinish={SubmitDetails} initialValues={{ 'input-number': 3 }}>
+    <Form form={form} name="validate_other" {...formItemLayout} onFinish={SubmitDetails} initialValues={{ 'input-number': 3 }}>
       <Form.Item name="name" label="name" rules={[{ required: true, message: 'Please enter name!!' }]}>
         <Input />
       </Form.Item>
@@ -64,7 +70,7 @@ function AssetForm(props) {
           offset: 6,
         }}
       >
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" loading={loading} htmlType="submit">
           Submit
         </Button>
       </Form.Item>

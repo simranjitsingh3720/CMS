@@ -10,7 +10,7 @@ function PageAsset() {
   const [visible, setVisible] = useState(false);
   const [searchValue, setSearchValue] = useState('');
 
-  const [{ data }] = useAxios({
+  const [{ data }, refetch] = useAxios({
     method: 'GET',
     url: 'http://localhost:8000/api/asset',
     params: {
@@ -45,7 +45,7 @@ function PageAsset() {
       <ActionBar actions={actions} />
       <div style={{ marginBottom: '35px' }}>
         <Drawer title="Add Asset" placement="right" onClose={onDrawerClose} visible={visible}>
-          <AssetForm CloseDrawer={onDrawerClose} />
+          <AssetForm CloseDrawer={onDrawerClose} refetch={refetch} />
         </Drawer>
       </div>
       <List
@@ -53,7 +53,7 @@ function PageAsset() {
         dataSource={data && (data.list || [])}
         renderItem={(item) => (
           <List.Item>
-            <AssetCard key={item.id} data={item} />
+            <AssetCard key={item.id} data={item} refetch={refetch} />
           </List.Item>
         )}
       />
