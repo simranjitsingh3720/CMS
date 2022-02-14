@@ -6,11 +6,11 @@ import ActionBar from '../../../../components/ActionBar';
 
 function ShowContent() {
   const router = useRouter();
-  const { schemaId } = router.query;
+  const { schemaSlug } = router.query;
   const [{ data, loading, error }, getSchema] = useAxios(
     {
       method: 'GET',
-      url: `http://localhost:8000/api/content/${schemaId}`,
+      url: `http://localhost:8000/api/content/${schemaSlug}`,
     },
   );
 

@@ -40,7 +40,6 @@ function ListSchema() {
         q: searchValue,
       },
     },
-    { manual: true },
   );
 
   const [{
@@ -103,7 +102,7 @@ function ListSchema() {
             <SchemaCard
               key={schema.id}
               id={schema.id}
-              schemaSlug={schema.slug}
+              schemaSlug={schema.title}
               schemaName={schema.slug}
               showSchema={showSchema}
               deleteSchema={deleteSchema}
