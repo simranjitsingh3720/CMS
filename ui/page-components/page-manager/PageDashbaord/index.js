@@ -47,7 +47,7 @@ function PageDashboard() {
   };
 
   return (
-    <div>
+    <div style={{ padding: 12 }}>
       <ActionBar actions={actions} />
       <PageCard handleCreatePage={handleCreatePage} searchValue={searchValue} />
       <PageFormDrawer

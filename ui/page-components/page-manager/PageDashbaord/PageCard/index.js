@@ -3,8 +3,7 @@ import {
   EyeOutlined,
   FormOutlined,
 } from '@ant-design/icons';
-import axios from 'axios';
-import { Card, message, Image, Tooltip, Popconfirm } from 'antd';
+import { Card, message, Tooltip, Popconfirm } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import useAxios from 'axios-hooks';
@@ -13,8 +12,7 @@ import 'antd/dist/antd.css';
 
 const { Meta } = Card;
 
-function PageCard({ handleCreatePage, searchValue }) {
-  // const [pages, setPages] = useState([]);
+function PageCard({ searchValue }) {
   const [ssImage, setSsImage] = useState(null);
 
   const { push } = useRouter();
@@ -30,27 +28,34 @@ function PageCard({ handleCreatePage, searchValue }) {
       q: searchValue,
     },
   });
-  const [state, setState]=useState(true);
-  useEffect(() => {
-    if(state){
-      refetch();
-    }
-      setState(false);
-  }, [handleCreatePage]);
 
   const handleEdit = (newSlug) => {
     push('/admin/page-manager/builder/[pageID]', `/admin/page-manager/builder/${newSlug}`);
   };
 
   const handleView = (newSlug) => {
-    push('/[pageView]', `/${newSlug}`);
+    // push('/[pageView]', `/${newSlug}`);
+    window.open(`/${newSlug}`, '_blank');
   };
 
-  const handleDelete = (newSlug) => {
-    axios.delete(`http://localhost:8000/api/page/${newSlug}`);
-    message.warning('Page Deleted Successfully', 5);
-    setState(true);
-  };
+  const [{data:deleteData, loading:deleteLoading, error:deleteError}, handleDeletePage] = useAxios(
+    {
+      method:'DELETE'
+    },
+    {
+      manual:true
+    }
+  )
+
+  const handleDelete = (slugForDelete) =>{
+    handleDeletePage({
+      url:`http://localhost:8000/api/page/${slugForDelete}`,
+    });
+    message.warning("Page deleted Successfully");
+  }
+  useEffect(() => {
+    refetch()
+  }, [deleteData])
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error!</p>;
@@ -81,11 +86,11 @@ function PageCard({ handleCreatePage, searchValue }) {
                </Tooltip>,
                <Popconfirm title="Are you sure delete this Page?"
                 onConfirm={() => handleDelete(page.slug)}
-                okText="Yes" cancelText="No">
+                 okText="Yes" cancelText="No">
                 <Tooltip title="Delete Page">
-                  <DeleteOutlined key="delete"  />
+                  <DeleteOutlined key="delete"/>
                 </Tooltip>
-               </Popconfirm>,
+               </Popconfirm>
              ]}
            >
             
