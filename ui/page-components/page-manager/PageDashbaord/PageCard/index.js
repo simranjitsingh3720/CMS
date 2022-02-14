@@ -4,7 +4,7 @@ import {
   FormOutlined,
 } from '@ant-design/icons';
 import axios from 'axios';
-import { Card, Avatar, message, Image, Tooltip } from 'antd';
+import { Card, message, Image, Tooltip, Popconfirm } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import useAxios from 'axios-hooks';
@@ -32,8 +32,7 @@ function PageCard({ handleCreatePage, searchValue }) {
   });
 
   useEffect(() => {
-
-    refetch();
+      refetch();
   }, [handleCreatePage]);
 
   const handleEdit = (newSlug) => {
@@ -76,9 +75,13 @@ function PageCard({ handleCreatePage, searchValue }) {
                <Tooltip title="Edit Page">
                  <FormOutlined key="edit" onClick={() => { handleEdit(page.slug); }} />
                </Tooltip>,
-               <Tooltip title="Delete Page">
-                 <DeleteOutlined key="delete" onClick={() => { handleDelete(page.slug); }} />
-               </Tooltip>,
+               <Popconfirm title="Are you sure delete this Page?"
+                onConfirm={() => handleDelete(page.slug)}
+                okText="Yes" cancelText="No">
+                <Tooltip title="Delete Page">
+                  <DeleteOutlined key="delete"  />
+                </Tooltip>
+               </Popconfirm>,
              ]}
            >
             
