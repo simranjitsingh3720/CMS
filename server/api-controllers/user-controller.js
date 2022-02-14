@@ -6,8 +6,9 @@ const listUser = async (req, res) => {
   const { q } = query;
   const users = await db.User.findAll({
     where: {
-      firstName: {
-        [Op.substring]: q,
+      [Op.or]: {
+        firstName: { [Op.substring]: q },
+        lastName: { [Op.substring]: q },
       },
     },
   });
