@@ -30,9 +30,12 @@ function PageCard({ handleCreatePage, searchValue }) {
       q: searchValue,
     },
   });
-
+  const [state, setState]=useState(true);
   useEffect(() => {
+    if(state){
       refetch();
+    }
+      setState(false);
   }, [handleCreatePage]);
 
   const handleEdit = (newSlug) => {
@@ -46,6 +49,7 @@ function PageCard({ handleCreatePage, searchValue }) {
   const handleDelete = (newSlug) => {
     axios.delete(`http://localhost:8000/api/page/${newSlug}`);
     message.warning('Page Deleted Successfully', 5);
+    setState(true);
   };
 
   if (loading) return <p>Loading...</p>;
