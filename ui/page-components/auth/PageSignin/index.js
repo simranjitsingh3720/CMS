@@ -13,7 +13,6 @@ function PageSignin() {
     console.log('Received values of form: ', values);
   };
   const router = useRouter();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     await axios.post('http://localhost:8000/api/auth/signin', { email, password })
