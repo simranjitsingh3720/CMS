@@ -1,29 +1,11 @@
 import React, { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import axios from 'axios';
-import { message } from 'antd';
-import { useRouter } from 'next/router';
 import ActionBar from '../../../components/ActionBar';
 import PageCard from './PageCard';
 import PageFormDrawer from './PageFormDrawer';
 
 function PageManager() {
   const [searchValue, setSearchValue] = useState('');
-  const [pageDetails, setPageDetails] = useState({ name: '', slug: '' });
-  const { push } = useRouter();
-
-  const handleCreatePage = () => {
-    axios.post('http://localhost:8000/api/createPage', pageDetails)
-      .then(() => {
-        setVisible(false);
-        message.info('Page Created Successfully', 5);
-        push('/admin/page-manager/builder/[pageID]', `/admin/page-manager/builder/${pageDetails.slug}`);
-      })
-      .catch((err) => {
-        console.log('Error => ', err);
-      });
-  };
-
   const [visible, setVisible] = useState(false);
 
   const showDrawer = () => {
@@ -49,14 +31,11 @@ function PageManager() {
   return (
     <div>
       <ActionBar actions={actions} />
-      <PageCard handleCreatePage={handleCreatePage} searchValue={searchValue} />
+      <PageCard searchValue={searchValue} />
       <PageFormDrawer
         onFormClose={onClose}
-        pageDetails={pageDetails}
-        setPageDetails={setPageDetails}
         visible={visible}
         setVisible={setVisible}
-        handleCreatePage={handleCreatePage}
       />
       <div />
     </div>

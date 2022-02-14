@@ -3,7 +3,7 @@ const db = require('../../db/models');
 
 export const createPage = async (req, res) => {
   const pageDetails = req.body;
-  const result = await db.Page.create(pageDetails);
+  const result = await db.Page.create(pageDetails.pageDetails);
   if (result) {
     return res.status(201).json({ data: result });
   }

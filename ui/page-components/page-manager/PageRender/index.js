@@ -15,9 +15,7 @@ function PageRender() {
   const [isData, setIsData] = useState(true);
   const router = useRouter();
 
-  const [
-    { data: getData, loading: getLoading, error: getError },
-  ] = useAxios(
+  const [{ data: getData, loading: getLoading, error: getError }] = useAxios(
     {
       url: `http://localhost:8000/api/page/${router.query.pageView}`,
       method: 'GET',
@@ -27,7 +25,6 @@ function PageRender() {
   useEffect(() => {
     if (getData) {
       setIsData(true);
-
       const code = JSON.parse(getData.data.data);
       if (code) {
         setHtml(code['CMS-html']);
@@ -40,7 +37,7 @@ function PageRender() {
 
   // useEffect(() => {
   //   getImage();
-  //   localStorage.setItem('image', image);
+  //   localStorage.setItem('image', 's');
   // }, [image]);
 
   if (getLoading) return <p>Loading...</p>;
