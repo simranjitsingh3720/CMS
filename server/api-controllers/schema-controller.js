@@ -2,8 +2,8 @@ const { Op } = require('sequelize');
 const db = require('../../db/models');
 
 const getSchema = async (req, res) => {
-  const { schemaId } = req.query;
-  const schema = await db.Schema.findOne({ where: { id: schemaId } });
+  const { schemaSlug } = req.query;
+  const schema = await db.Schema.findOne({ where: { id: schemaSlug } });
   if (schema) {
     return res.status(200).json(schema);
   }
@@ -26,16 +26,16 @@ const listSchemas = async (req, res) => {
 const addSchema = async (req, res) => {
   const { body } = req;
   const schema = await db.Schema.create({ ...body });
-  return res.status(201).json({ id: schema.id });
+  return res.status(201).json({ id: schema.id, slug: schema.slug });
 };
 
 const updateSchema = async (req, res) => {
   const { body, query } = req;
-  const { schemaId } = query;
-  const updatedSchema = await db.Schema.update({ ...body }, { where: { id: schemaId } });
+  const { schemaSlug } = query;
+  const updatedSchema = await db.Schema.update({ ...body }, { where: { slug: schemaSlug } });
 
   if (updatedSchema[0]) {
-    return res.status(200).json({ id: schemaId });
+    return res.status(200).json({ id: schemaSlug });
   }
   return res.status(404).json({ message: 'Schema not found' });
 };
@@ -49,10 +49,48 @@ const deleteSchema = async (req, res) => {
   return res.status(404).json({ message: 'Schema not found' });
 };
 
+const getSchemaBySlug = async (req, res) => {
+  const { schemaSlug } = req.query;
+  const schema = await db.Schema.findOne({ where: { slug: schemaSlug } });
+  if (schema) {
+    return res.status(200).json(schema);
+  }
+  return res.status(404).json({ message: 'Schema not found' });
+};
+
+const deleteSchemaBySlug = async (req, res) => {
+  const { schemaSlug } = req.query;
+  // check if data exits
+
+  if (schemaSlug) {
+    const contents = await db.Content.findAll({
+      include: {
+        model: db.Schema,
+        attributes: ['id'],
+        where: {
+          slug: schemaSlug,
+        },
+      },
+    });
+
+    if (contents.length <= 0) {
+      const deletedSchema = await db.Schema.destroy({ where: { slug: schemaSlug } });
+      if (deletedSchema) {
+        return res.status(200).json({ slug: schemaSlug });
+      }
+      return res.status(404).json({ message: 'Schema not found' });
+    }
+    return res.status(404).json({ message: 'There are some content for this schema. Cannot delete this', contents });
+  }
+  return res.status(404).json({ message: 'Schema not found' });
+};
+
 module.exports = {
   getSchema,
+  getSchemaBySlug,
   listSchemas,
   addSchema,
   updateSchema,
   deleteSchema,
+  deleteSchemaBySlug,
 };
