@@ -3,6 +3,7 @@ import useAxios from 'axios-hooks';
 import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import confirm from 'antd/lib/modal/confirm';
+import { Spin } from 'antd';
 import SchemaCard from './SchemaCard';
 import SchemaDrawer from './SchemaDrawer';
 import ActionBar from '../../../components/ActionBar';
@@ -31,10 +32,6 @@ function ListSchema() {
     }],
   };
 
-  const showSchema = (slug) => {
-    push('/admin/datastore/content-builder/[schemaId]', `/admin/datastore/content-builder/${slug}`);
-  };
-
   const [{ data, loading, error }, fetchAllSchema] = useAxios(
     {
       method: 'GET',
@@ -45,33 +42,44 @@ function ListSchema() {
     },
   );
 
-  const [{ data: deletedData, loading: deleteLoading, error: deleteError }, schemaDelete] = useAxios(
+  const [{
+    data: deletedData,
+    loading: deleteLoading,
+    error: deleteError,
+  }, schemaDelete] = useAxios(
     {
       method: 'DELETE',
+
     },
     { manual: true },
   );
 
+  useEffect(() => {
+    fetchAllSchema();
+  }, [deletedData]);
+
+  const showSchema = (schemaSlug) => {
+    push('/admin/datastore/content-builder/[schemaId]', `/admin/datastore/content-builder/${schemaSlug}`);
+  };
   const deleteSchema = (schemaSlug) => {
     confirm({
-      title: 'Do you Want to delete these items?',
-      icon: <ExclamationCircleOutlined />,
-      content: 'Some descriptions',
+      title: 'Are you sure to delete this table? ',
+      icon: <ExclamationCircleOutlined style={{ color: 'red' }} />,
+      content: <div style={{ color: 'red' }}>It may contains some sensitive data.</div>,
       onOk() {
         schemaDelete({
           url: `http://localhost:8000/api/schema/${schemaSlug}`,
         });
-        console.log('deleted');
       },
       onCancel() {
-        console.log('Cancel');
+
       },
     });
   };
 
   const showLoading = () => {
     if (loading) {
-      return <h1>LOADING....</h1>;
+      return <Spin size="large" />;
     }
     return null;
   };
@@ -92,16 +100,18 @@ function ListSchema() {
           : null}
 
       </div>
-      {showLoading()}
+      <div style={{ textAlign: 'center' }}>
+        {showLoading()}
+      </div>
       <div>
         {
           ((data && data.list) || []).map((schema) => (
             <SchemaCard
               key={schema.id}
               id={schema.id}
+              schemaSlug={schema.slug}
               schemaName={schema.title}
               showSchema={showSchema}
-              schemaSlug={schema.slug}
               deleteSchema={deleteSchema}
             />
           ))
