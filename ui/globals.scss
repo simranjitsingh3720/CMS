@@ -1,4 +1,15 @@
-.action-searchBar {
+.card-container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 20px 20px;
+}
+
+.card-component{
+  padding: 10px 10px;
+}
+
+.action-searchBar{
   width: 20rem;
   border-radius: 15px;
 }

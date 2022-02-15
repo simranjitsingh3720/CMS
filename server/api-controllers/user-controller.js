@@ -10,13 +10,9 @@ const listUser = async (req, res) => {
   const users = await db.User.findAll({
 
     where: {
-
       [Op.or]: {
-
         firstName: { [Op.substring]: q },
-
         lastName: { [Op.substring]: q },
-
       },
 
     },
