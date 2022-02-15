@@ -9,12 +9,19 @@ function Asset({ data }) {
           style={{ height: '200px' }}
           alt="example"
           controls
-        />
+        >
+          <track
+            default
+            kind="captions"
+            srcLang="en"
+            src={data.url}
+          />
+        </video>
       );
     default:
       return (
-        <object
-          data={data.url}
+        <img
+          src={data.url}
           style={{ height: '200px' }}
           alt="example"
         />

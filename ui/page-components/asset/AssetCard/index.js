@@ -1,5 +1,5 @@
 import {
-  Card, Button, message, Modal, Form, Input,
+  Card, Button, message, Modal,
 } from 'antd';
 import {
   DeleteOutlined,
@@ -7,17 +7,15 @@ import {
   ExclamationCircleOutlined,
 } from '@ant-design/icons';
 import axios from 'axios';
-import useAxios from 'axios-hooks';
 import { useState } from 'react';
 import Asset from '../Asset';
+import AssetEdit from '../AssetEdit';
 
 const { Meta } = Card;
 const { confirm } = Modal;
 
 function AssetCard({ data, refetch }) {
-  const [form] = Form.useForm();
-  const [visible, setVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [visibleDrawer, setVisibleDrawer] = useState(false);
 
   const showConfirm = () => {
     confirm({
@@ -31,52 +29,11 @@ function AssetCard({ data, refetch }) {
           })
           .catch(() => message.error('Item Not Deleted'));
       },
-      onCancel() {
-      },
     });
-  };
-  const formItemLayout = {
-    labelCol: {
-      span: 8,
-    },
-    wrapperCol: {
-      span: 17,
-    },
   };
 
   const showModal = () => {
-    setVisible(true);
-  };
-  const [{ response, loadin, error },
-    executePatch,
-  ] = useAxios(
-    {
-      url: `/api/asset/${data.id}`,
-      method: 'PATCH',
-    },
-    { manual: true },
-  );
-  const SubmitDetails = async (values) => {
-    setLoading(true);
-    await executePatch({
-      data: {
-        name: values.name ? values.name : data.name,
-        description: values.description ? values.description : data.description,
-      },
-    });
-    if (error) { message.error('Asset Not Updated'); } else {
-      setLoading(false);
-      form.resetFields();
-      setVisible(false);
-      message.success('Asset Updated');
-      refetch();
-    }
-  };
-  const handleOk = () => {
-    setVisible(true);
-  };
-  const handleCancel = () => {
-    setVisible(false);
+    setVisibleDrawer(true);
   };
 
   return (
@@ -87,8 +44,14 @@ function AssetCard({ data, refetch }) {
         cover={(<Asset data={data} />
     )}
         actions={[
-          <Button onClick={showModal} style={{ border: '0px' }}><EditOutlined key="edit" /></Button>,
-          <Button onClick={showConfirm} style={{ border: '0px' }}><DeleteOutlined key="delete" /></Button>,
+          <Button onClick={showModal} style={{ border: '0px' }}>
+            <EditOutlined key="edit" />
+
+          </Button>,
+          <Button onClick={showConfirm} style={{ border: '0px' }}>
+            <DeleteOutlined key="delete" />
+
+          </Button>,
         ]}
       >
         <Meta
@@ -97,27 +60,13 @@ function AssetCard({ data, refetch }) {
           style={{ padding: '0px' }}
         />
       </Card>
-      <Modal
-        visible={visible}
-        title="Update Asset"
-        onOk={handleOk}
-        onCancel={handleCancel}
-        footer={[
-          <div />,
-        ]}
-      >
-        <Form form={form} name="validate_other" {...formItemLayout} onFinish={SubmitDetails} loading={loading} initialValues={{ 'input-number': 3 }}>
-          <Form.Item name="name" label="name">
-            <Input placeholder={data.name} />
-          </Form.Item>
-          <Form.Item name="description" label="description">
-            <Input placeholder={data.description} />
-          </Form.Item>
-          <Button type="primary" loading={loading} htmlType="submit">
-            Submit
-          </Button>
-        </Form>
-      </Modal>
+      <AssetEdit
+        flag={false}
+        visible={visibleDrawer}
+        setVisible={setVisibleDrawer}
+        refetch={refetch}
+        data={data}
+      />
     </>
   );
 }

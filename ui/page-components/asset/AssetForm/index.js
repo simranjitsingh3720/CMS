@@ -1,4 +1,3 @@
-import Axios from 'axios';
 import { UploadOutlined } from '@ant-design/icons';
 import {
   Form,
@@ -8,6 +7,7 @@ import {
   message,
 } from 'antd';
 import { useState } from 'react';
+import useAxios from 'axios-hooks';
 
 function AssetForm({ CloseDrawer, refetch }) {
   const [form] = Form.useForm();
@@ -29,17 +29,40 @@ function AssetForm({ CloseDrawer, refetch }) {
     return e && e.fileList;
   };
 
+  // eslint-disable-next-line no-empty-pattern
+  const [{}, executePost] = useAxios(
+    {
+      url: '/api/asset/',
+      method: 'POST',
+    },
+    { manual: true },
+  );
+  // eslint-disable-next-line no-empty-pattern
+  const [{}, executePut] = useAxios(
+    {
+      method: 'PUT',
+    },
+    { manual: true },
+  );
+
   const SubmitDetails = (values) => {
     setLoading(true);
-    Axios.post('http://localhost:8000/api/asset', {
-      name: values.name, description: values.description, mimeType: values.upload[0].originFileObj.type, type: values.upload[0].originFileObj.type.split('/')[0],
+    executePost({
+      data: {
+        name: values.name,
+        description: values.description,
+        mimeType: values.upload[0].originFileObj.type,
+        type: values.upload[0].originFileObj.type.split('/')[0],
+      },
     })
       .then((res) => {
-        Axios.put(
-          res.data.writeUrl,
-          values.upload[0].originFileObj,
-          { headers: { type: values.upload[0].originFileObj.type } },
-        )
+        const { writeUrl } = res.data;
+        const file = values.upload[0].originFileObj;
+        executePut({
+          url: writeUrl,
+          data: file,
+          headers: { type: values.upload[0].originFileObj.type },
+        })
           .then(() => {
             setLoading(false);
             form.resetFields();
@@ -48,21 +71,42 @@ function AssetForm({ CloseDrawer, refetch }) {
             refetch();
           })
           .catch(() => {
-            message.error('Asset Not Added');
             setLoading(false);
+            CloseDrawer();
+            refetch();
+            message.error('Asset Not Added');
           });
       });
   };
 
   return (
-    <Form form={form} name="validate_other" {...formItemLayout} onFinish={SubmitDetails} initialValues={{ 'input-number': 3 }}>
-      <Form.Item name="name" label="name" rules={[{ required: true, message: 'Please enter name!!' }]}>
+    <Form
+      form={form}
+      name="validate_other"
+      {...formItemLayout}
+      onFinish={SubmitDetails}
+      initialValues={{ 'input-number': 3 }}
+    >
+      <Form.Item
+        name="name"
+        label="Name"
+        rules={[{ required: true, message: 'Please enter name!!' }]}
+      >
         <Input />
       </Form.Item>
-      <Form.Item name="description" label="description" rules={[{ required: true, message: 'Please enter description!!' }]}>
+      <Form.Item
+        name="description"
+        label="Description"
+      >
         <Input />
       </Form.Item>
-      <Form.Item name="upload" label="Upload" valuePropName="fileList" rules={[{ required: true }]} getValueFromEvent={normFile}>
+      <Form.Item
+        name="upload"
+        label="Upload"
+        valuePropName="fileList"
+        rules={[{ required: true }]}
+        getValueFromEvent={normFile}
+      >
         <Upload name="logo" action="/upload.do" listType="picture">
           <Button icon={<UploadOutlined />}>Click to upload</Button>
         </Upload>

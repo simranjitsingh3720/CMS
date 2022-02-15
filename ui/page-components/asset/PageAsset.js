@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import useAxios from 'axios-hooks';
-import { Drawer, List } from 'antd';
+import { List } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import AssetCard from './AssetCard';
-import AssetForm from './AssetForm';
 import ActionBar from '../../components/ActionBar';
+import AssetEdit from './AssetEdit';
 
 function PageAsset() {
   const [visible, setVisible] = useState(false);
@@ -32,21 +32,20 @@ function PageAsset() {
       icon: <PlusOutlined />,
       onClick: showDrawer,
     },
-
     ],
-  };
-
-  const onDrawerClose = () => {
-    setVisible(false);
   };
 
   return (
     <>
       <ActionBar actions={actions} />
       <div style={{ marginBottom: '35px' }}>
-        <Drawer title="Add Asset" placement="right" onClose={onDrawerClose} visible={visible}>
-          <AssetForm CloseDrawer={onDrawerClose} refetch={refetch} />
-        </Drawer>
+        <AssetEdit
+          flag
+          visible={visible}
+          setVisible={setVisible}
+          refetch={refetch}
+          data={[]}
+        />
       </div>
       <List
         grid={{ gutter: 16, column: 4 }}
