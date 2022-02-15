@@ -40,9 +40,4 @@ const signin = async (req, res) => {
   return res.status(200).json({ sessionId: req.session.id });
 };
 
-const listUser = async (req, res) => {
-  const users = await db.User.findAll();
-  return res.status(200).json({ list: users });
-};
-
 module.exports = { signup, signin };
