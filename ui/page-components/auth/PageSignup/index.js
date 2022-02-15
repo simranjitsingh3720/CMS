@@ -52,7 +52,7 @@ function PageSignup() {
             <input type="email" name="email" id="email" placeholder="Email" className={styles.input} onChange={(e) => setValues({ ...values, [e.target.id]: e.target.value })} required />
             <input type="password" name="password" id="password" placeholder="Password" className={styles.input} onChange={(e) => setValues({ ...values, [e.target.id]: e.target.value })} required />
             <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" className={styles.input} onChange={(e) => setValues({ ...values, [e.target.id]: e.target.value })} required />
-            <button type="submit" className={styles.button}>SignUp</button>
+            <button type="submit" className={styles.button}>Sign Up</button>
           </form>
         </div>
 

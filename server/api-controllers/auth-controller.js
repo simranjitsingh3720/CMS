@@ -1,7 +1,12 @@
+const { message } = require('antd');
 const bcrypt = require('bcrypt');
 const db = require('../../db/models/index');
 
 const signup = async (req, res) => {
+  // console.log(req.user);
+  // if ('user' in req.session) {
+  //   return message.error('already logged in');
+  // }
   const { body } = req;
   const { firstName, lastName, email, password } = body;
   if (!firstName || !lastName || !email || !password) {
@@ -22,6 +27,7 @@ const signup = async (req, res) => {
     return res.status(400).json({ message: 'Some problem in inserting user' });
   }
 };
+
 const signin = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {

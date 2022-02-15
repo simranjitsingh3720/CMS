@@ -1,8 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { Form, Input, Button, Checkbox, message } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.css';
+import { message } from 'antd';
 import { useRouter } from 'next/router';
 import styles from './style.module.scss';
 
@@ -13,6 +12,7 @@ function PageSignin() {
     console.log('Received values of form: ', values);
   };
   const router = useRouter();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     await axios.post('http://localhost:8000/api/auth/signin', { email, password })
@@ -21,55 +21,36 @@ function PageSignin() {
       })
       .catch(() => message.error('Invalid Signin, Please try again'));
   };
+  const onSignUpClick = async () => {
+    await router.push('/admin/signup');
+  };
   return (
-    <Form
-      name="signin"
-      className={styles.signinForm}
-      initialValues={{
-        remember: true,
-      }}
-      onFinish={onFinish}
-    >
-      <h1 className={styles.header}>SignIn Here</h1>
-      {}
-      <Form.Item
-        name="email"
-        rules={[
-          {
-            required: true,
-            message: 'Please input your email!',
-          },
-        ]}
-      >
-        <Input type="email" prefix={<UserOutlined className={styles.siteForm} />} placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-      </Form.Item>
-      <Form.Item
-        name="password"
-        rules={[
-          {
-            required: true,
-            message: 'Please input your Password!',
-          },
-        ]}
-      >
-        <Input prefix={<LockOutlined className={styles.siteForm} />} type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-      </Form.Item>
-      <Form.Item>
-        <Form.Item name="remember" valuePropName="checked" noStyle>
-          <Checkbox>Remember me</Checkbox>
-        </Form.Item>
-      </Form.Item>
-      <Form.Item>
-        <Button type="primary" htmlType="submit" className={styles.signinFormButton} onClick={handleSubmit}>
-          SIGN IN
-        </Button>
-        <a href="" className={styles.signinFormForgot}>
-          Forgot your password or email ?
-        </a>
-        <br />
-        <a href="/admin/users/signup">signup now!</a>
-      </Form.Item>
-    </Form>
+    <div className={styles.body}>
+      <div className={styles.container}>
+        <div className={styles.overlay_container}>
+          <div className={styles.overlay}>
+            <div className={styles.overlay_panel}>
+              <h1 className={styles.h1}>Hello Machas!!</h1>
+              <p className={styles.p}>Enter Your Details and start Exploring</p>
+              <button type="submit" className={styles.ghost} id="signUp" onClick={onSignUpClick}>Sign Up</button>
+            </div>
+          </div>
+        </div>
+        <div className={styles.sign_in_container}>
+          <form
+            action=""
+            onSubmit={onFinish}
+            className={styles.form}
+          >
+            <h1 className={styles.h1}>Sign In</h1>
+            <input type="email" name="email" id="email" placeholder="Email" className={styles.input} onChange={(e) => setEmail(e.target.value)} required />
+            <input type="password" name="password" id="password" placeholder="Password" className={styles.input} onChange={(e) => setPassword(e.target.value)} required />
+            <button type="submit" className={styles.button} onClick={handleSubmit}>Sign In</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
   );
 }
 
