@@ -1,4 +1,4 @@
-const { getSchema, updateSchema, deleteSchema } = require('../../../server/api-controllers/schema-controller');
+const { getSchema, updateSchema, deleteSchemaBySlug } = require('../../../server/api-controllers/schema-controller');
 
 const schemaHandler = async (req, res) => {
   switch (req.method) {
@@ -9,7 +9,7 @@ const schemaHandler = async (req, res) => {
       return updateSchema(req, res);
 
     case 'DELETE':
-      return deleteSchema(req, res);
+      return deleteSchemaBySlug(req, res);
 
     default:
       return '';

@@ -49,10 +49,38 @@ const deleteSchema = async (req, res) => {
   return res.status(404).json({ message: 'Schema not found' });
 };
 
+const deleteSchemaBySlug = async (req, res) => {
+  const { schemaId } = req.query;
+  // check if data exits
+
+  if (schemaId) {
+    const contents = await db.Content.findAll({
+      include: {
+        model: db.Schema,
+        attributes: ['id'],
+        where: {
+          slug: schemaId,
+        },
+      },
+    });
+
+    if (contents.length <= 0) {
+      const deletedSchema = await db.Schema.destroy({ where: { slug: schemaId } });
+      if (deletedSchema) {
+        return res.status(200).json({ id: schemaId });
+      }
+      return res.status(404).json({ message: 'Schema not found' });
+    }
+    return res.status(404).json({ message: 'There are some content for this schema. Cannot delete this', contents });
+  }
+  return res.status(404).json({ message: 'Schema not found' });
+};
+
 module.exports = {
   getSchema,
   listSchemas,
   addSchema,
   updateSchema,
   deleteSchema,
+  deleteSchemaBySlug,
 };

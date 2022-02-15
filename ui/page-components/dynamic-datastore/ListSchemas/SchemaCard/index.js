@@ -1,8 +1,8 @@
 import { DeleteOutlined } from '@ant-design/icons';
-import { Card, Button } from 'antd';
+import { Card, Button, Space } from 'antd';
 import style from './style.module.scss';
 
-function SchemaCard({ schemaName, deleteSchema, showSchema, id }) {
+function SchemaCard({ schemaName, deleteSchema, showSchema, id, schemaSlug }) {
   return (
     <Card>
       <div className={style.schema_card}>
@@ -14,9 +14,12 @@ function SchemaCard({ schemaName, deleteSchema, showSchema, id }) {
         </div>
         <div>
           <Button type="primary" className={style.button} onClick={() => showSchema(id)}>View Schema</Button>
-          <Button danger onClick={deleteSchema} className={style.button}>
-            <DeleteOutlined />
-          </Button>
+          <Space wrap>
+            {/* <Button onClick={showConfirm}>Confirm</Button> */}
+            <Button danger onClick={() => deleteSchema(schemaSlug)} className={style.button}>
+              <DeleteOutlined />
+            </Button>
+          </Space>
         </div>
       </div>
     </Card>
