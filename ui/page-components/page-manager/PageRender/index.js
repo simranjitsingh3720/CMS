@@ -3,16 +3,17 @@ import { useEffect, useState, createRef } from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import { Spin } from 'antd';
 import useAxios from 'axios-hooks';
-// import { useScreenshot } from 'use-react-screenshot';
+import { useScreenshot } from 'use-react-screenshot';
 
 function PageRender() {
   const ref = createRef(null);
-  // const [image, takeScreenshot] = useScreenshot();
-  // const getImage = () => takeScreenshot(ref.current);
+  const [image, takeScreenshot] = useScreenshot();
+  const getImage = () => takeScreenshot(ref.current);
 
   const [html, setHtml] = useState(null);
   const [css, setCss] = useState(null);
-  const [isData, setIsData] = useState(true);
+
+  const [isData, setIsData] = useState(false);
   const router = useRouter();
 
   const [{ data: getData, loading: getLoading, error: getError }] = useAxios(
@@ -21,6 +22,11 @@ function PageRender() {
       method: 'GET',
     },
   );
+
+  useEffect(() => {
+    getImage();
+    localStorage.setItem('image', image);
+  }, [image]);
 
   useEffect(() => {
     if (getData) {
@@ -35,14 +41,6 @@ function PageRender() {
     }
   }, [getData]);
 
-  // useEffect(() => {
-  //   getImage();
-  //   localStorage.setItem('image', 's');
-  // }, [image]);
-
-  if (getLoading) return <p>Loading...</p>;
-  if (getError) return <p>Error!</p>;
-
   return (
     <div>
       <div ref={ref}>
@@ -50,6 +48,7 @@ function PageRender() {
         {isData ? (
           <div>
             {ReactHtmlParser(html)}
+
           </div>
         ) : (
           <div className="example">

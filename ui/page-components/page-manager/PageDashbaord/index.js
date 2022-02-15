@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import ActionBar from '../../../components/ActionBar';
 import PageCard from './PageCard';
+import ActionBar from '../../../components/ActionBar';
 import PageFormDrawer from './PageFormDrawer';
 
 function PageManager() {
@@ -29,7 +29,7 @@ function PageManager() {
   };
 
   return (
-    <div>
+    <div style={{ padding: -12 }}>
       <ActionBar actions={actions} />
       <PageCard searchValue={searchValue} />
       <PageFormDrawer
