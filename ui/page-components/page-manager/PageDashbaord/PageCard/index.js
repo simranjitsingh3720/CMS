@@ -65,17 +65,13 @@ function PageCard({ searchValue }) {
       },
     });
   }
-  // const handleDelete = (slugForDelete) =>{
-  //   handleDeletePage({
-  //     url:`http://localhost:8000/api/page/${slugForDelete}`,
-  //   })
-  // }
+
   useEffect(() => {
     refetch();
   }, [deleteData]);
 
-  // if (loading) return <p>Loading...</p>;
-  // if (error) return <p>Error!</p>;
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error!</p>;
 
   return (
     <div>

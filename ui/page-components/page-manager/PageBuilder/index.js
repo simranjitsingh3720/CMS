@@ -4,7 +4,6 @@ import 'grapesjs/dist/css/grapes.min.css';
 import GrapesJS from 'grapesjs';
 import gjsPresetWebpage from 'grapesjs-preset-webpage';
 import axios from 'axios';
-// import useAxios from 'axios-hooks'
 
 function PageBuilder() {
   const [editor, setEditor] = useState(null);
