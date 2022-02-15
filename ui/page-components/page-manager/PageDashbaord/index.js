@@ -29,7 +29,7 @@ function PageManager() {
   };
 
   return (
-    <div style={{ padding: -12 }}>
+    <div>
       <ActionBar actions={actions} />
       <PageCard searchValue={searchValue} />
       <PageFormDrawer
