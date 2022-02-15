@@ -2,8 +2,9 @@ import {
   DeleteOutlined,
   EyeOutlined,
   FormOutlined,
+  ExclamationCircleOutlined,
 } from '@ant-design/icons';
-import { Card, message, Tooltip, Popconfirm } from 'antd';
+import { Card, message, Tooltip, Modal } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import useAxios from 'axios-hooks';
@@ -11,6 +12,7 @@ import styles from './style.module.scss';
 import 'antd/dist/antd.css';
 
 const { Meta } = Card;
+const { confirm } = Modal;
 
 function PageCard({ searchValue }) {
   const [ssImage, setSsImage] = useState(null);
@@ -47,12 +49,23 @@ function PageCard({ searchValue }) {
     }
   )
 
-  const handleDelete = (slugForDelete) =>{
-    handleDeletePage({
-      url:`http://localhost:8000/api/page/${slugForDelete}`,
+  function showConfirm(slugForDelete) {
+    confirm({
+      title: 'Do you Want to delete this page?',
+      icon: <ExclamationCircleOutlined />,
+      content: 'After Deleting this Page you won\'t be able to use this slug',
+      onOk() {
+        handleDeletePage({
+          url: `http://localhost:8000/api/page/${slugForDelete}`,
+        });
+        message.warning("Page Deleted Successfully!");
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
     });
-    message.warning("Page deleted Successfully");
   }
+  
   useEffect(() => {
     refetch()
   }, [deleteData])
@@ -84,16 +97,12 @@ function PageCard({ searchValue }) {
                <Tooltip title="Edit Page">
                  <FormOutlined key="edit" onClick={() => { handleEdit(page.slug); }} />
                </Tooltip>,
-               <Popconfirm title="Are you sure delete this Page?"
-                onConfirm={() => handleDelete(page.slug)}
-                 okText="Yes" cancelText="No">
                 <Tooltip title="Delete Page">
-                  <DeleteOutlined key="delete"/>
-                </Tooltip>
-               </Popconfirm>
+                  <DeleteOutlined key="delete" onClick={() => showConfirm(page.slug)} />
+                </Tooltip>,
+  
              ]}
            >
-            
              <Meta
                title={(
                  <p className={styles.card_title}>
