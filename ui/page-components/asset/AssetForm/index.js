@@ -1,4 +1,4 @@
-import Axios from 'axios';
+import useAxios from 'axios-hooks';
 import { UploadOutlined } from '@ant-design/icons';
 import {
   Form,
@@ -12,6 +12,26 @@ import { useState } from 'react';
 function AssetForm({ CloseDrawer, refetch }) {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+
+  // USEAXIOS FOR POSTING DATA , (EXCEPT IMAGE)
+  // eslint-disable-next-line no-empty-pattern
+  const [{ }, handlePost] = useAxios(
+    {
+      method: 'POST',
+    },
+    { manual: true },
+  );
+
+  // USEAXIOS FOR UPDATING DATA WITH ASSET/IMAGE LINK
+  // eslint-disable-next-line no-empty-pattern
+  const [{}, handlePut] = useAxios(
+    {
+      method: 'PUT',
+
+    },
+    { manual: true },
+  );
+
   const formItemLayout = {
     labelCol: {
       span: 8,
@@ -31,27 +51,35 @@ function AssetForm({ CloseDrawer, refetch }) {
 
   const SubmitDetails = (values) => {
     setLoading(true);
-    Axios.post('http://localhost:8000/api/asset', {
-      name: values.name, description: values.description, mimeType: values.upload[0].originFileObj.type, type: values.upload[0].originFileObj.type.split('/')[0],
-    })
-      .then((res) => {
-        Axios.put(
-          res.data.writeUrl,
-          values.upload[0].originFileObj,
-          { headers: { type: values.upload[0].originFileObj.type } },
-        )
-          .then(() => {
-            setLoading(false);
-            form.resetFields();
-            CloseDrawer();
-            message.success('Asset Added');
-            refetch();
-          })
-          .catch(() => {
-            message.error('Asset Not Added');
-            setLoading(false);
-          });
-      });
+
+    handlePost({
+      url: '/api/asset/',
+      data: {
+        name: values.name,
+        description: values.description,
+        mimeType: values.upload[0].originFileObj.type,
+        type: values.upload[0].originFileObj.type.split('/')[0],
+      },
+    }).then((res) => {
+      const WRITEURL = res.data.writeUrl;
+      const FILE = values.upload[0].originFileObj;
+      handlePut({
+        url: WRITEURL,
+        data: FILE,
+        headers: { type: values.upload[0].originFileObj.type },
+      })
+        .then(() => {
+          setLoading(false);
+          form.resetFields();
+          CloseDrawer();
+          message.success('Asset Added');
+          refetch();
+        })
+        .catch(() => {
+          message.error('Asset Not Added');
+          setLoading(false);
+        });
+    }).catch(() => { message.error("Couldn't upload"); });
   };
 
   return (

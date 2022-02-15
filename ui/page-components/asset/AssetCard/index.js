@@ -6,7 +6,6 @@ import {
   EditOutlined,
   ExclamationCircleOutlined,
 } from '@ant-design/icons';
-import axios from 'axios';
 import useAxios from 'axios-hooks';
 import { useState } from 'react';
 import Asset from '../Asset';
@@ -19,19 +18,26 @@ function AssetCard({ data, refetch }) {
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const [{ deleteError }, handleDelete] = useAxios(
+    {
+      method: 'DELETE',
+      url: `/api/asset/${data.id}`,
+    },
+    { manual: true },
+  );
+
   const showConfirm = () => {
     confirm({
       title: 'Do you Want to delete these items?',
       icon: <ExclamationCircleOutlined />,
-      onOk() {
-        axios.delete(`http://localhost:8000/api/asset/${data.id}`)
-          .then(() => {
-            message.success('Item Deleted');
-            refetch();
-          })
-          .catch(() => message.error('Item Not Deleted'));
-      },
-      onCancel() {
+      async onOk() {
+        await handleDelete();
+        if (deleteError) {
+          message.error('Item not deleted');
+        } else {
+          message.success('Item Deleted');
+          await refetch();
+        }
       },
     });
   };
@@ -47,7 +53,7 @@ function AssetCard({ data, refetch }) {
   const showModal = () => {
     setVisible(true);
   };
-  const [{ response, loadin, error },
+  const [{ error },
     executePatch,
   ] = useAxios(
     {

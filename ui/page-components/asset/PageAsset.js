@@ -46,6 +46,7 @@ function PageAsset() {
       <div style={{ marginBottom: '35px' }}>
         <Drawer title="Add Asset" placement="right" onClose={onDrawerClose} visible={visible}>
           <AssetForm CloseDrawer={onDrawerClose} refetch={refetch} />
+
         </Drawer>
       </div>
       <List
