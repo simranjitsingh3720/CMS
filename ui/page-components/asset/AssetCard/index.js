@@ -7,6 +7,7 @@ import {
   ExclamationCircleOutlined,
 } from '@ant-design/icons';
 import axios from 'axios';
+import useAxios from 'axios-hooks';
 import { useState } from 'react';
 import Asset from '../Asset';
 
@@ -46,19 +47,30 @@ function AssetCard({ data, refetch }) {
   const showModal = () => {
     setVisible(true);
   };
-  const SubmitDetails = (values) => {
+  const [{ response, loadin, error },
+    executePatch,
+  ] = useAxios(
+    {
+      url: `/api/asset/${data.id}`,
+      method: 'PATCH',
+    },
+    { manual: true },
+  );
+  const SubmitDetails = async (values) => {
     setLoading(true);
-    axios.patch(`http://localhost:8000/api/asset/${data.id}`, {
-      name: values.name, description: values.description,
-    })
-      .then(() => {
-        setLoading(false);
-        form.resetFields();
-        setVisible(false);
-        message.success('Asset Updated');
-        refetch();
-      })
-      .catch(() => message.error('Asset Not Updated'));
+    await executePatch({
+      data: {
+        name: values.name ? values.name : data.name,
+        description: values.description ? values.description : data.description,
+      },
+    });
+    if (error) { message.error('Asset Not Updated'); } else {
+      setLoading(false);
+      form.resetFields();
+      setVisible(false);
+      message.success('Asset Updated');
+      refetch();
+    }
   };
   const handleOk = () => {
     setVisible(true);
@@ -98,10 +110,10 @@ function AssetCard({ data, refetch }) {
       >
         <Form form={form} name="validate_other" {...formItemLayout} onFinish={SubmitDetails} loading={loading} initialValues={{ 'input-number': 3 }}>
           <Form.Item name="name" label="name">
-            <Input />
+            <Input placeholder={data.name} />
           </Form.Item>
           <Form.Item name="description" label="description">
-            <Input />
+            <Input placeholder={data.description} />
           </Form.Item>
           <Button type="primary" loading={loading} htmlType="submit">
             Submit

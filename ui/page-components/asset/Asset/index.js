@@ -5,12 +5,11 @@ function Asset({ data }) {
     case 'video':
       return (
         <video
+          src={data.url}
           style={{ height: '200px' }}
           alt="example"
           controls
-        >
-          <source src={data.url} type={data.type} />
-        </video>
+        />
       );
     default:
       return (
