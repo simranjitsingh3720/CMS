@@ -1,18 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import useAxios from 'axios-hooks';
 
 function ShowSchema() {
-  const [q, setQ] = useState('');
-
   const router = useRouter();
+  const { schemaSlug } = router.query;
+  const [{ data, loading, error }, getSchema] = useAxios(
+    {
+      method: 'GET',
+      url: `http://localhost:8000/api/schema/${schemaSlug}`,
+    },
+    { manual: true },
+  );
 
   useEffect(() => {
-    setQ(router.query.schmaId);
-  }, [router.query.schmaId]);
+    if (schemaSlug) {
+      getSchema();
+    }
+  }, [schemaSlug]);
+
+  if (data) {
+    console.log(data);
+  }
 
   return (
     <div>
-      {q}
+      {JSON.stringify(data)}
+      {' '}
+      HELLO
     </div>
   );
 }

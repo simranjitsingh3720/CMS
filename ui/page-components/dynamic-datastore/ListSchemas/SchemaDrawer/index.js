@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Drawer, Button, Form, Input } from 'antd';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import style from './style.module.scss';
 
 function SchemaDrawer({ closeDrawer, setIsDrawer }) {
   const [error, setError] = useState('');
@@ -10,7 +11,7 @@ function SchemaDrawer({ closeDrawer, setIsDrawer }) {
   const onFinish = (values) => {
     axios.post('http://localhost:8000/api/schema', values).then((res) => {
       setIsDrawer(false);
-      push('/admin/datastore/content-builder/[schemaId]', `/admin/datastore/content-builder/${res.data.id}`);
+      push('/admin/datastore/content-builder/[schemaId]', `/admin/datastore/content-builder/${res.data.slug}`);
     }).catch((err) => {
       setError(err.message);
     });
@@ -23,7 +24,7 @@ function SchemaDrawer({ closeDrawer, setIsDrawer }) {
   return (
     <Drawer title="Create New Schema" placement="right" onClose={() => closeDrawer()} visible>
 
-      {error}
+      <div className={style.error}>{error}</div>
 
       <Form
         name="basic"

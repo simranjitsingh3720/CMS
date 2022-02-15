@@ -15,7 +15,6 @@ const getContent = async (req, res) => {
       },
     },
   });
-  console.log(content);
   if (content && content.Schema) {
     content = { ...content.toJSON() };
     return res.status(200).json(content);
@@ -35,6 +34,7 @@ const listContents = async (req, res) => {
         },
       },
     });
+
     return res.status(200).json({ list: contents });
   }
   return res.status(400).json({ message: 'invalid request' });
