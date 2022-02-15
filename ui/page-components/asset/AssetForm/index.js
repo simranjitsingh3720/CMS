@@ -47,7 +47,10 @@ function AssetForm({ CloseDrawer, refetch }) {
             message.success('Asset Added');
             refetch();
           })
-          .catch(() => message.error('Asset Not Added'));
+          .catch(() => {
+            message.error('Asset Not Added');
+            setLoading(false);
+          });
       });
   };
 

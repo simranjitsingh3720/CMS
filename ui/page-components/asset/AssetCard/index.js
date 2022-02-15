@@ -103,9 +103,7 @@ function AssetCard({ data, refetch }) {
         onOk={handleOk}
         onCancel={handleCancel}
         footer={[
-          <Button key="back" onClick={handleCancel}>
-            Return
-          </Button>,
+          <div />,
         ]}
       >
         <Form form={form} name="validate_other" {...formItemLayout} onFinish={SubmitDetails} loading={loading} initialValues={{ 'input-number': 3 }}>
