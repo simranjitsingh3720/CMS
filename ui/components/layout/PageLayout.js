@@ -10,7 +10,7 @@ function PageLayout({
 }) {
   const router = useRouter();
 
-  const blockRoute = ['/', '/admin/signin', '/admin/signup', '/location'];
+  const blockRoute = ['/', '/admin/signin', '/admin/signup', '/location', '/Feedback'];
 
   // console.log(blockRoute);
   // console.log(router.query);
