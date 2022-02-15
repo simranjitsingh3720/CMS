@@ -58,17 +58,17 @@ function AssetEdit({
             {...formItemLayout}
             onFinish={SubmitDetails}
             loading={loading}
-            initialValues={{ 'input-number': 3 }}
+            initialValues={{ name: data.name, description: data.description }}
           >
             <Form.Item
               name="name"
               label="Name"
               rules={[{ required: true, message: 'Please enter name!!' }]}
             >
-              <Input defaultValue={data.name} />
+              <Input />
             </Form.Item>
             <Form.Item name="description" label="Description">
-              <Input defaultValue={data.description} />
+              <Input />
             </Form.Item>
             <Button type="primary" loading={loading} htmlType="submit">
               Submit
