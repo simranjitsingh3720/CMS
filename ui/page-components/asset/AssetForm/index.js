@@ -12,6 +12,7 @@ import useAxios from 'axios-hooks';
 function AssetForm({ CloseDrawer, refetch }) {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+
   const formItemLayout = {
     labelCol: {
       span: 8,
