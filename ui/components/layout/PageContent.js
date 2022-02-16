@@ -6,7 +6,7 @@ import PageTitle from '../PageTitle';
 const blockRoute = ['/', '/admin/signin', '/admin/signup'];
 
 function PageContent({ children = null }) {
-  const { title } = children.props;
+  const { title } = children?.props || {};
   const router = useRouter();
   const { pathname } = router;
   return (
