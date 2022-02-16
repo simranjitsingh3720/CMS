@@ -1,53 +1,85 @@
-import { Card, Popconfirm, message } from 'antd';
+import {
+  Card, Button, message, Modal,
+} from 'antd';
 import {
   DeleteOutlined,
   EditOutlined,
-  EllipsisOutlined,
+  ExclamationCircleOutlined,
 } from '@ant-design/icons';
-import axios from 'axios';
+import useAxios from 'axios-hooks';
+import { useState } from 'react';
+import Asset from './Asset';
+import AssetDrawer from '../AssetDrawer';
+import styles from './styles.module.scss';
 
 const { Meta } = Card;
+const { confirm } = Modal;
 
-function AssetCard({ data }) {
-  const handleConfirm = () => {
-    axios.delete(`http://localhost:8000/api/asset/${data.id}`)
-      .then(() => message.success('Item Deleted'))
-      .catch(() => message.error('Item Not Deleted'));
+function AssetCard({ data, refetch }) {
+  const [visibleDrawer, setVisibleDrawer] = useState(false);
+
+  const [{ deleteError }, handleDelete] = useAxios(
+    {
+      method: 'DELETE',
+      url: `/api/asset/${data.id}`,
+    },
+    { manual: true },
+  );
+
+  const showConfirm = () => {
+    confirm({
+      title: 'Do you Want to delete these items?',
+      icon: <ExclamationCircleOutlined />,
+      async onOk() {
+        await handleDelete();
+        if (deleteError) {
+          message.error('Item not deleted');
+        } else {
+          message.success('Item Deleted');
+          await refetch();
+        }
+      },
+    });
   };
 
-  const handleCancel = () => {
-    message.error('Click on No');
+  const showModal = () => {
+    setVisibleDrawer(true);
   };
+
   return (
-    <Card
-      style={{ width: 280, padding: '0px 15px', paddingTop: '15px', borderRadius: '8px' }}
-      cover={(
-        <img
-          style={{ height: '200px' }}
-          alt="example"
-          src={data.url}
-        />
+    <>
+      <Card
+        style={{ width: 280, padding: '0px 15px', paddingTop: '15px', borderRadius: '8px' }}
+        cover={(
+          <Asset
+            data={data}
+          />
     )}
-      actions={[
-        <Popconfirm
-          title="Are you sure to delete this task?"
-          onConfirm={handleConfirm}
-          onCancel={handleCancel}
-          okText="Yes"
-          cancelText="No"
-        >
-          <DeleteOutlined key="delete" />
-        </Popconfirm>,
-        <EditOutlined key="edit" />,
-        <EllipsisOutlined key="ellipsis" />,
-      ]}
-    >
-      <Meta
-        title={data.name}
-        description={data.description}
-        style={{ padding: '0px' }}
+        className={styles.asset_card}
+        actions={[
+          <Button onClick={showModal} style={{ border: '0px' }}>
+            <EditOutlined key="edit" />
+
+          </Button>,
+          <Button onClick={showConfirm} style={{ border: '0px' }}>
+            <DeleteOutlined key="delete" />
+
+          </Button>,
+        ]}
+      >
+        <Meta
+          title={data.name}
+          description={data.description}
+        />
+      </Card>
+      <AssetDrawer
+        flag={false}
+        visible={visibleDrawer}
+        setVisible={setVisibleDrawer}
+        refetch={refetch}
+        data={data}
       />
-    </Card>
+    </>
   );
 }
 export default AssetCard;
