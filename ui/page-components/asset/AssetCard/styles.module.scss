@@ -1,7 +1,5 @@
 .asset_card {
-  
-  .ant-card-body {
-    padding: 10px;
+  :global(.ant-card-body) {
+      padding: 10px;
   }
-  
 }

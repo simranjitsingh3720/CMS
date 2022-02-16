@@ -70,7 +70,6 @@ function AssetCard({ data, refetch }) {
         <Meta
           title={data.name}
           description={data.description}
-          className="Hello"
         />
       </Card>
       <AssetDrawer
