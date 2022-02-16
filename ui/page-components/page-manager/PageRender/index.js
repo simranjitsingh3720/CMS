@@ -1,9 +1,8 @@
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState, createRef } from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import { Spin } from 'antd';
-// import html2canvas from 'html2canvas';
+import useAxios from 'axios-hooks';
 import { useScreenshot } from 'use-react-screenshot';
 
 function PageRender() {
@@ -17,46 +16,48 @@ function PageRender() {
   const [isData, setIsData] = useState(false);
   const router = useRouter();
 
+  const [{ data: getData, loading: getLoading, error: getError }] = useAxios(
+    {
+      url: `http://localhost:8000/api/page/${router.query.pageView}`,
+      method: 'GET',
+    },
+  );
+
   useEffect(() => {
     getImage();
     localStorage.setItem('image', image);
   }, [image]);
 
   useEffect(() => {
-    // console.log(router.query.pageView);
-    if (router.query.pageView) {
-      axios.get(`http://localhost:8000/api/page/${router.query.pageView}`)
-        .then((res) => {
-          if (router.query.pageView) {
-            setIsData(true);
-            const code = JSON.parse(res.data.data.data);
-            if (code) {
-              setHtml(code['CMS-html']);
-              setCss(code['CMS-css']);
-            } else {
-              setHtml('');
-            }
-          } else {
-            setIsData(false);
-          }
-        });
+    if (getData) {
+      setIsData(true);
+      const code = JSON.parse(getData.data.data);
+      if (code) {
+        setHtml(code['CMS-html']);
+        setCss(code['CMS-css']);
+      } else {
+        setHtml('');
+      }
     }
-  }, [router.query.pageView]);
+  }, [getData]);
 
   return (
-    <div ref={ref}>
+    <div>
+      <div ref={ref}>
+        <style>{css}</style>
+        {isData ? (
+          <div>
+            {ReactHtmlParser(html)}
 
-      <style>{css}</style>
-      {isData ? (
-        <div>
-          {ReactHtmlParser(html)}
-        </div>
-      ) : (
-        <div className="example">
-          <Spin size="large" />
-        </div>
-      )}
+          </div>
+        ) : (
+          <div>
+            <Spin size="large" />
+          </div>
+        )}
+      </div>
     </div>
+
   );
 }
 
