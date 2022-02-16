@@ -1,15 +1,11 @@
 import Head from 'next/head';
+import axios from 'axios';
 import RouteGuard from './RouteGuard';
 import PageLayout from '../../components/layout/PageLayout';
 
 function CMSApp({ Component, pageProps, session }) {
-  console.log("Page props ", pageProps);
-  console.log("====");
-  const { title: propTitle  } = pageProps || {};
+  const { title: propTitle } = pageProps || {};
   let title = 'COGO-CMS';
-
-  console.log({ session });
-  console.log("propTitle ", propTitle);
   if (propTitle) {
     title = `${title} | ${propTitle}`;
   }
@@ -24,17 +20,22 @@ function CMSApp({ Component, pageProps, session }) {
           <Component {...pageProps} />
         </PageLayout>
       </RouteGuard>
-    </>
-  );
-}
+    </>)
+  }
 
-CMSApp.getInitialProps = ({ ctx }) => {
-  console.log("ctx ", ctx);
-  const { session } = ctx?.req || {};
+CMSApp.getInitialProps = async ({ ctx }) => {
+  const isServer = !!ctx?.req;
+  let session = {};
+  if (isServer) {
+    session = {
+      user: ctx?.req?.session?.user,
+      sessionId: ctx?.req?.sessionID,
+    };
+  } else {
+    const res = await axios.get('http://localhost:8000/api/user/me');
+    session = res.data;
+  }
   return { session };
 };
 
 export default CMSApp;
-
-
-

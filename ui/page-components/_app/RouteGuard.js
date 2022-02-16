@@ -2,25 +2,16 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 function RouteGuard({ children, session }) {
-  console.log("children ", children);
-  console.log("session ", session);
   const router = useRouter();
-
-  console.log('abc', { session });
-
   useEffect(() => {
-    if (session?.user) {
-      console.log('session exists');
+    if (session.user) {
       if (router.pathname.includes('/admin/signup') || router.pathname.includes('/admin/signin')) {
-        router.replace('/admin');
+        router.replace('/admin', '/admin', { shallow: true });
       }
-    } else {
-      console.log('session does not exist');
-      if (!router.pathname.includes('/admin/signup') && !router.pathname.includes('/admin/signin')) {
-        router.replace('/admin/signin');
-      }
+    } else if (!router.pathname.includes('/admin/signup') && !router.pathname.includes('/admin/signin')) {
+      router.replace('/admin/signin', '/admin/signin', { shallow: true });
     }
-  }, [router, session?.user]);
+  }, [router, session.user]);
 
   return children;
 }
