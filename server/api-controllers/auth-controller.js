@@ -3,7 +3,6 @@ const bcrypt = require('bcrypt');
 const db = require('../../db/models/index');
 
 const signup = async (req, res) => {
-  // console.log(req.user);
   // if ('user' in req.session) {
   //   return message.error('already logged in');
   // }
