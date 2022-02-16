@@ -11,7 +11,7 @@ export default function ContentBuilder() {
 
   return (
     <Tabs defaultActiveKey="1" type="card" onChange={callback} size="large">
-      <TabPane style={{ marginRight: 200 }} tab="Structure" key="1">
+      <TabPane tab="Structure" key="1">
         <ShowSchema />
       </TabPane>
       <TabPane tab="Contents" key="2">
