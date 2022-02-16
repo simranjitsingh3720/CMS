@@ -20,8 +20,7 @@ function PageContent({ children = null }) {
         className="site-layout-background"
         style={{ padding: 0, minHeight: 360 }}
       >
-
-        {!blockRoute.includes(pathname) ? <PageTitle title={title} /> : null}
+        {title !== 'Page Editor' && !blockRoute.includes(pathname) ? <PageTitle title={title} /> : null}
 
         {children}
       </div>

@@ -51,9 +51,12 @@ function PageCard({ searchValue }) {
 
   function showConfirm(slugForDelete) {
     confirm({
-      title: 'Do you Want to delete this page?',
+      title: 'Are you sure to delete this page?',
       icon: <ExclamationCircleOutlined />,
-      content: 'After Deleting this Page you won\'t be able to use this slug',
+      content: <p className={styles.modal_content}>After Deleting this Page you won't be able to use this slug</p>,
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
       onOk() {
         handleDeletePage({
           url: `http://localhost:8000/api/page/${slugForDelete}`,
@@ -78,15 +81,15 @@ function PageCard({ searchValue }) {
       <div className={styles.card_component}>
         {
          data.list.map((page, index) => (
-           <Card
+          <Card
              key={index}
              style={{ width: 260, margin: 15 }}
              cover={(
 
                <div
-                 className={styles.card_image}
-                style={{backgroundImage:`url(${ssImage})`,backgroundSize:'cover'}}
-                 alt="Card View"
+                  className={styles.card_image}
+                  style={{backgroundImage:`url(${ssImage})`,backgroundSize:'cover'}}
+                  alt="Card View"
                />
 
               )}
@@ -103,28 +106,26 @@ function PageCard({ searchValue }) {
   
              ]}
            >
-             <Meta
-               title={(
+            <Meta
+                title={(
                  <p className={styles.card_title}>
                    <span style={{ fontWeight: 'bold' }}>Title:</span>
                    {' '}
                    {page.name}
                  </p>
                   )}
-               description={(
+                description={(
                  <p className={styles.card_description}>
                    <span style={{ fontWeight: 'bold' }}>Slug:</span>
                    {' '}
                    /
                    {page.slug}
-
                  </p>
-)}
-             />
-            
-           </Card>
+                )}
+             /> 
+          </Card>
          ))
-}
+        }
       </div>
     </div>,
   );
