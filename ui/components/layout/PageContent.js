@@ -7,6 +7,7 @@ const blockRoute = ['/', '/admin/signin', '/admin/signup'];
 
 function PageContent({ children = null }) {
   const { title } = children.props;
+  const { notDisplay } = children.props;
   const router = useRouter();
   const { pathname } = router;
   return (
@@ -20,7 +21,7 @@ function PageContent({ children = null }) {
         className="site-layout-background"
         style={{ padding: 0, minHeight: 360 }}
       >
-        {title !== 'Page Editor' && !blockRoute.includes(pathname) ? <PageTitle title={title} /> : null}
+        {!notDisplay && !blockRoute.includes(pathname) ? <PageTitle title={title} /> : null}
 
         {children}
       </div>
