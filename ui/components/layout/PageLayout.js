@@ -2,6 +2,7 @@ import { Layout } from 'antd';
 import { useRouter } from 'next/router';
 import Sidebar from './Pagesider';
 import PageContent from './PageContent';
+import styles from './style.module.scss';
 
 const { Footer } = Layout;
 
@@ -10,15 +11,12 @@ function PageLayout({
 }) {
   const router = useRouter();
 
-  const blockRoute = ['/', '/admin/signin', '/admin/signup', '/location', '/Feedback'];
-
-  // console.log(blockRoute);
-  // console.log(router.query);
+  const blockRoute = ['/', '/admin/signin', '/admin/signup'];
 
   const { pathname } = router;
 
   return (
-    <Layout style={{ minHeight: '100vh' }} hasSider>
+    <Layout className={styles.layout} hasSider>
 
       {!blockRoute.includes(pathname) ? <Sidebar /> : null}
       <Layout className="site-layout">

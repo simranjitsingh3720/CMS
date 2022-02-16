@@ -2,8 +2,8 @@ const { Op } = require('sequelize');
 const db = require('../../db/models');
 
 export const createPage = async (req, res) => {
-  const pageDetails = req.body;
-  const result = await db.Page.create(pageDetails.pageDetails);
+  const { pageDetails } = req.body;
+  const result = await db.Page.create(pageDetails);
   if (result) {
     return res.status(201).json({ data: result });
   }
