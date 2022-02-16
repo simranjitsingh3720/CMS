@@ -1,7 +1,4 @@
 module.exports = {
-  parserOptions: {
-    ecmaVersion: 2020,
-  },
   extends: ['airbnb', 'airbnb/hooks'],
   rules: {
     // general
