@@ -18,5 +18,8 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
     'react/jsx-props-no-spreading': 'off',
+
+    // a11y
+    'jsx-a11y/media-has-caption': 'off',
   },
 };

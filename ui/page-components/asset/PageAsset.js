@@ -4,7 +4,7 @@ import { List } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import AssetCard from './AssetCard';
 import ActionBar from '../../components/ActionBar';
-import AssetEdit from './AssetEdit';
+import AssetDrawer from './AssetDrawer';
 
 function PageAsset() {
   const [visible, setVisible] = useState(false);
@@ -39,7 +39,7 @@ function PageAsset() {
     <>
       <ActionBar actions={actions} />
       <div style={{ marginBottom: '35px' }}>
-        <AssetEdit
+        <AssetDrawer
           flag
           visible={visible}
           setVisible={setVisible}

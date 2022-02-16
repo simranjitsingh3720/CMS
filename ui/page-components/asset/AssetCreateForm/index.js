@@ -9,7 +9,7 @@ import {
 import { useState } from 'react';
 import useAxios from 'axios-hooks';
 
-function AssetForm({ CloseDrawer, refetch }) {
+function AssetCreateForm({ CloseDrawer, refetch }) {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
 
@@ -126,4 +126,4 @@ function AssetForm({ CloseDrawer, refetch }) {
   );
 }
 
-export default AssetForm;
+export default AssetCreateForm;

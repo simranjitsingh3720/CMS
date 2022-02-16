@@ -8,8 +8,9 @@ import {
 } from '@ant-design/icons';
 import useAxios from 'axios-hooks';
 import { useState } from 'react';
-import Asset from '../Asset';
-import AssetEdit from '../AssetEdit';
+import Asset from './Asset';
+import AssetDrawer from '../AssetDrawer';
+import styles from './styles.module.scss';
 
 const { Meta } = Card;
 const { confirm } = Modal;
@@ -49,9 +50,12 @@ function AssetCard({ data, refetch }) {
     <>
       <Card
         style={{ width: 280, padding: '0px 15px', paddingTop: '15px', borderRadius: '8px' }}
-        className="Asset-card"
-        cover={(<Asset data={data} />
+        cover={(
+          <Asset
+            data={data}
+          />
     )}
+        className={styles.asset_card}
         actions={[
           <Button onClick={showModal} style={{ border: '0px' }}>
             <EditOutlined key="edit" />
@@ -66,10 +70,10 @@ function AssetCard({ data, refetch }) {
         <Meta
           title={data.name}
           description={data.description}
-          style={{ padding: '0px' }}
+          className="Hello"
         />
       </Card>
-      <AssetEdit
+      <AssetDrawer
         flag={false}
         visible={visibleDrawer}
         setVisible={setVisibleDrawer}
