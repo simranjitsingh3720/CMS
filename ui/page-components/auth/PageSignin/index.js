@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import useAxios from 'axios-hooks';
 import 'antd/dist/antd.css';
 import {
@@ -23,12 +23,6 @@ function PageSignin() {
     { manual: true },
   );
 
-  //   await axios.post('http://localhost:8000/api/auth/signin', { email: values.email, password: values.password })
-  //     .then(() => {
-  //       router.push('/admin');
-  //     })
-  //     .catch(() => message.error('Invalid Signin, Please try again'));
-  // };
   const SubmitDetails = (values) => {
     executePost({
       data: {
