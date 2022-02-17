@@ -1,4 +1,4 @@
-import axios from 'axios';
+import useAxios from 'axios-hooks';
 import React from 'react';
 import {
   message, Form, Input, Button, Row, Col, Typography,
@@ -11,13 +11,25 @@ const { Title, Paragraph } = Typography;
 
 function PageSignup() {
   const router = useRouter();
-  const onFinish = async (values) => {
+
+  const [{ loading }, executePost] = useAxios(
+    {
+      url: '/api/auth/signup',
+      method: 'POST',
+    },
+    { manual: true },
+  );
+
+  const onFinish = (values) => {
     if (values.password !== values.confirmPassword) {
       message.error('Passwords do not match!!!');
     } else {
-      await axios.post('http://localhost:8000/api/auth/signup', values)
+      executePost({
+        data: values,
+      })
         .then(() => {
           router.push('/admin');
+          message.success('Welcome to CMS Page');
         })
         .catch(() => message.error('Invalid Signup, Please try again'));
     }
@@ -102,6 +114,7 @@ function PageSignup() {
               size="large"
               htmlType="submit"
               style={{ width: 200 }}
+              loading={loading}
             >
               SIGN UP
             </Button>
