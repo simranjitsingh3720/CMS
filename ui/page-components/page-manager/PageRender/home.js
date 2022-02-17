@@ -18,16 +18,12 @@ function PageRender() {
 
   const [{ data: getData, loading: getLoading, error: getError }] = useAxios(
     {
-      url: `http://localhost:8000/api/page/${router.query.pageView}`,
+      url: 'http://localhost:8000/api/page/home',
       method: 'GET',
     },
   );
 
   useEffect(() => {
-    const slug = router.query.pageView;
-    if (slug === 'home') {
-      router.push('/');
-    }
     getImage();
     localStorage.setItem('image', image);
   }, [image]);
