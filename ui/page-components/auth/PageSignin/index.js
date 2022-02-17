@@ -1,5 +1,5 @@
-import axios from 'axios';
-import React from 'react';
+import React, { useState } from 'react';
+import useAxios from 'axios-hooks';
 import 'antd/dist/antd.css';
 import {
   message, Form, Input, Button, Row, Col, Typography,
@@ -14,14 +14,33 @@ const { Title, Paragraph } = Typography;
 
 function PageSignin() {
   const router = useRouter();
-  const onFinish = async (values) => {
-    await axios.post('http://localhost:8000/api/auth/signin', { email: values.email, password: values.password })
-      .then(() => {
-        router.push('/admin');
-      })
+
+  const [{ loading }, executePost] = useAxios(
+    {
+      url: '/api/auth/signin',
+      method: 'POST',
+    },
+    { manual: true },
+  );
+
+  //   await axios.post('http://localhost:8000/api/auth/signin', { email: values.email, password: values.password })
+  //     .then(() => {
+  //       router.push('/admin');
+  //     })
+  //     .catch(() => message.error('Invalid Signin, Please try again'));
+  // };
+  const SubmitDetails = (values) => {
+    executePost({
+      data: {
+        email: values.email,
+        password: values.password,
+      },
+    }).then(() => {
+      router.push('/admin');
+      message.success('Welcome to CMS Page');
+    })
       .catch(() => message.error('Invalid Signin, Please try again'));
   };
-
   const onSignUpClick = async () => {
     await router.push('/admin/signup');
   };
@@ -39,7 +58,7 @@ function PageSignin() {
           name="normal_login"
           className={styles.form}
           initialValues={{ remember: true }}
-          onFinish={onFinish}
+          onFinish={SubmitDetails}
         >
           <Title>Sign In</Title>
           <Form.Item
@@ -59,7 +78,7 @@ function PageSignin() {
             />
           </Form.Item>
           <Form.Item>
-            <Button type="danger" shape="round" size="large" htmlType="submit" style={{ width: '200px', fontSize: '20px', lineHeight: 0.6 }}>
+            <Button type="danger" loading={loading} shape="round" size="large" htmlType="submit" style={{ width: '200px', fontSize: '20px', lineHeight: 0.6 }}>
               SIGN IN
             </Button>
           </Form.Item>
@@ -68,5 +87,4 @@ function PageSignin() {
     </Row>
   );
 }
-
 export default PageSignin;
