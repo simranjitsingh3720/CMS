@@ -9,7 +9,6 @@ import { Card, Tooltip, Modal } from 'antd';
 import { useRouter } from 'next/router';
 import useAxios from 'axios-hooks';
 import styles from './style.module.scss';
-import 'antd/dist/antd.css';
 
 const { Meta } = Card;
 const { confirm } = Modal;
