@@ -1,0 +1,42 @@
+.form {
+	display: flex;
+  margin: auto;
+  width: 50%;
+	justify-content: center;
+	flex-direction: column;
+	height: 100%;
+	text-align: center;
+}
+
+.form{
+  :global(input){
+    height:40px;
+    font-size:15px
+  }
+}
+
+.overlay {
+	background: linear-gradient(to right, #FF4B2B, #FF416C);
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: 0 0;
+	color: #FFFFFF;
+	position: relative;
+  display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.overlay_panel {
+	position: absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	text-align: center;
+	top: 0;
+	height: 100%;
+}
+
+
+
+

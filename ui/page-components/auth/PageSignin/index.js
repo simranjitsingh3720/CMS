@@ -6,7 +6,7 @@ import {
 } from 'antd';
 import { useRouter } from 'next/router';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
-import styles from './style.module.scss';
+import styles from '../style.module.scss';
 
 const { Title, Paragraph } = Typography;
 
@@ -58,7 +58,7 @@ function PageSignin() {
           </Form.Item>
           <Form.Item>
             <Button type="danger" shape="round" size="large" htmlType="submit" style={{ width: '200px', fontSize: '20px', lineHeight: 0.6 }}>
-              Sign in
+              SIGN IN
             </Button>
           </Form.Item>
         </Form>
