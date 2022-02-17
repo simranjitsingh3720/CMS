@@ -85,7 +85,7 @@ function PageSignup() {
           </Form.Item>
           <Form.Item>
             <Button type="danger" shape="round" size="large" htmlType="submit" style={{ width: '200px', fontSize: '20px', lineHeight: 0.6 }}>
-              Sign up
+              SIGN UP
             </Button>
           </Form.Item>
         </Form>
