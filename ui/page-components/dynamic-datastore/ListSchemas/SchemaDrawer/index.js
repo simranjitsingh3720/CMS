@@ -25,7 +25,6 @@ function SchemaDrawer({ closeDrawer, setIsDrawer }) {
     <Drawer title="Create New Schema" placement="right" onClose={() => closeDrawer()} visible>
 
       <div className={style.error}>{error}</div>
-
       <Form
         name="basic"
         labelCol={{
