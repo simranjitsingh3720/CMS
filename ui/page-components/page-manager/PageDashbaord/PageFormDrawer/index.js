@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import {
   Button, Drawer, Form, Input,
-  message,
+  message, Checkbox,
 } from 'antd';
 import { useRouter } from 'next/router';
 import useAxios from 'axios-hooks';
 
 function PageFormDrawer({ onFormClose, visible, setVisible }) {
   const [pageDetails, setPageDetails] = useState({ name: '', slug: '' });
+  const [checked, setChecked] = useState(false);
 
   const { push } = useRouter();
 
@@ -61,7 +62,20 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
           onChange={(e) => setPageDetails({ ...pageDetails, slug: e.target.value })}
           rules={[{ required: true, message: 'Please enter Page Slug!' }]}
         >
-          <Input />
+          <Input disabled={checked} />
+        </Form.Item>
+        <Form.Item
+          name="index"
+          valuePropName="checked"
+          wrapperCol={{ offset: 8, span: 16 }}
+          onChange={() => {
+            if (!checked) {
+              setPageDetails({ ...pageDetails, slug: '__index' });
+            }
+            setChecked(!checked);
+          }}
+        >
+          <Checkbox>Make this Page Default</Checkbox>
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>

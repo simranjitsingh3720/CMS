@@ -25,7 +25,7 @@ function PageRender() {
 
   useEffect(() => {
     const slug = router.query.pageView;
-    if (slug === 'home') {
+    if (slug === '__index') {
       router.push('/');
     }
     getImage();
