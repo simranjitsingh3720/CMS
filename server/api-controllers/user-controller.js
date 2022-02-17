@@ -18,7 +18,6 @@ const listUser = async (req, res) => {
     },
 
   });
-
   return res.status(200).json({ list: users });
 };
 
