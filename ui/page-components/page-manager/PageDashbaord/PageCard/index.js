@@ -116,7 +116,7 @@ function PageCard({ searchValue }) {
                  <p className={styles.card_description}>
                    <span style={{ fontWeight: 'bold' }}>Slug:</span>
                    /
-                   {page.slug}
+                   {page.slug === '__index' ? '' : page.slug}
                  </p>
                   )}
              />

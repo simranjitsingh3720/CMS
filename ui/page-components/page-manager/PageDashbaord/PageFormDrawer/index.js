@@ -9,10 +9,11 @@ import useAxios from 'axios-hooks';
 function PageFormDrawer({ onFormClose, visible, setVisible }) {
   const [pageDetails, setPageDetails] = useState({ name: '', slug: '' });
   const [checked, setChecked] = useState(false);
+  const [slugRule, setSlugRule] = useState(true);
 
   const { push } = useRouter();
 
-  const [{ data, loading, error }, executePost] = useAxios(
+  const [{}, executePost] = useAxios(
     {
       url: 'http://localhost:8000/api/createPage',
       method: 'POST',
@@ -27,14 +28,15 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
       data: {
         pageDetails,
       },
-    });
-    setVisible(false);
-    message.info('Page Created Successfully', 5);
-    push('/admin/page-manager/builder/[pageID]', `/admin/page-manager/builder/${pageDetails.slug}`);
+    }).then(() => {
+      setVisible(false);
+      message.info('Page Created Successfully', 5);
+      push('/admin/page-manager/builder/[pageID]', `/admin/page-manager/builder/${pageDetails.slug}`);
+    })
+      .catch((err) => {
+        console.log('Error => ', err);
+      });
   };
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error!</p>;
 
   return (
     <Drawer title="Create New Page" placement="right" onClose={onFormClose} visible={visible}>
@@ -60,7 +62,7 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
           name="slug"
           value={pageDetails.slug}
           onChange={(e) => setPageDetails({ ...pageDetails, slug: e.target.value })}
-          rules={[{ required: true, message: 'Please enter Page Slug!' }]}
+          rules={[{ required: slugRule, message: 'Please enter Page Slug!' }]}
         >
           <Input disabled={checked} />
         </Form.Item>
@@ -73,6 +75,7 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
               setPageDetails({ ...pageDetails, slug: '__index' });
             }
             setChecked(!checked);
+            setSlugRule(!slugRule);
           }}
         >
           <Checkbox>Make this Page Default</Checkbox>

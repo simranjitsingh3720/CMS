@@ -18,7 +18,7 @@ function PageRender() {
 
   const [{ data: getData, loading: getLoading, error: getError }] = useAxios(
     {
-      url: `http://localhost:8000/api/page/${router.query.pageView}`,
+      url: `http://localhost:8000/api/page/${router.query.pageView === undefined ? '__index' : router.query.pageView}`,
       method: 'GET',
     },
   );

@@ -4,6 +4,6 @@
 
 // export default index;
 
-import PageRender from '../ui/page-components/page-manager/PageRender/home';
+import PageRender from '../ui/page-components/page-manager/PageRender';
 
 export default PageRender;
