@@ -1,6 +1,5 @@
-import React from 'react';
 import useAxios from 'axios-hooks';
-import 'antd/dist/antd.css';
+import React from 'react';
 import {
   message, Form, Input, Button, Row, Col, Typography,
 } from 'antd';
@@ -9,8 +8,6 @@ import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import styles from '../style.module.scss';
 
 const { Title, Paragraph } = Typography;
-
-// const { Title, Paragraph } = Typography;
 
 function PageSignin() {
   const router = useRouter();
@@ -42,12 +39,20 @@ function PageSignin() {
     <Row>
       <Col className={styles.overlay} span={12} style={{ backgroundColor: 'red', height: '100vh' }}>
         <Typography style={{ textAlign: 'center' }}>
-          <Title>Hello Rowdy Boys And Girls!!</Title>
+          <Title style={{ color: 'white' }}>Hello Machas!!</Title>
           <Paragraph style={{ color: 'white' }}>Enter Your Details and start Exploring</Paragraph>
-          <Button shape="round" size="large" onClick={onSignUpClick}>Sign Up</Button>
+          <Button
+            ghost
+            shape="round"
+            onClick={onSignUpClick}
+            style={{ width: 160 }}
+          >
+            SIGN UP
+
+          </Button>
         </Typography>
       </Col>
-      <Col span={12} style={{ height: '100vh' }}>
+      <Col className={styles.form_container} span={12}>
         <Form
           name="normal_login"
           className={styles.form}
@@ -56,12 +61,14 @@ function PageSignin() {
         >
           <Title>Sign In</Title>
           <Form.Item
+            className={styles.form_item}
             name="email"
             rules={[{ required: true, message: 'Please input your Email!' }]}
           >
             <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Email" />
           </Form.Item>
           <Form.Item
+            className={styles.form_item}
             name="password"
             rules={[{ required: true, message: 'Please input your Password!' }]}
           >
@@ -72,7 +79,14 @@ function PageSignin() {
             />
           </Form.Item>
           <Form.Item>
-            <Button type="danger" loading={loading} shape="round" size="large" htmlType="submit" style={{ width: '200px', fontSize: '20px', lineHeight: 0.6 }}>
+            <Button
+              loading={loading}
+              type="primary"
+              shape="round"
+              size="large"
+              htmlType="submit"
+              style={{ width: 200 }}
+            >
               SIGN IN
             </Button>
           </Form.Item>
@@ -81,4 +95,5 @@ function PageSignin() {
     </Row>
   );
 }
+
 export default PageSignin;
