@@ -36,17 +36,16 @@ function PageAsset() {
   };
 
   return (
-    <>
+    <div style={{ marginLeft: '20px' }}>
       <ActionBar actions={actions} />
-      <div style={{ marginBottom: '35px' }}>
-        <AssetDrawer
-          flag
-          visible={visible}
-          setVisible={setVisible}
-          refetch={refetch}
-          data={[]}
-        />
-      </div>
+      <AssetDrawer
+        flag
+        visible={visible}
+        setVisible={setVisible}
+        refetch={refetch}
+        data={[]}
+        style={{ marginBottom: '35px' }}
+      />
       <List
         grid={{ gutter: 16, column: 4 }}
         dataSource={data && (data.list || [])}
@@ -56,7 +55,7 @@ function PageAsset() {
           </List.Item>
         )}
       />
-    </>
+    </div>
   );
 }
 

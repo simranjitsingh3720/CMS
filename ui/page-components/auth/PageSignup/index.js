@@ -6,7 +6,7 @@ import {
 } from 'antd';
 import { useRouter } from 'next/router';
 import { MailOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
-import styles from './style.module.scss';
+import styles from '../style.module.scss';
 
 const { Title, Paragraph } = Typography;
 

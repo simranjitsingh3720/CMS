@@ -21,7 +21,6 @@ function PageLayout({
       {!blockRoute.includes(pathname) ? <Sidebar /> : null}
       <Layout className="site-layout">
         <PageContent>{children}</PageContent>
-        <Footer style={{ textAlign: 'center', padding: 0 }}>Footer</Footer>
       </Layout>
     </Layout>
   );

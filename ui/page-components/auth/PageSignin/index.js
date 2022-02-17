@@ -6,9 +6,11 @@ import {
 } from 'antd';
 import { useRouter } from 'next/router';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
-import styles from './style.module.scss';
+import styles from '../style.module.scss';
 
 const { Title, Paragraph } = Typography;
+
+// const { Title, Paragraph } = Typography;
 
 function PageSignin() {
   const router = useRouter();
@@ -27,7 +29,7 @@ function PageSignin() {
     <Row>
       <Col className={styles.overlay} span={12} style={{ backgroundColor: 'red', height: '100vh' }}>
         <Typography style={{ textAlign: 'center' }}>
-          <Title font-family>Hello Rowdy Boys And Girls!!</Title>
+          <Title>Hello Rowdy Boys And Girls!!</Title>
           <Paragraph style={{ color: 'white' }}>Enter Your Details and start Exploring</Paragraph>
           <Button shape="round" size="large" onClick={onSignUpClick}>Sign Up</Button>
         </Typography>
