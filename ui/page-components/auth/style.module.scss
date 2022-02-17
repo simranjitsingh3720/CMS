@@ -1,22 +1,32 @@
 .form {
-	display: flex;
   margin: auto;
-  width: 50%;
-	justify-content: center;
-	flex-direction: column;
-	height: 100%;
-	text-align: center;
-}
+  width: 360px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-.form{
   :global(input){
     height:40px;
     font-size:15px
   }
+
+}
+
+.form_item {
+  width: 100%;
+}
+
+.form_container {
+  height: 100vh;
+  background-color: #FFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .overlay {
-	background: linear-gradient(to right, #FF4B2B, #FF416C);
+	background: linear-gradient(to right, #4776e6, #8e54e9);
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: 0 0;
@@ -26,6 +36,7 @@
 	align-items: center;
 	justify-content: center;
 }
+
 .overlay_panel {
 	position: absolute;
 	display: flex;

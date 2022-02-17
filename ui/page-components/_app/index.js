@@ -1,7 +1,17 @@
 import Head from 'next/head';
 import axios from 'axios';
+import { ConfigProvider } from 'antd';
 import RouteGuard from './RouteGuard';
 import PageLayout from '../../components/layout/PageLayout';
+import theme from '../../theme';
+
+if (typeof window !== 'undefined') {
+  ConfigProvider.config({
+    prefixCls: 'ant',
+    iconPrefixCls: 'anticon',
+    theme,
+  });
+}
 
 function CMSApp({ Component, pageProps, session }) {
   const { title: propTitle } = pageProps || {};
@@ -15,13 +25,17 @@ function CMSApp({ Component, pageProps, session }) {
       <Head>
         <title>{title}</title>
       </Head>
-      <RouteGuard session={session}>
-        <PageLayout>
-          <Component {...pageProps} />
-        </PageLayout>
-      </RouteGuard>
-    </>)
-  }
+      <ConfigProvider>
+        <RouteGuard session={session}>
+          <PageLayout>
+            <Component {...pageProps} />
+          </PageLayout>
+        </RouteGuard>
+      </ConfigProvider>
+
+    </>
+  );
+}
 
 CMSApp.getInitialProps = async ({ ctx }) => {
   const isServer = !!ctx?.req;
