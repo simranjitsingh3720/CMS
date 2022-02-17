@@ -28,8 +28,8 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
       },
     });
     setVisible(false);
-    message.info('Page Created Successfully', 5);
-    push('/admin/page-manager/builder/[pageID]', `/admin/page-manager/builder/${pageDetails.slug}`);
+    // message.info('Page Created Successfully', 5);
+    // push('/admin/page-manager/builder/[pageID]', `/admin/page-manager/builder/${pageDetails.slug}`);
   };
 
   if (loading) return <p>Loading...</p>;
