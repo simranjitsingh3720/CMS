@@ -1,72 +1,96 @@
-import { message } from 'antd';
-import Axios from 'axios';
-import { useState } from 'react';
+import axios from 'axios';
+import React from 'react';
+import 'antd/dist/antd.css';
+import {
+  message, Form, Input, Button, Row, Col, Typography,
+} from 'antd';
 import { useRouter } from 'next/router';
-import styles from './style.module.scss';
+import { MailOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
+import styles from '../style.module.scss';
+
+const { Title, Paragraph } = Typography;
 
 function PageSignup() {
   const router = useRouter();
-  const url = 'http://localhost:8000/api/auth/signup';
-  const initialValues = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  };
-  const [values, setValues] = useState(initialValues);
-  const onFinish = async (e) => {
-    e.preventDefault();
+  const onFinish = async (values) => {
     if (values.password !== values.confirmPassword) {
-      return message.error('Passwords do not match!!!');
+      message.error('Passwords do not match!!!');
+    } else {
+      await axios.post('http://localhost:8000/api/auth/signup', values)
+        .then(() => {
+          router.push('/admin');
+        })
+        .catch(() => message.error('Invalid Signup, Please try again'));
     }
-    console.log(values);
-    await Axios.post(url, {
-      firstName: values.firstName,
-      lastName: values.lastName,
-      email: values.email,
-      password: values.password,
-    })
-      .then(() => {
-        router.push('/admin');
-      }).catch((error) => {
-        console.log(error);
-      });
-    return null;
   };
+
   const onSignInClick = async () => {
     await router.push('/admin/signin');
   };
   return (
-    <div className={styles.body}>
-      <div className={styles.container}>
-        <div className={styles.sign_up_container}>
-          <form
-            action=""
-            onSubmit={onFinish}
-            className={styles.form}
+    <Row>
+      <Col className={styles.overlay} span={12} style={{ backgroundColor: 'red', height: '100vh' }}>
+        <Typography style={{ textAlign: 'center' }}>
+          <Title>Welcome!!</Title>
+          <Paragraph style={{ color: 'white' }}>Enter Your Details and start Exploring</Paragraph>
+          <Button shape="round" size="large" onClick={onSignInClick}>Sign In</Button>
+        </Typography>
+      </Col>
+      <Col span={12} style={{ height: '100vh' }}>
+        <Form
+          name="normal_login"
+          className={styles.form}
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+        >
+          <Title>Sign Up</Title>
+          <Form.Item
+            name="firstName"
+            rules={[{ required: true, message: 'Please input your first name!' }]}
           >
-            <h1 className={styles.h1}>Create Account</h1>
-            <input type="text" name="firstName" id="firstName" placeholder="First Name" className={styles.input} onChange={(e) => setValues({ ...values, [e.target.id]: e.target.value })} required />
-            <input type="text" name="lastName" id="lastName" placeholder="Last Name" className={styles.input} onChange={(e) => setValues({ ...values, [e.target.id]: e.target.value })} required />
-            <input type="email" name="email" id="email" placeholder="Email" className={styles.input} onChange={(e) => setValues({ ...values, [e.target.id]: e.target.value })} required />
-            <input type="password" name="password" id="password" placeholder="Password" className={styles.input} onChange={(e) => setValues({ ...values, [e.target.id]: e.target.value })} required />
-            <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" className={styles.input} onChange={(e) => setValues({ ...values, [e.target.id]: e.target.value })} required />
-            <button type="submit" className={styles.button}>Sign Up</button>
-          </form>
-        </div>
-
-        <div className={styles.overlay_container}>
-          <div className={styles.overlay}>
-            <div className={styles.overlay_panel}>
-              <h1 className={styles.h1}>Welcome Back!</h1>
-              <p className={styles.p}>To keep connected with us please login</p>
-              <button type="submit" className={styles.ghost} id="signIn" onClick={onSignInClick}>Sign In</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+            <Input placeholder="First Name" prefix={<UserOutlined className="site-form-item-icon" />} />
+          </Form.Item>
+          <Form.Item
+            name="lastName"
+            rules={[{ required: true, message: 'Please input your last name!' }]}
+          >
+            <Input placeholder="Last Name" prefix={<UserOutlined className="site-form-item-icon" />} />
+          </Form.Item>
+          <Form.Item
+            name="email"
+            type="email"
+            rules={[{ required: true, message: 'Please input your Email!' }]}
+          >
+            <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Email" />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            rules={[{ required: true, message: 'Please input your Password!' }]}
+          >
+            <Input
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              type="password"
+              placeholder="Password"
+            />
+          </Form.Item>
+          <Form.Item
+            name="confirmPassword"
+            rules={[{ required: true, message: 'This field cannot be empty!' }]}
+          >
+            <Input
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              type="password"
+              placeholder="Confirm Password"
+            />
+          </Form.Item>
+          <Form.Item>
+            <Button type="danger" shape="round" size="large" htmlType="submit" style={{ width: '200px', fontSize: '20px', lineHeight: 0.6 }}>
+              Sign up
+            </Button>
+          </Form.Item>
+        </Form>
+      </Col>
+    </Row>
   );
 }
 
