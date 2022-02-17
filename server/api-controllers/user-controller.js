@@ -13,8 +13,15 @@ const listUser = async (req, res) => {
     },
   });
 
-  console.log(users);
   return res.status(200).json({ list: users });
 };
 
-module.exports = { listUser };
+const getMe = async (req, res) => {
+  const { session, sessionID } = req;
+  if (!session.user) {
+    return res.status(401).json({ message: 'No session exists' });
+  }
+  return res.status(200).json({ sessionId: sessionID, user: session.user });
+};
+
+module.exports = { listUser, getMe };

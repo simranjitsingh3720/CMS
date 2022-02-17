@@ -3,7 +3,7 @@ import useAxios from 'axios-hooks';
 import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import confirm from 'antd/lib/modal/confirm';
-import { Spin } from 'antd';
+import { Spin, Empty } from 'antd';
 import SchemaCard from './SchemaCard';
 import SchemaDrawer from './SchemaDrawer';
 import ActionBar from '../../../components/ActionBar';
@@ -61,6 +61,7 @@ function ListSchema() {
   const showSchema = (schemaSlug) => {
     push('/admin/datastore/content-builder/[schemaId]', `/admin/datastore/content-builder/${schemaSlug}`);
   };
+
   const deleteSchema = (schemaSlug) => {
     confirm({
       title: 'Are you sure to delete this table? ',
@@ -93,19 +94,20 @@ function ListSchema() {
   return (
     <div>
       <ActionBar actions={actions} />
-
       <div>
         {isDrawer
           ? <SchemaDrawer closeDrawer={closeDrawer} setIsDrawer={setIsDrawer} />
           : null}
 
       </div>
+
       <div style={{ textAlign: 'center' }}>
         {showLoading()}
       </div>
       <div>
-        {
-          ((data && data.list) || []).map((schema) => (
+        { data && data.list.length <= 0 ? <div><Empty style={{ marginTop: '83px' }} image={Empty.PRESENTED_IMAGE_SIMPLE} /></div>
+
+          : ((data && data.list) || []).map((schema) => (
             <SchemaCard
               key={schema.id}
               id={schema.id}
@@ -114,8 +116,7 @@ function ListSchema() {
               showSchema={showSchema}
               deleteSchema={deleteSchema}
             />
-          ))
-}
+          ))}
       </div>
     </div>
   );

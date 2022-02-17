@@ -10,7 +10,7 @@ export default function ContentBuilder() {
   };
 
   return (
-    <Tabs defaultActiveKey="1" type="card" onChange={callback} tabBarStyle={{ fontSize: 222, 'font-size': '22px' }} size="large">
+    <Tabs defaultActiveKey="1" type="card" onChange={callback} size="large">
       <TabPane tab="Structure" key="1">
         <ShowSchema />
       </TabPane>
