@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import {
   DeleteOutlined,
   EyeOutlined,
@@ -5,7 +6,6 @@ import {
   ExclamationCircleOutlined,
 } from '@ant-design/icons';
 import { Card, message, Tooltip, Modal } from 'antd';
-import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import useAxios from 'axios-hooks';
 import styles from './style.module.scss';
@@ -40,14 +40,14 @@ function PageCard({ searchValue }) {
     window.open(`/${newSlug}`, '_blank');
   };
 
-  const [{data:deleteData, loading:deleteLoading, error:deleteError}, handleDeletePage] = useAxios(
+  const [{ data: deleteData }, handleDeletePage] = useAxios(
     {
-      method:'DELETE'
+      method: 'DELETE',
     },
     {
-      manual:true
-    }
-  )
+      manual: true,
+    },
+  );
 
   function showConfirm(slugForDelete) {
     confirm({
@@ -61,17 +61,17 @@ function PageCard({ searchValue }) {
         handleDeletePage({
           url: `http://localhost:8000/api/page/${slugForDelete}`,
         });
-        message.warning("Page Deleted Successfully!");
+        message.warning('Page Deleted Successfully!');
       },
       onCancel() {
         console.log('Cancel');
       },
     });
   }
-  
+
   useEffect(() => {
-    refetch()
-  }, [deleteData])
+    refetch();
+  }, [deleteData]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error!</p>;
@@ -80,16 +80,15 @@ function PageCard({ searchValue }) {
     <div>
       <div className={styles.card_component}>
         {
-         data.list.map((page, index) => (
-          <Card
-             key={index}
+         ((data && data.list) || []).map((page) => (
+           <Card
+             key={page.id}
              style={{ width: 260, margin: 15 }}
              cover={(
-
                <div
-                  className={styles.card_image}
-                  style={{backgroundImage:`url(${ssImage})`,backgroundSize:'cover'}}
-                  alt="Card View"
+                 className={styles.card_image}
+                 style={{ backgroundImage: `url(${ssImage})`, backgroundSize: 'cover' }}
+
                />
 
               )}
@@ -100,34 +99,32 @@ function PageCard({ searchValue }) {
                <Tooltip title="Edit Page">
                  <FormOutlined key="edit" onClick={() => { handleEdit(page.slug); }} />
                </Tooltip>,
-                <Tooltip title="Delete Page">
-                  <DeleteOutlined key="delete" onClick={() => showConfirm(page.slug)} />
-                </Tooltip>,
-  
+               <Tooltip title="Delete Page">
+                 <DeleteOutlined key="delete" onClick={() => showConfirm(page.slug)} />
+               </Tooltip>,
+
              ]}
            >
-            <Meta
-                title={(
+             <Meta
+               title={(
                  <p className={styles.card_title}>
                    <span style={{ fontWeight: 'bold' }}>Title:</span>
-                   {' '}
                    {page.name}
                  </p>
                   )}
-                description={(
+               description={(
                  <p className={styles.card_description}>
                    <span style={{ fontWeight: 'bold' }}>Slug:</span>
-                   {' '}
                    /
                    {page.slug}
                  </p>
-                )}
-             /> 
-          </Card>
+                  )}
+             />
+           </Card>
          ))
         }
       </div>
-    </div>,
+    </div>
   );
 }
 

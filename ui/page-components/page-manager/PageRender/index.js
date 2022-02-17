@@ -47,12 +47,6 @@ function PageRender() {
 
   return (
     <div>
-      <div>
-        {/* <button type="button" style={{ marginBottom: '10px' }} onClick={getImage}>
-          Save to Preview
-        </button> */}
-      </div>
-      {/* <img width={600} src={image} alt="Screenshot" /> */}
       <div ref={ref}>
         <style>{css}</style>
         {isData ? (
@@ -61,7 +55,7 @@ function PageRender() {
 
           </div>
         ) : (
-          <div className="example">
+          <div>
             <Spin size="large" />
           </div>
         )}
