@@ -6,5 +6,5 @@ export const appearanceTypes = {
   number: [],
   assets: ['fileUpload'],
   dateTime: [],
-  boolean: ['switch', 'radio'],
+  boolean: ['switch', 'Boolean Radio'],
 };

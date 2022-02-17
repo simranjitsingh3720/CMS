@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
-import { Form, Input, Checkbox, Button, Select } from 'antd';
+import {
+  Form, Input, Checkbox, Button, Select, Col,
+} from 'antd';
 import style from './style.module.scss';
 import { dataTypes } from '../../../schemaDetails';
 
 const { Option } = Select;
 
-export default function FieldDetails({ handleOnDataTypeChange }) {
+export default function FieldDetails({ handleOnDataTypeChange, appearanceType }) {
   const onFinish = (values) => {
-    console.log('Success:', values);
+    console.log(appearanceType);
+    values.appearanceType = appearanceType;
+    if (values.appearanceType === '') {
+      console.log('EMPTY');
+    }
+    console.log('form data - >', values);
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -25,18 +32,45 @@ export default function FieldDetails({ handleOnDataTypeChange }) {
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
-          <Form.Item
-            label="Name"
-            name="name"
-            rules={[{ required: true, message: 'Please input the Name!' }]}
-          >
-            <Input />
-          </Form.Item>
+          <Col span={16}>
+            <Form.Item
+              label="Name"
+              name="name"
+              rules={[{ required: true, message: 'Please input the Name!' }]}
+            >
+              <Input style={{ width: '200px' }} />
+            </Form.Item>
+            <Form.Item name="type" label="Type" rules={[{ required: true }]}>
+              <Select
+                size="large"
+                style={{ width: 200 }}
+                placeholder="Select type of field..."
+                onChange={(value) => handleOnDataTypeChange(value)}
+                allowClear
+              >
+                {
+              dataTypes.map((dataType) => (
+                <Option value={dataType} key={dataType}>
+                  {dataType}
+                </Option>
+              ))
+              }
+
+              </Select>
+            </Form.Item>
+          </Col>
 
           <Form.Item
             label="Field ID"
             name="id"
             rules={[{ required: true, message: 'Please input the Field ID!' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Default Value"
+            name="DefaultValue"
+            rules={[{ message: 'Please input the Default Value!' }]}
           >
             <Input />
           </Form.Item>
@@ -67,7 +101,7 @@ export default function FieldDetails({ handleOnDataTypeChange }) {
           </Form.Item>
         </Form>
       </div>
-      <div>
+      {/* <div>
         <Select size="large" defaultValue={dataTypes[0]} onChange={(value) => handleOnDataTypeChange(value)} style={{ width: 200 }}>
           {
             dataTypes.map((dataType) => (
@@ -77,7 +111,7 @@ export default function FieldDetails({ handleOnDataTypeChange }) {
             ))
           }
         </Select>
-      </div>
+      </div> */}
     </div>
   );
 }
