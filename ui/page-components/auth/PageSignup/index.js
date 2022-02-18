@@ -90,7 +90,7 @@ function PageSignup() {
             name="password"
             rules={[{ required: true, message: 'Please input your Password!' }]}
           >
-            <Input
+            <Input.Password
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
               placeholder="Password"
@@ -101,7 +101,7 @@ function PageSignup() {
             name="confirmPassword"
             rules={[{ required: true, message: 'This field cannot be empty!' }]}
           >
-            <Input
+            <Input.Password
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
               placeholder="Confirm Password"

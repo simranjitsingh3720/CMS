@@ -1,7 +1,7 @@
 import useAxios from 'axios-hooks';
 import React from 'react';
 import {
-  message, Form, Input, Button, Row, Col, Typography,
+  message, Form, Input, Button, Row, Col, Typography, Checkbox,
 } from 'antd';
 import { useRouter } from 'next/router';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
@@ -28,7 +28,7 @@ function PageSignin() {
       },
     }).then(() => {
       router.push('/admin');
-      message.success('Welcome to CMS Page');
+      message.success('Welcome to CMS Page 🎉');
     })
       .catch(() => message.error('Invalid Signin, Please try again'));
   };
@@ -72,12 +72,20 @@ function PageSignin() {
             name="password"
             rules={[{ required: true, message: 'Please input your Password!' }]}
           >
-            <Input
+            <Input.Password
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
               placeholder="Password"
             />
           </Form.Item>
+          <div className={styles.form_extra_item}>
+            <Checkbox>
+              Remember me for a month
+            </Checkbox>
+            <a href="/admin">
+              Forgot password?
+            </a>
+          </div>
           <Form.Item>
             <Button
               loading={loading}
@@ -85,7 +93,7 @@ function PageSignin() {
               shape="round"
               size="large"
               htmlType="submit"
-              style={{ width: 200 }}
+              style={{ width: 200, marginTop: '20px' }}
             >
               SIGN IN
             </Button>

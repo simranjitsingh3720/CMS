@@ -10,11 +10,16 @@
     height:40px;
     font-size:15px
   }
-
 }
 
 .form_item {
   width: 100%;
+}
+
+.form_extra_item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 .form_container {
