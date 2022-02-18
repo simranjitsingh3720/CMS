@@ -18,7 +18,7 @@ function PageRender() {
 
   const [{ data: getData, loading: getLoading, error: getError }] = useAxios(
     {
-      url: `http://localhost:8000/api/page/${router.query.pageView}`,
+      url: 'http://localhost:8000/api/home',
       method: 'GET',
     },
   );
@@ -29,6 +29,7 @@ function PageRender() {
   }, [image]);
 
   useEffect(() => {
+    console.log(getData);
     if (getData) {
       setIsData(true);
       const code = JSON.parse(getData.data.data);

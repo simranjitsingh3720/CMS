@@ -4,6 +4,7 @@ import {
   EyeOutlined,
   FormOutlined,
   ExclamationCircleOutlined,
+  HomeOutlined,
 } from '@ant-design/icons';
 import { Card, message, Tooltip, Modal } from 'antd';
 import { useRouter } from 'next/router';
@@ -32,7 +33,12 @@ function PageCard({ searchValue }) {
   });
 
   const handleEdit = (newSlug) => {
-    push('/admin/page-manager/builder/[pageID]', `/admin/page-manager/builder/${newSlug}`);
+    if (newSlug) {
+      push('/admin/page-manager/builder/[pageID]', `/admin/page-manager/builder/${newSlug}`);
+      // console.log(newSlug);
+    }
+    push('/admin/page-manager/homeBuilder', '/admin/page-manager/homeBuilder');
+    // console.log('home');
   };
 
   const handleView = (newSlug) => {
@@ -108,15 +114,22 @@ function PageCard({ searchValue }) {
              <Meta
                title={(
                  <p className={styles.card_title}>
-                   <span style={{ fontWeight: 'bold' }}>Title:</span>
-                   {page.name}
+                   <span>
+                     <span style={{ fontWeight: 'bold' }}>Title: </span>
+                     {page.name}
+                   </span>
+                   <span>
+                     <Tooltip title="Make This Page Home">
+                       <HomeOutlined key="home" onClick={() => { handleEdit(page.slug); }} />
+                     </Tooltip>
+                   </span>
                  </p>
                   )}
                description={(
                  <p className={styles.card_description}>
-                   <span style={{ fontWeight: 'bold' }}>Slug:</span>
+                   <span style={{ fontWeight: 'bold' }}>Slug: </span>
                    /
-                   {page.slug === '__index' ? '' : page.slug}
+                   {page.slug}
                  </p>
                   )}
              />

@@ -35,11 +35,29 @@ export const renderSingleData = async (req, res) => {
   return res.status(404).json({ message: 'Page Not Found' });
 };
 
+export const renderHomeData = async (req, res) => {
+  const pageData = await db.Page.findOne({ where: { slug: '' } });
+  if (pageData) {
+    return res.status(200).json({ data: pageData });
+  }
+  return res.status(404).json({ message: 'Page Not Found' });
+};
+
 export const updateData = async (req, res) => {
   const { pageSlug } = req.query;
   const code = req.body;
   const stringyfiedCode = JSON.stringify(code);
   const result = await db.Page.update({ data: stringyfiedCode }, { where: { slug: pageSlug } });
+  if (result) {
+    return res.status(201).json({ data: result });
+  }
+  return res.status(404).json({ message: 'Page Not Found' });
+};
+
+export const updateHomeData = async (req, res) => {
+  const code = req.body;
+  const stringyfiedCode = JSON.stringify(code);
+  const result = await db.Page.update({ data: stringyfiedCode }, { where: { slug: '' } });
   if (result) {
     return res.status(201).json({ data: result });
   }

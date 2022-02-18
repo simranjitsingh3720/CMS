@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import useAxios from 'axios-hooks';
 
 function PageFormDrawer({ onFormClose, visible, setVisible }) {
-  const [pageDetails, setPageDetails] = useState({ name: '', slug: '' });
+  const [pageDetails, setPageDetails] = useState({ name: '', slug: '', isHome: 0 });
   const [checked, setChecked] = useState(false);
   const [slugRule, setSlugRule] = useState(true);
 
@@ -31,7 +31,10 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
     }).then(() => {
       setVisible(false);
       message.info('Page Created Successfully', 5);
-      push('/admin/page-manager/builder/[pageID]', `/admin/page-manager/builder/${pageDetails.slug}`);
+      if (pageDetails.slug) {
+        push('/admin/page-manager/builder/[pageID]', `/admin/page-manager/builder/${pageDetails.slug}`);
+      }
+      push('/admin/page-manager/homeBuilder', '/admin/page-manager/homeBuilder');
     })
       .catch((err) => {
         console.log('Error => ', err);
@@ -72,7 +75,7 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
           wrapperCol={{ offset: 8, span: 16 }}
           onChange={() => {
             if (!checked) {
-              setPageDetails({ ...pageDetails, slug: '__index' });
+              setPageDetails({ ...pageDetails, slug: '', isHome: 1 });
             }
             setChecked(!checked);
             setSlugRule(!slugRule);
