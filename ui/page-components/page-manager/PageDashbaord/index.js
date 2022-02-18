@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import PageCard from './PageCard';
-import ActionBar from '../../../components/ActionBar';
+import ActionBar from '../../../components/layout/ActionBar';
 import PageFormDrawer from './PageFormDrawer';
 import styles from './style.module.scss';
 
@@ -30,7 +30,7 @@ function PageDashboard() {
   };
 
   return (
-    <div className={styles.page_dashboard_wrapper}>
+    <>
       <ActionBar actions={actions} />
       <PageCard searchValue={searchValue} />
       <PageFormDrawer
@@ -39,7 +39,7 @@ function PageDashboard() {
         setVisible={setVisible}
       />
       <div />
-    </div>
+    </>
   );
 }
 

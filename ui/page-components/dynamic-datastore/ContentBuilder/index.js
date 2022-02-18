@@ -10,7 +10,7 @@ export default function ContentBuilder() {
   };
 
   return (
-    <Tabs defaultActiveKey="1" type="card" onChange={callback} size="large">
+    <Tabs defaultActiveKey="1" type="card" onChange={callback} size="large" style={{ margin: '0px 32px' }}>
       <TabPane tab="Structure" key="1">
         <ShowSchema />
       </TabPane>

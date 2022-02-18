@@ -24,11 +24,11 @@ function ShowSchema() {
   }
 
   return (
-    <div>
+    <>
       {JSON.stringify(data)}
       {' '}
       HELLO
-    </div>
+    </>
   );
 }
 
