@@ -12,33 +12,33 @@ export const createPage = async (req, res) => {
 
 export const listPagesBySlug = async (req, res) => {
   const { query } = req;
-  const { q } = query || '';
-  const data = await db.Page.findAll({
-    attributes: ['slug', 'name'],
-    where: {
-      name: {
-        [Op.substring]: q,
+  const { q, isHome } = query || '';
+  if (!isHome) {
+    const data = await db.Page.findAll({
+      attributes: ['slug', 'name'],
+      where: {
+        name: {
+          [Op.substring]: q,
+        },
       },
-    },
-  });
-  return res.status(200).json({ list: data });
+    });
+    return res.status(200).json({ list: data });
+  }
+
+  const pageData = await db.Page.findOne({ where: { slug: '' } });
+  if (pageData) {
+    return res.status(200).json({ data: pageData });
+  }
+  return res.status(404).json({ message: 'Page Not Found' });
 };
 
 export const renderSingleData = async (req, res) => {
-  const { pageSlug } = req.query;
+  const { pageSlug } = req.query || '';
   if (pageSlug) {
     const pageData = await db.Page.findOne({ where: { slug: pageSlug } });
     if (pageData) {
       return res.status(200).json({ data: pageData });
     }
-  }
-  return res.status(404).json({ message: 'Page Not Found' });
-};
-
-export const renderHomeData = async (req, res) => {
-  const pageData = await db.Page.findOne({ where: { slug: '' } });
-  if (pageData) {
-    return res.status(200).json({ data: pageData });
   }
   return res.status(404).json({ message: 'Page Not Found' });
 };

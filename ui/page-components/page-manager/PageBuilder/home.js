@@ -9,7 +9,7 @@ function PageBuilder() {
   const [editor, setEditor] = useState(null);
   const router = useRouter();
   const getApi = () => {
-    axios.get('http://localhost:8000/api/home')
+    axios.get('http://localhost:8000/api/page', { params: { isHome: 1 } })
       .then((res) => {
         let obj = null;
         let LandingPage = {};
@@ -36,7 +36,7 @@ function PageBuilder() {
               stepsBeforeSave: 1,
               storeHtml: true,
               storeCss: true,
-              urlStore: 'http://localhost:8000/api/home',
+              urlStore: 'http://localhost:8000/api/page',
               headers: {
                 'Content-Type': 'application/json',
                 credentials: true,

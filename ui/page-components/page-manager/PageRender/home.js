@@ -18,8 +18,11 @@ function PageRender() {
 
   const [{ data: getData, loading: getLoading, error: getError }] = useAxios(
     {
-      url: 'http://localhost:8000/api/home',
+      url: 'http://localhost:8000/api/page/',
       method: 'GET',
+      params: {
+        isHome: 1,
+      },
     },
   );
 

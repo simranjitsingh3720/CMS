@@ -119,9 +119,19 @@ function PageCard({ searchValue }) {
                      {page.name}
                    </span>
                    <span>
-                     <Tooltip title="Make This Page Home">
-                       <HomeOutlined key="home" onClick={() => { handleEdit(page.slug); }} />
-                     </Tooltip>
+                     {page.slug === ''
+                       ? (
+                         <Tooltip title="Home Page">
+
+                           <HomeOutlined key="home" style={{ color: 'red' }} onClick={() => { handleEdit(page.slug); }} />
+                         </Tooltip>
+                       )
+                       : (
+                         <Tooltip title="Make This Page Home">
+                           <HomeOutlined key="home" style={{ color: 'lightGrey' }} onClick={() => { handleEdit(page.slug); }} />
+
+                         </Tooltip>
+                       )}
                    </span>
                  </p>
                   )}
