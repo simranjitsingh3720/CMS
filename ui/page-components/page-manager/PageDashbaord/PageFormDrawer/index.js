@@ -13,6 +13,14 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
 
   const { push } = useRouter();
 
+  const [{ data, loading, error }, refetch] = useAxios({
+    url: 'http://localhost:8000/api/page/',
+    method: 'GET',
+    params: {
+      q: '',
+    },
+  });
+
   const [{}, executePost] = useAxios(
     {
       url: 'http://localhost:8000/api/createPage',
@@ -37,7 +45,9 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
       push('/admin/page-manager/homeBuilder', '/admin/page-manager/homeBuilder');
     })
       .catch((err) => {
-        console.log('Error => ', err);
+        (((data && data.list) || []).map((page) => (
+          (page.slug === pageDetails.slug) ? message.info('Page with this Slug name already Exists') : console.log('Error => ', err)
+        )));
       });
   };
 
