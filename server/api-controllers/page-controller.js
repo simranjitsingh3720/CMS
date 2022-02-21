@@ -64,6 +64,17 @@ export const updateHomeData = async (req, res) => {
   return res.status(404).json({ message: 'Page Not Found' });
 };
 
+export const updateHome = async (req, res) => {
+  const { pageSlug } = req.query;
+  const result = await db.Page.update({ slug: 'oldHome', isHome: 0 }, { where: { isHome: 1 } });
+  const result2 = await db.Page.update({ slug: '', isHome: 1 }, { where: { slug: pageSlug } });
+  const result3 = await db.Page.update({ slug: pageSlug }, { where: { slug: 'oldHome' } });
+  if (result && result2 && result3) {
+    return res.status(201).json({ data: result2 });
+  }
+  return res.status(404).json({ message: 'Page Not Found' });
+};
+
 export const deletePage = async (req, res) => {
   const { pageSlug } = req.query;
   const deletedPage = await db.Page.destroy({ where: { slug: pageSlug } });

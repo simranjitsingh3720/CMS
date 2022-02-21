@@ -30,7 +30,7 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
       },
     }).then(() => {
       setVisible(false);
-      message.info('Page Created Successfully', 5);
+      message.success('Page Created Successfully', 5);
       if (pageDetails.slug) {
         push('/admin/page-manager/builder/[pageID]', `/admin/page-manager/builder/${pageDetails.slug}`);
       }
@@ -81,7 +81,7 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
             setSlugRule(!slugRule);
           }}
         >
-          <Checkbox>Make this Page Default</Checkbox>
+          <Checkbox>Make this Page Home</Checkbox>
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
