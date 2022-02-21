@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
-const db = require('../../db/models/index');
+// const db = require('../../db/models/index');
+const db = require('../../models/index');
 
 const signup = async (req, res) => {
   const { body } = req;

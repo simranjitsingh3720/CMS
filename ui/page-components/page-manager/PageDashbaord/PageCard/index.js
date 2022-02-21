@@ -36,8 +36,7 @@ function PageCard({ searchValue }) {
   };
 
   const handleView = (newSlug) => {
-    push(`/${newSlug}`);
-    // window.open(`/${newSlug}`);
+    window.open(`/${newSlug}`, '_blank');
   };
 
   const [

@@ -1,5 +1,6 @@
 const { Op } = require('sequelize');
-const db = require('../../db/models');
+// const db = require('../../db/models')
+const db = require('../../models');
 
 export const createPage = async (req, res) => {
   const { pageDetails } = req.body;

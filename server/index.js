@@ -1,7 +1,8 @@
 require('../helpers/init-env')();
 const express = require('express');
 const next = require('next');
-const db = require('../db/models/index');
+// const db = require('../db/models/index');
+// const db = require('../models');
 
 const sessionMiddleware = require('./middlewares/session-middleware');
 const authMiddleware = require('./middlewares/auth-middleware');
@@ -27,7 +28,7 @@ const main = async () => {
     server.use('/', authMiddleware, handle);
 
     // syncing database tables
-    db.sequelize.sync();
+    // db.sequelize.sync();
 
     // running customised server at specified port
     server.listen(APP_PORT, (err) => {

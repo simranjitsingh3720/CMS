@@ -16,7 +16,7 @@ function PageRender() {
   const [isData, setIsData] = useState(false);
   const router = useRouter();
 
-  const [{ data: getData, loading: getLoading, error: getError }] = useAxios(
+  const [{ data: getData }] = useAxios(
     {
       url: `http://localhost:8000/api/page/${router.query.pageView}`,
       method: 'GET',

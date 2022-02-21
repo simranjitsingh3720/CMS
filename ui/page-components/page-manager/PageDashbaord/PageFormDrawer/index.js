@@ -26,10 +26,13 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
       data: {
         pageDetails,
       },
+    }).then(() => {
+      setVisible(false);
+      message.info('Page Created Successfully', 5);
+      push('/admin/page-manager/builder/[pageID]', `/admin/page-manager/builder/${pageDetails.slug}`);
+    }).catch((err) => {
+      console.log(err);
     });
-    setVisible(false);
-    // message.info('Page Created Successfully', 5);
-    // push('/admin/page-manager/builder/[pageID]', `/admin/page-manager/builder/${pageDetails.slug}`);
   };
 
   if (loading) return <p>Loading...</p>;
