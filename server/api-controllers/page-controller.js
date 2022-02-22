@@ -1,4 +1,4 @@
-const { Op } = require('sequelize');
+const { Op, Sequelize } = require('sequelize');
 const db = require('../../db/models');
 
 export const createPage = async (req, res) => {
@@ -65,13 +65,33 @@ export const updateHomeData = async (req, res) => {
 };
 
 export const updateHome = async (req, res) => {
+  const findOldHome = await db.Page.findOne({
+    attributes: [
+      [Sequelize.fn('MAX', Sequelize.col('slug')), 'slug'],
+    ],
+    where: {
+      slug: {
+        [Op.substring]: 'old-home',
+      },
+    },
+  });
   const { pageSlug } = req.query;
-  const result = await db.Page.update({ slug: 'oldHome', isHome: 0 }, { where: { isHome: 1 } });
-  const result2 = await db.Page.update({ slug: '', isHome: 1 }, { where: { slug: pageSlug } });
-  const result3 = await db.Page.update({ slug: pageSlug }, { where: { slug: 'oldHome' } });
-  if (result && result2 && result3) {
+
+  if (findOldHome.dataValues.slug) {
+    const arr = findOldHome.dataValues.slug.split('-');
+    const countOldHome = ~~(arr[arr.length - 1]) + 1;
+    const result = await db.Page.update({ slug: `old-home-${countOldHome}`, isHome: 0, name: `Old Home-${countOldHome}` }, { where: { isHome: 1 } });
+    const result2 = await db.Page.update({ slug: '', isHome: 1, name: 'Home' }, { where: { slug: pageSlug } });
+    if (result && result2) {
+      return res.status(201).json({ data: result2 });
+    }
+  }
+  const result = await db.Page.update({ slug: 'old-home', isHome: 0, name: 'Old Home' }, { where: { isHome: 1 } });
+  const result2 = await db.Page.update({ slug: '', isHome: 1, name: 'Home' }, { where: { slug: pageSlug } });
+  if (result && result2) {
     return res.status(201).json({ data: result2 });
   }
+
   return res.status(404).json({ message: 'Page Not Found' });
 };
 
