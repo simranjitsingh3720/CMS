@@ -11,28 +11,14 @@ export default function Switch() {
     console.log('Failed:', errorInfo);
   };
   return (
-    <Form
-      name="basic"
-      labelCol={{
-        span: 4,
-      }}
-      wrapperCol={{
-        span: 10,
-      }}
-      initialValues={{
-        remember: true,
-      }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      autoComplete="off"
-    >
+    <div>
       <Form.Item
         label="True Label"
         name="Truelabel"
         rules={[
           {
             required: true,
-            message: 'Please input your username!',
+            message: 'Please input your True Label!',
           },
         ]}
       >
@@ -45,23 +31,14 @@ export default function Switch() {
         rules={[
           {
             required: true,
-            message: 'Please input your username!',
+            message: 'Please input your False Label!',
           },
         ]}
       >
         <Input />
       </Form.Item>
 
-      <Form.Item
-        wrapperCol={{
-          offset: 4,
-          span: 16,
-        }}
-      >
-        <Button type="primary" htmlType="submit">
-          Save
-        </Button>
-      </Form.Item>
-    </Form>
+    </div>
+
   );
 }
