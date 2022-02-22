@@ -25,10 +25,12 @@ function ShowContent() {
   };
 
   return (
-    <>
-      <ActionBar actions={actions} />
+    <div>
+      <div>
+        <ActionBar actions={actions} />
+      </div>
       {JSON.stringify(data)}
-    </>
+    </div>
   );
 }
 
