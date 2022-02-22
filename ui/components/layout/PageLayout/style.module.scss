@@ -9,3 +9,24 @@
 .layout{
   min-height: 100vh;
 }
+.popover{
+  flex-direction: column;
+  :global(.ant-popover-inner-content){
+  padding: 0px;
+  }
+  :global(button){
+  width: 105px;
+  background-color: #EEE;
+  border: 0px;
+  color: black;
+  }
+  }
+  .foot{
+    position: absolute;
+    bottom: 0;
+    padding: 20px;
+    background-color: #001628;
+    margin-bottom: 55px;
+    width: 100%;
+    
+    }

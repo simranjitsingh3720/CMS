@@ -39,10 +39,14 @@ const signin = async (req, res) => {
   }
   const isPasswordSame = await bcrypt.compare(password, user.password);
   if (!isPasswordSame) {
-    return res.status(400).json({ message: 'Password is incorrect' });
+    return res.status(400).send({ message: 'Password is incorrect' });
   }
   req.session.user = user;
   return res.status(200).json({ sessionId: req.session.id });
 };
+const signout = async (req, res) => {
+  await req.session.destroy();
+  res.status(200).json({ message: 'session destroyed' });
+};
 
-module.exports = { signup, signin };
+module.exports = { signup, signin, signout };

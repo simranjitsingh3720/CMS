@@ -1,10 +1,17 @@
-import { Layout, Menu } from 'antd';
+import {
+  Layout, Menu, Button, Avatar, Popover,
+} from 'antd';
+import {
+  PoweroffOutlined, UserOutlined,
+} from '@ant-design/icons';
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import useAxios from 'axios-hooks';
 import navData from './sideNavContent';
+import Styles from './style.module.scss';
 
-const { Header } = Layout;
+const { Header, Footer } = Layout;
 
 function PageSider() {
   const Router = useRouter();
@@ -14,6 +21,27 @@ function PageSider() {
   const onCollapse = (isCollapsed) => {
     setCollapsed(isCollapsed);
   };
+  const [{}, handleGet] = useAxios({ method: 'GET' }, { manual: true });
+
+  const signout = () => {
+    handleGet({ url: '/api/auth/signout' })
+      .then(() => Router.push('/admin/signin'));
+  };
+  const content = (
+    <div>
+      <Link href="/admin/profile">
+        <Button>
+          <UserOutlined style={{ marginRight: '5px' }} />
+          Profile
+        </Button>
+      </Link>
+      <br />
+      <Button onClick={signout}>
+        <PoweroffOutlined style={{ marginRight: '5px' }} />
+        Sign out
+      </Button>
+    </div>
+  );
   return (
     <Sider
       collapsible
@@ -37,6 +65,22 @@ function PageSider() {
           </Menu.Item>
         ))}
 
+        <Footer
+          className={Styles.foot}
+        >
+          <Popover
+            placement="topRight"
+            content={content}
+            trigger="hover"
+            overlayInnerStyle={{ backgroundColor: '#EEE' }}
+            overlayClassName={Styles.popover}
+            overlayStyle={{
+              width: '105px',
+            }}
+          >
+            <Avatar icon={<UserOutlined />} />
+          </Popover>
+        </Footer>
       </Menu>
     </Sider>
   );
