@@ -13,7 +13,7 @@ export default function NewContentDrawer({ closeContentDrawer, schemaDetails }) 
 
   return (
     <Drawer title="Add a new Content" placement="right" onClose={closeContentDrawer} size="large" visible>
-      {JSON.stringify(schemaDetails.schema)}
+      {/* {JSON.stringify(schemaDetails.schema)} */}
       <Form
         name="Add new Content form"
         labelCol={{
@@ -30,7 +30,6 @@ export default function NewContentDrawer({ closeContentDrawer, schemaDetails }) 
         autoComplete="off"
       >
         <Card title="Field Contents" style={{ width: 650 }}>
-
           {fields.map((field) => (
             GetFields(field.appearanceType, field)
           ))}

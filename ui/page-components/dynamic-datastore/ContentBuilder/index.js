@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import useAxios from 'axios-hooks';
 import ShowSchema from './ShowSchema';
 import ShowContent from './ShowContent';
+import styles from './style.module.scss';
 
 const { TabPane } = Tabs;
 
@@ -28,13 +29,16 @@ export default function ContentBuilder() {
   }, [schemaSlug]);
 
   return (
-    <Tabs defaultActiveKey="1" type="card" onChange={callback} size="large">
-      <TabPane tab="Structure" key="1">
-        {schema ? <ShowSchema schema={schema} /> : <>NO SCHEMA FOUND</>}
-      </TabPane>
-      <TabPane tab="Contents" key="2">
-        <ShowContent schema={schema} />
-      </TabPane>
-    </Tabs>
+    <div className={styles.content_builder_wrapper}>
+      <Tabs defaultActiveKey="1" type="card" onChange={callback} size="large">
+        <TabPane tab="Structure" key="1">
+          {schema ? <ShowSchema schema={schema} /> : <>NO SCHEMA FOUND</>}
+        </TabPane>
+        <TabPane tab="Contents" key="2">
+          <ShowContent schema={schema} />
+        </TabPane>
+      </Tabs>
+    </div>
+
   );
 }

@@ -7,6 +7,8 @@ import {
   InputNumber,
   Switch,
   Checkbox,
+  TimePicker,
+  Space,
 } from 'antd';
 
 const { TextArea } = Input;
@@ -14,7 +16,22 @@ const { Option } = Select;
 
 const handleCheckBoxChange = (values) => {};
 
-function GetFields(appearenceType, { name, required }) {
+const onDateChange = (value, dateString) => {
+  console.log('Selected Time: ', value);
+  console.log('Formatted Selected Time: ', dateString);
+};
+
+const onDateSelect = (value) => {
+  console.log('onOk: ', value);
+};
+
+const onRadioValueChange = (radioValue) => {};
+
+const onTimeChange = (time) => {};
+
+function GetFields(appearenceType, field) {
+  const { name, required, names } = field;
+  console.log('dddd ', names);
   switch (appearenceType) {
     case 'short':
       return (
@@ -38,21 +55,21 @@ function GetFields(appearenceType, { name, required }) {
       );
 
     case 'checkbox':
-      const { values } = field.options;
+      // const { values } = options.values;
       return (
         <Form.Item name={name} label={name} rules={[{ required }]}>
-
-          <Checkbox.Group options={values} onChange={handleCheckBoxChange} />
+          <Checkbox.Group options={names} onChange={handleCheckBoxChange} />
         </Form.Item>
       );
 
     case 'radio':
       return (
         <Form.Item name={name} label={name} rules={[{ required }]}>
-          <Radio.Group>
-            <Radio.Item value="small">Small</Radio.Item>
-            <Radio.Button value="default">Default</Radio.Button>
-            <Radio.Button value="large">Large</Radio.Button>
+          <Radio.Group onChange={onRadioValueChange}>
+            {/* <Radio value={2}>B</Radio>
+            <Radio value={3}>C</Radio>
+            <Radio value={4}>D</Radio> */}
+            {names.map((radioValue) => <Radio value={radioValue}>{radioValue}</Radio>)}
           </Radio.Group>
         </Form.Item>
       );
@@ -61,21 +78,24 @@ function GetFields(appearenceType, { name, required }) {
       return (
         <Form.Item label="Select">
           <Select>
-            <Select.Option value="demo">Demo</Select.Option>
-            <Select.Option value="demo">Demo</Select.Option>
-            <Select.Option value="demo">Demo</Select.Option>
-            <Select.Option value="demo">Demo</Select.Option>
+            {names.map((dropDownValue) => (
+              <Select.Option
+                value={dropDownValue}
+              >
+                {dropDownValue}
+              </Select.Option>
+            ))}
           </Select>
         </Form.Item>
       );
 
-    case 'tags':
-      return '';
-
     case 'dateAndTime':
       return (
-        <Form.Item label="DatePicker">
-          <DatePicker />
+        <Form.Item name={name} label={name} rules={[{ required }]}>
+          <Space direction="vertical" size={12}>
+            <DatePicker showTime onChange={onDateChange} onOk={onDateSelect} />
+            <TimePicker use12Hours onChange={onTimeChange} />
+          </Space>
         </Form.Item>
       );
 
@@ -87,6 +107,9 @@ function GetFields(appearenceType, { name, required }) {
       );
 
     case 'boolean radio':
+      return '';
+
+    case 'tags':
       return '';
 
     default:
