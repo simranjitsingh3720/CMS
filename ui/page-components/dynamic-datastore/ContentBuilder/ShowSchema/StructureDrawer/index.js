@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import {
   Drawer, Tabs, Form, Input, Button, Checkbox, Select, Divider, Card, Space, message,
 } from 'antd';
@@ -16,6 +17,23 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
   const [dataType, setDataType] = useState('');
   const [appearanceType, setAppearanceType] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const formItemLayout = {
+    labelCol: {
+      xs: { span: 24 },
+      sm: { span: 4 },
+    },
+    wrapperCol: {
+      xs: { span: 24 },
+      sm: { span: 20 },
+    },
+  };
+  const formItemLayoutWithOutLabel = {
+    wrapperCol: {
+      xs: { span: 24, offset: 0 },
+      sm: { span: 20, offset: 4 },
+    },
+  };
 
   const handleOnDataTypeChange = (value) => {
     setDataType(value);
@@ -243,18 +261,71 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
 
               fieldData && fieldData.options && fieldData.options.values
                 ? (
+                  <ValueNames fieldData={fieldData.options.values} />
+                  // <Form.List
+                  //   name="values"
+                  //   rules={[
+                  //     {
+                  //       validator: async (_, names) => {
+                  //         if (!names || names.length < 2) {
+                  //           return Promise.reject(new Error('At least 2 values'));
+                  //         }
+                  //       },
+                  //     },
+                  //   ]}
+                  // >
+                  //   {(fields, { add, remove }, { errors }) => (
+                  //     <>
+                  //       {fieldData.options.values.map((field, index) => (
+                  //         <Form.Item
+                  //           {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
+                  //           label={index === 0 ? 'Value' : ''}
+                  //           required={false}
+                  //           key={field.key}
+                  //         >
+                  //           <Form.Item
 
-                  <Form.Item
-                    label="Value"
-                    required={false}
-                  >
-                    <Form.Item
-         // validateTrigger={['onChange', 'onBlur']}
-                      noStyle
-                    >
-                      <Input placeholder="Value" style={{ width: '60%' }} />
-                    </Form.Item>
-                  </Form.Item>
+              //             {...field}
+              //             validateTrigger={['onChange', 'onBlur']}
+              //             rules={[
+              //               {
+              //                 required: true,
+              //                 whitespace: true,
+              //                 message: 'Please input values or delete this field.',
+              //               },
+              //             ]}
+              //             noStyle
+              //           >
+              //             <Input placeholder="Value" style={{ width: '60%' }} defaultValue={(fieldData && fieldData.options.values[index]) || ''} />
+              //           </Form.Item>
+              //           {fieldData.options.values.length > 1 ? (
+              //             <MinusCircleOutlined
+              //               className="dynamic-delete-button"
+              //               onClick={() => remove(field.name)}
+              //             />
+              //           ) : null}
+              //         </Form.Item>
+              //       ))}
+              //       <Form.Item
+              //         wrapperCol={{
+              //           offset: 7,
+              //           span: 10,
+              //         }}
+              //       >
+              //         <Button
+              //           type="dashed"
+              //           onClick={() => add()}
+              //           style={{ width: '50%' }}
+              //           icon={<PlusOutlined />}
+              //         >
+              //           Add Values
+              //         </Button>
+
+              //         <Form.ErrorList errors={errors} />
+              //       </Form.Item>
+              //     </>
+              //   )}
+              // </Form.List>
                 )
                 : null
 

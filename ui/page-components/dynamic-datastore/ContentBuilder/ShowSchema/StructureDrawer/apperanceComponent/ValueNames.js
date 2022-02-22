@@ -1,7 +1,7 @@
 import { Form, Input, Button } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
-function ValueNames() {
+function ValueNames({ fieldData }) {
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
@@ -39,12 +39,12 @@ function ValueNames() {
       >
         {(fields, { add, remove }, { errors }) => (
           <>
-            {fields.map((field, index) => (
+            {fieldData.map((field, index) => (
               <Form.Item
                 {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
                 label={index === 0 ? 'Value' : ''}
                 required={false}
-                key={field.key}
+                key={index}
               >
                 <Form.Item
 
@@ -59,12 +59,12 @@ function ValueNames() {
                   ]}
                   noStyle
                 >
-                  <Input placeholder="Value" style={{ width: '60%' }} />
+                  <Input placeholder="Value" style={{ width: '60%' }} defaultValue={(fieldData && fieldData[index]) || ''} />
                 </Form.Item>
-                {fields.length > 1 ? (
+                {fieldData.length > 1 ? (
                   <MinusCircleOutlined
                     className="dynamic-delete-button"
-                    onClick={() => remove(field.name)}
+                    onClick={() => remove(field[index])}
                   />
                 ) : null}
               </Form.Item>
