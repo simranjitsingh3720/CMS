@@ -9,7 +9,6 @@ const authMiddleware = require('./middlewares/auth-middleware');
 const {
   APP_URL, APP_HOSTNAME, APP_PORT, APP_NAME, NODE_ENV,
 } = process.env;
-
 const app = next({
   dev: NODE_ENV !== 'production',
   hostname: APP_HOSTNAME,

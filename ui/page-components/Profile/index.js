@@ -3,8 +3,6 @@ import { useState, useEffect } from 'react';
 import useAxios from 'axios-hooks';
 import styles from './styles.module.scss';
 
-// const { Paragraph } = Typography;
-
 function Profile() {
   const [form] = Form.useForm();
 
@@ -18,12 +16,6 @@ function Profile() {
       span: 17,
     },
   };
-
-  // const [{ data }, refetch] = useAxios({
-  //   method: 'GET',
-  //   url: 'http://localhost:8000/api/user/me',
-  // });
-
   const [{ data: getdata }, handleGet] = useAxios({
     METHOD: 'GET',
     url: '/api/user/me',

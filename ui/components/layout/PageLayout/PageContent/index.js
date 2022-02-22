@@ -8,15 +8,16 @@ const blockRoute = ['/', '/admin/signin', '/admin/signup'];
 
 function PageContent({ children = null }) {
   const { title } = children?.props || {};
+  const { notDisplay } = children.props;
   const router = useRouter();
   const { pathname } = router;
   return (
     <Content className={styles.content}>
       <div
         className={styles.site}
-        style={{ minHeight: 360 }}
       >
-        {!blockRoute.includes(pathname) ? <PageTitle title={title} /> : null}
+        {!notDisplay && !blockRoute.includes(pathname) ? <PageTitle title={title} /> : null}
+
         {children}
       </div>
     </Content>

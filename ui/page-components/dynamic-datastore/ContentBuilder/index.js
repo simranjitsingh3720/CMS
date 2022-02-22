@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Tabs } from 'antd';
 import ShowSchema from './ShowSchema';
 import ShowContent from './ShowContent';

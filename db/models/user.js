@@ -8,7 +8,6 @@ module.exports = (sequelize, DataTypes) => {
       models.User.hasMany(models.Content, { foreignKey: 'createdBy' });
       models.User.hasMany(models.Schema, { foreignKey: 'createdBy' });
       models.User.hasMany(models.Page, { foreignKey: 'createdBy' });
-      // models.User.hasMany(models.Asset, { foreignKey: 'createdBy' });
     }
   }
   User.init(
