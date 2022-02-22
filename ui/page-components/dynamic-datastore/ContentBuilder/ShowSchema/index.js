@@ -78,7 +78,7 @@ function ShowSchema() {
           : null}
 
       </div>
-      {/* {data && JSON.stringify(data.schema)} */}
+      {data && JSON.stringify(data)}
       {
          ((data && data.schema) || []).map((fields) => (
            <FieldCard

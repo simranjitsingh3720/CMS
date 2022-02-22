@@ -41,9 +41,26 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
   );
 
   const onFinish = async (values) => {
+    const updatedValues = values;
+
+    if (updatedValues.values) {
+      updatedValues.options = {
+        values: values.values,
+
+      };
+      updatedValues.values = undefined;
+    }
+    if (updatedValues.values) {
+      updatedValues.options = {
+        values: values.values,
+
+      };
+      updatedValues.values = undefined;
+    }
+
     setLoading(true);
     let newSchema = data.schema || [];
-    newSchema = [...newSchema, values];
+    newSchema = [...newSchema, updatedValues];
 
     await executePatch({
 
@@ -65,7 +82,7 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
     }
   };
   return (
-    <Drawer title="Create a new field" placement="right" onClose={closeSchemaDrawer} size="large" visible>
+    <Drawer title={fieldData ? `Edit Field ${fieldData.name}` : 'Create a new Field'} placement="right" onClose={closeSchemaDrawer} size="large" visible>
 
       <Form
         name="basic"
@@ -181,6 +198,7 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
           }
               </Select>
             </Form.Item>
+            <ValueNames />
 
             {(() => {
               switch (appearanceType) {
@@ -190,7 +208,7 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
                   return (
 
                     <Form.Item
-                      name="Multiple"
+                      name="isMultiple"
                       valuePropName="checked"
                     >
                       <Checkbox style={{ marginLeft: '120px' }}>Multiple Files</Checkbox>

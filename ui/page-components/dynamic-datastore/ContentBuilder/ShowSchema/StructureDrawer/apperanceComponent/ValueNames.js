@@ -26,7 +26,7 @@ function ValueNames() {
   return (
     <div>
       <Form.List
-        name="names"
+        name="values"
         rules={[
           {
             validator: async (_, names) => {
@@ -47,6 +47,7 @@ function ValueNames() {
                 key={field.key}
               >
                 <Form.Item
+
                   {...field}
                   validateTrigger={['onChange', 'onBlur']}
                   rules={[
