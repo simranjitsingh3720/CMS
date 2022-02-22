@@ -7,6 +7,7 @@ import { Spin, Empty } from 'antd';
 import SchemaCard from './SchemaCard';
 import SchemaDrawer from './SchemaDrawer';
 import ActionBar from '../../../components/layout/ActionBar';
+import styles from './style.module.scss';
 
 function ListSchema() {
   const { push } = useRouter();
@@ -92,7 +93,7 @@ function ListSchema() {
   }, [deletedData]);
 
   return (
-    <div>
+    <div className={styles.listSchema_wrapper}>
       <ActionBar actions={actions} />
       <div>
         {isDrawer
