@@ -48,7 +48,12 @@ function ShowSchema() {
       </div>
       <div>
         {isSchemaDrawer
-          ? <StructureDrawer closeSchemaDrawer={closeSchemaDrawer} setIsSchemaDrawer={setIsSchemaDrawer} />
+          ? (
+            <StructureDrawer
+              closeSchemaDrawer={closeSchemaDrawer}
+              setIsSchemaDrawer={setIsSchemaDrawer}
+            />
+          )
           : null}
 
       </div>

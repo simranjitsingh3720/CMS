@@ -1,27 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import useAxios from 'axios-hooks';
 import { PlusOutlined } from '@ant-design/icons';
 import ActionBar from '../../../../components/ActionBar';
+import NewContentDrawer from './NewContentDrawer';
 
 function ShowContent() {
   const router = useRouter();
+  const [isContentDrawer, setIsContentDrawer] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
   const { schemaSlug } = router.query;
-  const [{ data, loading, error }, getSchema] = useAxios(
-    {
-      method: 'GET',
-      url: `http://localhost:8000/api/content/${schemaSlug}`,
-    },
-  );
 
-  const addNewContent = () => {};
+  const [{ data, loading, error }] = useAxios({
+    method: 'GET',
+    url: `http://localhost:8000/api/content/${schemaSlug}`,
+  });
+
+  const showContentDrawer = () => {
+    setIsContentDrawer(true);
+  };
+  const closeContentDrawer = () => {
+    setIsContentDrawer(false);
+  };
+
+  const addNewContent = () => {
+    showContentDrawer();
+  };
 
   const actions = {
-    buttons: [{
-      name: 'Add new content',
-      icon: <PlusOutlined />,
-      onClick: addNewContent,
-    }],
+    searchBar: {
+      searchValue,
+      setSearchValue,
+    },
+    buttons: [
+      {
+        name: 'Add new content',
+        icon: <PlusOutlined />,
+        onClick: addNewContent,
+      },
+    ],
   };
 
   return (
@@ -29,6 +46,10 @@ function ShowContent() {
       <div>
         <ActionBar actions={actions} />
       </div>
+
+      {loading ? <h1>LOADING</h1> : null}
+      {error ? <h1>{error}</h1> : null}
+      {isContentDrawer ? <NewContentDrawer closeContentDrawer={closeContentDrawer} /> : null }
       {JSON.stringify(data)}
     </div>
   );
