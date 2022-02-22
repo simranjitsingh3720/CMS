@@ -1,0 +1,17 @@
+.card_container{
+  width: 600px;
+  margin: auto;
+  height: 300px;
+  :global(Paragraph){
+    margin:40px;
+  }
+}
+.card_container1{
+  width: 600px;
+  margin: auto;
+  margin-top: 30px;
+  height: 300px;
+  :global(Paragraph){
+    margin:40px;
+  }
+}

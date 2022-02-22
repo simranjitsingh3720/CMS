@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import PageCard from './PageCard';
-import ActionBar from '../../../components/ActionBar';
+import ActionBar from '../../../components/layout/ActionBar';
 import PageFormDrawer from './PageFormDrawer';
 import styles from './style.module.scss';
 
