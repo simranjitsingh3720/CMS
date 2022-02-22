@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  DeleteOutlined,
+  EditOutlined,
   EyeOutlined,
   FormOutlined,
   ExclamationCircleOutlined,
@@ -11,14 +11,25 @@ import { useRouter } from 'next/router';
 import useAxios from 'axios-hooks';
 import styles from './style.module.scss';
 import 'antd/dist/antd.css';
+import PageEditDrawer from './PageEditDrawer';
 
 const { Meta } = Card;
 const { confirm } = Modal;
 
 function PageCard({ searchValue }) {
   const [ssImage, setSsImage] = useState(null);
+  const [visible, setVisible] = useState(false);
+  const [pageSlug, setPageSlug] = useState();
 
   const { push } = useRouter();
+
+  const onClose = () => {
+    setVisible(false);
+  };
+  const showDrawer = (slug) => {
+    setVisible(true);
+    setPageSlug(slug);
+  };
 
   useEffect(() => {
     setSsImage(localStorage.getItem('image'));
@@ -62,10 +73,6 @@ function PageCard({ searchValue }) {
         console.log('Error => ', err);
       });
   }
-
-  // useEffect(() => {
-  //   refetch();
-  // }, [homeData]);
 
   const [{ data: deleteData }, handleDeletePage] = useAxios(
     {
@@ -133,18 +140,19 @@ function PageCard({ searchValue }) {
                  <EyeOutlined key="view" onClick={() => { handleView(page.slug); }} />
                </Tooltip>,
                <Tooltip title="Edit Page">
-                 <FormOutlined key="edit" onClick={() => { handleEdit(page.slug); }} />
+                 <EditOutlined key="edit" onClick={() => { showDrawer(page.slug); }} />
                </Tooltip>,
-               <Tooltip title="Delete Page">
-                 <DeleteOutlined key="delete" onClick={() => showConfirm(page.slug)} />
-               </Tooltip>,
+               //  <Tooltip title="Delete Page">
+               //    <DeleteOutlined key="delete" onClick={() => showConfirm(page.slug)} />
+               //  </Tooltip>,
 
              ]}
            >
+
              <Meta
                title={(
                  <p className={styles.card_title}>
-                   <span>
+                   <span onClick={() => { handleEdit(page.slug); }}>
                      <span style={{ fontWeight: 'bold' }}>Title: </span>
                      {page.name}
                    </span>
@@ -173,10 +181,21 @@ function PageCard({ searchValue }) {
                  </p>
                   )}
              />
+
            </Card>
+
          ))
         }
+
       </div>
+      <div />
+      <PageEditDrawer
+        onFormClose={onClose}
+        visible={visible}
+        setVisible={setVisible}
+        data={pageSlug}
+      />
+      <div />
     </div>
   );
 }
