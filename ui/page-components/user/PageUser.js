@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Table } from 'antd';
-import ActionBar from '../../components/ActionBar';
+import ActionBar from '../../components/layout/ActionBar';
 
 function PageUser() {
   const [searchValue, setSearchValue] = useState('');
@@ -15,8 +15,6 @@ function PageUser() {
     })
       .then((res) => {
         setData(res.data.list);
-      }).catch((err) => {
-
       });
   }, [searchValue]);
 
@@ -50,7 +48,7 @@ function PageUser() {
   return (
     <>
       <ActionBar actions={actions} />
-      <Table columns={columns} dataSource={data} style={{ marginTop: '20px' }} />
+      <Table columns={columns} dataSource={data} style={{ margin: '16px 32px' }} />
     </>
   );
 }

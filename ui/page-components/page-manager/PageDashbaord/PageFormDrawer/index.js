@@ -42,7 +42,7 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
       if (pageDetails.slug) {
         push('/admin/page-manager/builder/[pageID]', `/admin/page-manager/builder/${pageDetails.slug}`);
       }
-      push('/admin/page-manager/builder', '/admin/page-manager/builder');
+      push('/admin/page-manager/builder');
     })
       .catch((err) => {
         (((data && data.list) || []).map((page) => (

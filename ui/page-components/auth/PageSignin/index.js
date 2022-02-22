@@ -1,4 +1,4 @@
-import axios from 'axios';
+import useAxios from 'axios-hooks';
 import React from 'react';
 import {
   message, Form, Input, Button, Row, Col, Typography,
@@ -11,14 +11,27 @@ const { Title, Paragraph } = Typography;
 
 function PageSignin() {
   const router = useRouter();
-  const onFinish = async (values) => {
-    await axios.post('http://localhost:8000/api/auth/signin', { email: values.email, password: values.password })
-      .then(() => {
-        router.push('/admin');
-      })
+
+  const [{ loading }, executePost] = useAxios(
+    {
+      url: '/api/auth/signin',
+      method: 'POST',
+    },
+    { manual: true },
+  );
+
+  const SubmitDetails = (values) => {
+    executePost({
+      data: {
+        email: values.email,
+        password: values.password,
+      },
+    }).then(() => {
+      router.push('/admin');
+      message.success('Welcome to CMS Page');
+    })
       .catch(() => message.error('Invalid Signin, Please try again'));
   };
-
   const onSignUpClick = async () => {
     await router.push('/admin/signup');
   };
@@ -44,7 +57,7 @@ function PageSignin() {
           name="normal_login"
           className={styles.form}
           initialValues={{ remember: true }}
-          onFinish={onFinish}
+          onFinish={SubmitDetails}
         >
           <Title>Sign In</Title>
           <Form.Item
@@ -67,6 +80,7 @@ function PageSignin() {
           </Form.Item>
           <Form.Item>
             <Button
+              loading={loading}
               type="primary"
               shape="round"
               size="large"

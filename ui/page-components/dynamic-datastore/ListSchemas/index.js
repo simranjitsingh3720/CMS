@@ -6,7 +6,8 @@ import confirm from 'antd/lib/modal/confirm';
 import { Spin, Empty } from 'antd';
 import SchemaCard from './SchemaCard';
 import SchemaDrawer from './SchemaDrawer';
-import ActionBar from '../../../components/ActionBar';
+import ActionBar from '../../../components/layout/ActionBar';
+import styles from './style.module.scss';
 
 function ListSchema() {
   const { push } = useRouter();
@@ -92,7 +93,7 @@ function ListSchema() {
   }, [deletedData]);
 
   return (
-    <div>
+    <div className={styles.listSchema_wrapper}>
       <ActionBar actions={actions} />
       <div>
         {isDrawer
@@ -104,7 +105,7 @@ function ListSchema() {
       <div style={{ textAlign: 'center' }}>
         {showLoading()}
       </div>
-      <div>
+      <div style={{ margin: '16px 32px' }}>
         { data && data.list.length <= 0 ? <div><Empty style={{ marginTop: '83px' }} image={Empty.PRESENTED_IMAGE_SIMPLE} /></div>
 
           : ((data && data.list) || []).map((schema) => (

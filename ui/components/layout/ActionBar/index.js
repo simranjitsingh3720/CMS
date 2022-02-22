@@ -1,5 +1,6 @@
 import { Button, Input } from 'antd';
 import React from 'react';
+import styles from './styles.module.scss';
 
 function ActionBar({ children = null, actions = {} }) {
   let buttons = null;
@@ -25,10 +26,7 @@ function ActionBar({ children = null, actions = {} }) {
   }
 
   return (
-    <div style={{
-      marginTop: '10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '15px',
-    }}
-    >
+    <div className={styles.container}>
       <div>
         {buttons}
       </div>

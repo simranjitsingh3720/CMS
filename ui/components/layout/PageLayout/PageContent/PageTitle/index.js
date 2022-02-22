@@ -1,20 +1,20 @@
 import React from 'react';
 import { PageHeader } from 'antd';
+import styles from './styles.module.scss';
 
 function PageTitle({
-  title = null, onBack, subTitle = null, extra = [],
+  title = null, subTitle = null, extra = [],
 }) {
   return (
     <div>
       <PageHeader
-        onBack={onBack || function goBack() { window.history.back(); }}
+        // onBack={onBack || function goBack() { window.history.back(); }}
         title={title}
         subTitle={subTitle}
         extra={extra}
         notDisplay={false}
-        style={{ fontSize: '200px' }}
+        className={styles.page_title}
       />
-      {/* <Divider style={{ padding: 0, margin: 0, border: '2px solid red' }} /> */}
     </div>
   );
 }

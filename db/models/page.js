@@ -3,10 +3,10 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Page extends Model {
     static associate(models) {
-      models.Schema.belongsTo(models.User, { foreignKey: 'createdBy' });
-      models.Schema.belongsTo(models.User, { foreignKey: 'updatedBy' });
-      models.Schema.belongsTo(models.User, { foreignKey: 'publishedBy' });
-      models.Schema.belongsTo(models.User, { foreignKey: 'deletedBy' });
+      models.Page.belongsTo(models.User, { foreignKey: 'createdBy' });
+      models.Page.belongsTo(models.User, { foreignKey: 'updatedBy' });
+      models.Page.belongsTo(models.User, { foreignKey: 'publishedBy' });
+      models.Page.belongsTo(models.User, { foreignKey: 'deletedBy' });
     }
   }
 
