@@ -37,7 +37,7 @@ function PageCard({ searchValue }) {
       push('/admin/page-manager/builder/[pageID]', `/admin/page-manager/builder/${newSlug}`);
       // console.log(newSlug);
     }
-    push('/admin/page-manager/homeBuilder', '/admin/page-manager/homeBuilder');
+    push('/admin/page-manager/builder', '/admin/page-manager/builder');
     // console.log('home');
   };
 
