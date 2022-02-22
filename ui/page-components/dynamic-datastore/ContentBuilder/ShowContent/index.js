@@ -5,7 +5,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import ActionBar from '../../../../components/ActionBar';
 import NewContentDrawer from './NewContentDrawer';
 
-function ShowContent() {
+function ShowContent({ schema }) {
   const router = useRouter();
   const [isContentDrawer, setIsContentDrawer] = useState(false);
   const [searchValue, setSearchValue] = useState('');
@@ -49,7 +49,12 @@ function ShowContent() {
 
       {loading ? <h1>LOADING</h1> : null}
       {error ? <h1>{error}</h1> : null}
-      {isContentDrawer ? <NewContentDrawer closeContentDrawer={closeContentDrawer} /> : null }
+      {isContentDrawer ? (
+        <NewContentDrawer
+          closeContentDrawer={closeContentDrawer}
+          schemaDetails={schema}
+        />
+      ) : null }
       {JSON.stringify(data)}
     </div>
   );

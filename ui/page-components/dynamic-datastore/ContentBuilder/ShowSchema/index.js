@@ -6,7 +6,7 @@ import ActionBar from '../../../../components/ActionBar';
 import StructureDrawer from './StructureDrawer';
 import FieldCard from './FieldCard';
 
-function ShowSchema() {
+function ShowSchema({ schema }) {
   const router = useRouter();
   const { schemaSlug } = router.query;
   const [isSchemaDrawer, setIsSchemaDrawer] = useState(false);

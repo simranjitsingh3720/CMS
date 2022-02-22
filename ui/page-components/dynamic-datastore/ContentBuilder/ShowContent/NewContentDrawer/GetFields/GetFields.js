@@ -1,12 +1,10 @@
 import {
   Form,
   Input,
-  Button,
   Radio,
   Select,
   DatePicker,
   InputNumber,
-  TreeSelect,
   Switch,
   Checkbox,
 } from 'antd';
@@ -16,47 +14,43 @@ const { Option } = Select;
 
 const handleCheckBoxChange = (values) => {};
 
-function GetFields(appearenceType, field) {
+function GetFields(appearenceType, { name, required }) {
   switch (appearenceType) {
     case 'short':
       return (
-        <Form.Item name={field.name} label={field.name} rules={[{ required: field.required }]}>
+        <Form.Item name={name} label={name} rules={[{ required }]}>
           <Input />
         </Form.Item>
       );
 
     case 'long':
-
       return (
-        <Form.Item name={field.name} label={field.name} rules={[{ required: field.required }]}>
+        <Form.Item name={name} label={name} rules={[{ required }]}>
           <TextArea rows={4} />
         </Form.Item>
       );
 
     case 'number':
       return (
-        <Form.Item label="InputNumber">
+        <Form.Item name={name} label={name} rules={[{ required }]}>
           <InputNumber />
         </Form.Item>
       );
 
     case 'checkbox':
-      if (1 > 2) {
-        console.log(3);
-      }
       const { values } = field.options;
       return (
-        <Form.Item name={field.name} label={field.name} rules={[{ required: field.required }]}>
+        <Form.Item name={name} label={name} rules={[{ required }]}>
 
-          <Checkbox.Group options={values} defaultValue={['Apple']} onChange={handleCheckBoxChange} />
+          <Checkbox.Group options={values} onChange={handleCheckBoxChange} />
         </Form.Item>
       );
 
     case 'radio':
       return (
-        <Form.Item name={field.name} label={field.name} rules={[{ required: field.required }]}>
+        <Form.Item name={name} label={name} rules={[{ required }]}>
           <Radio.Group>
-            <Radio.Button value="small">Small</Radio.Button>
+            <Radio.Item value="small">Small</Radio.Item>
             <Radio.Button value="default">Default</Radio.Button>
             <Radio.Button value="large">Large</Radio.Button>
           </Radio.Group>
@@ -67,6 +61,9 @@ function GetFields(appearenceType, field) {
       return (
         <Form.Item label="Select">
           <Select>
+            <Select.Option value="demo">Demo</Select.Option>
+            <Select.Option value="demo">Demo</Select.Option>
+            <Select.Option value="demo">Demo</Select.Option>
             <Select.Option value="demo">Demo</Select.Option>
           </Select>
         </Form.Item>
