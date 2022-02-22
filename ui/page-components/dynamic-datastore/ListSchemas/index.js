@@ -92,11 +92,14 @@ function ListSchema() {
   }, [deletedData]);
 
   return (
-    <>
+    <div>
       <ActionBar actions={actions} />
-      {isDrawer
-        ? <SchemaDrawer closeDrawer={closeDrawer} setIsDrawer={setIsDrawer} />
-        : null}
+      <div>
+        {isDrawer
+          ? <SchemaDrawer closeDrawer={closeDrawer} setIsDrawer={setIsDrawer} />
+          : null}
+
+      </div>
 
       <div style={{ textAlign: 'center' }}>
         {showLoading()}
@@ -115,7 +118,7 @@ function ListSchema() {
             />
           ))}
       </div>
-    </>
+    </div>
   );
 }
 
