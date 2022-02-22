@@ -4,8 +4,9 @@ import {
   EyeOutlined,
   FormOutlined,
   ExclamationCircleOutlined,
+  HomeOutlined,
 } from '@ant-design/icons';
-import { Card, Tooltip, Modal, Empty } from 'antd';
+import { Card, message, Modal, Empty, Tooltip } from 'antd';
 import { useRouter } from 'next/router';
 import useAxios from 'axios-hooks';
 import styles from './style.module.scss';
@@ -32,16 +33,41 @@ function PageCard({ searchValue }) {
   });
 
   const handleEdit = (newSlug) => {
-    push('/admin/page-manager/builder/[pageID]', `/admin/page-manager/builder/${newSlug}`);
+    if (newSlug) {
+      push('/admin/page-manager/builder/[pageID]', `/admin/page-manager/builder/${newSlug}`);
+    }
+    push('/admin/page-manager/builder');
   };
 
   const handleView = (newSlug) => {
     window.open(`/${newSlug}`, '_blank');
   };
 
-  const [
-    { data: deleteData, loading: deleteLoading, error: deleteError },
-    handleDeletePage] = useAxios(
+  const [{ data: homeData }, executeHandleHome] = useAxios(
+    {
+      method: 'POST',
+    },
+    {
+      manual: true,
+    },
+  );
+
+  function handleHome(newSlug) {
+    executeHandleHome({
+      url: `http://localhost:8000/api/updateHome/${newSlug}`,
+    }).then(() => {
+      message.success('Home Updated Successfully', 5);
+    })
+      .catch((err) => {
+        console.log('Error => ', err);
+      });
+  }
+
+  // useEffect(() => {
+  //   refetch();
+  // }, [homeData]);
+
+  const [{ data: deleteData }, handleDeletePage] = useAxios(
     {
       method: 'DELETE',
     },
@@ -51,24 +77,37 @@ function PageCard({ searchValue }) {
   );
 
   function showConfirm(slugForDelete) {
-    confirm({
-      title: 'Do you Want to delete this page?',
-      icon: <ExclamationCircleOutlined />,
-      // content: 'Some descriptions',
-      onOk() {
-        handleDeletePage({
-          url: `http://localhost:8000/api/page/${slugForDelete}`,
-        });
-      },
-      onCancel() {
-        console.log('Cancel');
-      },
-    });
+    console.log(slugForDelete);
+    if (slugForDelete === '') {
+      Modal.error({
+        title: 'Home Page cannot be deleted...',
+        okText: 'OK',
+        okType: 'danger',
+      });
+    } else {
+      confirm({
+        title: 'Are you sure to delete this page?',
+        icon: <ExclamationCircleOutlined />,
+        content: <p className={styles.modal_content}>After Deleting this Page you won't be able to use this slug</p>,
+        okText: 'Yes',
+        okType: 'danger',
+        cancelText: 'No',
+        onOk() {
+          handleDeletePage({
+            url: `http://localhost:8000/api/page/${slugForDelete}`,
+          });
+          message.success('Page Deleted Successfully!');
+        },
+        onCancel() {
+          console.log('Cancel');
+        },
+      });
+    }
   }
 
   useEffect(() => {
     refetch();
-  }, [deleteData]);
+  }, [deleteData, homeData]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error!</p>;
@@ -104,13 +143,30 @@ function PageCard({ searchValue }) {
               <Meta
                 title={(
                   <p className={styles.card_title}>
-                    <span style={{ fontWeight: 'bold' }}>Title:</span>
-                    {page.name}
+                    <span>
+                      <span style={{ fontWeight: 'bold' }}>Title: </span>
+                      {page.name}
+                    </span>
+                    <span>
+                      {page.slug === ''
+                        ? (
+                          <Tooltip title="Home Page">
+
+                            <HomeOutlined key="home" style={{ color: 'red' }} />
+                          </Tooltip>
+                        )
+                        : (
+                          <Tooltip title="Make This Page Home">
+                            <HomeOutlined key="home" style={{ color: 'lightGrey' }} onClick={() => { handleHome(page.slug); }} />
+
+                          </Tooltip>
+                        )}
+                    </span>
                   </p>
                   )}
                 description={(
                   <p className={styles.card_description}>
-                    <span style={{ fontWeight: 'bold' }}>Slug:</span>
+                    <span style={{ fontWeight: 'bold' }}>Slug: </span>
                     /
                     {page.slug}
                   </p>

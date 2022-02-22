@@ -19,6 +19,7 @@ module.exports = {
           },
           unique: true,
         },
+        isHome: { type: Sequelize.BOOLEAN, allowNull: false },
         data: { type: Sequelize.JSON },
         status: { type: Sequelize.ENUM('draft', 'published'), allowNull: false, defaultValue: 'draft' },
         createdBy: { type: Sequelize.UUID },
