@@ -3,6 +3,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
+    "migrate":"yarn sequelize-cli db:create && yarn sequelize-cli db:migrate ",
     "dev": "node index.js",
     "build": "next build",
     "start": "next start",
@@ -40,6 +41,7 @@
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.28.0",
-    "eslint-plugin-react-hooks": "^4.3.0"
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "sequelize-cli": "^6.4.1"
   }
 }
