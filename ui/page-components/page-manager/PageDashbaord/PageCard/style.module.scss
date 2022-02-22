@@ -1,12 +1,15 @@
 .card_component{
   display: flex;
   justify-content: flex-start;
+  align-items: center;
   margin: 10px;
   flex-wrap: wrap;
 }
 
 .card_title {
   margin: 0;
+  display: flex;
+  justify-content: space-between;
 }
 
 .card_description{
@@ -17,4 +20,9 @@
   height: 150px;
   width: 260px;
   border-bottom: 1px solid rgb(236, 233, 233);
+}
+
+.modal_content{
+  color: red;
+  font-size: 0.9em;
 }

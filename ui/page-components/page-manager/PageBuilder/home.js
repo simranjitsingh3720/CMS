@@ -3,29 +3,16 @@ import React, { useEffect, useState } from 'react';
 import 'grapesjs/dist/css/grapes.min.css';
 import GrapesJS from 'grapesjs';
 import gjsPresetWebpage from 'grapesjs-preset-webpage';
-import useAxios from 'axios-hooks';
+import axios from 'axios';
 
 function PageBuilder() {
   const [editor, setEditor] = useState(null);
   const router = useRouter();
-
-  const [{ data: getData }, refetchPageData] = useAxios(
-    {
-      url: `http://localhost:8000/api/page/${router.query.pageSlug}`,
-      method: 'GET',
-    },
-    {
-      manual: true,
-    },
-  );
-
-  const getApiM = () => {
-    if (router.query.pageSlug) {
-      refetchPageData().then((res) => {
+  const getApi = () => {
+    axios.get('http://localhost:8000/api/page', { params: { isHome: 1 } })
+      .then((res) => {
         let obj = null;
-
         let LandingPage = {};
-        // if (router.query.pageSlug) {
         obj = JSON.parse(res.data.data.data);
         LandingPage = {
           html: obj && obj['CMS-html'],
@@ -33,7 +20,6 @@ function PageBuilder() {
           components: obj && obj['CMS-components'],
           style: obj && obj['CMS-styles'],
         };
-        // }
 
         if (!editor) {
           const e = GrapesJS.init({
@@ -50,7 +36,7 @@ function PageBuilder() {
               stepsBeforeSave: 1,
               storeHtml: true,
               storeCss: true,
-              urlStore: `http://localhost:8000/api/page/${router.query.pageSlug}`,
+              urlStore: 'http://localhost:8000/api/page',
               headers: {
                 'Content-Type': 'application/json',
                 credentials: true,
@@ -63,11 +49,10 @@ function PageBuilder() {
           setEditor(e);
         }
       });
-    }
   };
 
   useEffect(() => {
-    getApiM();
+    getApi();
   }, [router.query.pageSlug]);
 
   return (
