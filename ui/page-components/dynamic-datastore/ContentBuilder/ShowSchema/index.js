@@ -50,13 +50,6 @@ function ShowSchema() {
   }, [schemaSlug]);
 
   return (
-<<<<<<< HEAD
-    <>
-      {JSON.stringify(data)}
-      {' '}
-      HELLO
-    </>
-=======
     <div>
       <div>
         <ActionBar actions={actions} />
@@ -99,7 +92,6 @@ function ShowSchema() {
          ))
          }
     </div>
->>>>>>> 5ad2a97b2f8c806da01d923e696dca743dd21dd0
   );
 }
 
