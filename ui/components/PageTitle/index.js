@@ -11,6 +11,7 @@ function PageTitle({
         title={title}
         subTitle={subTitle}
         extra={extra}
+        notDisplay={false}
         style={{ fontSize: '200px' }}
       />
       {/* <Divider style={{ padding: 0, margin: 0, border: '2px solid red' }} /> */}

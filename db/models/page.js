@@ -23,11 +23,9 @@ module.exports = (sequelize, DataTypes) => {
       slug: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-          notEmpty: true,
-        },
         unique: true,
       },
+      isHome: { type: DataTypes.BOOLEAN, allowNull: false },
       data: { type: DataTypes.JSON },
       status: { type: DataTypes.ENUM('draft', 'published'), allowNull: false, defaultValue: 'draft' },
       createdBy: { type: DataTypes.UUID },
