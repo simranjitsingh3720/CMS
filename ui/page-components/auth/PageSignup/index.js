@@ -1,6 +1,5 @@
-import axios from 'axios';
+import useAxios from 'axios-hooks';
 import React from 'react';
-import 'antd/dist/antd.css';
 import {
   message, Form, Input, Button, Row, Col, Typography,
 } from 'antd';
@@ -12,13 +11,25 @@ const { Title, Paragraph } = Typography;
 
 function PageSignup() {
   const router = useRouter();
-  const onFinish = async (values) => {
+
+  const [{ loading }, executePost] = useAxios(
+    {
+      url: '/api/auth/signup',
+      method: 'POST',
+    },
+    { manual: true },
+  );
+
+  const onFinish = (values) => {
     if (values.password !== values.confirmPassword) {
       message.error('Passwords do not match!!!');
     } else {
-      await axios.post('http://localhost:8000/api/auth/signup', values)
+      executePost({
+        data: values,
+      })
         .then(() => {
           router.push('/admin');
+          message.success('Welcome to CMS Page');
         })
         .catch(() => message.error('Invalid Signup, Please try again'));
     }
@@ -31,12 +42,20 @@ function PageSignup() {
     <Row>
       <Col className={styles.overlay} span={12} style={{ backgroundColor: 'red', height: '100vh' }}>
         <Typography style={{ textAlign: 'center' }}>
-          <Title>Welcome!!</Title>
+          <Title style={{ color: 'white' }}>Hello Machas!!</Title>
           <Paragraph style={{ color: 'white' }}>Enter Your Details and start Exploring</Paragraph>
-          <Button shape="round" size="large" onClick={onSignInClick}>Sign In</Button>
+          <Button
+            ghost
+            shape="round"
+            onClick={onSignInClick}
+            style={{ width: 160 }}
+          >
+            SIGN IN
+
+          </Button>
         </Typography>
       </Col>
-      <Col span={12} style={{ height: '100vh' }}>
+      <Col span={12} className={styles.form_container}>
         <Form
           name="normal_login"
           className={styles.form}
@@ -45,18 +64,21 @@ function PageSignup() {
         >
           <Title>Sign Up</Title>
           <Form.Item
+            className={styles.form_item}
             name="firstName"
             rules={[{ required: true, message: 'Please input your first name!' }]}
           >
             <Input placeholder="First Name" prefix={<UserOutlined className="site-form-item-icon" />} />
           </Form.Item>
           <Form.Item
+            className={styles.form_item}
             name="lastName"
             rules={[{ required: true, message: 'Please input your last name!' }]}
           >
             <Input placeholder="Last Name" prefix={<UserOutlined className="site-form-item-icon" />} />
           </Form.Item>
           <Form.Item
+            className={styles.form_item}
             name="email"
             type="email"
             rules={[{ required: true, message: 'Please input your Email!' }]}
@@ -64,6 +86,7 @@ function PageSignup() {
             <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Email" />
           </Form.Item>
           <Form.Item
+            className={styles.form_item}
             name="password"
             rules={[{ required: true, message: 'Please input your Password!' }]}
           >
@@ -74,6 +97,7 @@ function PageSignup() {
             />
           </Form.Item>
           <Form.Item
+            className={styles.form_item}
             name="confirmPassword"
             rules={[{ required: true, message: 'This field cannot be empty!' }]}
           >
@@ -84,7 +108,14 @@ function PageSignup() {
             />
           </Form.Item>
           <Form.Item>
-            <Button type="danger" shape="round" size="large" htmlType="submit" style={{ width: '200px', fontSize: '20px', lineHeight: 0.6 }}>
+            <Button
+              type="primary"
+              shape="round"
+              size="large"
+              htmlType="submit"
+              style={{ width: 200 }}
+              loading={loading}
+            >
               SIGN UP
             </Button>
           </Form.Item>

@@ -1,3 +1,4 @@
+const { message } = require('antd');
 const bcrypt = require('bcrypt');
 const db = require('../../db/models');
 
@@ -39,5 +40,9 @@ const signin = async (req, res) => {
   req.session.user = user;
   return res.status(200).json({ sessionId: req.session.id });
 };
+const signout = async (req, res) => {
+  await req.session.destroy();
+  res.status(200).json({ message: 'session destroyed' });
+};
 
-module.exports = { signup, signin };
+module.exports = { signup, signin, signout };
