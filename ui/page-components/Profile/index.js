@@ -5,9 +5,11 @@ import styles from './styles.module.scss';
 
 function Profile() {
   const [form] = Form.useForm();
+  const [dataForm] = Form.useForm();
 
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [Passwordloading, setPasswordloading] = useState(false);
   const formItemLayout = {
     labelCol: {
       span: 8,
@@ -21,7 +23,7 @@ function Profile() {
     url: '/api/user/me',
   });
 
-  const [{ data: getOneUser }, UserGet] = useAxios(
+  const [{ data: getOneUser }, userGet] = useAxios(
     {
       method: 'GET',
     },
@@ -29,13 +31,16 @@ function Profile() {
   );
 
   useEffect(() => {
-    setLoading(true);
     handleGet()
       .then((res) => {
-        UserGet({ url: `http://localhost:8000/api/user/${res.data.user.id}` })
+        userGet({ url: `http://localhost:8000/api/user/${res.data.user.id}` })
           .then((response) => {
             setData(response.data.user);
-            setLoading(false);
+            dataForm.setFieldsValue({
+              firstName: response.data.user.firstName,
+              lastName: response.data.user.lastName,
+              email: response.data.user.email,
+            });
           });
       });
   }, []);
@@ -60,7 +65,7 @@ function Profile() {
     })
       .then(() => {
         message.success('User Updated');
-        UserGet({ url: `http://localhost:8000/api/user/${data.id}` })
+        userGet({ url: `http://localhost:8000/api/user/${data.id}` })
           .then((res) => {
             setData(res.data.user);
             setLoading(false);
@@ -73,9 +78,12 @@ function Profile() {
   };
 
   const changePassword = (values) => {
+    setPasswordloading(true);
     if (values.currentPassword === values.newPassword) {
+      setPasswordloading(false);
       message.error('password should be different from previous password');
     } else if (values.confirmPassword !== values.newPassword) {
+      setPasswordloading(false);
       message.error('confirm password should be match with new password');
     } else {
       executePatch({
@@ -87,26 +95,24 @@ function Profile() {
       })
         .then(() => {
           form.resetFields();
+          setPasswordloading(false);
           message.success('successfully updated');
         })
         .catch(() => {
           form.resetFields();
+          setPasswordloading(false);
           message.error('Password is not updated');
         });
     }
   };
   return (
     <div className="site-card-border-less-wrapper">
-      <Card title="Basic Information" className={styles.card_container} bordered={false} loading={loading}>
+      <Card title="Basic Information" className={styles.card_container} bordered={false}>
         <Form
+          form={dataForm}
           name="validate_other"
           {...formItemLayout}
           onFinish={SubmitDetails}
-          initialValues={{
-            firstName: data.firstName,
-            lastName: data.lastName,
-            email: data.email,
-          }}
         >
           <Form.Item
             name="firstName"
@@ -170,7 +176,7 @@ function Profile() {
           <Button
             type="primary"
             htmlType="submit"
-            loading={loading}
+            loading={Passwordloading}
           >
             Change
           </Button>
