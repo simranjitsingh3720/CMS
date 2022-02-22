@@ -35,14 +35,11 @@ function PageCard({ searchValue }) {
   const handleEdit = (newSlug) => {
     if (newSlug) {
       push('/admin/page-manager/builder/[pageID]', `/admin/page-manager/builder/${newSlug}`);
-      // console.log(newSlug);
     }
-    push('/admin/page-manager/builder', '/admin/page-manager/builder');
-    // console.log('home');
+    push('/admin/page-manager/builder');
   };
 
   const handleView = (newSlug) => {
-    // push('/[pageView]', `/${newSlug}`);
     window.open(`/${newSlug}`, '_blank');
   };
 

@@ -7,15 +7,14 @@ import styles from './style.module.scss';
 const blockRoute = ['/', '/admin/signin', '/admin/signup'];
 
 function PageContent({ children = null }) {
-  const { title } = children.props;
+  const { title } = children?.props || {};
   const { notDisplay } = children.props;
   const router = useRouter();
   const { pathname } = router;
   return (
     <Content className={styles.content}>
       <div
-        className="site-layout-background"
-        style={{ minHeight: 360 }}
+        className={styles.site}
       >
         {!notDisplay && !blockRoute.includes(pathname) ? <PageTitle title={title} /> : null}
 
