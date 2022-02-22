@@ -6,13 +6,16 @@ function PageTitle({
   title = null, subTitle = null, extra = [],
 }) {
   return (
-    <PageHeader
-      // onBack={onBack || function goBack() { window.history.back(); }}
-      title={title}
-      subTitle={subTitle}
-      extra={extra}
-      className={styles.page_title}
-    />
+    <div>
+      <PageHeader
+        // onBack={onBack || function goBack() { window.history.back(); }}
+        title={title}
+        subTitle={subTitle}
+        extra={extra}
+        notDisplay={false}
+        className={styles.page_title}
+      />
+    </div>
   );
 }
 
