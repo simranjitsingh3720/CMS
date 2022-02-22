@@ -6,29 +6,11 @@ module.exports = {
       schema: { type: Sequelize.JSON },
       title: { type: Sequelize.STRING },
       description: { type: Sequelize.STRING },
-      createdBy: {
-        type: Sequelize.UUID,
-        references: {
-          model: 'Users',
-          key: 'id',
-        },
-      },
+      createdBy: { type: Sequelize.UUID },
       createdAt: { type: Sequelize.DATE },
-      updatedBy: {
-        type: Sequelize.UUID,
-        references: {
-          model: 'Users',
-          key: 'id',
-        },
-      },
+      updatedBy: { type: Sequelize.UUID },
       updatedAt: { type: Sequelize.DATE },
-      deletedBy: {
-        type: Sequelize.UUID,
-        references: {
-          model: 'Users',
-          key: 'id',
-        },
-      },
+      deletedBy: { type: Sequelize.UUID },
       deletedAt: { type: Sequelize.DATE },
     });
   },

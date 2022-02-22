@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const db = require('../../models');
+const db = require('../../db/models');
 
 const getSchema = async (req, res) => {
   const { schemaSlug } = req.query;

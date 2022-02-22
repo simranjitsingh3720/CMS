@@ -5,7 +5,7 @@ import {
   FormOutlined,
   ExclamationCircleOutlined,
 } from '@ant-design/icons';
-import { Card, Tooltip, Modal } from 'antd';
+import { Card, Tooltip, Modal, Empty } from 'antd';
 import { useRouter } from 'next/router';
 import useAxios from 'axios-hooks';
 import styles from './style.module.scss';
@@ -76,50 +76,48 @@ function PageCard({ searchValue }) {
   return (
     <div>
       <div className={styles.card_component}>
-        {
-         ((data && data.list) || []).map((page) => (
-           <Card
-             key={page.id}
-             style={{ width: 260, margin: 15 }}
-             cover={(
-               <div
-                 className={styles.card_image}
-                 style={{ backgroundImage: `url(${ssImage})`, backgroundSize: 'cover' }}
-
-               />
+        { data && data.list.length <= 0 ? <div style={{ width: '100%' }}><Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /></div>
+          : ((data && data.list) || []).map((page) => (
+            <Card
+              key={page.id}
+              style={{ width: 260, margin: 15 }}
+              cover={(
+                <div
+                  className={styles.card_image}
+                  style={{ backgroundImage: `url(${ssImage})`, backgroundSize: 'cover' }}
+                />
 
               )}
-             actions={[
-               <Tooltip title="View Page">
-                 <EyeOutlined key="view" onClick={() => { handleView(page.slug); }} />
-               </Tooltip>,
-               <Tooltip title="Edit Page">
-                 <FormOutlined key="edit" onClick={() => { handleEdit(page.slug); }} />
-               </Tooltip>,
-               <Tooltip title="Delete Page">
-                 <DeleteOutlined key="delete" onClick={() => showConfirm(page.slug)} />
-               </Tooltip>,
+              actions={[
+                <Tooltip title="View Page">
+                  <EyeOutlined key="view" onClick={() => { handleView(page.slug); }} />
+                </Tooltip>,
+                <Tooltip title="Edit Page">
+                  <FormOutlined key="edit" onClick={() => { handleEdit(page.slug); }} />
+                </Tooltip>,
+                <Tooltip title="Delete Page">
+                  <DeleteOutlined key="delete" onClick={() => showConfirm(page.slug)} />
+                </Tooltip>,
 
-             ]}
-           >
-             <Meta
-               title={(
-                 <p className={styles.card_title}>
-                   <span style={{ fontWeight: 'bold' }}>Title:</span>
-                   {page.name}
-                 </p>
+              ]}
+            >
+              <Meta
+                title={(
+                  <p className={styles.card_title}>
+                    <span style={{ fontWeight: 'bold' }}>Title:</span>
+                    {page.name}
+                  </p>
                   )}
-               description={(
-                 <p className={styles.card_description}>
-                   <span style={{ fontWeight: 'bold' }}>Slug:</span>
-                   /
-                   {page.slug}
-                 </p>
+                description={(
+                  <p className={styles.card_description}>
+                    <span style={{ fontWeight: 'bold' }}>Slug:</span>
+                    /
+                    {page.slug}
+                  </p>
                   )}
-             />
-           </Card>
-         ))
-        }
+              />
+            </Card>
+          ))}
       </div>
     </div>
   );

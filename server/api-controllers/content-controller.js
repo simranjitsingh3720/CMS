@@ -1,4 +1,4 @@
-const db = require('../../models');
+const db = require('../../db/models');
 
 const getContent = async (req, res) => {
   const { schemaSlug, contentId } = req.query;

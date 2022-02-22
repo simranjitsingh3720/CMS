@@ -21,42 +21,18 @@ module.exports = {
         },
         data: { type: Sequelize.JSON },
         status: { type: Sequelize.ENUM('draft', 'published'), allowNull: false, defaultValue: 'draft' },
-        createdBy: {
-          type: Sequelize.UUID,
-          references: {
-            model: 'Users',
-            key: 'id',
-          },
-        },
+        createdBy: { type: Sequelize.UUID },
         createdAt: { type: Sequelize.DATE },
-        updatedBy: {
-          type: Sequelize.UUID,
-          references: {
-            model: 'Users',
-            key: 'id',
-          },
-        },
+        updatedBy: { type: Sequelize.UUID },
         updatedAt: { type: Sequelize.DATE },
-        publishedBy: {
-          type: Sequelize.UUID,
-          references: {
-            model: 'Users',
-            key: 'id',
-          },
-        },
+        publishedBy: { type: Sequelize.UUID },
         publishedAt: { type: Sequelize.DATE },
-        deletedBy: {
-          type: Sequelize.UUID,
-          references: {
-            model: 'Users',
-            key: 'id',
-          },
-        },
+        deletedBy: { type: Sequelize.UUID },
         deletedAt: { type: Sequelize.DATE },
       },
     );
   },
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.dropTable('Pages');
   },
 };

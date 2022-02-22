@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const db = require('../../models/index');
+const db = require('../../db/models');
 
 const listUser = async (req, res) => {
   const { query } = req;

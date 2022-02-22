@@ -3,7 +3,8 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "dev": "yarn sequelize-cli db:create && yarn sequelize-cli db:migrate && node index.js",
+    "migrate":"yarn sequelize-cli db:create && yarn sequelize-cli db:migrate ",
+    "dev": "node index.js",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
