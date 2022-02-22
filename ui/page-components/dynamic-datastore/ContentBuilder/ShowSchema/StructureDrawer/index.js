@@ -11,7 +11,7 @@ const { TextArea } = Input;
 
 function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData }) {
   const [form] = Form.useForm();
-  console.log(fieldData);
+  console.log('hello ', fieldData);
 
   const [dataType, setDataType] = useState('');
   const [appearanceType, setAppearanceType] = useState('');
@@ -44,19 +44,27 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
     const updatedValues = values;
 
     if (updatedValues.values) {
-      updatedValues.options = {
-        values: values.values,
-
-      };
-      updatedValues.values = undefined;
+      if (updatedValues.options) {
+        updatedValues.options.values = values.values;
+      } else {
+        updatedValues.options = {
+          values: values.values,
+        };
+      }
     }
-    if (updatedValues.values) {
-      updatedValues.options = {
-        values: values.values,
 
-      };
-      updatedValues.values = undefined;
+    if (updatedValues.isMultiple) {
+      if (updatedValues.options) {
+        updatedValues.options.isMultiple = values.isMultiple;
+      } else {
+        updatedValues.options = {
+          isMultiple: values.isMultiple,
+        };
+      }
     }
+
+    updatedValues.values = undefined;
+    updatedValues.isMultiple = undefined;
 
     setLoading(true);
     let newSchema = data.schema || [];
@@ -67,8 +75,10 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
       data: {
         schema: newSchema,
       },
+
     })
       .then(() => {
+        // console.log(fieldData.options.values);
         getSchema();
       });
     if (error) {
@@ -198,7 +208,6 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
           }
               </Select>
             </Form.Item>
-            <ValueNames />
 
             {(() => {
               switch (appearanceType) {
@@ -228,14 +237,39 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
                   return null;
               }
             })()}
+
+            {/* ====Values input on edit======== */}
+            {
+
+              fieldData && fieldData.options && fieldData.options.values
+                ? (
+
+                  <Form.Item
+                    label="Value"
+                    required={false}
+                  >
+                    <Form.Item
+         // validateTrigger={['onChange', 'onBlur']}
+                      noStyle
+                    >
+                      <Input placeholder="Value" style={{ width: '60%' }} />
+                    </Form.Item>
+                  </Form.Item>
+                )
+                : null
+
+           }
+            {/* ======== */}
           </Card>
         </Space>
+
         <Form.Item
           wrapperCol={{
             offset: 8,
             span: 10,
           }}
         >
+
           <Button type="primary" htmlType="submit" style={{ marginTop: '15px' }}>
             Submit
           </Button>
