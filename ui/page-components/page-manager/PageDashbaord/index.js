@@ -30,7 +30,7 @@ function PageDashboard() {
   };
 
   return (
-    <>
+    <div className={styles.page_dashboard_wrapper}>
       <ActionBar actions={actions} />
       <PageCard searchValue={searchValue} />
       <PageFormDrawer
@@ -39,7 +39,7 @@ function PageDashboard() {
         setVisible={setVisible}
       />
       <div />
-    </>
+    </div>
   );
 }
 
