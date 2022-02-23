@@ -32,7 +32,6 @@ function CMSApp({ Component, pageProps, session }) {
           </PageLayout>
         </RouteGuard>
       </ConfigProvider>
-
     </>
   );
 }

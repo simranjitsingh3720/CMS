@@ -8,7 +8,7 @@ function RouteGuard({ children, session }) {
       if (router.pathname.includes('/admin/signup') || router.pathname.includes('/admin/signin')) {
         router.replace('/admin', '/admin', { shallow: true });
       }
-    } else if (!router.pathname.includes('/admin/signup') && !router.pathname.includes('/admin/signin')) {
+    } else if (!router.pathname.includes('/admin/signup') && !router.pathname.includes('/admin/signin') && !router.pathname.includes('/admin/password-recovery') && !router.pathname.includes('/admin/password-change')) {
       router.replace('/admin/signin', '/admin/signin', { shallow: true });
     }
   }, [router, session.user]);

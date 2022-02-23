@@ -1,0 +1,13 @@
+.form_reset_password {
+  margin: auto;
+  width: 610px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  :global(input){
+    height:40px;
+    width: 520px;
+    font-size:15px
+  }
+}

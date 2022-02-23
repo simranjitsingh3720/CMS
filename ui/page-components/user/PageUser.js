@@ -44,7 +44,6 @@ function PageUser() {
       dataIndex: 'email',
       key: 'email',
     },
-
   ];
 
   return (

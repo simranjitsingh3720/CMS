@@ -5,7 +5,7 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      models.User.hasMany(models.Content, { foreignKey: 'createdBy' });
+      models.Schema.hasMany(models.Content, { foreignKey: 'createdBy' });
       models.User.hasMany(models.Schema, { foreignKey: 'createdBy' });
       models.User.hasMany(models.Page, { foreignKey: 'createdBy' });
     }

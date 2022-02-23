@@ -82,7 +82,8 @@ function PageSignin() {
             <Checkbox>
               Remember me for a month
             </Checkbox>
-            <a href="/admin">
+            <a href="/admin/password-recovery">
+              {/* Link to form asking email */}
               Forgot password?
             </a>
           </div>

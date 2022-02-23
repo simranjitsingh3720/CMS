@@ -9,7 +9,6 @@ module.exports = (sequelize, DataTypes) => {
       models.Schema.belongsTo(models.User, { foreignKey: 'deletedBy' });
     }
   }
-
   Page.init(
     {
       id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
