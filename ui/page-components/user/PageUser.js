@@ -1,4 +1,4 @@
-import axios from 'axios';
+import useAxios from 'axios-hooks';
 import { useEffect, useState } from 'react';
 import { Table } from 'antd';
 import ActionBar from '../../components/layout/ActionBar';
@@ -7,15 +7,16 @@ function PageUser() {
   const [searchValue, setSearchValue] = useState('');
   const [data, setData] = useState([]);
 
+  const [{}, refetch] = useAxios({
+    url: 'http://localhost:8000/api/user',
+    params: {
+      q: searchValue,
+    },
+  });
   useEffect(() => {
-    axios.get('http://localhost:8000/api/user', {
-      params: {
-        q: searchValue,
-      },
-    })
-      .then((res) => {
-        setData(res.data.list);
-      });
+    refetch().then((res) => {
+      setData(res.data.list);
+    });
   }, [searchValue]);
 
   const actions = {
