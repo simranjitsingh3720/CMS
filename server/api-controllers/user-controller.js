@@ -26,9 +26,8 @@ const getMe = async (req, res) => {
 
 const updateUser = async (req, res) => {
   const { userId } = req.query;
-  const data = req.body;
   if (req.session.user.id === userId) {
-    const updatedUser = await db.User.update({ ...data }, { where: { id: userId } });
+    const updatedUser = await db.User.update({ ...req.body }, { where: { id: userId } });
     res.status(200).json({ id: updatedUser.id });
   }
   res.status(400).json({ message: 'user not signed in' });
@@ -36,7 +35,6 @@ const updateUser = async (req, res) => {
 
 const findUser = async (req, res) => {
   const { userId } = req.query;
-
   const user = await db.User.findOne({ where: { id: userId } });
   if (!user) {
     return res.status(404).send({ message: 'no user found' });
