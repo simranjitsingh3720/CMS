@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import {
-  Drawer, Tabs, Form, Input, Button, Checkbox, Select, Divider, Card, Space, message,
+  Drawer, Form, Input, Button, Checkbox, Select, Divider, Card, Space, message,
 } from 'antd';
-import useAxios from 'axios-hooks';
 import { dataTypes, appearanceTypes } from '../../schemaDetails';
 import ValueNames from './apperanceComponent/ValueNames';
 import Switch from './apperanceComponent/Switch';
+import { useRequest } from '../../../../../helpers/request-helper';
 
 const { TextArea } = Input;
 
 function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData }) {
   const [form] = Form.useForm();
-  console.log(fieldData);
 
   const [dataType, setDataType] = useState('');
   const [appearanceType, setAppearanceType] = useState('');
@@ -26,14 +25,14 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    message.error('Failed');
   };
 
   const [{ error },
     executePatch,
-  ] = useAxios(
+  ] = useRequest(
     {
-      url: `http://localhost:8000/api/schema/${data.slug}`,
+      url: `/schema/${data.slug}`,
       method: 'PATCH',
 
     },
@@ -41,21 +40,47 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
   );
 
   const onFinish = async (values) => {
+    const updatedValues = values;
+
+    if (updatedValues.values) {
+      if (updatedValues.options) {
+        updatedValues.options.values = values.values;
+      } else {
+        updatedValues.options = {
+          values: values.values,
+        };
+      }
+    }
+
+    if (updatedValues.isMultiple) {
+      if (updatedValues.options) {
+        updatedValues.options.isMultiple = values.isMultiple;
+      } else {
+        updatedValues.options = {
+          isMultiple: values.isMultiple,
+        };
+      }
+    }
+
+    updatedValues.values = undefined;
+    updatedValues.isMultiple = undefined;
+
     setLoading(true);
     let newSchema = data.schema || [];
-    newSchema = [...newSchema, values];
+    newSchema = [...newSchema, updatedValues];
 
     await executePatch({
 
       data: {
         schema: newSchema,
       },
+
     })
       .then(() => {
         getSchema();
       });
     if (error) {
-      message.error('Asset Not Updated');
+      message.error('Schema Not Updated');
     } else {
       setLoading(false);
 
@@ -65,7 +90,7 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
     }
   };
   return (
-    <Drawer title="Create a new field" placement="right" onClose={closeSchemaDrawer} size="large" visible>
+    <Drawer title={fieldData ? `Edit Field ${fieldData.name}` : 'Create a new Field'} placement="right" onClose={closeSchemaDrawer} size="large" visible>
 
       <Form
         name="basic"
@@ -190,7 +215,7 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
                   return (
 
                     <Form.Item
-                      name="Multiple"
+                      name="isMultiple"
                       valuePropName="checked"
                     >
                       <Checkbox style={{ marginLeft: '120px' }}>Multiple Files</Checkbox>
@@ -212,12 +237,14 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
             })()}
           </Card>
         </Space>
+
         <Form.Item
           wrapperCol={{
             offset: 8,
             span: 10,
           }}
         >
+
           <Button type="primary" htmlType="submit" style={{ marginTop: '15px' }}>
             Submit
           </Button>

@@ -1,18 +1,18 @@
 import { useState } from 'react';
-import useAxios from 'axios-hooks';
 import { List } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import AssetCard from './AssetCard';
-import ActionBar from '../../components/ActionBar';
 import AssetDrawer from './AssetDrawer';
+import ActionBar from '../../components/layout/ActionBar';
+import { useRequest } from '../../helpers/request-helper';
 
 function PageAsset() {
   const [visible, setVisible] = useState(false);
   const [searchValue, setSearchValue] = useState('');
 
-  const [{ data }, refetch] = useAxios({
+  const [{ data }, refetch] = useRequest({
     method: 'GET',
-    url: 'http://localhost:8000/api/asset',
+    url: '/asset',
     params: {
       q: searchValue,
     },
@@ -36,7 +36,7 @@ function PageAsset() {
   };
 
   return (
-    <div style={{ marginLeft: '20px' }}>
+    <>
       <ActionBar actions={actions} />
       <AssetDrawer
         flag
@@ -44,9 +44,9 @@ function PageAsset() {
         setVisible={setVisible}
         refetch={refetch}
         data={[]}
-        style={{ marginBottom: '35px' }}
       />
       <List
+        style={{ margin: '16px 32px' }}
         grid={{ gutter: 16, column: 4 }}
         dataSource={data && (data.list || [])}
         renderItem={(item) => (
@@ -55,7 +55,7 @@ function PageAsset() {
           </List.Item>
         )}
       />
-    </div>
+    </>
   );
 }
 

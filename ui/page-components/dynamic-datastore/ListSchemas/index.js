@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import useAxios from 'axios-hooks';
 import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import confirm from 'antd/lib/modal/confirm';
 import { Spin, Empty } from 'antd';
 import SchemaCard from './SchemaCard';
 import SchemaDrawer from './SchemaDrawer';
-import ActionBar from '../../../components/ActionBar';
+import ActionBar from '../../../components/layout/ActionBar';
 import styles from './style.module.scss';
+import { useRequest } from '../../../helpers/request-helper';
 
 function ListSchema() {
   const { push } = useRouter();
@@ -33,10 +33,10 @@ function ListSchema() {
     }],
   };
 
-  const [{ data, loading, error }, fetchAllSchema] = useAxios(
+  const [{ data, loading, error }, fetchAllSchema] = useRequest(
     {
       method: 'GET',
-      url: 'http://localhost:8000/api/schema',
+      url: '/schema',
       params: {
         q: searchValue,
       },
@@ -47,7 +47,7 @@ function ListSchema() {
     data: deletedData,
     loading: deleteLoading,
     error: deleteError,
-  }, schemaDelete] = useAxios(
+  }, schemaDelete] = useRequest(
     {
       method: 'DELETE',
 
@@ -70,7 +70,7 @@ function ListSchema() {
       content: <div style={{ color: 'red' }}>It may contains some sensitive data.</div>,
       onOk() {
         schemaDelete({
-          url: `http://localhost:8000/api/schema/${schemaSlug}`,
+          url: `/schema/${schemaSlug}`,
         });
       },
       onCancel() {
@@ -105,7 +105,7 @@ function ListSchema() {
       <div style={{ textAlign: 'center' }}>
         {showLoading()}
       </div>
-      <div>
+      <div style={{ margin: '16px 32px' }}>
         { data && data.list.length <= 0 ? <div><Empty style={{ marginTop: '83px' }} image={Empty.PRESENTED_IMAGE_SIMPLE} /></div>
 
           : ((data && data.list) || []).map((schema) => (

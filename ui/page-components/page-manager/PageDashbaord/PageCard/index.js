@@ -5,10 +5,13 @@ import {
 } from '@ant-design/icons';
 import { Card, Empty, Tooltip } from 'antd';
 import { useRouter } from 'next/router';
-import useAxios from 'axios-hooks';
 import styles from './style.module.scss';
+<<<<<<< HEAD
 import 'antd/dist/antd.css';
 import PageEditDrawer from './PageEditDrawer';
+=======
+import { useRequest } from '../../../../helpers/request-helper';
+>>>>>>> 0816001906e0576e0e5fff2f55eb03d19171da1f
 
 const { Meta } = Card;
 
@@ -32,8 +35,8 @@ function PageCard({ searchValue }) {
     setSsImage(localStorage.getItem('image'));
   }, []);
 
-  const [{ data, loading, error }, refetch] = useAxios({
-    url: 'http://localhost:8000/api/page',
+  const [{ data, loading, error }, refetch] = useRequest({
+    url: '/page',
     method: 'GET',
     params: {
       q: searchValue,
@@ -51,6 +54,71 @@ function PageCard({ searchValue }) {
     window.open(`/${newSlug}`, '_blank');
   };
 
+<<<<<<< HEAD
+=======
+  const [{ data: homeData }, executeHandleHome] = useRequest(
+    {
+      method: 'POST',
+    },
+    {
+      manual: true,
+    },
+  );
+
+  function handleHome(newSlug) {
+    executeHandleHome({
+      url: `/updateHome/${newSlug}`,
+    }).then(() => {
+      message.success('Home Updated Successfully', 5);
+    })
+      .catch((err) => {
+        console.log('Error => ', err);
+      });
+  }
+
+  // useEffect(() => {
+  //   refetch();
+  // }, [homeData]);
+
+  const [{ data: deleteData }, handleDeletePage] = useRequest(
+    {
+      method: 'DELETE',
+    },
+    {
+      manual: true,
+    },
+  );
+
+  function showConfirm(slugForDelete) {
+    console.log(slugForDelete);
+    if (slugForDelete === '') {
+      Modal.error({
+        title: 'Home Page cannot be deleted...',
+        okText: 'OK',
+        okType: 'danger',
+      });
+    } else {
+      confirm({
+        title: 'Are you sure to delete this page?',
+        icon: <ExclamationCircleOutlined />,
+        content: <p className={styles.modal_content}>After Deleting this Page you won't be able to use this slug</p>,
+        okText: 'Yes',
+        okType: 'danger',
+        cancelText: 'No',
+        onOk() {
+          handleDeletePage({
+            url: `/page/${slugForDelete}`,
+          });
+          message.success('Page Deleted Successfully!');
+        },
+        onCancel() {
+          console.log('Cancel');
+        },
+      });
+    }
+  }
+
+>>>>>>> 0816001906e0576e0e5fff2f55eb03d19171da1f
   useEffect(() => {
     refetch();
   }, []);
