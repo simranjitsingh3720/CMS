@@ -3,12 +3,12 @@ import { PageHeader } from 'antd';
 import styles from './styles.module.scss';
 
 function PageTitle({
-  title = null, subTitle = null, extra = [],
+  title = null, onBack, subTitle = null, extra = [],
 }) {
   return (
     <div>
       <PageHeader
-        // onBack={onBack || function goBack() { window.history.back(); }}
+        onBack={onBack || function goBack() { window.history.back(); }}
         title={title}
         subTitle={subTitle}
         extra={extra}
