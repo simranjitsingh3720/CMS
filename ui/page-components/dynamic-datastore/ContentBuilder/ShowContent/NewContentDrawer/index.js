@@ -1,11 +1,13 @@
-import { Card, Drawer, Form, Input } from 'antd';
+import { Button, Card, Drawer, Form, Input } from 'antd';
 import React from 'react';
 import GetFields from './GetFields/GetFields';
 
 export default function NewContentDrawer({ closeContentDrawer, schemaDetails }) {
-  const fields = schemaDetails.schema;
+  const fields = schemaDetails.schema || [];
 
-  const onFinish = async (contentData) => { };
+  const onFinish = async (contentData) => {
+    console.log(contentData);
+  };
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
@@ -30,10 +32,14 @@ export default function NewContentDrawer({ closeContentDrawer, schemaDetails }) 
         autoComplete="off"
       >
         <Card title="Field Contents" style={{ width: 650 }}>
-          {fields.map((field) => (
+          {fields && fields.map((field) => (
             GetFields(field.appearanceType, field)
           ))}
-
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </Form.Item>
         </Card>
 
       </Form>

@@ -1,3 +1,4 @@
+import { UploadOutlined } from '@ant-design/icons';
 import {
   Form,
   Input,
@@ -9,29 +10,24 @@ import {
   Checkbox,
   TimePicker,
   Space,
+  Upload,
+  Button,
 } from 'antd';
 
 const { TextArea } = Input;
-const { Option } = Select;
 
 const handleCheckBoxChange = (values) => {};
 
 const onDateChange = (value, dateString) => {
-  console.log('Selected Time: ', value);
-  console.log('Formatted Selected Time: ', dateString);
 };
 
 const onDateSelect = (value) => {
-  console.log('onOk: ', value);
 };
 
 const onRadioValueChange = (radioValue) => {};
 
-const onTimeChange = (time) => {};
-
 function GetFields(appearenceType, field) {
-  const { name, required, names } = field;
-  console.log('dddd ', names);
+  const { name, required, names, Truelabel, Falselabel } = field;
   switch (appearenceType) {
     case 'short':
       return (
@@ -66,9 +62,6 @@ function GetFields(appearenceType, field) {
       return (
         <Form.Item name={name} label={name} rules={[{ required }]}>
           <Radio.Group onChange={onRadioValueChange}>
-            {/* <Radio value={2}>B</Radio>
-            <Radio value={3}>C</Radio>
-            <Radio value={4}>D</Radio> */}
             {names.map((radioValue) => <Radio value={radioValue}>{radioValue}</Radio>)}
           </Radio.Group>
         </Form.Item>
@@ -76,7 +69,7 @@ function GetFields(appearenceType, field) {
 
     case 'dropdown':
       return (
-        <Form.Item label="Select">
+        <Form.Item name={name} label={name} rules={[{ required }]}>
           <Select>
             {names.map((dropDownValue) => (
               <Select.Option
@@ -94,23 +87,40 @@ function GetFields(appearenceType, field) {
         <Form.Item name={name} label={name} rules={[{ required }]}>
           <Space direction="vertical" size={12}>
             <DatePicker showTime onChange={onDateChange} onOk={onDateSelect} />
-            <TimePicker use12Hours onChange={onTimeChange} />
           </Space>
         </Form.Item>
       );
 
     case 'switch':
       return (
-        <Form.Item label="Switch" valuePropName="checked">
-          <Switch />
+        <Form.Item name={name} label={name} rules={[{ required }]} valuePropName="checked">
+          <Switch
+            checkedChildren={Truelabel}
+            unCheckedChildren={Falselabel}
+            defaultChecked={false}
+          />
         </Form.Item>
       );
 
-    case 'boolean radio':
-      return '';
+    case 'Boolean Radio':
+      return (
+        <Form.Item name={name} label={name} rules={[{ required }]}>
+          <Radio.Group onChange={onRadioValueChange}>
+            <Radio value={Truelabel}>{Truelabel}</Radio>
+            <Radio value={Falselabel}>{Falselabel}</Radio>
+          </Radio.Group>
+        </Form.Item>
+      );
 
-    case 'tags':
-      return '';
+    case 'fileUpload':
+      return (
+        <Form.Item name={name} label={name} rules={[{ required }]}>
+          <Upload>
+            <Button icon={<UploadOutlined />}>Click to Upload</Button>
+          </Upload>
+        </Form.Item>
+
+      );
 
     default:
       return '';

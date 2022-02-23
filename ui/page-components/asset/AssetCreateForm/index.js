@@ -112,6 +112,7 @@ function AssetCreateForm({ CloseDrawer, refetch }) {
           <Button icon={<UploadOutlined />}>Click to upload</Button>
         </Upload>
       </Form.Item>
+
       <Form.Item
         wrapperCol={{
           span: 12,

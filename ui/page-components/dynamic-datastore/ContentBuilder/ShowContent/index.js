@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import useAxios from 'axios-hooks';
 import { PlusOutlined } from '@ant-design/icons';
-// import ActionBar from '../../../../components/ActionBar';
 import NewContentDrawer from './NewContentDrawer';
 import ActionBar from '../../../../components/layout/ActionBar';
+import ContentTable from './ContentTable';
 
 function ShowContent({ schema }) {
   const router = useRouter();
@@ -57,6 +57,7 @@ function ShowContent({ schema }) {
         />
       ) : null }
       {JSON.stringify(data)}
+      <ContentTable tableSchema={schema} />
     </div>
   );
 }
