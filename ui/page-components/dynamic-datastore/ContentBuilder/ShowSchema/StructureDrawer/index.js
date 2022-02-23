@@ -261,7 +261,7 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
 
               fieldData && fieldData.options && fieldData.options.values
                 ? (
-                  <ValueNames fieldData={fieldData.options.values} />
+                  <ValueNames />
                   // <Form.List
                   //   name="values"
                   //   rules={[
