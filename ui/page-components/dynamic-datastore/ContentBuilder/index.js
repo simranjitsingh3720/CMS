@@ -5,7 +5,7 @@ import useAxios from 'axios-hooks';
 import ShowSchema from './ShowSchema';
 import ShowContent from './ShowContent';
 import styles from './style.module.scss';
-import { useRequest } from '../../../../helpers/request-helper';
+import { useRequest } from '../../../helpers/request-helper';
 
 const { TabPane } = Tabs;
 
@@ -15,10 +15,10 @@ export default function ContentBuilder() {
   const router = useRouter();
   const { schemaSlug } = router.query;
 
-  const [{ data: schema, loading, error }, getSchema] = useAxios(
+  const [{ data: schema, loading, error }, getSchema] = useRequest(
     {
       method: 'GET',
-      url: `http://localhost:8000/api/schema/${schemaSlug}`,
+      url: `/schema/${schemaSlug}`,
     },
     { manual: true },
   );
@@ -28,6 +28,8 @@ export default function ContentBuilder() {
       getSchema();
     }
   }, [schemaSlug]);
+
+  console.log('error ', schema);
 
   return (
     <div className={styles.content_builder_wrapper}>
