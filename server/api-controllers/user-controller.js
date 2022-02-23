@@ -27,11 +27,13 @@ const getMe = async (req, res) => {
 const updateUser = async (req, res) => {
   const { userId } = req.query;
   const data = req.body;
-  if (req.session.user.id === userId) {
-    const updatedUser = await db.User.update({ ...data }, { where: { id: userId } });
-    res.status(200).json({ id: updatedUser.id });
+  if (!(req.session.user.id === userId)) {
+    res.status(400).json({ message: 'user not signed in' });
   }
-  res.status(400).json({ message: 'user not signed in' });
+  const updatedUser = await db.User.update({ ...data }, { where: { id: userId } });
+  const getUser = await db.User.findOne({ where: { id: userId } });
+  req.session.user = getUser.dataValues;
+  res.status(200).json({ id: updatedUser.id });
 };
 
 const findUser = async (req, res) => {
@@ -54,6 +56,8 @@ const changePassword = async (req, res) => {
   const salt = await bcrypt.genSalt();
   const hashedPassword2 = await bcrypt.hash(newPassword, salt);
   const user = await db.User.update({ password: hashedPassword2 }, { where: { id } });
+  const getUser = await db.User.findOne({ where: { id } });
+  req.session.user = getUser.dataValues;
   return res.status(200).json({ id: user.id });
 };
 

@@ -8,7 +8,6 @@ function Profile() {
   const [dataForm] = Form.useForm();
 
   const [data, setData] = useState({});
-  const [loading, setLoading] = useState(false);
   const [Passwordloading, setPasswordloading] = useState(false);
   const formItemLayout = {
     labelCol: {
@@ -18,34 +17,25 @@ function Profile() {
       span: 17,
     },
   };
-  const [{ data: getdata }, handleGet] = useAxios({
+  const [{ data: getdata }, handleGet, refetch] = useAxios({
     METHOD: 'GET',
-    url: '/api/user/me',
+    url: 'http://localhost:8000/api/user/me',
   });
-
-  const [{ data: getOneUser }, userGet] = useAxios(
-    {
-      method: 'GET',
-    },
-    { manual: true },
-  );
 
   useEffect(() => {
     handleGet()
       .then((res) => {
-        userGet({ url: `http://localhost:8000/api/user/${res.data.user.id}` })
-          .then((response) => {
-            setData(response.data.user);
-            dataForm.setFieldsValue({
-              firstName: response.data.user.firstName,
-              lastName: response.data.user.lastName,
-              email: response.data.user.email,
-            });
-          });
+        setData(res.data.user);
+        dataForm.setFieldsValue({
+          firstName: res.data.user.firstName,
+          lastName: res.data.user.lastName,
+          email: res.data.user.email,
+          phone: res.data.user.phone,
+        });
       });
   }, []);
 
-  const [{ },
+  const [{ loading },
     executePatch,
   ] = useAxios(
     {
@@ -55,25 +45,20 @@ function Profile() {
   );
 
   const SubmitDetails = (values) => {
-    setLoading(true);
     executePatch({
-      url: `/api/user/${data.id}`,
+      url: `http://localhost:8000/api/user/${data.id}`,
       data: {
         firstName: values.firstName,
         lastName: values.lastName,
+        phone: values.phone,
       },
     })
       .then(() => {
         message.success('User Updated');
-        userGet({ url: `http://localhost:8000/api/user/${data.id}` })
-          .then((res) => {
-            setData(res.data.user);
-            setLoading(false);
-          });
+        refetch();
       })
       .catch(() => {
         message.error('User Not Updated');
-        setLoading(false);
       });
   };
 
@@ -87,7 +72,7 @@ function Profile() {
       message.error('confirm password should be match with new password');
     } else {
       executePatch({
-        url: '/api/user',
+        url: 'http://localhost:8000/api/user',
         data: {
           currentPassword: values.currentPassword,
           newPassword: values.newPassword,
@@ -110,7 +95,7 @@ function Profile() {
       <Card title="Basic Information" className={styles.card_container} bordered={false}>
         <Form
           form={dataForm}
-          name="validate_other"
+          name="validate"
           {...formItemLayout}
           onFinish={SubmitDetails}
         >
@@ -134,12 +119,18 @@ function Profile() {
           >
             <Input disabled />
           </Form.Item>
+          <Form.Item
+            name="phone"
+            label="Mobile Number"
+          >
+            <Input />
+          </Form.Item>
           <Button
             type="primary"
             htmlType="submit"
             loading={loading}
           >
-            Edit
+            Update
           </Button>
         </Form>
       </Card>
