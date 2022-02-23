@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import {
-  Drawer, Tabs, Form, Input, Button, Checkbox, Select, Divider, Card, Space, message,
+  Drawer, Form, Input, Button, Checkbox, Select, Divider, Card, Space, message,
 } from 'antd';
 import useAxios from 'axios-hooks';
 import { dataTypes, appearanceTypes } from '../../schemaDetails';
@@ -12,28 +11,10 @@ const { TextArea } = Input;
 
 function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData }) {
   const [form] = Form.useForm();
-  console.log('hello ', fieldData);
 
   const [dataType, setDataType] = useState('');
   const [appearanceType, setAppearanceType] = useState('');
   const [loading, setLoading] = useState(false);
-
-  const formItemLayout = {
-    labelCol: {
-      xs: { span: 24 },
-      sm: { span: 4 },
-    },
-    wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 20 },
-    },
-  };
-  const formItemLayoutWithOutLabel = {
-    wrapperCol: {
-      xs: { span: 24, offset: 0 },
-      sm: { span: 20, offset: 4 },
-    },
-  };
 
   const handleOnDataTypeChange = (value) => {
     setDataType(value);
@@ -44,7 +25,7 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    message.error('Failed');
   };
 
   const [{ error },
@@ -96,11 +77,10 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
 
     })
       .then(() => {
-        // console.log(fieldData.options.values);
         getSchema();
       });
     if (error) {
-      message.error('Asset Not Updated');
+      message.error('Schema Not Updated');
     } else {
       setLoading(false);
 
@@ -255,82 +235,6 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
                   return null;
               }
             })()}
-
-            {/* ====Values input on edit======== */}
-            {
-
-              fieldData && fieldData.options && fieldData.options.values
-                ? (
-                  <ValueNames />
-                  // <Form.List
-                  //   name="values"
-                  //   rules={[
-                  //     {
-                  //       validator: async (_, names) => {
-                  //         if (!names || names.length < 2) {
-                  //           return Promise.reject(new Error('At least 2 values'));
-                  //         }
-                  //       },
-                  //     },
-                  //   ]}
-                  // >
-                  //   {(fields, { add, remove }, { errors }) => (
-                  //     <>
-                  //       {fieldData.options.values.map((field, index) => (
-                  //         <Form.Item
-                  //           {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
-                  //           label={index === 0 ? 'Value' : ''}
-                  //           required={false}
-                  //           key={field.key}
-                  //         >
-                  //           <Form.Item
-
-              //             {...field}
-              //             validateTrigger={['onChange', 'onBlur']}
-              //             rules={[
-              //               {
-              //                 required: true,
-              //                 whitespace: true,
-              //                 message: 'Please input values or delete this field.',
-              //               },
-              //             ]}
-              //             noStyle
-              //           >
-              //             <Input placeholder="Value" style={{ width: '60%' }} defaultValue={(fieldData && fieldData.options.values[index]) || ''} />
-              //           </Form.Item>
-              //           {fieldData.options.values.length > 1 ? (
-              //             <MinusCircleOutlined
-              //               className="dynamic-delete-button"
-              //               onClick={() => remove(field.name)}
-              //             />
-              //           ) : null}
-              //         </Form.Item>
-              //       ))}
-              //       <Form.Item
-              //         wrapperCol={{
-              //           offset: 7,
-              //           span: 10,
-              //         }}
-              //       >
-              //         <Button
-              //           type="dashed"
-              //           onClick={() => add()}
-              //           style={{ width: '50%' }}
-              //           icon={<PlusOutlined />}
-              //         >
-              //           Add Values
-              //         </Button>
-
-              //         <Form.ErrorList errors={errors} />
-              //       </Form.Item>
-              //     </>
-              //   )}
-              // </Form.List>
-                )
-                : null
-
-           }
-            {/* ======== */}
           </Card>
         </Space>
 
