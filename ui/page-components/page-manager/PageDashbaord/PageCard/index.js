@@ -2,11 +2,8 @@ import React, { useEffect, useState } from 'react';
 import {
   EditOutlined,
   EyeOutlined,
-  FormOutlined,
-  ExclamationCircleOutlined,
-  HomeOutlined,
 } from '@ant-design/icons';
-import { Card, message, Tooltip, Modal } from 'antd';
+import { Card, Empty, Tooltip } from 'antd';
 import { useRouter } from 'next/router';
 import useAxios from 'axios-hooks';
 import styles from './style.module.scss';
@@ -14,21 +11,21 @@ import 'antd/dist/antd.css';
 import PageEditDrawer from './PageEditDrawer';
 
 const { Meta } = Card;
-const { confirm } = Modal;
 
 function PageCard({ searchValue }) {
   const [ssImage, setSsImage] = useState(null);
   const [visible, setVisible] = useState(false);
-  const [pageSlug, setPageSlug] = useState();
+  const [pageData, setPageData] = useState('');
 
   const { push } = useRouter();
 
   const onClose = () => {
     setVisible(false);
   };
-  const showDrawer = (slug) => {
+  const showDrawer = (data) => {
+    console.log(data);
     setVisible(true);
-    setPageSlug(slug);
+    setPageData(data);
   };
 
   useEffect(() => {
@@ -54,67 +51,9 @@ function PageCard({ searchValue }) {
     window.open(`/${newSlug}`, '_blank');
   };
 
-  const [{ data: homeData }, executeHandleHome] = useAxios(
-    {
-      method: 'POST',
-    },
-    {
-      manual: true,
-    },
-  );
-
-  function handleHome(newSlug) {
-    executeHandleHome({
-      url: `http://localhost:8000/api/updateHome/${newSlug}`,
-    }).then(() => {
-      message.success('Home Updated Successfully', 5);
-    })
-      .catch((err) => {
-        console.log('Error => ', err);
-      });
-  }
-
-  const [{ data: deleteData }, handleDeletePage] = useAxios(
-    {
-      method: 'DELETE',
-    },
-    {
-      manual: true,
-    },
-  );
-
-  function showConfirm(slugForDelete) {
-    console.log(slugForDelete);
-    if (slugForDelete === '') {
-      Modal.error({
-        title: 'Home Page cannot be deleted...',
-        okText: 'OK',
-        okType: 'danger',
-      });
-    } else {
-      confirm({
-        title: 'Are you sure to delete this page?',
-        icon: <ExclamationCircleOutlined />,
-        content: <p className={styles.modal_content}>After Deleting this Page you won't be able to use this slug</p>,
-        okText: 'Yes',
-        okType: 'danger',
-        cancelText: 'No',
-        onOk() {
-          handleDeletePage({
-            url: `http://localhost:8000/api/page/${slugForDelete}`,
-          });
-          message.success('Page Deleted Successfully!');
-        },
-        onCancel() {
-          console.log('Cancel');
-        },
-      });
-    }
-  }
-
   useEffect(() => {
     refetch();
-  }, [deleteData, homeData]);
+  }, []);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error!</p>;
@@ -122,70 +61,49 @@ function PageCard({ searchValue }) {
   return (
     <div>
       <div className={styles.card_component}>
-        {
-         ((data && data.list) || []).map((page) => (
-           <Card
-             key={page.id}
-             style={{ width: 260, margin: 15 }}
-             cover={(
-               <div
-                 className={styles.card_image}
-                 style={{ backgroundImage: `url(${ssImage})`, backgroundSize: 'cover' }}
-
-               />
+        { data && data.list.length <= 0 ? <div style={{ width: '100%' }}><Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /></div>
+          : ((data && data.list) || []).map((page) => (
+            <Card
+              key={page.id}
+              style={{ width: 260, margin: 15 }}
+              cover={(
+                <div
+                  className={styles.card_image}
+                  style={{ backgroundImage: `url(${ssImage})`, backgroundSize: 'cover' }}
+                />
 
               )}
-             actions={[
-               <Tooltip title="View Page">
-                 <EyeOutlined key="view" onClick={() => { handleView(page.slug); }} />
-               </Tooltip>,
-               <Tooltip title="Edit Page">
-                 <EditOutlined key="edit" onClick={() => { showDrawer(page.slug); }} />
-               </Tooltip>,
-               //  <Tooltip title="Delete Page">
-               //    <DeleteOutlined key="delete" onClick={() => showConfirm(page.slug)} />
-               //  </Tooltip>,
+              actions={[
+                <Tooltip title="View Page">
+                  <EyeOutlined key="view" onClick={() => { handleView(page.slug); }} />
+                </Tooltip>,
+                <Tooltip title="Edit Page">
+                  <EditOutlined key="edit" onClick={() => { showDrawer(page); }} />
+                </Tooltip>,
+              ]}
+            >
 
-             ]}
-           >
-
-             <Meta
-               title={(
-                 <p className={styles.card_title}>
-                   <span onClick={() => { handleEdit(page.slug); }}>
-                     <span style={{ fontWeight: 'bold' }}>Title: </span>
-                     {page.name}
-                   </span>
-                   <span>
-                     {page.slug === ''
-                       ? (
-                         <Tooltip title="Home Page">
-
-                           <HomeOutlined key="home" style={{ color: 'red' }} />
-                         </Tooltip>
-                       )
-                       : (
-                         <Tooltip title="Make This Page Home">
-                           <HomeOutlined key="home" style={{ color: 'lightGrey' }} onClick={() => { handleHome(page.slug); }} />
-
-                         </Tooltip>
-                       )}
-                   </span>
-                 </p>
+              <Meta
+                title={(
+                  <p className={styles.card_title}>
+                    <span onClick={() => { handleEdit(page.slug); }}>
+                      <span style={{ fontWeight: 'bold' }}>Title: </span>
+                      {page.name}
+                    </span>
+                  </p>
                   )}
-               description={(
-                 <p className={styles.card_description}>
-                   <span style={{ fontWeight: 'bold' }}>Slug: </span>
-                   /
-                   {page.slug}
-                 </p>
+                description={(
+                  <p className={styles.card_description}>
+                    <span style={{ fontWeight: 'bold' }}>Slug: </span>
+                    /
+                    {page.slug}
+                  </p>
                   )}
-             />
+              />
 
-           </Card>
+            </Card>
 
-         ))
-        }
+          ))}
 
       </div>
       <div />
@@ -193,7 +111,7 @@ function PageCard({ searchValue }) {
         onFormClose={onClose}
         visible={visible}
         setVisible={setVisible}
-        data={pageSlug}
+        data={pageData}
       />
       <div />
     </div>

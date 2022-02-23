@@ -1,6 +1,7 @@
 .card_component{
   display: flex;
   justify-content: flex-start;
+  align-items: center;
   margin: 10px;
   flex-wrap: wrap;
 }
@@ -22,7 +23,23 @@
   border-bottom: 1px solid rgb(236, 233, 233);
 }
 
+.drawer_submit{
+  border-color: rgb(17, 133, 241);
+}
+
 .modal_content{
   color: red;
   font-size: 0.9em;
+}
+
+.drawer_form{
+  border: 2px solid rgb(240, 235, 235);
+  padding: 8px;
+  padding-bottom: 0px;
+  margin: 15px 5px;
+}
+
+.drawer_button{
+  margin-bottom: 6px;
+  margin-right: -38px;
 }

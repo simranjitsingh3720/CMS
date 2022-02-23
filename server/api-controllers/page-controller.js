@@ -46,6 +46,7 @@ export const renderSingleData = async (req, res) => {
 export const updateData = async (req, res) => {
   const { pageSlug } = req.query;
   const code = req.body;
+  console.log(code);
   const stringyfiedCode = JSON.stringify(code);
   const result = await db.Page.update({ data: stringyfiedCode }, { where: { slug: pageSlug } });
   if (result) {
@@ -102,4 +103,14 @@ export const deletePage = async (req, res) => {
     return res.status(200).json({ slug: pageSlug });
   }
   return res.status(404).json({ message: 'Page not found' });
+};
+
+export const updatePageData = async (req, res) => {
+  const { pageSlug } = req.query;
+  const pageData = req.body;
+  const result = await db.Page.update({ name: pageData.name, slug: pageData.slug }, { where: { slug: pageSlug } });
+  if (result) {
+    return res.status(201).json({ data: result });
+  }
+  return res.status(404).json({ message: 'Page Not Found' });
 };
