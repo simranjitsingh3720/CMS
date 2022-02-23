@@ -2,8 +2,8 @@ import { useRouter } from 'next/router';
 import { useEffect, useState, createRef } from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import { Spin } from 'antd';
-import useAxios from 'axios-hooks';
 import { useScreenshot } from 'use-react-screenshot';
+import { useRequest } from '../../../helpers/request-helper';
 
 function PageRender() {
   const ref = createRef(null);
@@ -16,9 +16,9 @@ function PageRender() {
   const [isData, setIsData] = useState(false);
   const router = useRouter();
 
-  const [{ data: getData }] = useAxios(
+  const [{ data: getData }] = useRequest(
     {
-      url: `http://localhost:8000/api/page/${router.query.pageView}`,
+      url: `/page/${router.query.pageView}`,
       method: 'GET',
     },
   );

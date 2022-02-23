@@ -1,4 +1,4 @@
-const { signup } = require('../../../server/api-controllers/auth-controller');
+const { signup } = require('../../../../server/api-controllers/auth-controller');
 
 const signupHandler = (req, res) => {
   switch (req.method) {

@@ -1,4 +1,4 @@
-const { updateUser, findUser } = require('../../../server/api-controllers/user-controller');
+const { updateUser, findUser } = require('../../../../server/api-controllers/user-controller');
 
 const userHandler = (req, res) => {
   switch (req.method) {
