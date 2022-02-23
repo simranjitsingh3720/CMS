@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import useAxios from 'axios-hooks';
 import { PlusOutlined } from '@ant-design/icons';
-import ActionBar from '../../../../components/ActionBar';
+// import ActionBar from '../../../../components/ActionBar';
 import NewContentDrawer from './NewContentDrawer';
+import ActionBar from '../../../../components/layout/ActionBar';
 
 function ShowContent({ schema }) {
   const router = useRouter();

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import useAxios from 'axios-hooks';
 import { PlusOutlined } from '@ant-design/icons';
-import ActionBar from '../../../../components/ActionBar';
+import ActionBar from '../../../../components/layout/ActionBar';
 import StructureDrawer from './StructureDrawer';
 import FieldCard from './FieldCard';
 
