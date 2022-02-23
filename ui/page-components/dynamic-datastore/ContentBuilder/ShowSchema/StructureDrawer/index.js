@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import {
   Drawer, Form, Input, Button, Checkbox, Select, Divider, Card, Space, message,
 } from 'antd';
-import useAxios from 'axios-hooks';
 import { dataTypes, appearanceTypes } from '../../schemaDetails';
 import ValueNames from './apperanceComponent/ValueNames';
 import Switch from './apperanceComponent/Switch';
+import { useRequest } from '../../../../../helpers/request-helper';
 
 const { TextArea } = Input;
 
@@ -30,9 +30,9 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
 
   const [{ error },
     executePatch,
-  ] = useAxios(
+  ] = useRequest(
     {
-      url: `http://localhost:8000/api/schema/${data.slug}`,
+      url: `/schema/${data.slug}`,
       method: 'PATCH',
 
     },

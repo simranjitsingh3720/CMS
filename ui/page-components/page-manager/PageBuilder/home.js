@@ -3,15 +3,15 @@ import React, { useEffect, useState } from 'react';
 import 'grapesjs/dist/css/grapes.min.css';
 import GrapesJS from 'grapesjs';
 import gjsPresetWebpage from 'grapesjs-preset-webpage';
-import useAxios from 'axios-hooks';
+import { useRequest } from '../../../helpers/request-helper';
 
 function Home() {
   const [editor, setEditor] = useState(null);
   const router = useRouter();
 
-  const [{ data: getData }, refetchPageData] = useAxios(
+  const [{ data: getData }, refetchPageData] = useRequest(
     {
-      url: `http://localhost:8000/api/page/${router.query.pageSlug}`,
+      url: `/page/${router.query.pageSlug}`,
       method: 'GET',
       params: { isHome: 1 },
     },
