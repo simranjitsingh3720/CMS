@@ -27,7 +27,11 @@ const onDateSelect = (value) => {
 const onRadioValueChange = (radioValue) => {};
 
 function GetFields(appearenceType, field) {
-  const { name, required, names, Truelabel, Falselabel } = field;
+  const { name, required, options, Truelabel, Falselabel } = field;
+  let values = [];
+  if (options) {
+    values = options.values;
+  }
   switch (appearenceType) {
     case 'short':
       return (
@@ -51,10 +55,9 @@ function GetFields(appearenceType, field) {
       );
 
     case 'checkbox':
-      // const { values } = options.values;
       return (
         <Form.Item name={name} label={name} rules={[{ required }]}>
-          <Checkbox.Group options={names} onChange={handleCheckBoxChange} />
+          <Checkbox.Group options={values} onChange={handleCheckBoxChange} />
         </Form.Item>
       );
 
@@ -62,7 +65,7 @@ function GetFields(appearenceType, field) {
       return (
         <Form.Item name={name} label={name} rules={[{ required }]}>
           <Radio.Group onChange={onRadioValueChange}>
-            {names.map((radioValue) => <Radio value={radioValue}>{radioValue}</Radio>)}
+            {values.map((radioValue) => <Radio value={radioValue}>{radioValue}</Radio>)}
           </Radio.Group>
         </Form.Item>
       );
@@ -71,7 +74,7 @@ function GetFields(appearenceType, field) {
       return (
         <Form.Item name={name} label={name} rules={[{ required }]}>
           <Select>
-            {names.map((dropDownValue) => (
+            {values.map((dropDownValue) => (
               <Select.Option
                 value={dropDownValue}
               >
