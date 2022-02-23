@@ -1,7 +1,7 @@
 .card_container{
   width: 600px;
   margin: auto;
-  height: 350px;
+  height: 500px;
   :global(Paragraph){
     margin:40px;
   }
@@ -14,4 +14,15 @@
   :global(Paragraph){
     margin:40px;
   }
+}
+.picture{
+  margin-left: 40%;
+  margin-bottom: 20px;
+  position: relative !important;
+}
+.profile{
+  position: absolute !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  border-radius: 50%;
 }
