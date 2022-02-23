@@ -1,14 +1,14 @@
-import useAxios from 'axios-hooks';
 import { useEffect, useState } from 'react';
 import { Table } from 'antd';
 import ActionBar from '../../components/layout/ActionBar';
+import { useRequest } from '../../helpers/request-helper';
 
 function PageUser() {
   const [searchValue, setSearchValue] = useState('');
   const [data, setData] = useState([]);
 
-  const [{}, refetch] = useAxios({
-    url: 'http://localhost:8000/api/user',
+  const [{}, refetch] = useRequest({
+    url: '/user',
     params: {
       q: searchValue,
     },

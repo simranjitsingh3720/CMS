@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import useAxios from 'axios-hooks';
 import { PlusOutlined } from '@ant-design/icons';
 import ActionBar from '../../../../components/layout/ActionBar';
 import StructureDrawer from './StructureDrawer';
 import FieldCard from './FieldCard';
+import { useRequest } from '../../../../helpers/request-helper';
 
 function ShowSchema({ schema }) {
   const router = useRouter();
@@ -35,10 +35,10 @@ function ShowSchema({ schema }) {
       onClick: showSchemaDrawer,
     }],
   };
-  const [{ data, loading, error }, getSchema] = useAxios(
+  const [{ data, loading, error }, getSchema] = useRequest(
     {
       method: 'GET',
-      url: `http://localhost:8000/api/schema/${schemaSlug}`,
+      url: `/schema/${schemaSlug}`,
     },
     { manual: true },
   );

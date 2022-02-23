@@ -1,4 +1,4 @@
-const { listUser, changePassword } = require('../../../server/api-controllers/user-controller');
+const { listUser, changePassword } = require('../../../../server/api-controllers/user-controller');
 
 const signInHandler = (req, res) => {
   switch (req.method) {

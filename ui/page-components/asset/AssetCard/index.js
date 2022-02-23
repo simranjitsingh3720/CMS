@@ -6,11 +6,11 @@ import {
   EditOutlined,
   ExclamationCircleOutlined,
 } from '@ant-design/icons';
-import useAxios from 'axios-hooks';
 import { useState } from 'react';
 import Asset from './Asset';
 import AssetDrawer from '../AssetDrawer';
 import styles from './styles.module.scss';
+import { useRequest } from '../../../helpers/request-helper';
 
 const { Meta } = Card;
 const { confirm } = Modal;
@@ -18,10 +18,10 @@ const { confirm } = Modal;
 function AssetCard({ data, refetch }) {
   const [visibleDrawer, setVisibleDrawer] = useState(false);
 
-  const [{ deleteError }, handleDelete] = useAxios(
+  const [{ deleteError }, handleDelete] = useRequest(
     {
       method: 'DELETE',
-      url: `/api/asset/${data.id}`,
+      url: `/asset/${data.id}`,
     },
     { manual: true },
   );

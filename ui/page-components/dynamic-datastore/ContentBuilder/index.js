@@ -5,6 +5,7 @@ import useAxios from 'axios-hooks';
 import ShowSchema from './ShowSchema';
 import ShowContent from './ShowContent';
 import styles from './style.module.scss';
+import { useRequest } from '../../../../helpers/request-helper';
 
 const { TabPane } = Tabs;
 

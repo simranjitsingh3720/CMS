@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { Drawer, Button, Form, Input } from 'antd';
 import { useRouter } from 'next/router';
-import useAxios from 'axios-hooks';
 import style from './style.module.scss';
+import { useRequest } from '../../../../helpers/request-helper';
 
 function SchemaDrawer({ closeDrawer, setIsDrawer }) {
   const [error, setError] = useState('');
   const { push } = useRouter();
 
-  const [{}, executePost] = useAxios(
+  const [{}, executePost] = useRequest(
     {
-      url: 'http://localhost:8000/api/schema',
+      url: '/schema',
       method: 'POST',
     },
     {

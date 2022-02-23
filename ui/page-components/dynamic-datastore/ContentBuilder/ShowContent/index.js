@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import useAxios from 'axios-hooks';
 import { PlusOutlined } from '@ant-design/icons';
 import NewContentDrawer from './NewContentDrawer';
 import ActionBar from '../../../../components/layout/ActionBar';
 import ContentTable from './ContentTable';
+import { useRequest } from '../../../../helpers/request-helper';
 
 function ShowContent({ schema }) {
   const router = useRouter();
@@ -12,10 +12,17 @@ function ShowContent({ schema }) {
   const [searchValue, setSearchValue] = useState('');
   const { schemaSlug } = router.query;
 
-  const [{ data, loading, error }] = useAxios({
-    method: 'GET',
-    url: `http://localhost:8000/api/content/${schemaSlug}`,
-  });
+  const [{ data, loading, error }, getSchema] = useRequest(
+    {
+      method: 'GET',
+      url: `/content/${schemaSlug}`,
+    },
+  );
+
+  // const [{ data, loading, error }] = useAxios({
+  //   method: 'GET',
+  //   url: `http://localhost:8000/api/content/${schemaSlug}`,
+  // });
 
   const showContentDrawer = () => {
     setIsContentDrawer(true);

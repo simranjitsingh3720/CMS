@@ -7,7 +7,7 @@ import {
   message,
 } from 'antd';
 import { useState } from 'react';
-import useAxios from 'axios-hooks';
+import { useRequest } from '../../../helpers/request-helper';
 
 function AssetCreateForm({ CloseDrawer, refetch }) {
   const [form] = Form.useForm();
@@ -31,15 +31,15 @@ function AssetCreateForm({ CloseDrawer, refetch }) {
   };
 
   // eslint-disable-next-line no-empty-pattern
-  const [{}, executePost] = useAxios(
+  const [{}, executePost] = useRequest(
     {
-      url: '/api/asset/',
+      url: '/asset/',
       method: 'POST',
     },
     { manual: true },
   );
   // eslint-disable-next-line no-empty-pattern
-  const [{}, executePut] = useAxios(
+  const [{}, executePut] = useRequest(
     {
       method: 'PUT',
     },
