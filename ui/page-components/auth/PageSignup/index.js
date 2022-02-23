@@ -21,7 +21,6 @@ function PageSignup() {
   );
 
   const onFinish = (values) => {
-    const paswd = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/;
     if (values.password !== values.confirmPassword) {
       message.error('Passwords do not match!!!');
     } else {
