@@ -32,7 +32,7 @@ const updateUser = async (req, res) => {
   }
   const updatedUser = await db.User.update({ ...data }, { where: { id: userId } });
   const getUser = await db.User.findOne({ where: { id: userId } });
-  req.session.user = getUser.dataValues;
+  req.session.user = getUser.toJSON();
   res.status(200).json({ id: updatedUser.id });
 };
 
@@ -57,7 +57,7 @@ const changePassword = async (req, res) => {
   const hashedPassword2 = await bcrypt.hash(newPassword, salt);
   const user = await db.User.update({ password: hashedPassword2 }, { where: { id } });
   const getUser = await db.User.findOne({ where: { id } });
-  req.session.user = getUser.dataValues;
+  req.session.user = getUser.toJSON();
   return res.status(200).json({ id: user.id });
 };
 
