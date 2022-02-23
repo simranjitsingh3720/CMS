@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import useAxios from 'axios-hooks';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { Modal, Button, Space, Empty } from 'antd';
 import ActionBar from '../../../../components/ActionBar';
 import StructureDrawer from './StructureDrawer';
 import FieldCard from './FieldCard';
+
+const { confirm } = Modal;
 
 function ShowSchema() {
   const router = useRouter();
@@ -26,6 +29,19 @@ function ShowSchema() {
 
   const closeEditSchemaDrawer = () => {
     setEditSchemaDrawer(false);
+  };
+  const deleteField = () => {
+    confirm({
+      title: 'Do you Want to delete this Field',
+      icon: <ExclamationCircleOutlined style={{ color: 'red' }} />,
+      // content: '',
+      onOk() {
+        console.log('OK');
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
   };
 
   const actions = {
@@ -78,19 +94,24 @@ function ShowSchema() {
           : null}
 
       </div>
-      {/* {data && JSON.stringify(data.schema)} */}
-      {
-         ((data && data.schema) || []).map((fields) => (
-           <FieldCard
-             setIsEditSchemaDrawer={setEditSchemaDrawer}
-             onClose={closeSchemaDrawer}
-             key={fields.id}
-             id={fields.id}
-             fields={fields}
-             setFieldData={setFieldData}
-           />
-         ))
-         }
+      {data && JSON.stringify(data.schema)}
+      <div style={{ marginLeft: '50px', marginRight: '50px' }}>
+        { data && data.schema == null ? <div><Empty style={{ marginTop: '83px' }} image={Empty.PRESENTED_IMAGE_SIMPLE} /></div>
+
+          : ((data && data.schema) || []).map((fields) => (
+
+            <FieldCard
+              setIsEditSchemaDrawer={setEditSchemaDrawer}
+              onClose={closeSchemaDrawer}
+              key={fields.id}
+              id={fields.id}
+              fields={fields}
+              setFieldData={setFieldData}
+              deleteField={deleteField}
+            />
+
+          ))}
+      </div>
     </div>
   );
 }

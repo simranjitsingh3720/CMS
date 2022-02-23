@@ -4,13 +4,14 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import style from './style.module.scss';
 
-function SchemaDrawer({ closeDrawer, setIsDrawer }) {
+function SchemaDrawer({ closeDrawer, setIsDrawer, fetchAllSchema }) {
   const [error, setError] = useState('');
   const { push } = useRouter();
 
   const onFinish = (values) => {
     axios.post('http://localhost:8000/api/schema', values).then((res) => {
       setIsDrawer(false);
+      fetchAllSchema();
       push('/admin/datastore/content-builder/[schemaId]', `/admin/datastore/content-builder/${res.data.slug}`);
     }).catch((err) => {
       setError(err.message);

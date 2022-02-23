@@ -6,11 +6,15 @@ function SchemaCard({ schemaName, deleteSchema, showSchema, schemaSlug }) {
   return (
     <Card>
       <div className={style.schema_card}>
-        <div>
-          <h1>{schemaName}</h1>
-          <p>
-            {`Slug : ${schemaSlug}`}
-          </p>
+        <div style={{ display: 'flex' }}>
+          <div style={{ fontWeight: 'bold', marginRight: '10px' }}>
+            Name:
+            {' '}
+            {schemaName}
+          </div>
+          <div>
+            {`Slug: ${schemaSlug}`}
+          </div>
         </div>
         <div>
           <Button type="primary" className={style.button} onClick={() => showSchema(schemaSlug)}>View Schema</Button>

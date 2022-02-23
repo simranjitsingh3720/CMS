@@ -96,7 +96,7 @@ function ListSchema() {
       <ActionBar actions={actions} />
       <div>
         {isDrawer
-          ? <SchemaDrawer closeDrawer={closeDrawer} setIsDrawer={setIsDrawer} />
+          ? <SchemaDrawer closeDrawer={closeDrawer} fetchAllSchema={fetchAllSchema} setIsDrawer={setIsDrawer} />
           : null}
 
       </div>
@@ -104,7 +104,7 @@ function ListSchema() {
       <div style={{ textAlign: 'center' }}>
         {showLoading()}
       </div>
-      <div>
+      <div style={{ marginLeft: '50px', marginRight: '50px' }}>
         { data && data.list.length <= 0 ? <div><Empty style={{ marginTop: '83px' }} image={Empty.PRESENTED_IMAGE_SIMPLE} /></div>
 
           : ((data && data.list) || []).map((schema) => (

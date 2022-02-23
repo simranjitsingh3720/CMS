@@ -99,7 +99,7 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
             </Form.Item>
             <Form.Item
               label="Field ID"
-              name="id"
+              name="name"
               rules={[
                 {
                   required: true,
