@@ -25,7 +25,6 @@ function PageBuilder() {
         let obj = null;
 
         let LandingPage = {};
-        // if (router.query.pageSlug) {
         obj = JSON.parse(res.data.data.data);
         LandingPage = {
           html: obj && obj['CMS-html'],
@@ -33,7 +32,6 @@ function PageBuilder() {
           components: obj && obj['CMS-components'],
           style: obj && obj['CMS-styles'],
         };
-        // }
 
         if (!editor) {
           const e = GrapesJS.init({
