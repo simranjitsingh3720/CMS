@@ -8,7 +8,6 @@ function Profile() {
   const [dataForm] = Form.useForm();
 
   const [data, setData] = useState({});
-  const [Passwordloading, setPasswordloading] = useState(false);
   const formItemLayout = {
     labelCol: {
       span: 8,
@@ -35,8 +34,16 @@ function Profile() {
       });
   }, []);
 
-  const [{ loading },
-    executePatch,
+  const [{ DetailsLoading },
+    detailPatch,
+  ] = useAxios(
+    {
+      method: 'PATCH',
+    },
+    { manual: true },
+  );
+  const [{ PasswordLoading },
+    passwordPatch,
   ] = useAxios(
     {
       method: 'PATCH',
@@ -45,7 +52,7 @@ function Profile() {
   );
 
   const SubmitDetails = (values) => {
-    executePatch({
+    detailPatch({
       url: `http://localhost:8000/api/user/${data.id}`,
       data: {
         firstName: values.firstName,
@@ -63,32 +70,21 @@ function Profile() {
   };
 
   const changePassword = (values) => {
-    setPasswordloading(true);
-    if (values.currentPassword === values.newPassword) {
-      setPasswordloading(false);
-      message.error('password should be different from previous password');
-    } else if (values.confirmPassword !== values.newPassword) {
-      setPasswordloading(false);
-      message.error('confirm password should be match with new password');
-    } else {
-      executePatch({
-        url: 'http://localhost:8000/api/user',
-        data: {
-          currentPassword: values.currentPassword,
-          newPassword: values.newPassword,
-        },
+    passwordPatch({
+      url: 'http://localhost:8000/api/user',
+      data: {
+        currentPassword: values.currentPassword,
+        newPassword: values.newPassword,
+      },
+    })
+      .then(() => {
+        form.resetFields();
+        message.success('successfully updated');
       })
-        .then(() => {
-          form.resetFields();
-          setPasswordloading(false);
-          message.success('successfully updated');
-        })
-        .catch(() => {
-          form.resetFields();
-          setPasswordloading(false);
-          message.error('Password is not updated');
-        });
-    }
+      .catch(() => {
+        form.resetFields();
+        message.error('Password is not updated');
+      });
   };
   return (
     <div className="site-card-border-less-wrapper">
@@ -128,7 +124,7 @@ function Profile() {
           <Button
             type="primary"
             htmlType="submit"
-            loading={loading}
+            loading={DetailsLoading}
           >
             Update
           </Button>
@@ -153,21 +149,39 @@ function Profile() {
           <Form.Item
             name="newPassword"
             label="New Password"
-            rules={[{ required: true, message: 'Please enter New Password!!' }]}
+            rules={[{ required: true, message: 'Please enter New Password!!' }, ({ getFieldValue }) => ({
+              validator(_, value) {
+                const paswd = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{16,20}$/;
+                if (!value.match(paswd)) {
+                  return Promise.reject(new Error('password between 16 to 20 characters which contain at least one letter, one numeric digit, and one special character'));
+                }
+                if (getFieldValue('currentPassword') === value) {
+                  return Promise.reject(new Error('Password should be different from current passowrd'));
+                }
+                return Promise.resolve();
+              },
+            })]}
           >
             <Input.Password />
           </Form.Item>
           <Form.Item
             name="confirmPassword"
             label="Confirm Password"
-            rules={[{ required: true, message: 'Please enter Confirm Password!!' }]}
+            rules={[{ required: true, message: 'Please enter Confirm Password!!' }, ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue('newPassword') === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error('The two passwords that you entered do not match!'));
+              },
+            })]}
           >
             <Input.Password />
           </Form.Item>
           <Button
             type="primary"
             htmlType="submit"
-            loading={Passwordloading}
+            loading={PasswordLoading}
           >
             Change
           </Button>
