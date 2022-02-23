@@ -1,20 +1,37 @@
 import React, { useState } from 'react';
 import { Drawer, Button, Form, Input } from 'antd';
-import axios from 'axios';
 import { useRouter } from 'next/router';
+import useAxios from 'axios-hooks';
 import style from './style.module.scss';
 
 function SchemaDrawer({ closeDrawer, setIsDrawer }) {
   const [error, setError] = useState('');
   const { push } = useRouter();
 
+  const [{}, executePost] = useAxios(
+    {
+      url: 'http://localhost:8000/api/schema',
+      method: 'POST',
+    },
+    {
+      manual: true,
+    },
+  );
+
   const onFinish = (values) => {
-    axios.post('http://localhost:8000/api/schema', values).then((res) => {
+    executePost({
+      data: {
+        title: values.title,
+        slug: values.slug,
+        description: values.description,
+      },
+    }).then((res) => {
       setIsDrawer(false);
       push('/admin/datastore/content-builder/[schemaId]', `/admin/datastore/content-builder/${res.data.slug}`);
-    }).catch((err) => {
-      setError(err.message);
-    });
+    })
+      .catch((err) => {
+        setError(err.message);
+      });
   };
 
   const onFinishFailed = (errorInfo) => {
