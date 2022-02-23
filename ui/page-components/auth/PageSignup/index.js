@@ -91,9 +91,9 @@ function PageSignup() {
             name="password"
             rules={[{ required: true, message: 'Please input your Password!' }, () => ({
               validator(_, value) {
-                const paswd = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{16,20}$/;
+                const paswd = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,12}$/;
                 if (!value.match(paswd)) {
-                  return Promise.reject(new Error('password between 16 to 20 characters which contain at least one letter, one numeric digit, and one special character'));
+                  return Promise.reject(new Error('password between 6 to 12 characters which contain at least one letter, one numeric digit, and one special character'));
                 }
                 return Promise.resolve();
               },
