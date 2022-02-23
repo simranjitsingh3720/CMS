@@ -48,7 +48,7 @@ function PageBuilder() {
               stepsBeforeSave: 1,
               storeHtml: true,
               storeCss: true,
-              urlStore: `http://localhost:8000/api/page/${router.query.pageSlug}`,
+              urlStore: `${process.env.NEXT_PUBLIC_APP_URL}/api/v1/page/${router.query.pageSlug}`,
               headers: {
                 'Content-Type': 'application/json',
                 credentials: true,
