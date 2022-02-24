@@ -3,9 +3,9 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      models.User.belongsTo(models.User, { foreignKey: 'updatedBy' });
-      models.User.belongsTo(models.User, { foreignKey: 'deletedBy' });
-      models.User.belongsTo(models.Asset, { foreignKey: 'profilePicture' });
+      models.User.hasOne(models.User, { foreignKey: 'updatedBy' });
+      models.User.hasOne(models.User, { foreignKey: 'deletedBy' });
+      models.User.hasOne(models.Asset, { foreignKey: 'profilePicture' });
     }
   }
   User.init(
