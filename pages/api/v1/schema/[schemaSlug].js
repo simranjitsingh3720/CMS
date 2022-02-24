@@ -1,4 +1,4 @@
-const { getSchemaBySlug, updateSchema, deleteSchemaBySlug } = require('../../../server/api-controllers/schema-controller');
+const { getSchemaBySlug, updateSchema, deleteSchemaBySlug } = require('../../../../server/api-controllers/schema-controller');
 
 const schemaHandler = async (req, res) => {
   switch (req.method) {

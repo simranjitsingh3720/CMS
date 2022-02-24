@@ -1,9 +1,9 @@
 import {
-  Card, Form, Input, Button, message, Upload, Meta, Avatar,
+  Card, Form, Input, Button, message, Upload, Avatar,
 } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { LoadingOutlined, UserAddOutlined } from '@ant-design/icons';
 import { useState, useEffect } from 'react';
-import useAxios from 'axios-hooks';
+import { useRequest } from '../../helpers/request-helper';
 import styles from './styles.module.scss';
 
 function Profile() {
@@ -11,7 +11,9 @@ function Profile() {
   const [dataForm] = Form.useForm();
 
   const [data, setData] = useState({});
-  const [file, setFile] = useState(data.profilePicture);
+  const [url, setUrl] = useState('');
+  const [loading, setLoading] = useState(false);
+
   const formItemLayout = {
     labelCol: {
       span: 8,
@@ -20,18 +22,10 @@ function Profile() {
       span: 17,
     },
   };
-  const normFile = (e) => {
-    console.log('Upload event:', e);
-    setFile(e.file.originFileObj);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
 
-  const [{ data: getdata }, handleGet, refetch] = useAxios({
+  const [{ data: getdata }, handleGet, refetch] = useRequest({
     METHOD: 'GET',
-    url: 'http://localhost:8000/api/user/me',
+    url: '/user/me',
   });
 
   useEffect(() => {
@@ -44,20 +38,21 @@ function Profile() {
           email: res.data.user.email,
           phone: res.data.user.phone,
         });
+        if (res.data.user.Asset) { setUrl(res.data.user.Asset.url); }
       });
   }, []);
 
-  const [{ DetailsLoading },
+  const [{ loading: detailsLoading },
     detailPatch,
-  ] = useAxios(
+  ] = useRequest(
     {
       method: 'PATCH',
     },
     { manual: true },
   );
-  const [{ PasswordLoading },
+  const [{ loading: passwordLoading },
     passwordPatch,
-  ] = useAxios(
+  ] = useRequest(
     {
       method: 'PATCH',
     },
@@ -65,9 +60,8 @@ function Profile() {
   );
 
   const SubmitDetails = (values) => {
-    console.log(values);
     detailPatch({
-      url: `http://localhost:8000/api/user/${data.id}`,
+      url: `/user/${data.id}`,
       data: {
         firstName: values.firstName,
         lastName: values.lastName,
@@ -86,7 +80,7 @@ function Profile() {
 
   const changePassword = (values) => {
     passwordPatch({
-      url: 'http://localhost:8000/api/user',
+      url: '/user',
       data: {
         currentPassword: values.currentPassword,
         newPassword: values.newPassword,
@@ -101,6 +95,95 @@ function Profile() {
         message.error('Password is not updated');
       });
   };
+
+  const [load, setLoad] = useState(false);
+
+  // eslint-disable-next-line no-empty-pattern
+  const [{ }, executePost] = useRequest(
+    {
+      url: '/asset/',
+      method: 'POST',
+    },
+    { manual: true },
+  );
+  // eslint-disable-next-line no-empty-pattern
+  const [{}, executePut] = useRequest(
+    {
+      method: 'PUT',
+    },
+    { manual: true },
+  );
+
+  const handleChange = (info) => {
+    if (info.file.status === 'uploading') {
+      setLoad(true);
+      return;
+    }
+    if (info.file.status === 'done') {
+      setLoading(true);
+      executePost({
+        data: {
+          name: info.file.name,
+          description: info.file.description,
+          mimeType: info.file.originFileObj.type,
+          type: info.file.originFileObj.type.split('/')[0],
+        },
+      })
+        .then((res) => {
+          const { writeUrl } = res.data;
+          const file = info.file.originFileObj;
+          executePut({
+            url: writeUrl,
+            data: file,
+            headers: { type: info.file.originFileObj.type },
+          })
+            .then(() => {
+              setLoad(false);
+              setUrl(res.data.readUrl);
+              detailPatch({
+                url: `/user/${data.id}`,
+                data: {
+                  profilePicture: res.data.id,
+
+                },
+              })
+                .then(() => {
+                  setLoading(false);
+                  message.success('Profile Updated Successfully');
+                  refetch();
+                })
+                .catch(() => {
+                  setLoading(false);
+                  message.error('Profile Not Updated');
+                });
+            })
+            .catch(() => {
+              setLoading(false);
+              setLoad(false);
+            });
+        });
+    }
+  };
+  const uploadButton = (
+    <div>
+      {load ? <LoadingOutlined /> : <Avatar size={130} icon={<UserAddOutlined />} />}
+    </div>
+  );
+  const image = (
+    <div>
+      {loading ? <LoadingOutlined />
+        : (
+          <div style={{
+            backgroundImage: `url(${url})`,
+            width: '130px',
+            height: '130px',
+            backgroundSize: 'cover',
+            borderRadius: '50%',
+          }}
+          />
+        )}
+    </div>
+  );
   return (
     <div className="site-card-border-less-wrapper">
       <Card
@@ -108,34 +191,23 @@ function Profile() {
         className={styles.card_container}
         bordered={false}
       >
+        <Upload
+          name="avatar"
+          listType="picture-card"
+          className={styles.profile}
+          showUploadList={false}
+          action="http://localhost:8000/admin/profile"
+          onChange={handleChange}
+        >
+          {url
+            ? image : uploadButton}
+        </Upload>
         <Form
           form={dataForm}
           name="validate"
           {...formItemLayout}
           onFinish={SubmitDetails}
         >
-          <Avatar
-            // src="https://images.pexels.com/photos/2893685/pexels-photo-2893685.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-           // src={file}
-            style={{ width: 100, height: 100, position: 'relative' }}
-            className={styles.picture}
-          >
-            <Form.Item
-              name="upload"
-              valuePropName="fileList"
-              rules={[{ required: true }]}
-              getValueFromEvent={normFile}
-            >
-              <Upload name="logo">
-                <Button
-                  icon={<UploadOutlined />}
-                  style={{
-                    borderRadius: '50%', position: 'absolute', bottom: 0,
-                  }}
-                />
-              </Upload>
-            </Form.Item>
-          </Avatar>
           <Form.Item
             name="firstName"
             label="First Name"
@@ -162,13 +234,15 @@ function Profile() {
           >
             <Input />
           </Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            loading={DetailsLoading}
-          >
-            Update
-          </Button>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={detailsLoading}
+            >
+              Update
+            </Button>
+          </div>
         </Form>
       </Card>
 
@@ -219,13 +293,15 @@ function Profile() {
           >
             <Input.Password />
           </Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            loading={PasswordLoading}
-          >
-            Change
-          </Button>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={passwordLoading}
+            >
+              Change
+            </Button>
+          </div>
         </Form>
       </Card>
     </div>

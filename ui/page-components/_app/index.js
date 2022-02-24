@@ -46,7 +46,7 @@ CMSApp.getInitialProps = async ({ ctx }) => {
       sessionId: ctx?.req?.sessionID,
     };
   } else {
-    const res = await axios.get('http://localhost:8000/api/user/me');
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_APP_URL}/api/v1/user/me`);
     session = res.data;
   }
   return { session };

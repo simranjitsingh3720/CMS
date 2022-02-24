@@ -8,8 +8,8 @@ import {
 } from '@ant-design/icons';
 import { Card, message, Modal, Empty, Tooltip } from 'antd';
 import { useRouter } from 'next/router';
-import useAxios from 'axios-hooks';
 import styles from './style.module.scss';
+import { useRequest } from '../../../../helpers/request-helper';
 
 const { Meta } = Card;
 const { confirm } = Modal;
@@ -23,8 +23,8 @@ function PageCard({ searchValue }) {
     setSsImage(localStorage.getItem('image'));
   }, []);
 
-  const [{ data, loading, error }, refetch] = useAxios({
-    url: 'http://localhost:8000/api/page',
+  const [{ data, loading, error }, refetch] = useRequest({
+    url: '/page',
     method: 'GET',
     params: {
       q: searchValue,
@@ -42,7 +42,7 @@ function PageCard({ searchValue }) {
     window.open(`/${newSlug}`, '_blank');
   };
 
-  const [{ data: homeData }, executeHandleHome] = useAxios(
+  const [{ data: homeData }, executeHandleHome] = useRequest(
     {
       method: 'POST',
     },
@@ -53,7 +53,7 @@ function PageCard({ searchValue }) {
 
   function handleHome(newSlug) {
     executeHandleHome({
-      url: `http://localhost:8000/api/updateHome/${newSlug}`,
+      url: `/updateHome/${newSlug}`,
     }).then(() => {
       message.success('Home Updated Successfully', 5);
     })
@@ -66,7 +66,7 @@ function PageCard({ searchValue }) {
   //   refetch();
   // }, [homeData]);
 
-  const [{ data: deleteData }, handleDeletePage] = useAxios(
+  const [{ data: deleteData }, handleDeletePage] = useRequest(
     {
       method: 'DELETE',
     },
@@ -93,7 +93,7 @@ function PageCard({ searchValue }) {
         cancelText: 'No',
         onOk() {
           handleDeletePage({
-            url: `http://localhost:8000/api/page/${slugForDelete}`,
+            url: `/page/${slugForDelete}`,
           });
           message.success('Page Deleted Successfully!');
         },

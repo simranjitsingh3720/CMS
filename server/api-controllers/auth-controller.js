@@ -29,7 +29,7 @@ const signin = async (req, res) => {
     return res.status(400).send({ message: 'Requested email or password is missing' });
   }
 
-  const user = await db.User.findOne({ where: { email } });
+  const user = await db.User.findOne({ where: { email }, include: db.Asset });
   if (!user) {
     return res.status(400).json({ message: 'Email does not exist' });
   }

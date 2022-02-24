@@ -7,9 +7,9 @@ import {
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import useAxios from 'axios-hooks';
 import navData from './sideNavContent';
 import Styles from './style.module.scss';
+import { useRequest } from '../../../helpers/request-helper';
 
 const { Header, Footer } = Layout;
 
@@ -21,10 +21,10 @@ function PageSider() {
   const onCollapse = (isCollapsed) => {
     setCollapsed(isCollapsed);
   };
-  const [{}, handleGet] = useAxios({ method: 'GET' }, { manual: true });
+  const [{}, handleGet] = useRequest({ method: 'GET' }, { manual: true });
 
   const signout = () => {
-    handleGet({ url: '/api/auth/signout' })
+    handleGet({ url: '/auth/signout' })
       .then(() => Router.push('/admin/signin'));
   };
   const content = (

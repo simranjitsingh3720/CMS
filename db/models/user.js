@@ -3,9 +3,9 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      models.User.hasMany(models.Content, { foreignKey: 'createdBy' });
-      models.User.hasMany(models.Schema, { foreignKey: 'createdBy' });
-      models.User.hasMany(models.Page, { foreignKey: 'createdBy' });
+      models.User.belongsTo(models.User, { foreignKey: 'updatedBy' });
+      models.User.belongsTo(models.User, { foreignKey: 'deletedBy' });
+      models.User.belongsTo(models.Asset, { foreignKey: 'profilePicture' });
     }
   }
   User.init(
@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       password: { type: DataTypes.STRING, allowNull: false },
       firstName: { type: DataTypes.STRING, allowNull: false },
       lastName: { type: DataTypes.STRING, allowNull: false },
-      profilePicture: { type: DataTypes.STRING },
+      profilePicture: { type: DataTypes.UUID },
       createdAt: { type: DataTypes.DATE },
       updatedBy: { type: DataTypes.UUID },
       updatedAt: { type: DataTypes.DATE },

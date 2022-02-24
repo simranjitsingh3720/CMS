@@ -1,6 +1,6 @@
 import { Form, Input, Button, message } from 'antd';
 import { useState } from 'react';
-import useAxios from 'axios-hooks';
+import { useRequest } from '../../../helpers/request-helper';
 
 function AssetEditForm({ refetch, data, onDrawerClose }) {
   const [form] = Form.useForm();
@@ -16,9 +16,9 @@ function AssetEditForm({ refetch, data, onDrawerClose }) {
 
   const [{ error },
     executePatch,
-  ] = useAxios(
+  ] = useRequest(
     {
-      url: `/api/asset/${data.id}`,
+      url: `/asset/${data.id}`,
       method: 'PATCH',
     },
     { manual: true },
@@ -57,7 +57,10 @@ function AssetEditForm({ refetch, data, onDrawerClose }) {
       >
         <Input />
       </Form.Item>
-      <Form.Item name="description" label="Description">
+      <Form.Item
+        name="description"
+        label="Description"
+      >
         <Input />
       </Form.Item>
       <Button type="primary" loading={loading} htmlType="submit">

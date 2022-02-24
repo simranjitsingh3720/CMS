@@ -1,4 +1,4 @@
-import PageBuilder from '../../../../ui/page-components/page-manager/PageBuilder/home';
+import Home from '../../../../ui/page-components/page-manager/PageBuilder/home';
 
 export async function getServerSideProps() {
   return {
@@ -8,4 +8,4 @@ export async function getServerSideProps() {
   };
 }
 
-export default PageBuilder;
+export default Home;

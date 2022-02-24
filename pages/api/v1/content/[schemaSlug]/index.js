@@ -1,4 +1,4 @@
-const { listContents, addContent } = require('../../../../server/api-controllers/content-controller');
+const { listContents, addContent } = require('../../../../../server/api-controllers/content-controller');
 
 const contentHandler = async (req, res) => {
   switch (req.method) {

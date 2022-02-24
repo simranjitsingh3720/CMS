@@ -4,7 +4,7 @@ import {
   message, Checkbox,
 } from 'antd';
 import { useRouter } from 'next/router';
-import useAxios from 'axios-hooks';
+import { useRequest } from '../../../../helpers/request-helper';
 
 function PageFormDrawer({ onFormClose, visible, setVisible }) {
   const [pageDetails, setPageDetails] = useState({ name: '', slug: '', isHome: 0 });
@@ -13,17 +13,17 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
 
   const { push } = useRouter();
 
-  const [{ data, loading, error }, refetch] = useAxios({
-    url: 'http://localhost:8000/api/page/',
+  const [{ data, loading, error }, refetch] = useRequest({
+    url: '/page/',
     method: 'GET',
     params: {
       q: '',
     },
   });
 
-  const [{}, executePost] = useAxios(
+  const [{}, executePost] = useRequest(
     {
-      url: 'http://localhost:8000/api/createPage',
+      url: '/createPage',
       method: 'POST',
     },
     {

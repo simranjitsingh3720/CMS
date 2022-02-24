@@ -1,7 +1,7 @@
 .card_container{
   width: 600px;
   margin: auto;
-  height: 500px;
+  height: 525px;
   :global(Paragraph){
     margin:40px;
   }
@@ -15,14 +15,13 @@
     margin:40px;
   }
 }
-.picture{
-  margin-left: 40%;
-  margin-bottom: 20px;
-  position: relative !important;
-}
 .profile{
-  position: absolute !important;
-  bottom: 0 !important;
-  right: 0 !important;
+margin-left: 38%;
+margin-bottom: 20px;
+:global(.ant-upload.ant-upload-select-picture-card){
+  width: 130px;
+height: 130px;
   border-radius: 50%;
+  margin-right: 0px;
+}
 }

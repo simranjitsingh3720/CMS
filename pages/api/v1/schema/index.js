@@ -1,4 +1,4 @@
-const { listSchemas, addSchema } = require('../../../server/api-controllers/schema-controller');
+const { listSchemas, addSchema } = require('../../../../server/api-controllers/schema-controller');
 
 const schemaHandler = async (req, res) => {
   switch (req.method) {
