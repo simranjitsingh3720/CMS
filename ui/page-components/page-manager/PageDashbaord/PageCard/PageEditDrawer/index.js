@@ -9,20 +9,21 @@ import {
 } from '@ant-design/icons';
 import useAxios from 'axios-hooks';
 import styles from '../style.module.scss';
+import { useRequest } from '../../../../../helpers/request-helper';
 
 const { confirm } = Modal;
 
 function PageEditDrawer({ onFormClose, visible, setVisible, data }) {
   const [form] = Form.useForm();
 
-  const [{ error }, executePatch] = useAxios(
+  const [{ error }, executePatch] = useRequest(
     {
-      url: `/api/page/${data.slug}`,
+      url: `/page/${data.slug}`,
       method: 'PATCH',
     },
     { manual: true },
   );
-  const [{ data: homeData }, executeHandleHome] = useAxios(
+  const [{ data: homeData }, executeHandleHome] = useRequest(
     {
       method: 'POST',
     },
@@ -60,7 +61,7 @@ function PageEditDrawer({ onFormClose, visible, setVisible, data }) {
       cancelText: 'No',
       onOk() {
         executeHandleHome({
-          url: `http://localhost:8000/api/updateHome/${slug}`,
+          url: `updateHome/${slug}`,
         });
         message.success('Home Page Updated Successfully!');
       },
@@ -70,7 +71,7 @@ function PageEditDrawer({ onFormClose, visible, setVisible, data }) {
     });
   }
 
-  const [{ data: deleteData }, handleDeletePage] = useAxios(
+  const [{ data: deleteData }, handleDeletePage] = useRequest(
     {
       method: 'DELETE',
     },
@@ -99,7 +100,7 @@ function PageEditDrawer({ onFormClose, visible, setVisible, data }) {
         cancelText: 'No',
         onOk() {
           handleDeletePage({
-            url: `http://localhost:8000/api/page/${slugForDelete}`,
+            url: `/page/${slugForDelete}`,
           });
           message.success('Page Deleted Successfully!');
         },
