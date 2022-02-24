@@ -6,7 +6,6 @@ import {
 import { Card, Empty, Tooltip } from 'antd';
 import { useRouter } from 'next/router';
 import styles from './style.module.scss';
-import 'antd/dist/antd.css';
 import PageEditDrawer from './PageEditDrawer';
 import { useRequest } from '../../../../helpers/request-helper';
 

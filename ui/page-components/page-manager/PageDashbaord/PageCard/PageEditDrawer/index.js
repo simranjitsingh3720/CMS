@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
-  Form, Input, Button, message, Divider, Drawer, Modal, Text,
+  Form, Input, Button, message, Drawer, Modal,
 } from 'antd';
 import {
   ExclamationCircleOutlined,
   DeleteOutlined,
   HomeOutlined,
 } from '@ant-design/icons';
-import useAxios from 'axios-hooks';
 import styles from '../style.module.scss';
 import { useRequest } from '../../../../../helpers/request-helper';
 
