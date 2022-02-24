@@ -46,7 +46,6 @@ export const renderSingleData = async (req, res) => {
 export const updateData = async (req, res) => {
   const { pageSlug } = req.query;
   const code = req.body;
-  console.log(code);
   const stringyfiedCode = JSON.stringify(code);
   const result = await db.Page.update({ data: stringyfiedCode }, { where: { slug: pageSlug } });
   if (result) {
