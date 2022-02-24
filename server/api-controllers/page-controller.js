@@ -106,9 +106,15 @@ export const deletePage = async (req, res) => {
 };
 
 export const updatePageData = async (req, res) => {
-  const { pageSlug } = req.query;
+  const { pageSlug } = req.query || '';
   const pageData = req.body;
-  const result = await db.Page.update({ name: pageData.name, slug: pageData.slug }, { where: { slug: pageSlug } });
+  if (pageSlug) {
+    const result = await db.Page.update({ name: pageData.name, slug: pageData.slug }, { where: { slug: pageSlug } });
+    if (result) {
+      return res.status(201).json({ data: result });
+    }
+  }
+  const result = await db.Page.update({ name: pageData.name }, { where: { slug: '' } });
   if (result) {
     return res.status(201).json({ data: result });
   }

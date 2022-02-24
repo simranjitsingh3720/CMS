@@ -54,7 +54,7 @@ function PageEditDrawer({ onFormClose, visible, setVisible, data }) {
       icon: <ExclamationCircleOutlined />,
       content: <p className={styles.modal_content}>
         After Changing this Page to Home, current Page Name will be Renamed as Home
-      </p>,
+               </p>,
       okText: 'Yes',
       okType: 'primary',
       cancelText: 'No',
@@ -93,7 +93,7 @@ function PageEditDrawer({ onFormClose, visible, setVisible, data }) {
         icon: <ExclamationCircleOutlined />,
         content: <p className={styles.modal_content}>
           After Deleting this Page you won't be able to use this slug
-        </p>,
+                 </p>,
         okText: 'Yes',
         okType: 'danger',
         cancelText: 'No',
@@ -139,7 +139,7 @@ function PageEditDrawer({ onFormClose, visible, setVisible, data }) {
           label="Slug"
           name="slug"
         >
-          <Input />
+          <Input disabled={data.slug === ''} />
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 16 }} className={styles.drawer_button}>
