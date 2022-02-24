@@ -3,9 +3,9 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Asset extends Model {
     static associate(models) {
-      models.Schema.belongsTo(models.User, { foreignKey: 'createdBy' });
-      models.Schema.belongsTo(models.User, { foreignKey: 'updatedBy' });
-      models.Schema.belongsTo(models.User, { foreignKey: 'deletedBy' });
+      models.Asset.belongsTo(models.User, { foreignKey: 'createdBy' });
+      models.Asset.belongsTo(models.User, { foreignKey: 'updatedBy' });
+      models.Asset.belongsTo(models.User, { foreignKey: 'deletedBy' });
     }
   }
 
@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
       url: { type: DataTypes.STRING },
       name: { type: DataTypes.STRING },
-      description: { type: DataTypes.STRING },
+      description: { type: DataTypes.STRING, defaultValue: 'description' },
       type: { type: DataTypes.STRING },
       mimeType: { type: DataTypes.STRING },
       createdBy: { type: DataTypes.UUID },

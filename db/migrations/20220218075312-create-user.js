@@ -9,7 +9,7 @@ module.exports = {
       password: { type: Sequelize.STRING, allowNull: false },
       firstName: { type: Sequelize.STRING, allowNull: false },
       lastName: { type: Sequelize.STRING, allowNull: false },
-      profilePicture: { type: Sequelize.STRING },
+      profilePicture: { type: Sequelize.UUID },
       createdAt: { type: Sequelize.DATE },
       updatedBy: { type: Sequelize.UUID },
       updatedAt: { type: Sequelize.DATE },
