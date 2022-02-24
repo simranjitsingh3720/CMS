@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       models.User.hasOne(models.User, { foreignKey: 'updatedBy' });
       models.User.hasOne(models.User, { foreignKey: 'deletedBy' });
-      models.User.hasOne(models.Asset, { foreignKey: 'profilePicture' });
+      models.User.hasOne(models.Asset, { foreignKey: 'id' });
     }
   }
   User.init(
