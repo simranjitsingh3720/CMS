@@ -1,4 +1,4 @@
-const { renderSingleData, updateData, deletePage } = require('../../../../server/api-controllers/page-controller');
+const { renderSingleData, updateData, deletePage, updatePageData } = require('../../../../server/api-controllers/page-controller');
 
 const handler = async (req, res) => {
   switch (req.method) {
@@ -8,6 +8,8 @@ const handler = async (req, res) => {
       return updateData(req, res);
     case 'DELETE':
       return deletePage(req, res);
+    case 'PATCH':
+      return updatePageData(req, res);
     default:
       return '';
   }
