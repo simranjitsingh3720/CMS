@@ -1,6 +1,6 @@
 import { Card, Form, Input, Button, message } from 'antd';
 import { useState, useEffect } from 'react';
-import useAxios from 'axios-hooks';
+import { useRequest } from '../../helpers/request-helper';
 import styles from './styles.module.scss';
 
 function Profile() {
@@ -18,12 +18,12 @@ function Profile() {
       span: 17,
     },
   };
-  const [{ data: getdata }, handleGet] = useAxios({
+  const [{ data: getdata }, handleGet] = useRequest({
     METHOD: 'GET',
-    url: '/api/user/me',
+    url: '/user/me',
   });
 
-  const [{ data: getOneUser }, userGet] = useAxios(
+  const [{ data: getOneUser }, userGet] = useRequest(
     {
       method: 'GET',
     },
@@ -33,7 +33,7 @@ function Profile() {
   useEffect(() => {
     handleGet()
       .then((res) => {
-        userGet({ url: `http://localhost:8000/api/user/${res.data.user.id}` })
+        userGet({ url: `/user/${res.data.user.id}` })
           .then((response) => {
             setData(response.data.user);
             dataForm.setFieldsValue({
@@ -47,7 +47,7 @@ function Profile() {
 
   const [{ },
     executePatch,
-  ] = useAxios(
+  ] = useRequest(
     {
       method: 'PATCH',
     },
@@ -57,7 +57,7 @@ function Profile() {
   const SubmitDetails = (values) => {
     setLoading(true);
     executePatch({
-      url: `/api/user/${data.id}`,
+      url: `/user/${data.id}`,
       data: {
         firstName: values.firstName,
         lastName: values.lastName,
@@ -65,7 +65,7 @@ function Profile() {
     })
       .then(() => {
         message.success('User Updated');
-        userGet({ url: `http://localhost:8000/api/user/${data.id}` })
+        userGet({ url: `/user/${data.id}` })
           .then((res) => {
             setData(res.data.user);
             setLoading(false);

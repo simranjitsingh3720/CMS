@@ -1,18 +1,18 @@
 import { useState } from 'react';
-import useAxios from 'axios-hooks';
 import { List } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import AssetCard from './AssetCard';
 import AssetDrawer from './AssetDrawer';
 import ActionBar from '../../components/layout/ActionBar';
+import { useRequest } from '../../helpers/request-helper';
 
 function PageAsset() {
   const [visible, setVisible] = useState(false);
   const [searchValue, setSearchValue] = useState('');
 
-  const [{ data }, refetch] = useAxios({
+  const [{ data }, refetch] = useRequest({
     method: 'GET',
-    url: 'http://localhost:8000/api/asset',
+    url: '/asset',
     params: {
       q: searchValue,
     },

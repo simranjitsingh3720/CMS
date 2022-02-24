@@ -1,9 +1,9 @@
-const { signout } = require('../../../server/api-controllers/auth-controller');
+const { signup } = require('../../../../server/api-controllers/auth-controller');
 
 const signupHandler = (req, res) => {
   switch (req.method) {
-    case 'GET':
-      return signout(req, res);
+    case 'POST':
+      return signup(req, res);
     default:
       return res.send('IN DEFAULT');
   }
