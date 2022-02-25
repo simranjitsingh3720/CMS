@@ -2,13 +2,15 @@ import {
   Card, Form, Input, Button, message, Upload, Avatar,
 } from 'antd';
 import { LoadingOutlined, UserAddOutlined } from '@ant-design/icons';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useRequest } from '../../helpers/request-helper';
 import styles from './styles.module.scss';
+import SessionContext from '../../context/session';
 
 function Profile() {
   const [form] = Form.useForm();
   const [dataForm] = Form.useForm();
+  const loggedData = useContext(SessionContext);
 
   const [data, setData] = useState({});
   const [url, setUrl] = useState('');
@@ -72,6 +74,7 @@ function Profile() {
       .then(() => {
         message.success('User Updated');
         refetch();
+        loggedData.refetch();
       })
       .catch(() => {
         message.error('User Not Updated');
@@ -89,6 +92,7 @@ function Profile() {
       .then(() => {
         form.resetFields();
         message.success('successfully updated');
+        loggedData.refetch();
       })
       .catch(() => {
         form.resetFields();
@@ -150,6 +154,7 @@ function Profile() {
                   setLoading(false);
                   message.success('Profile Updated Successfully');
                   refetch();
+                  loggedData.refetch();
                 })
                 .catch(() => {
                   setLoading(false);

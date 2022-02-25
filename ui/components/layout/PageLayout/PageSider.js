@@ -4,23 +4,26 @@ import {
 import {
   PoweroffOutlined, UserOutlined,
 } from '@ant-design/icons';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import navData from './sideNavContent';
 import Styles from './style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
+import SessionContext from '../../../context/session';
+// import AuthContext from '../../../context/auth';
 
 const { Header, Footer } = Layout;
 
 function PageSider() {
+  const loggedData = useContext(SessionContext);
   const Router = useRouter();
   const { Sider } = Layout;
-  const [collapsed, setCollapsed] = useState(false);
+  // const [collapsed, setCollapsed] = useState(false);
 
-  const onCollapse = (isCollapsed) => {
-    setCollapsed(isCollapsed);
-  };
+  // const onCollapse = (isCollapsed) => {
+  //   setCollapsed(isCollapsed);
+  // };
   const [{}, handleGet] = useRequest({ method: 'GET' }, { manual: true });
 
   const signout = () => {
@@ -42,11 +45,15 @@ function PageSider() {
       </Button>
     </div>
   );
+  const profileImage = (
+    loggedData.session
+      ? (<PoweroffOutlined />)
+      : <UserOutlined />);
   return (
     <Sider
-      collapsible
-      collapsed={collapsed}
-      onCollapse={onCollapse}
+      // collapsible
+      // collapsed={collapsed}
+      // onCollapse={onCollapse}
       style={{
         overflow: 'auto',
         height: '100vh',
@@ -69,16 +76,25 @@ function PageSider() {
           className={Styles.foot}
         >
           <Popover
-            placement="topRight"
+            placement="top"
             content={content}
-            trigger="hover"
+            trigger="click"
             overlayInnerStyle={{ backgroundColor: '#EEE' }}
             overlayClassName={Styles.popover}
             overlayStyle={{
               width: '105px',
             }}
           >
-            <Avatar icon={<UserOutlined />} />
+            <div className={Styles.font}>
+              <Avatar icon={profileImage} />
+              {loggedData.session ? (
+                <span style={{ color: '#B0DBF1', marginLeft: '20px' }}>
+                  {loggedData.session.user.firstName}
+                  {' '}
+                  {loggedData.session.user.lastName}
+                </span>
+              ) : null}
+            </div>
           </Popover>
         </Footer>
       </Menu>
