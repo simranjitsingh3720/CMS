@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Drawer, Tabs, Form, Input, Button, Checkbox, Select, Divider, Card, Space, message,
 } from 'antd';
@@ -9,14 +9,18 @@ import Switch from './apperanceComponent/Switch';
 
 const { TextArea } = Input;
 
-function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData }) {
+function StructureDrawer({
+  fieldsName, closeSchemaDrawer, data = {}, getSchema, fieldData, isEditable,
+}) {
   const [form] = Form.useForm();
-  console.log(fieldData);
 
   const [dataType, setDataType] = useState('');
   const [appearanceType, setAppearanceType] = useState('');
   const [loading, setLoading] = useState(false);
+  const [fieldId, setFieldId] = useState('');
 
+  console.log(isEditable);
+  console.log('dsdd ', data);
   const handleOnDataTypeChange = (value) => {
     setDataType(value);
   };
@@ -30,57 +34,105 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
   };
 
   const [{ error },
-    executePatch,
+    executePatchCreate,
   ] = useAxios(
     {
-      url: `http://localhost:8000/api/schema/${data.slug}`,
+      url: `http://localhost:8000/api/schema/${data.slug}/field`,
+      method: 'POST',
+
+    },
+    { manual: true },
+  );
+  const [{ },
+    executePatchUpdate,
+  ] = useAxios(
+    {
+      url: `http://localhost:8000/api/schema/${data.slug}/field`,
       method: 'PATCH',
 
     },
     { manual: true },
   );
-
   const onFinish = async (values) => {
     setLoading(true);
-    let newSchema = data.schema || [];
-    newSchema = [...newSchema, values];
 
-    await executePatch({
+    if (!isEditable) {
+      let newSchema = data.schema || [];
+      newSchema = [...newSchema, values];
 
-      data: {
-        schema: newSchema,
-      },
-    })
-      .then(() => {
+      await executePatchCreate({
+        data: {
+          schema: newSchema,
+        },
+      }).then(() => {
         getSchema();
       });
-    if (error) {
-      message.error('Asset Not Updated');
-    } else {
-      setLoading(false);
 
-      form.resetFields();
-      closeSchemaDrawer();
-      message.success('Field Added Successfully');
+      if (error) {
+        message.error('Field Not Added');
+      } else {
+        setLoading(false);
+
+        form.resetFields();
+        closeSchemaDrawer();
+        message.success('Field Added Successfully');
+      }
+    } else {
+      let newSchema = data.schema || [];
+      const filtered = newSchema.filter((el) => el.id !== fieldsName);
+      console.log('Previous =>', newSchema);
+      console.log('filtered => ', filtered);
+      console.log('new val =>', values);
+
+      newSchema = [...filtered, values];
+      console.log('Final => ', newSchema);
+      await executePatchUpdate({
+        data: {
+          schema: newSchema,
+        },
+      }).then(() => {
+        getSchema();
+      });
+
+      if (error) {
+        message.error('Field Not Updated');
+      } else {
+        setLoading(false);
+
+        form.resetFields();
+        closeSchemaDrawer();
+        message.success('Field Updated Successfully');
+      }
     }
   };
+  // const handleFieldID = (e) => {
+  //   let val = e.target.value;
+
+  //   val = val.replace(/ /g, '_');
+
+  //   setFieldId(val);
+  // };
+
+  const handleValuesChange = (changedValues) => {
+    if (changedValues.name) {
+      const suggestedID = (changedValues.name || '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+      form.setFieldsValue({ id: suggestedID });
+    }
+  };
+
   return (
     <Drawer title="Create a new field" placement="right" onClose={closeSchemaDrawer} size="large" visible>
 
       <Form
         name="basic"
-        labelCol={{
-          span: 6,
-        }}
-        wrapperCol={{
-          span: 10,
-        }}
-        initialValues={{
-          remember: true,
-        }}
+        form={form}
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 10 }}
+        initialValues={{}}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
+        onValuesChange={handleValuesChange}
       >
         <Space direction="vertical">
           <Card title="Field Details" style={{ width: 650 }}>
@@ -97,17 +149,12 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
 
               <Input defaultValue={(fieldData && fieldData.name) || ''} />
             </Form.Item>
+
             <Form.Item
               label="Field ID"
-              name="name"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please input your field ID!',
-                },
-              ]}
+              name="id"
+              rules={[{ required: true, message: 'Please input your field ID!' }]}
             >
-
               <Input defaultValue={(fieldData && fieldData.id) || ''} />
             </Form.Item>
             <Form.Item
@@ -218,9 +265,17 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
             span: 10,
           }}
         >
-          <Button type="primary" htmlType="submit" style={{ marginTop: '15px' }}>
-            Submit
-          </Button>
+          {isEditable ? (
+            <Button type="primary" htmlType="submit" style={{ marginTop: '15px' }}>
+              Update
+            </Button>
+          )
+            : (
+              <Button type="primary" htmlType="submit" style={{ marginTop: '15px' }}>
+                Submit
+              </Button>
+            )}
+
         </Form.Item>
 
       </Form>

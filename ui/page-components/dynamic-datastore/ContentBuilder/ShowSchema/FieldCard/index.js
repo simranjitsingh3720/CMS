@@ -2,11 +2,17 @@ import { Card, Button, Space } from 'antd';
 import { DeleteOutlined, EditOutlined, FileExcelOutlined } from '@ant-design/icons';
 import style from './style.module.scss';
 
-function FieldCard({ fields, setIsEditSchemaDrawer, setFieldData, deleteField }) {
-  const handleEditSchemaFieldsDrawer = () => {
+function FieldCard({
+  fields, setIsEditable, setFieldsName, setIsEditSchemaDrawer, setFieldData, deleteField, fieldSlug,
+}) {
+  const handleEditSchemaFieldsDrawer = (fieldID) => {
     setFieldData(fields);
+    setIsEditable(true);
+    setFieldsName(fieldID);
     setIsEditSchemaDrawer(true);
   };
+
+  // console.log(fields);
 
   return (
     <Card>
@@ -18,11 +24,20 @@ function FieldCard({ fields, setIsEditSchemaDrawer, setFieldData, deleteField })
 
         </div>
         <div>
-          <Button className={style.button} onClick={handleEditSchemaFieldsDrawer}>
+          <Button
+            className={style.button}
+            onClick={() => handleEditSchemaFieldsDrawer(fields.name)}
+
+          >
             <EditOutlined />
           </Button>
           <Space wrap>
-            <Button danger className={style.button} onClick={deleteField}>
+            <Button
+              danger
+              className={style.button}
+             // onClick={deleteField}
+              onClick={() => deleteField(fieldSlug)}
+            >
               <DeleteOutlined />
             </Button>
           </Space>
