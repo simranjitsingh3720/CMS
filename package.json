@@ -33,7 +33,6 @@
     "react-html-parser": "^2.0.2",
     "sass": "^1.49.7",
     "sequelize": "^6.15.0",
-    "styled-components": "^5.3.3",
     "use-react-screenshot": "^3.0.0"
   },
   "devDependencies": {
