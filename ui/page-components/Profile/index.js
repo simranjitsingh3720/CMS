@@ -124,7 +124,6 @@ function Profile() {
       executePost({
         data: {
           name: info.file.name,
-          description: info.file.description,
           mimeType: info.file.originFileObj.type,
           type: info.file.originFileObj.type.split('/')[0],
         },
