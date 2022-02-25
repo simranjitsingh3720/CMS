@@ -88,7 +88,15 @@ function PageSignup() {
           <Form.Item
             className={styles.form_item}
             name="password"
-            rules={[{ required: true, message: 'Please input your Password!' }]}
+            rules={[{ required: true, message: 'Please input your Password!' }, () => ({
+              validator(_, value) {
+                const paswd = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,12}$/;
+                if (!value.match(paswd)) {
+                  return Promise.reject(new Error('password between 6 to 12 characters which contain at least one letter, one numeric digit, and one special character'));
+                }
+                return Promise.resolve();
+              },
+            })]}
           >
             <Input.Password
               prefix={<LockOutlined className="site-form-item-icon" />}
@@ -99,7 +107,14 @@ function PageSignup() {
           <Form.Item
             className={styles.form_item}
             name="confirmPassword"
-            rules={[{ required: true, message: 'This field cannot be empty!' }]}
+            rules={[{ required: true, message: 'This field cannot be empty!' }, ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue('password') === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error('The two passwords that you entered do not match!'));
+              },
+            })]}
           >
             <Input.Password
               prefix={<LockOutlined className="site-form-item-icon" />}

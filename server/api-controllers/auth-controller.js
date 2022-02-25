@@ -61,7 +61,8 @@ const signin = async (req, res) => {
   if (!email || !password) {
     return res.status(400).send({ message: 'Requested email or password is missing' });
   }
-  const user = await db.User.findOne({ where: { email } });
+
+  const user = await db.User.findOne({ where: { email }, include: [db.Asset] });
   if (!user) {
     return res.status(400).json({ message: 'Email does not exist' });
   }
@@ -89,7 +90,7 @@ const recoverPassword = async (req, res) => {
     }
     const values = {
       user: user.id,
-      expiresAt: addMinutes(new Date(), 50),
+      expiresAt: addMinutes(new Date(), 100),
       isEarlier: false,
       isUsed: false,
     };
@@ -105,7 +106,7 @@ const recoverPassword = async (req, res) => {
 const changePassword = async (req, res) => {
   const { password, token } = req.body;
   const user = await db.ForgotPassword.findOne({ where: { id: token } });
-  if (user) {
+  if (user && user.isEarlier === false && user.expiresAt > addMinutes(new Date(), 0)) {
     const userReq = await db.User.findOne({ where: { id: user.user } });
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -113,9 +114,9 @@ const changePassword = async (req, res) => {
     await userReq.save();
     user.isUsed = true;
     await user.save();
-    return res.status(200).send({ message: 'Password updated' });
+    return res.status(200).json({ message: 'Password updated' });
   }
-  return res.status(400).send({ message: 'Invalid token found in url' });
+  return res.status(400).json({ message: 'Password not updated. Some problem' });
 };
 
 const handleToken = async (req, res) => {

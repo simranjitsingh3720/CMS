@@ -68,7 +68,7 @@ export default function PagePasswordRecovery() {
                       type="email"
                       rules={[{ required: true, message: 'Please input your Email!' }]}
                     >
-                      <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Email" />
+                      <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Email" style={{ height: '50px' }} />
                     </Form.Item>
                     {submitted
                       ? <Alert message={displayMessage} type="error" style={{ width: '100%', color: 'red' }} closable onClose={onClose} />

@@ -4,7 +4,7 @@ const config = require('../config');
 const pageModel = require('./page');
 const userModel = require('./user');
 const assetModel = require('./asset');
-const forgotModel = require('./forgotPassword');
+const forgotModel = require('./forgotpassword');
 const schemaModel = require('./schema');
 const contentModel = require('./content');
 

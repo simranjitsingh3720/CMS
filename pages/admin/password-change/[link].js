@@ -55,6 +55,7 @@ function Post() {
   }, []);
 
   function SubmitDetails(values) {
+    console.log('in SubmitDetails');
     const { password, confirmPassword } = values;
     if (password !== confirmPassword) {
       return setConfirmMsg('Confirmation mismatched');
@@ -64,6 +65,7 @@ function Post() {
       ...values,
       token: link,
     };
+    console.log('data ', data);
     executePost({
       data,
     }).then(() => {
@@ -93,13 +95,29 @@ function Post() {
                     <Form.Item
                       name="password"
                       type="password"
-                      rules={[{ min: 5, message: 'Field should contain atleast 5 characters.' }]}
+                      rules={[{ required: true, message: 'Field should not be empty' }, () => ({
+                        validator(_, value) {
+                          const paswd = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,12}$/;
+                          if (!value.match(paswd)) {
+                            return Promise.reject(new Error('password between 6 to 12 characters which contain at least one letter, one numeric digit, and one special character'));
+                          }
+                          return Promise.resolve();
+                        },
+                      })]}
                     >
                       <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} placeholder="Password" />
                     </Form.Item>
                     <Form.Item
                       name="confirmPassword"
                       type="confirmPassword"
+                      rules={[{ required: true, message: 'Field should not be empty' }, ({ getFieldValue }) => ({
+                        validator(_, value) {
+                          if (!value || getFieldValue('password') === value) {
+                            return Promise.resolve();
+                          }
+                          return Promise.reject(new Error('The two passwords that you entered do not match!'));
+                        },
+                      })]}
                     >
                       <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} placeholder="Confirm Password" />
                     </Form.Item>
