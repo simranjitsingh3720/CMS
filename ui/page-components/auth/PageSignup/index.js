@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { MailOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 import styles from '../style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
-import SessionContext from '../../../context/session';
+import SessionContext from '../../../context/SessionContext';
 
 const { Title, Paragraph } = Typography;
 

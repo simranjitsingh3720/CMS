@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import SessionContext from '../../context/session';
+import SessionContext from '../../context/SessionContext';
 import Styles from './styles.module.scss';
 
 function Home() {

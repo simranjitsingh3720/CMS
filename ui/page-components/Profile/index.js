@@ -5,7 +5,7 @@ import { LoadingOutlined, UserAddOutlined } from '@ant-design/icons';
 import { useState, useEffect, useContext } from 'react';
 import { useRequest } from '../../helpers/request-helper';
 import styles from './styles.module.scss';
-import SessionContext from '../../context/session';
+import SessionContext from '../../context/SessionContext';
 
 function Profile() {
   const [form] = Form.useForm();
@@ -42,7 +42,7 @@ function Profile() {
         });
         if (res.data.user.Asset) { setUrl(res.data.user.Asset.url); }
       })
-      .catch(() => {
+      .catch((err) => {
         console.log(err);
       });
   }, []);

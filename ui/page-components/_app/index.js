@@ -4,7 +4,7 @@ import { ConfigProvider } from 'antd';
 import RouteGuard from './RouteGuard';
 import PageLayout from '../../components/layout/PageLayout';
 import theme from '../../theme';
-import { SessionProvider } from '../../context/session';
+import { SessionProvider } from '../../context/SessionContext';
 
 if (typeof window !== 'undefined') {
   ConfigProvider.config({

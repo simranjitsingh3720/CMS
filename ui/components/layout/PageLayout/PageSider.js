@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import navData from './sideNavContent';
 import Styles from './style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
-import SessionContext from '../../../context/session';
+import SessionContext from '../../../context/SessionContext';
 
 const { Header, Footer } = Layout;
 
@@ -90,9 +90,9 @@ function PageSider() {
               <Avatar icon={profileImage} />
               {loggedData.session ? (
                 <span style={{ color: '#B0DBF1', marginLeft: '20px' }}>
-                  {loggedData.session.user.firstName}
+                  {loggedData.session.user.firstName.split(' ')[0]}
                   {' '}
-                  {loggedData.session.user.lastName}
+                  {loggedData.session.user.lastName.split(' ')[0]}
                 </span>
               ) : null}
             </div>
