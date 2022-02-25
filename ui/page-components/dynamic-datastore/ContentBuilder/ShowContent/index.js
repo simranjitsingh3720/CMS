@@ -1,16 +1,17 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import useAxios from 'axios-hooks';
 import { PlusOutlined } from '@ant-design/icons';
 import ActionBar from '../../../../components/layout/ActionBar';
+import { useRequest } from '../../../../helpers/request-helper';
 
 function ShowContent() {
   const router = useRouter();
   const { schemaSlug } = router.query;
-  const [{ data, loading, error }, getSchema] = useAxios(
+
+  const [{ data, loading, error }, getSchema] = useRequest(
     {
       method: 'GET',
-      url: `http://localhost:8000/api/content/${schemaSlug}`,
+      url: `/content/${schemaSlug}`,
     },
   );
 

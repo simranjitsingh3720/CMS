@@ -1,4 +1,3 @@
-import useAxios from 'axios-hooks';
 import React from 'react';
 import {
   message, Form, Input, Button, Row, Col, Typography,
@@ -6,15 +5,16 @@ import {
 import { useRouter } from 'next/router';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import styles from '../style.module.scss';
+import { useRequest } from '../../../helpers/request-helper';
 
 const { Title, Paragraph } = Typography;
 
 function PageSignin() {
   const router = useRouter();
 
-  const [{ loading }, executePost] = useAxios(
+  const [{ loading }, executePost] = useRequest(
     {
-      url: '/api/auth/signin',
+      url: '/auth/signin',
       method: 'POST',
     },
     { manual: true },

@@ -3,12 +3,13 @@ import { DeleteOutlined, EditOutlined, FileExcelOutlined } from '@ant-design/ico
 import style from './style.module.scss';
 
 function FieldCard({
-  fields, setIsEditable, setFieldsName, setIsEditSchemaDrawer, setFieldData, deleteField, fieldSlug,
+  fields, setIsEditable, setFieldsId,
+  setIsEditSchemaDrawer, setFieldData, deleteField, fieldSlug, id,
 }) {
   const handleEditSchemaFieldsDrawer = (fieldID) => {
     setFieldData(fields);
     setIsEditable(true);
-    setFieldsName(fieldID);
+    setFieldsId(fieldID);
     setIsEditSchemaDrawer(true);
   };
 
@@ -26,7 +27,7 @@ function FieldCard({
         <div>
           <Button
             className={style.button}
-            onClick={() => handleEditSchemaFieldsDrawer(fields.name)}
+            onClick={() => handleEditSchemaFieldsDrawer(fields.id)}
 
           >
             <EditOutlined />
@@ -36,7 +37,7 @@ function FieldCard({
               danger
               className={style.button}
              // onClick={deleteField}
-              onClick={() => deleteField(fieldSlug)}
+              onClick={() => deleteField(fieldSlug, id)}
             >
               <DeleteOutlined />
             </Button>

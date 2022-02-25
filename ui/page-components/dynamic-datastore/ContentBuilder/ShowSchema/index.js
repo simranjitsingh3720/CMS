@@ -6,6 +6,7 @@ import { Modal, Button, Space, Empty } from 'antd';
 import ActionBar from '../../../../components/layout/ActionBar';
 import StructureDrawer from './StructureDrawer';
 import FieldCard from './FieldCard';
+import { useRequest } from '../../../../helpers/request-helper';
 
 const { confirm } = Modal;
 
@@ -16,7 +17,7 @@ function ShowSchema() {
   const [editSchemaDrawer, setEditSchemaDrawer] = useState(false);
   const [fieldData, setFieldData] = useState({});
   const [isEditable, setIsEditable] = useState(false);
-  const [fieldsName, setFieldsName] = useState(false);
+  const [fieldsId, setFieldsId] = useState(false);
 
   const showSchemaDrawer = () => {
     setIsEditable(false);
@@ -39,15 +40,15 @@ function ShowSchema() {
     data: deletedData,
     loading: deleteLoading,
     error: deleteError,
-  }, fieldDelete] = useAxios(
+  }, fieldDelete] = useRequest(
     {
       method: 'DELETE',
-      //   url: `http://localhost:8000/api/schema/${schemaSlug}/field`,
+      url: `/schema/${schemaSlug}/field`,
 
     },
     { manual: true },
   );
-  const deleteField = (fieldSlug) => {
+  const deleteField = (fieldSlug, id) => {
     console.log(fieldSlug);
     confirm({
       title: 'Do you Want to delete this Field',
@@ -55,7 +56,7 @@ function ShowSchema() {
       // content: '',
       onOk() {
         const newSchema = data.schema || [];
-        const filtered = newSchema.filter((el) => el.id !== fieldsName);
+        const filtered = newSchema.filter((el) => el.id !== id);
         console.log('Previous =>', newSchema);
         console.log('filtered => ', filtered);
         // console.log('new val =>', values);
@@ -63,12 +64,14 @@ function ShowSchema() {
         newSchema = [...filtered];
         console.log('Final => ', newSchema);
         fieldDelete({
-          url: `http://localhost:8000/api/schema/${schemaSlug}/field`,
+        //  url: `/schema/${schemaSlug}/field`,
           data: {
             schema: newSchema,
           },
+        }).then(() => {
+          getSchema();
         });
-        console.log('OK', schemaSlug);
+        console.log('OK');
       },
       onCancel() {
         console.log('Cancel');
@@ -83,10 +86,10 @@ function ShowSchema() {
       onClick: showSchemaDrawer,
     }],
   };
-  const [{ data, loading, error }, getSchema] = useAxios(
+  const [{ data, loading, error }, getSchema] = useRequest(
     {
       method: 'GET',
-      url: `http://localhost:8000/api/schema/${schemaSlug}`,
+      url: `/schema/${schemaSlug}`,
     },
     { manual: true },
   );
@@ -109,6 +112,7 @@ function ShowSchema() {
               closeSchemaDrawer={closeSchemaDrawer}
               getSchema={getSchema}
               data={data}
+              fieldsId={fieldsId}
             />
           )
           : null}
@@ -121,7 +125,7 @@ function ShowSchema() {
               closeSchemaDrawer={closeEditSchemaDrawer}
               getSchema={getSchema}
               isEditable={isEditable}
-              fieldsName={fieldsName}
+              fieldsId={fieldsId}
               fieldData={fieldData}
               data={data}
             />
@@ -142,7 +146,7 @@ function ShowSchema() {
               id={fields.id}
               fields={fields}
               fieldSlug={fields.id}
-              setFieldsName={setFieldsName}
+              setFieldsId={setFieldsId}
               setIsEditable={setIsEditable}
               setFieldData={setFieldData}
               deleteField={deleteField}

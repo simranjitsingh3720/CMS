@@ -1,21 +1,22 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Table } from 'antd';
 import ActionBar from '../../components/layout/ActionBar';
+import { useRequest } from '../../helpers/request-helper';
 
 function PageUser() {
   const [searchValue, setSearchValue] = useState('');
   const [data, setData] = useState([]);
 
+  const [{}, refetch] = useRequest({
+    url: '/user',
+    params: {
+      q: searchValue,
+    },
+  });
   useEffect(() => {
-    axios.get('http://localhost:8000/api/user', {
-      params: {
-        q: searchValue,
-      },
-    })
-      .then((res) => {
-        setData(res.data.list);
-      });
+    refetch().then((res) => {
+      setData(res.data.list);
+    });
   }, [searchValue]);
 
   const actions = {

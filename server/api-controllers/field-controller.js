@@ -27,6 +27,7 @@ const createField = async (req, res) => {
   const { body, query } = req;
   const { schemaSlug } = query;
   console.log(body);
+
   const updateField = await db.Schema.update({ ...body }, { where: { slug: schemaSlug } });
 
   if (updateField) {

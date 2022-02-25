@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Drawer, Tabs, Form, Input, Button, Checkbox, Select, Divider, Card, Space, message,
+  Drawer, Form, Input, Button, Checkbox, Select, Divider, Card, Space, message,
 } from 'antd';
-import useAxios from 'axios-hooks';
 import { dataTypes, appearanceTypes } from '../../schemaDetails';
 import ValueNames from './apperanceComponent/ValueNames';
 import Switch from './apperanceComponent/Switch';
+import { useRequest } from '../../../../../helpers/request-helper';
 
 const { TextArea } = Input;
 
 function StructureDrawer({
-  fieldsName, closeSchemaDrawer, data = {}, getSchema, fieldData, isEditable,
+  fieldsId, closeSchemaDrawer, data = {}, getSchema, fieldData, isEditable,
 }) {
   const [form] = Form.useForm();
 
@@ -19,8 +19,6 @@ function StructureDrawer({
   const [loading, setLoading] = useState(false);
   const [fieldId, setFieldId] = useState('');
 
-  console.log(isEditable);
-  console.log('dsdd ', data);
   const handleOnDataTypeChange = (value) => {
     setDataType(value);
   };
@@ -30,14 +28,14 @@ function StructureDrawer({
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    message.error('Failed');
   };
 
   const [{ error },
     executePatchCreate,
-  ] = useAxios(
+  ] = useRequest(
     {
-      url: `http://localhost:8000/api/schema/${data.slug}/field`,
+      url: `/schema/${data.slug}/field`,
       method: 'POST',
 
     },
@@ -45,41 +43,84 @@ function StructureDrawer({
   );
   const [{ },
     executePatchUpdate,
-  ] = useAxios(
+  ] = useRequest(
     {
-      url: `http://localhost:8000/api/schema/${data.slug}/field`,
+      url: `/schema/${data.slug}/field`,
       method: 'PATCH',
 
     },
     { manual: true },
   );
   const onFinish = async (values) => {
+    const updatedValues = values;
+
+    if (updatedValues.values) {
+      if (updatedValues.options) {
+        updatedValues.options.values = values.values;
+      } else {
+        updatedValues.options = {
+          values: values.values,
+        };
+      }
+    }
+
+    if (updatedValues.isMultiple) {
+      if (updatedValues.options) {
+        updatedValues.options.isMultiple = values.isMultiple;
+      } else {
+        updatedValues.options = {
+          isMultiple: values.isMultiple,
+        };
+      }
+    }
+
+    updatedValues.values = undefined;
+    updatedValues.isMultiple = undefined;
+
     setLoading(true);
 
     if (!isEditable) {
       let newSchema = data.schema || [];
-      newSchema = [...newSchema, values];
+      const filtered = newSchema.filter((el) => el.id === values.id);
+      console.log(filtered);
+      if (!filtered.length) {
+        newSchema = [...newSchema, values];
 
-      await executePatchCreate({
-        data: {
-          schema: newSchema,
-        },
-      }).then(() => {
-        getSchema();
-      });
+        await executePatchCreate({
+          data: {
+            schema: newSchema,
+          },
+        }).then(() => {
+          getSchema();
+        });
 
-      if (error) {
-        message.error('Field Not Added');
+        if (error) {
+          message.error('Field Not Added');
+        } else {
+          setLoading(false);
+
+          form.resetFields();
+          closeSchemaDrawer();
+          message.success('Field Added Successfully');
+        }
       } else {
-        setLoading(false);
-
-        form.resetFields();
-        closeSchemaDrawer();
-        message.success('Field Added Successfully');
+        message.error('A field with this ID already exists  ');
       }
     } else {
+      // const newSchema = data.schema || [];
+      // const filtered = newSchema.filter((el) => el.id === fieldsId);
+      // console.log('Previous =>', newSchema);
+      // console.log('filtered => ', filtered);
+      // console.log('new val =>', values);
+      // Object.keys(filtered).forEach((key) => {
+      //   filtered[key] = values[key];
+      // });
+      // console.log();
+      // newSchema = [...filtered, values];
+      // console.log('Final => ', newSchema);
+      //  -------------------->
       let newSchema = data.schema || [];
-      const filtered = newSchema.filter((el) => el.id !== fieldsName);
+      const filtered = newSchema.filter((el) => el.id !== fieldsId);
       console.log('Previous =>', newSchema);
       console.log('filtered => ', filtered);
       console.log('new val =>', values);
@@ -113,22 +154,32 @@ function StructureDrawer({
   //   setFieldId(val);
   // };
 
-  const handleValuesChange = (changedValues) => {
-    if (changedValues.name) {
-      const suggestedID = (changedValues.name || '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
-      form.setFieldsValue({ id: suggestedID });
-    }
-  };
-
+  if (!isEditable) {
+    const handleValuesChange = (changedValues) => {
+      if (changedValues.name) {
+        const suggestedID = (changedValues.name || '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+        form.setFieldsValue({ id: suggestedID });
+      }
+    };
+  }
   return (
-    <Drawer title="Create a new field" placement="right" onClose={closeSchemaDrawer} size="large" visible>
+    <Drawer title={fieldData ? `Edit Field ${fieldData.name}` : 'Create a new Field'} placement="right" onClose={closeSchemaDrawer} size="large" visible>
 
       <Form
         name="basic"
         form={form}
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 10 }}
-        initialValues={{}}
+        initialValues={{
+          name: (fieldData && fieldData.name),
+          id: (fieldData && fieldData.id),
+          type: (fieldData && fieldData.type),
+          appearanceType: (fieldData && fieldData.appearanceType),
+          defaultValue: (fieldData && fieldData.defaultValue),
+          required: (fieldData && fieldData.required),
+          description: (fieldData && fieldData.description),
+
+        }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
@@ -147,7 +198,7 @@ function StructureDrawer({
               ]}
             >
 
-              <Input defaultValue={(fieldData && fieldData.name) || ''} />
+              <Input />
             </Form.Item>
 
             <Form.Item
@@ -155,8 +206,10 @@ function StructureDrawer({
               name="id"
               rules={[{ required: true, message: 'Please input your field ID!' }]}
             >
-              <Input defaultValue={(fieldData && fieldData.id) || ''} />
+              <Input disabled={!!isEditable} />
+
             </Form.Item>
+
             <Form.Item
               label="Description"
               name="description"
@@ -237,7 +290,7 @@ function StructureDrawer({
                   return (
 
                     <Form.Item
-                      name="Multiple"
+                      name="isMultiple"
                       valuePropName="checked"
                     >
                       <Checkbox style={{ marginLeft: '120px' }}>Multiple Files</Checkbox>
@@ -259,6 +312,7 @@ function StructureDrawer({
             })()}
           </Card>
         </Space>
+
         <Form.Item
           wrapperCol={{
             offset: 8,
