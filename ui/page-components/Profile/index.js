@@ -41,6 +41,9 @@ function Profile() {
           phone: res.data.user.phone,
         });
         if (res.data.user.Asset) { setUrl(res.data.user.Asset.url); }
+      })
+      .catch(() => {
+        console.log(err);
       });
   }, []);
 
