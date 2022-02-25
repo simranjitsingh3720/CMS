@@ -8,13 +8,26 @@ import {
   InputNumber,
   Switch,
   Checkbox,
-  TimePicker,
-  Space,
   Upload,
   Button,
 } from 'antd';
+import { useState } from 'react';
 
 const { TextArea } = Input;
+
+export const getInitialValues = (fields, editableData, isEditable) => {
+  const values = {};
+  if (isEditable) {
+    Object.keys(editableData).forEach((data) => {
+      if (data !== 'id') { values[[data]] = editableData[data]; }
+    });
+  } else {
+    fields.forEach((field) => {
+      values[field.name] = field.defaultValue || '';
+    });
+  }
+  return values;
+};
 
 const handleCheckBoxChange = (values) => {};
 
@@ -27,11 +40,19 @@ const onDateSelect = (value) => {
 const onRadioValueChange = (radioValue) => {};
 
 function GetFields(appearenceType, field) {
-  const { name, required, options, Truelabel, Falselabel } = field;
+  const {
+    name, required, options, Truelabel, Falselabel, defaultValue,
+  } = field;
+
+  const [short, setShort] = useState(defaultValue || 'aa');
+  const [long, setLong] = useState(defaultValue || 'aa');
+  const [number, setNumber] = useState(defaultValue || 'aa');
+
   let values = [];
   if (options) {
     values = options.values;
   }
+
   switch (appearenceType) {
     case 'short':
       return (
@@ -88,9 +109,7 @@ function GetFields(appearenceType, field) {
     case 'dateAndTime':
       return (
         <Form.Item name={name} label={name} rules={[{ required }]}>
-          <Space direction="vertical" size={12}>
-            <DatePicker showTime onChange={onDateChange} onOk={onDateSelect} />
-          </Space>
+          <DatePicker showTime />
         </Form.Item>
       );
 

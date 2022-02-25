@@ -10,28 +10,38 @@ function ShowContent({ schema }) {
   const router = useRouter();
   const [isContentDrawer, setIsContentDrawer] = useState(false);
   const [searchValue, setSearchValue] = useState('');
+  const [isEditable, setIsEditable] = useState(false);
+  const [editableData, setEditableData] = useState([]);
   const { schemaSlug } = router.query;
 
-  const [{ data, loading, error }, getSchema] = useRequest(
+  const [{ data, loading, error }, getContent] = useRequest(
     {
       method: 'GET',
       url: `/content/${schemaSlug}`,
     },
   );
 
-  // const [{ data, loading, error }] = useAxios({
-  //   method: 'GET',
-  //   url: `http://localhost:8000/api/content/${schemaSlug}`,
-  // });
+  const [{ data: deletedData }, deleteContent] = useRequest(
+    {
+      method: 'DELETE',
+    },
+    { manual: true },
+  );
+
+  const getEditableData = (content) => {
+    setEditableData(content);
+  };
 
   const showContentDrawer = () => {
     setIsContentDrawer(true);
   };
+
   const closeContentDrawer = () => {
     setIsContentDrawer(false);
   };
 
   const addNewContent = () => {
+    setIsEditable(false);
     showContentDrawer();
   };
 
@@ -60,11 +70,24 @@ function ShowContent({ schema }) {
       {isContentDrawer ? (
         <NewContentDrawer
           closeContentDrawer={closeContentDrawer}
-          schemaDetails={schema}
+          schemaDetails={schema || []}
+          getContent={getContent}
+          isEditable={isEditable}
+          editableData={editableData}
         />
       ) : null }
-      {JSON.stringify(data)}
-      <ContentTable tableSchema={schema} />
+
+      <ContentTable
+        tableSchema={schema || []}
+        data={data}
+        showContentDrawer={showContentDrawer}
+        closeContentDrawer={closeContentDrawer}
+        setIsEditable={setIsEditable}
+        getEditableData={getEditableData}
+        deleteContent={deleteContent}
+        getContent={getContent}
+
+      />
     </div>
   );
 }
