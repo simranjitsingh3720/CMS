@@ -42,7 +42,7 @@ const createAsset = async (req, res) => {
     const uploadURL = await s3.getSignedUrlPromise('putObject', params);
     const readUrl = uploadURL.split('?')[0];
     await db.Asset.update({ url: readUrl }, { where: { id: asset.id } });
-    return res.status(201).json({ id: asset.id, writeUrl: uploadURL });
+    return res.status(201).json({ id: asset.id, writeUrl: uploadURL, readUrl });
   } catch (err) {
     return res.status(400).json({ message: 'File Upload failed' });
   }

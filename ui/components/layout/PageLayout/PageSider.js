@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import navData from './sideNavContent';
 import Styles from './style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
-import SessionContext from '../../../page-components/_app/index';
+import SessionContext from '../../../context/session';
 
 const { Header, Footer } = Layout;
 
