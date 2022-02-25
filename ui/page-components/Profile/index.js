@@ -153,8 +153,8 @@ function Profile() {
                 .then(() => {
                   setLoading(false);
                   message.success('Profile Updated Successfully');
-                  refetch();
                   loggedData.refetch();
+                  refetch();
                 })
                 .catch(() => {
                   setLoading(false);

@@ -11,7 +11,6 @@ import navData from './sideNavContent';
 import Styles from './style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
 import SessionContext from '../../../context/session';
-// import AuthContext from '../../../context/auth';
 
 const { Header, Footer } = Layout;
 
@@ -47,7 +46,9 @@ function PageSider() {
   );
   const profileImage = (
     loggedData.session
-      ? (<PoweroffOutlined />)
+      ? (loggedData.session.user.Asset
+        ? <img src={loggedData.session.user.Asset.url} />
+        : <UserOutlined />)
       : <UserOutlined />);
   return (
     <Sider
