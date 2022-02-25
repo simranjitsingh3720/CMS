@@ -57,7 +57,10 @@ function AssetEditForm({ refetch, data, onDrawerClose }) {
       >
         <Input />
       </Form.Item>
-      <Form.Item name="description" label="Description">
+      <Form.Item
+        name="description"
+        label="Description"
+      >
         <Input />
       </Form.Item>
       <Button type="primary" loading={loading} htmlType="submit">

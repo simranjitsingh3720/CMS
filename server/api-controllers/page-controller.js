@@ -103,3 +103,19 @@ export const deletePage = async (req, res) => {
   }
   return res.status(404).json({ message: 'Page not found' });
 };
+
+export const updatePageData = async (req, res) => {
+  const { pageSlug } = req.query || '';
+  const pageData = req.body;
+  if (pageSlug) {
+    const result = await db.Page.update({ name: pageData.name, slug: pageData.slug }, { where: { slug: pageSlug } });
+    if (result) {
+      return res.status(201).json({ data: result });
+    }
+  }
+  const result = await db.Page.update({ name: pageData.name }, { where: { slug: '' } });
+  if (result) {
+    return res.status(201).json({ data: result });
+  }
+  return res.status(404).json({ message: 'Page Not Found' });
+};
