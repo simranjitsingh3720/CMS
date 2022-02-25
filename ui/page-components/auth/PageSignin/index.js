@@ -1,4 +1,3 @@
-import useAxios from 'axios-hooks';
 import React from 'react';
 import {
   message, Form, Input, Button, Row, Col, Typography, Checkbox,
@@ -6,15 +5,16 @@ import {
 import { useRouter } from 'next/router';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import styles from '../style.module.scss';
+import { useRequest } from '../../../helpers/request-helper';
 
 const { Title, Paragraph } = Typography;
 
 function PageSignin() {
   const router = useRouter();
 
-  const [{ loading }, executePost] = useAxios(
+  const [{ loading }, executePost] = useRequest(
     {
-      url: '/api/auth/signin',
+      url: '/auth/signin',
       method: 'POST',
     },
     { manual: true },
@@ -70,7 +70,7 @@ function PageSignin() {
           <Form.Item
             className={styles.form_item}
             name="password"
-            rules={[{ required: true, message: 'Please input your Password!' }]}
+            rules={[{ required: true, message: 'Password cannot be empty.' }]}
           >
             <Input.Password
               prefix={<LockOutlined className="site-form-item-icon" />}

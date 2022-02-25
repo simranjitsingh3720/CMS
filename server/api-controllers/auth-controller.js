@@ -1,17 +1,8 @@
 import { addMinutes } from 'date-fns';
-import { DATE } from 'sequelize';
 
-const { message } = require('antd');
-const { MigrationHubStrategy } = require('aws-sdk');
 const bcrypt = require('bcrypt');
-const nodemailer = require('nodemailer');
-const randtoken = require('rand-token');
-const Sequelize = require('sequelize');
 const mailjet = require('node-mailjet').connect(process.env.MAILJET_PUBLIC_KEY, process.env.MAILJET_PRIVATE_KEY);
 const db = require('../../db/models/index');
-const config = require('../../db/config');
-
-const sequelize = new Sequelize(config);
 
 function sendEmail(recipient, name, link) {
   return mailjet
@@ -29,8 +20,7 @@ function sendEmail(recipient, name, link) {
             },
           ],
           Subject: 'Cogoport CMS - Password Recovery',
-          TextPart: `Hello, ${name}. \n To change the password click ${link}. \n The Cogoport Team`,
-          // HTMLPart: 'Hello, ${name}. \n To change the password click ${link}. \n The Cogoport Team',
+          HTMLPart: `<h2>Hello, ${name}. <br /> To change the password click <a href=${link} >link</a>. <br />  The Cogoport Team</h2>`,
         },
       ],
     })
@@ -43,34 +33,6 @@ function sendEmail(recipient, name, link) {
       console.log('error ', err);
     });
 }
-// function post(request, response) {
-//   const i18n = require(`../i18n/${request.body.locale || 'en'}`);
-//   const send = mailjet.post('send');
-//   const requestObject = {
-//     Messages: [{
-//       From: {
-//         Email: 'hello@allma.si',
-//         Name: 'Ferenc Almasi',
-//       },
-//       To: [{
-//         Email: request.body.email,
-//       }],
-//       Subject: i18n.passwordResetMailSubject,
-//       HTMLPart: passwordResetTemplate(i18n),
-//     }],
-//   };
-//   send.request(requestObject).then(() => {
-//     response.json({
-//       success: true,
-//     });
-//   }).catch((err) => {
-//     console.log(err);
-
-//     response.json({
-//       error: err.statusCode,
-//     });
-//   });
-// }
 
 const signup = async (req, res) => {
   const { body } = req;
@@ -111,6 +73,11 @@ const signin = async (req, res) => {
   return res.status(200).json({ sessionId: req.session.id });
 };
 
+const signout = async (req, res) => {
+  await req.session.destroy();
+  res.status(200).json({ message: 'session destroyed' });
+};
+
 const recoverPassword = async (req, res) => {
   const { email } = req.body;
   const user = await db.User.findOne({ where: { email } });
@@ -128,7 +95,7 @@ const recoverPassword = async (req, res) => {
     };
     const ret = await db.ForgotPassword.create(values);
     const name = `${user.firstName} ${user.lastName}`;
-    const link = `localhost:8000/passwordChange/${ret.id}`;
+    const link = `http://localhost:8000/admin/password-change/${ret.id}`;
     sendEmail(email, name, link);
     return res.status(200).send({ message: 'updated database' });
   }
@@ -137,7 +104,6 @@ const recoverPassword = async (req, res) => {
 
 const changePassword = async (req, res) => {
   const { password, token } = req.body;
-  console.log('ppp ', password, token);
   const user = await db.ForgotPassword.findOne({ where: { id: token } });
   if (user) {
     const userReq = await db.User.findOne({ where: { id: user.user } });
@@ -145,7 +111,6 @@ const changePassword = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
     userReq.password = hashedPassword;
     await userReq.save();
-    req.session.user = userReq;
     user.isUsed = true;
     await user.save();
     return res.status(200).send({ message: 'Password updated' });
@@ -157,7 +122,7 @@ const handleToken = async (req, res) => {
   const { token } = req.body;
   const user = await db.ForgotPassword.findOne({ where: { id: token } });
   if (!user) {
-    return res.status(400).json({ message: 'This password recovery link was not found.' });
+    return res.status(400).json({ message: 'This password recovery link is invalid.' });
   }
   if (user.expiresAt <= addMinutes(new Date(), 0)) {
     return res.status(400).json({ message: 'This password recovery link was expired.' });
@@ -171,4 +136,6 @@ const handleToken = async (req, res) => {
   return res.status(200).json({ message: 'Show the form to change the password.' });
 };
 
-module.exports = { signup, signin, recoverPassword, changePassword, handleToken };
+module.exports = {
+  signup, signin, signout, recoverPassword, changePassword, handleToken,
+};

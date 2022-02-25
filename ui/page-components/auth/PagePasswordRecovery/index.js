@@ -2,88 +2,95 @@ import React, { useState } from 'react';
 import useAxios from 'axios-hooks';
 
 import {
-  message, Form, Input, Button, Row, Col, Typography, Checkbox, notification,
+  Form, Input, Button, Card, Alert,
 } from 'antd';
-import { MailOutlined, LockOutlined } from '@ant-design/icons';
-import axios from 'axios';
-import { useRouter } from 'next/router';
+import { MailOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import styles from '../style.module.scss';
-
-const { Title, Paragraph } = Typography;
 
 export default function PagePasswordRecovery() {
   const [displayMessage, setDisplayMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [successfullySubmitted, setSuccessfullySubmitted] = useState(false);
   const [{ loading }, executePost] = useAxios(
     {
-      url: 'http://localhost:8000/api/auth/recoverPassword',
+      url: 'http://localhost:8000/api/auth/recover-password',
       method: 'POST',
     },
     { manual: true },
   );
-  const router = useRouter();
+  const onClose = () => {
+    setSubmitted(false);
+  };
   const onFinish = async (values) => {
-    console.log('*******************', values);
     await executePost({
       data: values,
     })
       .then(() => {
-        // message.success('Email sent. Please check');
-        // const args = {
-        //   // message: 'Email Sent',
-        //   description:
-        //     'Password recovery letter has been sent successfully',
-        //   duration: 120,
-        // };
-        // notification.open(args);
-        // router.push('resetPassword/edhecwvehkw');
         setSubmitted(true);
+        setSuccessfullySubmitted(true);
       })
       .catch(() => {
-        console.log('================');
-        // message.error('No such email');
-        setDisplayMessage('Invalid email');
+        setSubmitted(true);
+        setDisplayMessage('The email does not exist');
       });
   };
   return (
     <div>
-      {
-      submitted
-        ? (<h1 style={{ textAlign: 'center', marginTop: '150px', fontWeight: 800, fontSize: '30px' }}>Password recovery letter has been sent successfully.</h1>)
-        : (
-          <div style={{ width: '600px', margin: 'auto', boxShadow: '2px 2px 2px 2px rgba(0, 0, 0, 0.2)' }}>
-            <h1 style={{ textAlign: 'center' }}>Forgot Password?</h1>
-            <Form
-              name="normal_login"
-              initialValues={{ remember: true }}
-              className={styles.form_forgot_password}
-              onFinish={onFinish}
-            >
-              {/* <Title>Forget Password</Title> */}
-              <Form.Item
-                name="email"
-                type="email"
-                rules={[{ required: true, message: 'Please input your Email!' }]}
-              >
-                <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Email" />
-              </Form.Item>
-              <p style={{ width: '100%', color: 'red' }}>{displayMessage}</p>
-              <Form.Item>
-                <Button
-                  type="primary"
-                  shape="round"
-                  size="large"
-                  htmlType="submit"
-                  style={{ width: 200 }}
-                  loading={loading}
-                >
-                  Recover
-                </Button>
-              </Form.Item>
-            </Form>
-          </div>
-        )
-    }
+      <div>
+        {successfullySubmitted
+          ? (
+            <Alert
+              message="Recovery Link sent"
+              description="Password recovery link has been sent to your email. Please check your inbox."
+              type="success"
+              showIcon
+            />
+          )
+          : (
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', marginTop: '20px', alignItems: 'center', padding: '10px' }}>
+                <a href="http://localhost:8000/admin/signin">
+                  <ArrowLeftOutlined />
+                </a>
+                <a href="http://localhost:8000/admin/signin" style={{ textDecoration: 'none', color: 'black', fontSize: '16px', marginLeft: '10px' }}>Back to sign in</a>
+              </div>
+              <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                <Card title="Forgot Password" style={{ marginTop: '30px' }}>
+                  <Form
+                    name="normal_login"
+                    initialValues={{ remember: true }}
+                    className={styles.form_forgot_password}
+                    onFinish={onFinish}
+                  >
+                    <p style={{ width: '100%' }}>Please put your email here so that we can send you a password recovery link.</p>
+                    <Form.Item
+                      name="email"
+                      type="email"
+                      rules={[{ required: true, message: 'Please input your Email!' }]}
+                    >
+                      <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Email" />
+                    </Form.Item>
+                    {submitted
+                      ? <Alert message={displayMessage} type="error" style={{ width: '100%', color: 'red' }} closable onClose={onClose} />
+                      : null}
+                    <Form.Item>
+                      <Button
+                        type="primary"
+                        shape="round"
+                        size="large"
+                        htmlType="submit"
+                        style={{ width: 150, marginTop: '10px' }}
+                        loading={loading}
+                      >
+                        Send Email
+                      </Button>
+                    </Form.Item>
+                  </Form>
+                </Card>
+              </div>
+            </div>
+          )}
+      </div>
     </div>
   );
 }

@@ -1,23 +1,22 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Table } from 'antd';
-import ActionBar from '../../components/ActionBar';
+import ActionBar from '../../components/layout/ActionBar';
+import { useRequest } from '../../helpers/request-helper';
 
 function PageUser() {
   const [searchValue, setSearchValue] = useState('');
   const [data, setData] = useState([]);
 
+  const [{}, refetch] = useRequest({
+    url: '/user',
+    params: {
+      q: searchValue,
+    },
+  });
   useEffect(() => {
-    axios.get('http://localhost:8000/api/user', {
-      params: {
-        q: searchValue,
-      },
-    })
-      .then((res) => {
-        setData(res.data.list);
-      }).catch((err) => {
-
-      });
+    refetch().then((res) => {
+      setData(res.data.list);
+    });
   }, [searchValue]);
 
   const actions = {
@@ -49,7 +48,7 @@ function PageUser() {
   return (
     <>
       <ActionBar actions={actions} />
-      <Table columns={columns} dataSource={data} style={{ marginTop: '20px' }} />
+      <Table columns={columns} dataSource={data} style={{ margin: '16px 32px' }} />
     </>
   );
 }
