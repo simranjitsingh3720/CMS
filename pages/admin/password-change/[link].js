@@ -4,8 +4,9 @@ import React, { useState, useEffect } from 'react';
 import {
   message, Alert, Form, Input, Button, Card,
 } from 'antd';
-import { LockOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { LockOutlined } from '@ant-design/icons';
 import styles from './styles.module.scss';
+import Header from '../../../ui/page-components/auth/PageForgotPassword/Header';
 
 export async function getServerSideProps() {
   return {
@@ -19,7 +20,6 @@ function Post() {
   const [success, setSuccess] = useState(false);
   const [apiHit, setApiHit] = useState(false);
   const [msg, setMsg] = useState('');
-  const [confirmMsg, setConfirmMsg] = useState('');
   const [{ loading }, executePost] = useAxios(
     {
       url: 'http://localhost:8000/api/auth/change-password',
@@ -55,17 +55,10 @@ function Post() {
   }, []);
 
   function SubmitDetails(values) {
-    console.log('in SubmitDetails');
-    const { password, confirmPassword } = values;
-    if (password !== confirmPassword) {
-      return setConfirmMsg('Confirmation mismatched');
-    }
-    setConfirmMsg('');
     const data = {
       ...values,
       token: link,
     };
-    console.log('data ', data);
     executePost({
       data,
     }).then(() => {
@@ -83,76 +76,71 @@ function Post() {
       (apiHit === false) ? null
         : (
           <div>
-            <div style={{ display: 'flex', marginTop: '20px', alignItems: 'center', padding: '10px' }}>
-              <a href="http://localhost:8000/admin/signin">
-                <ArrowLeftOutlined />
-              </a>
-              <a href="http://localhost:8000/admin/signin" style={{ textDecoration: 'none', color: 'black', fontSize: '16px', marginLeft: '10px' }}>Back to sign in</a>
-            </div>
-            {(apiHit && success)
-              ? (
-                <Card title="Password Change" className={styles.card_container}>
-                  <Form
-                    name="normal_login"
-                    initialValues={{ remember: true }}
-                    onFinish={SubmitDetails}
-                    className={styles.form_reset_password}
-                  >
-                    <Form.Item
-                      name="password"
-                      type="password"
-                      rules={[{ required: true, message: 'Field should not be empty' }, () => ({
-                        validator(_, value) {
-                          const paswd = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,12}$/;
-                          if (!value.match(paswd)) {
-                            return Promise.reject(new Error('password between 6 to 12 characters which contain at least one letter, one numeric digit, and one special character'));
-                          }
-                          return Promise.resolve();
-                        },
-                      })]}
+            <Header />
+            <div className={styles.body_container}>
+              {(apiHit && success)
+                ? (
+                  <Card title="Password Change" className={styles.card_container}>
+                    <Form
+                      name="normal_login"
+                      initialValues={{ remember: true }}
+                      onFinish={SubmitDetails}
+                      className={styles.form_reset_password}
                     >
-                      <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} placeholder="Password" />
-                    </Form.Item>
-                    <Form.Item
-                      name="confirmPassword"
-                      type="confirmPassword"
-                      rules={[{ required: true, message: 'Field should not be empty' }, ({ getFieldValue }) => ({
-                        validator(_, value) {
-                          if (!value || getFieldValue('password') === value) {
+                      <Form.Item
+                        name="password"
+                        type="password"
+                        rules={[{ required: true, message: 'Field should not be empty' }, () => ({
+                          validator(_, value) {
+                            const paswd = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,12}$/;
+                            if (!value.match(paswd)) {
+                              return Promise.reject(new Error('password between 6 to 12 characters which contain at least one letter, one numeric digit, and one special character'));
+                            }
                             return Promise.resolve();
-                          }
-                          return Promise.reject(new Error('The two passwords that you entered do not match!'));
-                        },
-                      })]}
-                    >
-                      <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} placeholder="Confirm Password" />
-                    </Form.Item>
-                    <span style={{ width: '90%', color: 'red' }}>{confirmMsg}</span>
-                    <Form.Item>
-                      <Button
-                        type="primary"
-                        shape="round"
-                        size="large"
-                        htmlType="submit"
-                        style={{ width: 200 }}
-                        loading={loading}
+                          },
+                        })]}
                       >
-                        Change
-                      </Button>
-                    </Form.Item>
-                  </Form>
-                </Card>
-              ) : (
-                <div>
-                  <Alert
-                    message="Error"
-                    description={msg}
-                    type="error"
-                    showIcon
-                    style={{ marginLeft: '500px', marginRight: '500px', marginTop: '30px' }}
-                  />
-                </div>
-              )}
+                        <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} placeholder="Password" />
+                      </Form.Item>
+                      <Form.Item
+                        name="confirmPassword"
+                        type="confirmPassword"
+                        rules={[{ required: true, message: 'Field should not be empty' }, ({ getFieldValue }) => ({
+                          validator(_, value) {
+                            if (!value || getFieldValue('password') === value) {
+                              return Promise.resolve();
+                            }
+                            return Promise.reject(new Error('The two passwords that you entered do not match!'));
+                          },
+                        })]}
+                      >
+                        <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} placeholder="Confirm Password" />
+                      </Form.Item>
+                      <Form.Item style={{ textAlign: 'center' }}>
+                        <Button
+                          type="primary"
+                          shape="round"
+                          size="large"
+                          htmlType="submit"
+                          style={{ width: 200 }}
+                          loading={loading}
+                        >
+                          Change
+                        </Button>
+                      </Form.Item>
+                    </Form>
+                  </Card>
+                ) : (
+                  <div>
+                    <Alert
+                      message="Error"
+                      description={msg}
+                      type="error"
+                      showIcon
+                    />
+                  </div>
+                )}
+            </div>
           </div>
         )
       }

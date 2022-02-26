@@ -72,7 +72,7 @@ export default function PagePasswordRecovery() {
                     shape="round"
                     size="large"
                     htmlType="submit"
-                    style={{ width: 150 }}
+                    style={{ width: 150, marginTop: '10px' }}
                     loading={loading}
                   >
                     Send Email

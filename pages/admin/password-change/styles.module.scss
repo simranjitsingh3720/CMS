@@ -1,22 +1,11 @@
 .form_reset_password {
-  margin: auto;
-  width: 610px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   :global(input){
     height:40px;
-    width: 520px;
-    font-size:15px
   }
 }
 
-.card_container{
-  width: 700px;
-  margin: auto;
-  margin-top: 50px;
-  :global(Paragraph){
-    margin:40px;
-  }
+.body_container {
+  width: 480px;
+  margin-left: auto;
+  margin-right: auto;
 }
