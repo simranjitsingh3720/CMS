@@ -46,7 +46,7 @@ function PageSider() {
   );
   const profileImage = () => {
     if (session) {
-      if (session.user.Asset) return <img src={session.user.Asset.url} alt="profile" />;
+      if (session.user.ProfilePicture) return <img src={session.user.ProfilePicture.url} alt="profile" />;
       return <UserOutlined />;
     }
     return <UserOutlined />;

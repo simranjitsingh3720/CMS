@@ -40,7 +40,7 @@ function Profile() {
           email: res.data.user.email,
           phone: res.data.user.phone,
         });
-        if (res.data.user.Asset) { setUrl(res.data.user.Asset.url); }
+        if (res.data.user.ProfilePicture) { setUrl(res.data.user.ProfilePicture.url); }
       })
       .catch((err) => {
         console.log(err);
