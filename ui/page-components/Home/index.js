@@ -3,17 +3,17 @@ import SessionContext from '../../context/SessionContext';
 import Styles from './styles.module.scss';
 
 function Home() {
-  const loggedData = useContext(SessionContext);
+  const { session } = useContext(SessionContext);
   return (
     <div className={Styles.title}>
       Hello!
       {' '}
       {' '}
-      {loggedData.session ? (
+      {session ? (
         <span>
-          {loggedData.session.user.firstName}
+          {session.user.firstName}
           {' '}
-          {loggedData.session.user.lastName}
+          {session.user.lastName}
         </span>
       ) : null}
     </div>

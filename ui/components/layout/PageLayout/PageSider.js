@@ -15,7 +15,7 @@ import SessionContext from '../../../context/SessionContext';
 const { Header, Footer } = Layout;
 
 function PageSider() {
-  const loggedData = useContext(SessionContext);
+  const { session } = useContext(SessionContext);
   const Router = useRouter();
   const { Sider } = Layout;
   // const [collapsed, setCollapsed] = useState(false);
@@ -44,12 +44,13 @@ function PageSider() {
       </Button>
     </div>
   );
-  const profileImage = (
-    loggedData.session
-      ? (loggedData.session.user.Asset
-        ? <img src={loggedData.session.user.Asset.url} />
-        : <UserOutlined />)
-      : <UserOutlined />);
+  const profileImage = () => {
+    if (session) {
+      if (session.user.Asset) return <img src={session.user.Asset.url} alt="profile" />;
+      return <UserOutlined />;
+    }
+    return <UserOutlined />;
+  };
   return (
     <Sider
       // collapsible
@@ -87,12 +88,12 @@ function PageSider() {
             }}
           >
             <div className={Styles.font}>
-              <Avatar icon={profileImage} />
-              {loggedData.session ? (
+              <Avatar icon={profileImage()} />
+              {session ? (
                 <span style={{ color: '#B0DBF1', marginLeft: '20px' }}>
-                  {loggedData.session.user.firstName.split(' ')[0]}
+                  {session.user.firstName.split(' ')[0]}
                   {' '}
-                  {loggedData.session.user.lastName.split(' ')[0]}
+                  {session.user.lastName.split(' ')[0]}
                 </span>
               ) : null}
             </div>

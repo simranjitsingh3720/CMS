@@ -12,7 +12,7 @@ const { Title, Paragraph } = Typography;
 
 function PageSignup() {
   const router = useRouter();
-  const data = useContext(SessionContext);
+  const { refetch } = useContext(SessionContext);
 
   const [{ loading }, executePost] = useRequest(
     {
@@ -32,7 +32,7 @@ function PageSignup() {
         .then(() => {
           router.push('/admin');
           message.success('Welcome to CMS Page');
-          data.refetch();
+          refetch();
         })
         .catch(() => message.error('Invalid Signup, Please try again'));
     }

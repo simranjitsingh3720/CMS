@@ -10,7 +10,7 @@ import SessionContext from '../../context/SessionContext';
 function Profile() {
   const [form] = Form.useForm();
   const [dataForm] = Form.useForm();
-  const loggedData = useContext(SessionContext);
+  const { refetch: sessionRefetch } = useContext(SessionContext);
 
   const [data, setData] = useState({});
   const [url, setUrl] = useState('');
@@ -77,7 +77,7 @@ function Profile() {
       .then(() => {
         message.success('User Updated');
         refetch();
-        loggedData.refetch();
+        sessionRefetch();
       })
       .catch(() => {
         message.error('User Not Updated');
@@ -95,7 +95,7 @@ function Profile() {
       .then(() => {
         form.resetFields();
         message.success('successfully updated');
-        loggedData.refetch();
+        sessionRefetch();
       })
       .catch(() => {
         form.resetFields();
@@ -156,7 +156,7 @@ function Profile() {
                 .then(() => {
                   setLoading(false);
                   message.success('Profile Updated Successfully');
-                  loggedData.refetch();
+                  sessionRefetch();
                   refetch();
                 })
                 .catch(() => {

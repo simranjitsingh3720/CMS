@@ -12,7 +12,7 @@ const { Title, Paragraph } = Typography;
 
 function PageSignin() {
   const router = useRouter();
-  const data = useContext(SessionContext);
+  const { refetch } = useContext(SessionContext);
 
   const [{ loading }, executePost] = useRequest(
     {
@@ -31,7 +31,7 @@ function PageSignin() {
     }).then(() => {
       router.push('/admin');
       message.success('Welcome to CMS Page');
-      data.refetch();
+      refetch();
     })
       .catch(() => message.error('Invalid Signin, Please try again'));
   };
