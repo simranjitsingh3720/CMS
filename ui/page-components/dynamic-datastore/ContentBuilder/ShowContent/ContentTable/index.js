@@ -49,8 +49,6 @@ export default function ContentTable({
 
   return (
     <div>
-      {/* {JSON.stringify(finalData)} */}
-
       <Table columns={columns} dataSource={finalData} />
     </div>
   );

@@ -56,6 +56,7 @@ const addContent = async (req, res) => {
       ...body,
       schemaId: schema.toJSON().id,
       createdBy: req.session.user.id,
+      updatedBy: req.session.user.id,
     });
 
     return res.status(201).json({ id: content.id });
@@ -74,7 +75,7 @@ const updateContent = async (req, res) => {
   });
 
   if (schema) {
-    const updatedContent = await db.Content.update(body, {
+    const updatedContent = await db.Content.update({ ...body, updatedBy: req.session.user.id }, {
       where: {
         schemaId: schema.toJSON().id,
         id: contentId,

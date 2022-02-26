@@ -48,8 +48,6 @@ export default function NewContentDrawer({
         getContent();
       });
     }
-
-    console.log(contentData);
   };
 
   const onFinish = async (contentData) => {
@@ -64,7 +62,7 @@ export default function NewContentDrawer({
   };
 
   return (
-    <Drawer title="Add new Content" placement="right" onClose={closeContentDrawer} size="large" visible>
+    <Drawer title={isEditable ? 'Edit content' : 'Add new Content'} placement="right" onClose={closeContentDrawer} size="large" visible>
       <Form
         name="Add new Content form"
         labelCol={{

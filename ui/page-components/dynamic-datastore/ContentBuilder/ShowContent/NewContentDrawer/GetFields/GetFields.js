@@ -11,7 +11,6 @@ import {
   Upload,
   Button,
 } from 'antd';
-import { useState } from 'react';
 
 const { TextArea } = Input;
 
@@ -23,7 +22,7 @@ export const getInitialValues = (fields, editableData, isEditable) => {
     });
   } else {
     fields.forEach((field) => {
-      values[field.name] = field.defaultValue || '';
+      values[field.id] = field.defaultValue || '';
     });
   }
   return values;
@@ -31,22 +30,10 @@ export const getInitialValues = (fields, editableData, isEditable) => {
 
 const handleCheckBoxChange = (values) => {};
 
-const onDateChange = (value, dateString) => {
-};
-
-const onDateSelect = (value) => {
-};
-
-const onRadioValueChange = (radioValue) => {};
-
 function GetFields(appearenceType, field) {
   const {
-    name, required, options, Truelabel, Falselabel, defaultValue,
+    name, required, options, Truelabel, Falselabel, id,
   } = field;
-
-  const [short, setShort] = useState(defaultValue || 'aa');
-  const [long, setLong] = useState(defaultValue || 'aa');
-  const [number, setNumber] = useState(defaultValue || 'aa');
 
   let values = [];
   if (options) {
@@ -56,36 +43,36 @@ function GetFields(appearenceType, field) {
   switch (appearenceType) {
     case 'short':
       return (
-        <Form.Item name={name} label={name} rules={[{ required }]}>
+        <Form.Item name={id} label={name} rules={[{ required }]}>
           <Input />
         </Form.Item>
       );
 
     case 'long':
       return (
-        <Form.Item name={name} label={name} rules={[{ required }]}>
+        <Form.Item name={id} label={name} rules={[{ required }]}>
           <TextArea rows={4} />
         </Form.Item>
       );
 
     case 'number':
       return (
-        <Form.Item name={name} label={name} rules={[{ required }]}>
+        <Form.Item name={id} label={name} rules={[{ required }]}>
           <InputNumber />
         </Form.Item>
       );
 
     case 'checkbox':
       return (
-        <Form.Item name={name} label={name} rules={[{ required }]}>
+        <Form.Item name={id} label={name} rules={[{ required }]}>
           <Checkbox.Group options={values} onChange={handleCheckBoxChange} />
         </Form.Item>
       );
 
     case 'radio':
       return (
-        <Form.Item name={name} label={name} rules={[{ required }]}>
-          <Radio.Group onChange={onRadioValueChange}>
+        <Form.Item name={id} label={name} rules={[{ required }]}>
+          <Radio.Group>
             {values.map((radioValue) => <Radio value={radioValue}>{radioValue}</Radio>)}
           </Radio.Group>
         </Form.Item>
@@ -93,7 +80,7 @@ function GetFields(appearenceType, field) {
 
     case 'dropdown':
       return (
-        <Form.Item name={name} label={name} rules={[{ required }]}>
+        <Form.Item name={id} label={name} rules={[{ required }]}>
           <Select>
             {values.map((dropDownValue) => (
               <Select.Option
@@ -108,14 +95,14 @@ function GetFields(appearenceType, field) {
 
     case 'dateAndTime':
       return (
-        <Form.Item name={name} label={name} rules={[{ required }]}>
+        <Form.Item name={id} label={name} rules={[{ required }]}>
           <DatePicker showTime />
         </Form.Item>
       );
 
     case 'switch':
       return (
-        <Form.Item name={name} label={name} rules={[{ required }]} valuePropName="checked">
+        <Form.Item name={id} label={name} rules={[{ required }]} valuePropName="checked">
           <Switch
             checkedChildren={Truelabel}
             unCheckedChildren={Falselabel}
@@ -126,8 +113,8 @@ function GetFields(appearenceType, field) {
 
     case 'Boolean Radio':
       return (
-        <Form.Item name={name} label={name} rules={[{ required }]}>
-          <Radio.Group onChange={onRadioValueChange}>
+        <Form.Item name={id} label={name} rules={[{ required }]}>
+          <Radio.Group>
             <Radio value={Truelabel}>{Truelabel}</Radio>
             <Radio value={Falselabel}>{Falselabel}</Radio>
           </Radio.Group>
@@ -136,7 +123,7 @@ function GetFields(appearenceType, field) {
 
     case 'fileUpload':
       return (
-        <Form.Item name={name} label={name} rules={[{ required }]}>
+        <Form.Item name={id} label={name} rules={[{ required }]}>
           <Upload>
             <Button icon={<UploadOutlined />}>Click to Upload</Button>
           </Upload>

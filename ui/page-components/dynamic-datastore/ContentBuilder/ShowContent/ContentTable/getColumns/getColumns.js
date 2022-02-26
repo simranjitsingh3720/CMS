@@ -6,9 +6,8 @@ export default function getColumns(tableSchema, handleEditContent, handleDeleteC
 
   columns = ((tableSchema && tableSchema.schema) || []).map((field) => ({
     title: field.name,
-    dataIndex: field.name,
+    dataIndex: field.id,
     key: field.id,
-    render: '',
   }));
 
   columns = [...columns, {
