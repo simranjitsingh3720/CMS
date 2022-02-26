@@ -1,6 +1,7 @@
-import PagePasswordRecovery from '../../ui/page-components/auth/PagePasswordRecovery';
+import PageForgotPassword from '../../ui/page-components/auth/PageForgotPassword';
 
-export default PagePasswordRecovery;
+export default PageForgotPassword;
+
 export async function getServerSideProps() {
   return {
     props: {

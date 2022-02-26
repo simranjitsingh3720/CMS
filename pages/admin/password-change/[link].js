@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import {
   message, Alert, Form, Input, Button, Card,
 } from 'antd';
-import { LockOutlined } from '@ant-design/icons';
+import { LockOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import styles from './styles.module.scss';
 
 export async function getServerSideProps() {
@@ -83,6 +83,12 @@ function Post() {
       (apiHit === false) ? null
         : (
           <div>
+            <div style={{ display: 'flex', marginTop: '20px', alignItems: 'center', padding: '10px' }}>
+              <a href="http://localhost:8000/admin/signin">
+                <ArrowLeftOutlined />
+              </a>
+              <a href="http://localhost:8000/admin/signin" style={{ textDecoration: 'none', color: 'black', fontSize: '16px', marginLeft: '10px' }}>Back to sign in</a>
+            </div>
             {(apiHit && success)
               ? (
                 <Card title="Password Change" className={styles.card_container}>
@@ -143,6 +149,7 @@ function Post() {
                     description={msg}
                     type="error"
                     showIcon
+                    style={{ marginLeft: '500px', marginRight: '500px', marginTop: '30px' }}
                   />
                 </div>
               )}

@@ -9,7 +9,7 @@ function PageLayout({
 }) {
   const router = useRouter();
 
-  const blockRoute = ['/', '/admin/signin', '/admin/signup', '/admin/password-recovery'];
+  const blockRoute = ['/', '/admin/signin', '/admin/signup', '/admin/forgot-password'];
   // const blockRoute = ['/admin/password-change'];
 
   const { pathname } = router;

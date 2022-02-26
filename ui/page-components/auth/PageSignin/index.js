@@ -3,6 +3,7 @@ import {
   message, Form, Input, Button, Row, Col, Typography, Checkbox,
 } from 'antd';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import styles from '../style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
@@ -82,10 +83,10 @@ function PageSignin() {
             <Checkbox>
               Remember me for a month
             </Checkbox>
-            <a href="/admin/password-recovery">
+            <Link href="/admin/forgot-password">
               {/* Link to form asking email */}
               Forgot password?
-            </a>
+            </Link>
           </div>
           <Form.Item>
             <Button
