@@ -12,7 +12,7 @@ import { useRequest } from '../../../../../helpers/request-helper';
 
 const { confirm } = Modal;
 
-function PageEditDrawer({ onFormClose, visible, setVisible, data }) {
+function PageEditDrawer({ onFormClose, visible, setVisible, data, refetch }) {
   const [form] = Form.useForm();
 
   const [{ error }, executePatch] = useRequest(
@@ -44,6 +44,9 @@ function PageEditDrawer({ onFormClose, visible, setVisible, data }) {
       form.resetFields();
       setVisible(false);
       message.success('Page Updated Successfully');
+      setTimeout(() => {
+        refetch();
+      }, 1000);
     }
   };
 
@@ -63,6 +66,9 @@ function PageEditDrawer({ onFormClose, visible, setVisible, data }) {
           url: `updateHome/${slug}`,
         });
         message.success('Home Page Updated Successfully!');
+        setTimeout(() => {
+          refetch();
+        }, 1000);
       },
       onCancel() {
         console.log('Cancel');
@@ -93,7 +99,7 @@ function PageEditDrawer({ onFormClose, visible, setVisible, data }) {
         icon: <ExclamationCircleOutlined />,
         content: <p className={styles.modal_content}>
           After Deleting this Page you won't be able to use this slug
-                 </p>,
+        </p>,
         okText: 'Yes',
         okType: 'danger',
         cancelText: 'No',
@@ -102,6 +108,10 @@ function PageEditDrawer({ onFormClose, visible, setVisible, data }) {
             url: `/page/${slugForDelete}`,
           });
           message.success('Page Deleted Successfully!');
+          setVisible(false);
+          setTimeout(() => {
+            refetch();
+          }, 1000);
         },
         onCancel() {
           console.log('Cancel');

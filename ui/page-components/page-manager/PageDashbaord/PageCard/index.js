@@ -51,6 +51,7 @@ function PageCard({ searchValue }) {
   };
 
   useEffect(() => {
+    console.log('load card');
     refetch();
   }, []);
 
@@ -111,6 +112,7 @@ function PageCard({ searchValue }) {
         visible={visible}
         setVisible={setVisible}
         data={pageData}
+        refetch={refetch}
       />
       <div />
     </div>
