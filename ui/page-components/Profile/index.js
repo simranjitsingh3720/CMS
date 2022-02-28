@@ -2,13 +2,15 @@ import {
   Card, Form, Input, Button, message, Upload, Avatar,
 } from 'antd';
 import { LoadingOutlined, UserAddOutlined } from '@ant-design/icons';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useRequest } from '../../helpers/request-helper';
 import styles from './styles.module.scss';
+import SessionContext from '../../context/SessionContext';
 
 function Profile() {
   const [form] = Form.useForm();
   const [dataForm] = Form.useForm();
+  const { refetch: sessionRefetch } = useContext(SessionContext);
 
   const [data, setData] = useState({});
   const [url, setUrl] = useState('');
@@ -38,7 +40,10 @@ function Profile() {
           email: res.data.user.email,
           phone: res.data.user.phone,
         });
-        if (res.data.user.Asset) { setUrl(res.data.user.Asset.url); }
+        if (res.data.user.ProfilePicture) { setUrl(res.data.user.ProfilePicture.url); }
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }, []);
 
@@ -72,6 +77,7 @@ function Profile() {
       .then(() => {
         message.success('User Updated');
         refetch();
+        sessionRefetch();
       })
       .catch(() => {
         message.error('User Not Updated');
@@ -89,6 +95,7 @@ function Profile() {
       .then(() => {
         form.resetFields();
         message.success('successfully updated');
+        sessionRefetch();
       })
       .catch(() => {
         form.resetFields();
@@ -124,7 +131,6 @@ function Profile() {
       executePost({
         data: {
           name: info.file.name,
-          description: info.file.description,
           mimeType: info.file.originFileObj.type,
           type: info.file.originFileObj.type.split('/')[0],
         },
@@ -150,6 +156,7 @@ function Profile() {
                 .then(() => {
                   setLoading(false);
                   message.success('Profile Updated Successfully');
+                  sessionRefetch();
                   refetch();
                 })
                 .catch(() => {
