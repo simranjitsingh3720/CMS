@@ -225,7 +225,7 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
 
                 case 'switch':
                   return <Switch />;
-                case 'select':
+                case 'dropdown':
                   return <ValueNames />;
                 case 'radio':
                   return <ValueNames />;

@@ -6,7 +6,7 @@ import StructureDrawer from './StructureDrawer';
 import FieldCard from './FieldCard';
 import { useRequest } from '../../../../helpers/request-helper';
 
-function ShowSchema() {
+function ShowSchema({ schema }) {
   const router = useRouter();
   const { schemaSlug } = router.query;
   const [isSchemaDrawer, setIsSchemaDrawer] = useState(false);
@@ -78,7 +78,6 @@ function ShowSchema() {
           : null}
 
       </div>
-      {data && JSON.stringify(data)}
       {
          ((data && data.schema) || []).map((fields) => (
            <FieldCard
