@@ -88,14 +88,8 @@ function PageSider() {
             }}
           >
             <div className={Styles.font}>
-              <Avatar icon={profileImage()} />
-              {session ? (
-                <span style={{ color: '#B0DBF1', marginLeft: '20px' }}>
-                  {session.user.firstName.split(' ')[0]}
-                  {' '}
-                  {session.user.lastName.split(' ')[0]}
-                </span>
-              ) : null}
+              <Avatar icon={profileImage()} style={{ marginRight: '10px' }} />
+              {session ? session.user.firstName : null}
             </div>
           </Popover>
         </Footer>
