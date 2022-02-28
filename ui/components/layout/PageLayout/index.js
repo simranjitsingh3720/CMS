@@ -9,15 +9,11 @@ function PageLayout({
 }) {
   const router = useRouter();
 
-  const blockRoute = ['/', '/admin/signin', '/admin/signup', '/admin/forgot-password'];
-  // const blockRoute = ['/admin/password-change'];
-
+  const blockRoute = ['/', '/admin/signin', '/admin/signup', '/admin/forgot-password', '/admin/password-change/[link]'];
   const { pathname } = router;
-  console.log('pathname ', pathname, pathname.includes('/admin/password-change'));
   return (
     <Layout className={styles.layout} hasSider>
-
-      {(!blockRoute.includes(pathname) && !pathname.includes('/admin/password-change')) ? <PageSider /> : null}
+      {(!blockRoute.includes(pathname)) ? <PageSider /> : null}
       <Layout className="site-layout">
         <PageContent>{children}</PageContent>
       </Layout>

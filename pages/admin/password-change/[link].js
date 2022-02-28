@@ -31,7 +31,7 @@ function Post() {
   const { link } = router.query;
   const data2 = { token: link };
   const [{ loading2 }, executePost2] = useAxios({
-    url: 'http://localhost:8000/api/auth/token-handler',
+    url: 'http://localhost:8000/api/auth/check-change-password-token',
     method: 'POST',
   }, {
     manual: true,

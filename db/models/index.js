@@ -17,7 +17,6 @@ const requireModel = (schema) => {
   db[model.name] = model;
 };
 
-requireModel(pageModel);
 requireModel(userModel);
 requireModel(assetModel);
 requireModel(pageModel);
