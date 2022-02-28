@@ -57,11 +57,10 @@ const signup = async (req, res) => {
 };
 
 const signin = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, remember } = req.body;
   if (!email || !password) {
     return res.status(400).send({ message: 'Requested email or password is missing' });
   }
-
   const user = await db.User.findOne({ where: { email }, include: [db.Asset] });
   if (!user) {
     return res.status(400).json({ message: 'Email does not exist' });
@@ -71,6 +70,11 @@ const signin = async (req, res) => {
     return res.status(400).json({ message: 'Password is incorrect' });
   }
   req.session.user = user;
+  if (remember) {
+    req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000;
+  } else {
+    req.session.cookie.maxAge = 3 * 60 * 1000;
+  }
   return res.status(200).json({ sessionId: req.session.id });
 };
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   message, Form, Input, Button, Row, Col, Typography, Checkbox,
 } from 'antd';
@@ -23,10 +23,7 @@ function PageSignin() {
 
   const SubmitDetails = (values) => {
     executePost({
-      data: {
-        email: values.email,
-        password: values.password,
-      },
+      data: values,
     }).then(() => {
       router.push('/admin');
       message.success('Welcome to CMS Page 🎉');
@@ -49,7 +46,6 @@ function PageSignin() {
             style={{ width: 160 }}
           >
             SIGN UP
-
           </Button>
         </Typography>
       </Col>
@@ -80,11 +76,12 @@ function PageSignin() {
             />
           </Form.Item>
           <div className={styles.form_extra_item}>
-            <Checkbox>
-              Remember me for a month
-            </Checkbox>
+            <Form.Item name="remember" valuePropName="checked">
+              <Checkbox>
+                Remember me for a month
+              </Checkbox>
+            </Form.Item>
             <Link href="/admin/forgot-password">
-              {/* Link to form asking email */}
               Forgot password?
             </Link>
           </div>
