@@ -12,7 +12,7 @@ import style from './style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
 import SessionContext from '../../../context/SessionContext';
 
-const { Header } = Layout;
+const { Header, Footer } = Layout;
 
 function PageSider() {
   const { session } = useContext(SessionContext);
@@ -24,14 +24,8 @@ function PageSider() {
   // const onCollapse = (isCollapsed) => {
   //   setCollapsed(isCollapsed);
   // };
-  const hide = () => {
-    setVisible(false);
-  };
-
-  const handleVisibleChange = (vis) => {
-    setVisible(vis);
-  };
   const [{}, handleGet] = useRequest({ method: 'GET' }, { manual: true });
+
   const signout = () => {
     setTimeout(() => {
       handleGet({ url: '/auth/signout' })
@@ -40,10 +34,12 @@ function PageSider() {
         });
     }, 60);
   };
-  const handleClick = () => {
-    Router.push('/admin/profile');
-    hide();
+  const handleClick = (vis) => {
+    console.log(vis);
+    // Router.push('/admin/profile');
+    setVisible(vis);
   };
+
   const content = (
     (session)
       ? (
@@ -73,7 +69,6 @@ function PageSider() {
     }
     return <UserOutlined />;
   };
-
   return (
     <Sider
       // collapsible
@@ -97,25 +92,29 @@ function PageSider() {
           </Menu.Item>
         ))}
 
-      </Menu>
-      <Popover
-        placement="right"
-        content={content}
-        trigger="click"
-        visible={visible}
-        overlayClassName={style.popover}
-        overlayInnerStyle={{ backgroundColor: '#EEE' }}
-        onVisibleChange={handleVisibleChange}
-      >
-        <div type="primary" className={style.foot}>
+        <Popover
+          placement="right"
+          content={content}
+          trigger="click"
+          overlayInnerStyle={{ backgroundColor: '#EEE' }}
+          overlayClassName={style.popover}
+          visible={visible}
+          onVisibleChange={handleClick}
+        >
           <div
-            className={style.font}
+            className={style.foot}
           >
-            <Avatar icon={profileImage()} style={{ marginRight: '10px' }} />
-            {session ? session.user.firstName : null}
+            <div
+              className={style.font}
+              onClick={() => setVisible(true)}
+            >
+              <Avatar icon={profileImage()} style={{ marginRight: '10px' }} />
+              {session ? session.user.firstName : null}
+            </div>
           </div>
-        </div>
-      </Popover>
+        </Popover>
+
+      </Menu>
     </Sider>
   );
 }
