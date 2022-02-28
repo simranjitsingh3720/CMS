@@ -2,13 +2,13 @@ import {
   Layout, Menu, Button, Avatar, Popover,
 } from 'antd';
 import {
-  PoweroffOutlined, UserOutlined,
+  LogoutOutlined, UserOutlined,
 } from '@ant-design/icons';
-import { useState, useContext } from 'react';
+import { useContext, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import navData from './sideNavContent';
-import Styles from './style.module.scss';
+import style from './style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
 import SessionContext from '../../../context/SessionContext';
 
@@ -18,6 +18,7 @@ function PageSider() {
   const { session } = useContext(SessionContext);
   const Router = useRouter();
   const { Sider } = Layout;
+  const [visible, setVisible] = useState(false);
   // const [collapsed, setCollapsed] = useState(false);
 
   // const onCollapse = (isCollapsed) => {
@@ -27,22 +28,36 @@ function PageSider() {
 
   const signout = () => {
     handleGet({ url: '/auth/signout' })
-      .then(() => Router.push('/admin/signin'));
+      .then(() => {
+        Router.push('/admin/signin');
+      });
   };
+  const handleClick = () => {
+    setVisible(false);
+    Router.push('/admin/profile');
+  };
+
   const content = (
-    <div>
-      <Link href="/admin/profile">
-        <Button>
-          <UserOutlined style={{ marginRight: '5px' }} />
-          Profile
-        </Button>
-      </Link>
-      <br />
-      <Button onClick={signout}>
-        <PoweroffOutlined style={{ marginRight: '5px' }} />
-        Sign out
-      </Button>
-    </div>
+    (session)
+      ? (
+        <div>
+          <h3>
+            {session.user.firstName}
+            {' '}
+            {session.user.lastName}
+          </h3>
+          <p>{session.user.email}</p>
+          <Button type="button" onClick={handleClick}>
+            <UserOutlined style={{ marginRight: 4 }} />
+            Profile
+          </Button>
+          <br />
+          <Button onClick={signout}>
+            <LogoutOutlined style={{ marginRight: 4 }} />
+            Sign out
+          </Button>
+        </div>
+      ) : null
   );
   const profileImage = () => {
     if (session) {
@@ -75,19 +90,21 @@ function PageSider() {
         ))}
 
         <Footer
-          className={Styles.foot}
+          className={style.foot}
         >
           <Popover
-            placement="top"
+            placement="right"
             content={content}
             trigger="click"
             overlayInnerStyle={{ backgroundColor: '#EEE' }}
-            overlayClassName={Styles.popover}
-            overlayStyle={{
-              width: '105px',
-            }}
+            overlayClassName={style.popover}
+            visible={visible}
+            // onVisibleChange={handleVisibleChange}
           >
-            <div className={Styles.font}>
+            <div
+              className={style.font}
+              onClick={() => setVisible(true)}
+            >
               <Avatar icon={profileImage()} style={{ marginRight: '10px' }} />
               {session ? session.user.firstName : null}
             </div>
