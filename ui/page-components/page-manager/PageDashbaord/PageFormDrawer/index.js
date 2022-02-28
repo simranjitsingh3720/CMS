@@ -57,6 +57,7 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
         name="basic"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
+        onFinish={handleCreatePage}
         initialValues={{ remember: true }}
         autoComplete="off"
       >
@@ -75,7 +76,10 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
           name="slug"
           value={pageDetails.slug}
           onChange={(e) => setPageDetails({ ...pageDetails, slug: e.target.value })}
-          rules={[{ required: slugRule, message: 'Please enter Page Slug!' }]}
+          rules={[{ required: slugRule, message: 'Please enter Page Slug!' }, {
+            pattern: new RegExp('^[A-Za-z0-9]*$'),
+            message: 'Only Letters and Numbers are accepted',
+          }]}
         >
           <Input disabled={checked} />
         </Form.Item>
@@ -95,7 +99,7 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit" onClick={handleCreatePage}>
+          <Button type="primary" htmlType="submit">
             Submit
           </Button>
         </Form.Item>

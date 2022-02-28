@@ -66,7 +66,7 @@ function Profile() {
     })
       .then(() => {
         message.success('User Updated');
-        userGet({ url: `http://localhost:8000/api/user/${data.id}` })
+        userGet({ url: `user/${data.id}` })
           .then((res) => {
             setData(res.data.user);
             setLoading(false);
