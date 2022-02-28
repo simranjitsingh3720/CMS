@@ -132,7 +132,7 @@ function GetFields(appearenceType, field) {
       );
 
     default:
-      return '';
+      return <div>Type not supported</div>;
   }
 }
 
