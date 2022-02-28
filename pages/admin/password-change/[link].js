@@ -5,7 +5,7 @@ import {
   message, Alert, Form, Input, Button, Card,
 } from 'antd';
 import { LockOutlined } from '@ant-design/icons';
-import styles from './styles.module.scss';
+import styles from './style.module.scss';
 import Header from '../../../ui/page-components/auth/PageForgotPassword/Header';
 
 export async function getServerSideProps() {

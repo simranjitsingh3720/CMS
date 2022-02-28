@@ -4,7 +4,7 @@ import {
 import { LoadingOutlined, UserAddOutlined } from '@ant-design/icons';
 import { useState, useEffect } from 'react';
 import { useRequest } from '../../helpers/request-helper';
-import styles from './styles.module.scss';
+import styles from './style.module.scss';
 
 function Profile() {
   const [form] = Form.useForm();

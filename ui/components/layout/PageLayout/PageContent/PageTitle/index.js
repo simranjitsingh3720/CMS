@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageHeader } from 'antd';
-import styles from './styles.module.scss';
+import styles from './style.module.scss';
 
 function PageTitle({
   title = null, onBack, subTitle = null, extra = [],
