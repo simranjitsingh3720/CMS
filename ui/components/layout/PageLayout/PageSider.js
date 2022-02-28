@@ -28,8 +28,8 @@ function PageSider() {
     setVisible(false);
   };
 
-  const handleVisibleChange = (vis) => {
-    setVisible(vis);
+  const handleVisibleChange = (value) => {
+    setVisible(value);
   };
   const [{}, handleGet] = useRequest({ method: 'GET' }, { manual: true });
   const signout = () => {
