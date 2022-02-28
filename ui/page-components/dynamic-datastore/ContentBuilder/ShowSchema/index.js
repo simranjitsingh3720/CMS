@@ -43,7 +43,7 @@ function ShowSchema() {
   }, fieldDelete] = useRequest(
     {
       method: 'DELETE',
-      url: `/schema/${schemaSlug}/field`,
+      url: `/schema/${schemaSlug}/field/${fieldsId}`,
 
     },
     { manual: true },
@@ -55,18 +55,18 @@ function ShowSchema() {
       icon: <ExclamationCircleOutlined style={{ color: 'red' }} />,
       // content: '',
       onOk() {
-        const newSchema = data.schema || [];
-        const filtered = newSchema.filter((el) => el.id !== id);
-        console.log('Previous =>', newSchema);
-        console.log('filtered => ', filtered);
-        // console.log('new val =>', values);
+        // const newSchema = data.schema || [];
+        // const filtered = newSchema.filter((el) => el.id !== id);
+        // console.log('Previous =>', newSchema);
+        // console.log('filtered => ', filtered);
+        // // console.log('new val =>', values);
 
-        newSchema = [...filtered];
-        console.log('Final => ', newSchema);
+        // newSchema = [...filtered];
+        // console.log('Final => ', newSchema);
         fieldDelete({
         //  url: `/schema/${schemaSlug}/field`,
           data: {
-            schema: newSchema,
+            schema: fieldData,
           },
         }).then(() => {
           getSchema();

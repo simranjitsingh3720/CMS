@@ -18,6 +18,7 @@ function StructureDrawer({
   const [appearanceType, setAppearanceType] = useState('');
   const [loading, setLoading] = useState(false);
   const [fieldId, setFieldId] = useState('');
+  console.log('xxxxxx', { fieldsId });
 
   const handleOnDataTypeChange = (value) => {
     setDataType(value);
@@ -45,13 +46,14 @@ function StructureDrawer({
     executePatchUpdate,
   ] = useRequest(
     {
-      url: `/schema/${data.slug}/field`,
+      url: `/schema/${data.slug}/field/${fieldsId}`,
       method: 'PATCH',
 
     },
     { manual: true },
   );
   const onFinish = async (values) => {
+    console.log('xxxxxxyyyy', { values });
     const updatedValues = values;
 
     if (updatedValues.values) {
@@ -76,12 +78,13 @@ function StructureDrawer({
 
     updatedValues.values = undefined;
     updatedValues.isMultiple = undefined;
+    console.log('xxxxxxyyyyzz', { values });
 
     setLoading(true);
 
     if (!isEditable) {
       let newSchema = data.schema || [];
-      const filtered = newSchema.filter((el) => el.id === values.id);
+      const filtered = newSchema.filter((el) => el.id === fieldsId);
       console.log(filtered);
       if (!filtered.length) {
         newSchema = [...newSchema, values];
@@ -119,17 +122,19 @@ function StructureDrawer({
       // newSchema = [...filtered, values];
       // console.log('Final => ', newSchema);
       //  -------------------->
-      let newSchema = data.schema || [];
-      const filtered = newSchema.filter((el) => el.id !== fieldsId);
-      console.log('Previous =>', newSchema);
-      console.log('filtered => ', filtered);
-      console.log('new val =>', values);
+      // let newSchema = data.schema || [];
+      // const filtered = newSchema.filter((el) => el.id !== fieldsId);
+      // console.log('Previous =>', newSchema);
+      // console.log('filtered => ', filtered);
+      // console.log('new val =>', values);
 
-      newSchema = [...filtered, values];
-      console.log('Final => ', newSchema);
+      // newSchema = [...filtered, values];
+      // console.log('Final => ', newSchema);
+      console.log(fieldData);
       await executePatchUpdate({
         data: {
-          schema: newSchema,
+          schema: values,
+
         },
       }).then(() => {
         getSchema();
