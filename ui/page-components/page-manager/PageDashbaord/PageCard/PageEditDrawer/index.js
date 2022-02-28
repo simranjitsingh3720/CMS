@@ -12,12 +12,20 @@ import { useRequest } from '../../../../../helpers/request-helper';
 
 const { confirm } = Modal;
 
-function PageEditDrawer({ onFormClose, visible, setVisible, data, refetch }) {
+function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
   const [form] = Form.useForm();
+
+  const [{ data }, refetch] = useRequest({
+    url: '/page/',
+    method: 'GET',
+    params: {
+      q: '',
+    },
+  });
 
   const [{ error }, executePatch] = useRequest(
     {
-      url: `/page/${data.slug}`,
+      url: `/page/${pageData.slug}`,
       method: 'PATCH',
     },
     { manual: true },
@@ -34,20 +42,21 @@ function PageEditDrawer({ onFormClose, visible, setVisible, data, refetch }) {
     console.log(values);
     await executePatch({
       data: {
-        name: values.name || data.name,
-        slug: values.slug || data.slug,
+        name: values.name || pageData.name,
+        slug: values.slug || pageData.slug,
       },
-    });
-    if (error) {
-      message.error('Page Details Not Updated');
-    } else {
+    }).then(() => {
       form.resetFields();
       setVisible(false);
       message.success('Page Updated Successfully');
       setTimeout(() => {
-        refetch();
+        fetch();
       }, 1000);
-    }
+    }).catch((err) => {
+      (((data && data.list) || []).map((page) => (
+        (page.slug === values.slug) ? message.info('Page with this Slug name already Exists') : console.log(err)
+      )));
+    });
   };
 
   function showConfirmHome(slug) {
@@ -57,7 +66,7 @@ function PageEditDrawer({ onFormClose, visible, setVisible, data, refetch }) {
       icon: <ExclamationCircleOutlined />,
       content: <p className={styles.modal_content}>
         After Changing this Page to Home, current Page Name will be Renamed as Home
-               </p>,
+      </p>,
       okText: 'Yes',
       okType: 'primary',
       cancelText: 'No',
@@ -66,8 +75,9 @@ function PageEditDrawer({ onFormClose, visible, setVisible, data, refetch }) {
           url: `updateHome/${slug}`,
         });
         message.success('Home Page Updated Successfully!');
+        setVisible(false);
         setTimeout(() => {
-          refetch();
+          fetch();
         }, 1000);
       },
       onCancel() {
@@ -99,7 +109,7 @@ function PageEditDrawer({ onFormClose, visible, setVisible, data, refetch }) {
         icon: <ExclamationCircleOutlined />,
         content: <p className={styles.modal_content}>
           After Deleting this Page you won't be able to use this slug
-        </p>,
+                 </p>,
         okText: 'Yes',
         okType: 'danger',
         cancelText: 'No',
@@ -110,7 +120,7 @@ function PageEditDrawer({ onFormClose, visible, setVisible, data, refetch }) {
           message.success('Page Deleted Successfully!');
           setVisible(false);
           setTimeout(() => {
-            refetch();
+            fetch();
           }, 1000);
         },
         onCancel() {
@@ -135,7 +145,7 @@ function PageEditDrawer({ onFormClose, visible, setVisible, data, refetch }) {
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
         onFinish={SubmitDetails}
-        initialValues={{ name: data.name, slug: data.slug }}
+        initialValues={{ name: pageData.name, slug: pageData.slug }}
       >
         <Form.Item
           label="Page Name"
@@ -149,7 +159,7 @@ function PageEditDrawer({ onFormClose, visible, setVisible, data, refetch }) {
           label="Slug"
           name="slug"
         >
-          <Input disabled={data.slug === ''} />
+          <Input disabled={pageData.slug === ''} />
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 16 }} className={styles.drawer_button}>
@@ -169,7 +179,7 @@ function PageEditDrawer({ onFormClose, visible, setVisible, data, refetch }) {
           className={styles.drawer_button}
           colon={false}
         >
-          <Button type="primary" icon={<HomeOutlined />} disabled={data.slug === ''} onClick={() => { showConfirmHome(data.slug); }}>
+          <Button type="primary" icon={<HomeOutlined />} disabled={pageData.slug === ''} onClick={() => { showConfirmHome(pageData.slug); }}>
             Make Home
           </Button>
         </Form.Item>
@@ -184,7 +194,7 @@ function PageEditDrawer({ onFormClose, visible, setVisible, data, refetch }) {
           className={styles.drawer_button}
           colon={false}
         >
-          <Button type="danger" icon={<DeleteOutlined />} onClick={() => showConfirmDelete(data.slug)}>
+          <Button type="danger" icon={<DeleteOutlined />} onClick={() => showConfirmDelete(pageData.slug)}>
             Delete Page
           </Button>
         </Form.Item>
