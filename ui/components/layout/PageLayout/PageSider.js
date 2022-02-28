@@ -2,47 +2,69 @@ import {
   Layout, Menu, Button, Avatar, Popover,
 } from 'antd';
 import {
-  PoweroffOutlined, UserOutlined,
+  LogoutOutlined, UserOutlined,
 } from '@ant-design/icons';
-import { useState, useContext } from 'react';
+import { useContext, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import navData from './sideNavContent';
-import Styles from './style.module.scss';
+import style from './style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
 import SessionContext from '../../../context/SessionContext';
 
-const { Header, Footer } = Layout;
+const { Header } = Layout;
 
 function PageSider() {
   const { session } = useContext(SessionContext);
   const Router = useRouter();
   const { Sider } = Layout;
+  const [visible, setVisible] = useState(false);
   // const [collapsed, setCollapsed] = useState(false);
 
   // const onCollapse = (isCollapsed) => {
   //   setCollapsed(isCollapsed);
   // };
-  const [{}, handleGet] = useRequest({ method: 'GET' }, { manual: true });
+  const hide = () => {
+    setVisible(false);
+  };
 
+  const handleVisibleChange = (value) => {
+    setVisible(value);
+  };
+  const [{}, handleGet] = useRequest({ method: 'GET' }, { manual: true });
   const signout = () => {
-    handleGet({ url: '/auth/signout' })
-      .then(() => Router.push('/admin/signin'));
+    setTimeout(() => {
+      handleGet({ url: '/auth/signout' })
+        .then(() => {
+          Router.push('/admin/signin');
+        });
+    }, 60);
+  };
+  const handleClick = () => {
+    Router.push('/admin/profile');
+    hide();
   };
   const content = (
-    <div>
-      <Link href="/admin/profile">
-        <Button>
-          <UserOutlined style={{ marginRight: '5px' }} />
-          Profile
-        </Button>
-      </Link>
-      <br />
-      <Button onClick={signout}>
-        <PoweroffOutlined style={{ marginRight: '5px' }} />
-        Sign out
-      </Button>
-    </div>
+    (session)
+      ? (
+        <div>
+          <h3>
+            {session.user.firstName}
+            {' '}
+            {session.user.lastName}
+          </h3>
+          <p>{session.user.email}</p>
+          <Button type="button" onClick={handleClick}>
+            <UserOutlined style={{ marginRight: 4 }} />
+            Profile
+          </Button>
+          <br />
+          <Button onClick={signout}>
+            <LogoutOutlined style={{ marginRight: 4 }} />
+            Sign out
+          </Button>
+        </div>
+      ) : null
   );
   const profileImage = () => {
     if (session) {
@@ -51,6 +73,7 @@ function PageSider() {
     }
     return <UserOutlined />;
   };
+
   return (
     <Sider
       // collapsible
@@ -74,32 +97,25 @@ function PageSider() {
           </Menu.Item>
         ))}
 
-        <Footer
-          className={Styles.foot}
-        >
-          <Popover
-            placement="top"
-            content={content}
-            trigger="click"
-            overlayInnerStyle={{ backgroundColor: '#EEE' }}
-            overlayClassName={Styles.popover}
-            overlayStyle={{
-              width: '105px',
-            }}
-          >
-            <div className={Styles.font}>
-              <Avatar icon={profileImage()} />
-              {session ? (
-                <span style={{ color: '#B0DBF1', marginLeft: '20px' }}>
-                  {session.user.firstName.split(' ')[0]}
-                  {' '}
-                  {session.user.lastName.split(' ')[0]}
-                </span>
-              ) : null}
-            </div>
-          </Popover>
-        </Footer>
       </Menu>
+      <Popover
+        placement="right"
+        content={content}
+        trigger="click"
+        visible={visible}
+        overlayClassName={style.popover}
+        overlayInnerStyle={{ backgroundColor: '#EEE' }}
+        onVisibleChange={handleVisibleChange}
+      >
+        <div type="primary" className={style.foot}>
+          <div
+            className={style.font}
+          >
+            <Avatar icon={profileImage()} style={{ marginRight: '10px' }} />
+            {session ? session.user.firstName : null}
+          </div>
+        </div>
+      </Popover>
     </Sider>
   );
 }
