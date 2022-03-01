@@ -94,7 +94,6 @@ export default function NewContentDrawer({
             </Form.Item>
           )}
         </Card>
-
       </Form>
     </Drawer>
   );
