@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { List } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import Joyride from 'react-joyride';
 import AssetCard from './AssetCard';
 import AssetDrawer from './AssetDrawer';
 import ActionBar from '../../components/layout/ActionBar';
@@ -9,6 +10,18 @@ import { useRequest } from '../../helpers/request-helper';
 function PageAsset() {
   const [visible, setVisible] = useState(false);
   const [searchValue, setSearchValue] = useState('');
+  const isUserNew = true;
+
+  const steps = [
+    {
+      target: '.first-step',
+      content: 'This is my awesome feature!',
+    },
+    {
+      target: '.seconsd-step',
+      content: 'This another awesome feature!',
+    },
+  ];
 
   const [{ data }, refetch] = useRequest({
     method: 'GET',
@@ -28,7 +41,7 @@ function PageAsset() {
       setSearchValue,
     },
     buttons: [{
-      name: 'Add Asset',
+      name: <span className="first-step">Add Asset</span>,
       icon: <PlusOutlined />,
       onClick: showDrawer,
     },
@@ -37,6 +50,9 @@ function PageAsset() {
 
   return (
     <>
+      <Joyride
+        steps={steps}
+      />
       <ActionBar actions={actions} />
       <AssetDrawer
         flag
@@ -45,33 +61,6 @@ function PageAsset() {
         refetch={refetch}
         data={[]}
       />
-      {/* INITIAL DUMMY CARD====== */}
-      {/* <Card
-        style={{ width: 280, height: 330, padding: '0px 15px', paddingTop: '15px', borderRadius: '8px' }}
-        cover={(
-          <Asset
-            data={data}
-          />
-    )}
-        className={styles.asset_card}
-        actions={[
-          <Tooltip title="Edit Asset">
-            <EditOutlined key="edit" onClick={showModal} style={{ border: '0px' }} />
-
-          </Tooltip>,
-          <Tooltip title="Delete Asset">
-            <DeleteOutlined key="delete" onClick={showConfirm} style={{ border: '0px' }} />
-
-          </Tooltip>,
-        ]}
-      >
-        <Meta
-          title={data.name}
-          description={data.description}
-        />
-      </Card> */}
-
-      {/* ======= */}
 
       <List
         style={{ margin: '16px 32px' }}
