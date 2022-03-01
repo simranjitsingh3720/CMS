@@ -20,15 +20,13 @@ export const getInitialValues = (fields, editableData, isEditable) => {
     Object.keys(editableData).forEach((data) => {
       if (data !== 'id') { values[[data]] = editableData[data]; }
     });
-  } else {
+  } else if (fields) {
     fields.forEach((field) => {
       values[field.id] = field.defaultValue || '';
     });
   }
   return values;
 };
-
-const handleCheckBoxChange = (values) => {};
 
 function GetFields(appearenceType, field) {
   const {
@@ -65,7 +63,7 @@ function GetFields(appearenceType, field) {
     case 'checkbox':
       return (
         <Form.Item name={id} label={name} rules={[{ required }]}>
-          <Checkbox.Group options={values} onChange={handleCheckBoxChange} />
+          <Checkbox.Group options={values} />
         </Form.Item>
       );
 

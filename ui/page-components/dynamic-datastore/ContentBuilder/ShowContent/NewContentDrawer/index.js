@@ -87,12 +87,21 @@ export default function NewContentDrawer({
               </Button>
             </Form.Item>
           ) : (
-            <Form.Item>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
-            </Form.Item>
+            <div>
+              {schemaDetails.schema ? (
+                <Form.Item>
+                  <Button type="primary" htmlType="submit">
+                    Submit
+                  </Button>
+                </Form.Item>
+              ) : (
+                <div>
+                  Please add some fields in the table
+                </div>
+              )}
+            </div>
           )}
+
         </Card>
 
       </Form>

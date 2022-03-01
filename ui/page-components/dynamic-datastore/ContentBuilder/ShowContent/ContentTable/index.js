@@ -49,7 +49,12 @@ export default function ContentTable({
 
   return (
     <div>
-      <Table columns={columns} dataSource={finalData} />
+      {columns.length >= 2 ? <Table columns={columns} dataSource={finalData} /> : (
+        <div>
+          No Fields Found.
+          <h5>Please add some fields to add content</h5>
+        </div>
+      )}
     </div>
   );
 }
