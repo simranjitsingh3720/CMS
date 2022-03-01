@@ -1,7 +1,14 @@
 function Asset({ data }) {
   switch (data.type) {
     case 'image':
-      return (<img src={data.url} alt={data.name} style={{ height: '200px' }} />);
+      return (
+        <div style={{
+          backgroundImage: `url(${data.url})`,
+          height: '200px',
+          backgroundSize: 'cover',
+        }}
+        />
+      );
     case 'video':
       return (
         <video

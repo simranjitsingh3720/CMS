@@ -4,6 +4,7 @@ import { ConfigProvider } from 'antd';
 import RouteGuard from './RouteGuard';
 import PageLayout from '../../components/layout/PageLayout';
 import theme from '../../theme';
+import { SessionProvider } from '../../context/SessionContext';
 
 if (typeof window !== 'undefined') {
   ConfigProvider.config({
@@ -21,7 +22,7 @@ function CMSApp({ Component, pageProps, session }) {
   }
 
   return (
-    <>
+    <SessionProvider>
       <Head>
         <title>{title}</title>
       </Head>
@@ -33,7 +34,7 @@ function CMSApp({ Component, pageProps, session }) {
         </RouteGuard>
       </ConfigProvider>
 
-    </>
+    </SessionProvider>
   );
 }
 

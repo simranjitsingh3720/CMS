@@ -26,18 +26,22 @@ const getMe = async (req, res) => {
 
 const updateUser = async (req, res) => {
   const { userId } = req.query;
-  const data = req.body;
-  if (req.session.user.id === userId) {
-    const updatedUser = await db.User.update({ ...data }, { where: { id: userId } });
-    res.status(200).json({ id: updatedUser.id });
+  try {
+    await db.User.update({ ...req.body }, { where: { id: userId } });
+    if (req.session.user && req.session.user.id === userId) {
+      const updatedUser = await db.User.findOne({ where: { id: userId }, include: { model: db.Asset, as: 'ProfilePicture' } });
+      req.session.user = updatedUser.toJSON();
+    }
+    return res.status(200).json({ id: userId });
+  } catch (err) {
+    return res.status(400).json({ message: 'There was an error updaing the user' });
   }
-  res.status(400).json({ message: 'user not signed in' });
 };
 
 const findUser = async (req, res) => {
   const { userId } = req.query;
 
-  const user = await db.User.findOne({ where: { id: userId } });
+  const user = await db.User.findOne({ where: { id: userId }, include: { model: db.Asset, as: 'ProfilePicture' } });
   if (!user) {
     return res.status(404).send({ message: 'no user found' });
   }
@@ -47,14 +51,20 @@ const findUser = async (req, res) => {
 const changePassword = async (req, res) => {
   const { id, password } = req.session.user;
   const { currentPassword, newPassword } = req.body;
-  const isPasswordSame = await bcrypt.compare(currentPassword, password);
-  if (!isPasswordSame) {
-    return res.status(400).json({ message: 'Old Password is incorrect' });
+  try {
+    const isPasswordSame = await bcrypt.compare(currentPassword, password);
+    if (!isPasswordSame) {
+      return res.status(400).json({ message: 'Old Password is incorrect' });
+    }
+    const salt = await bcrypt.genSalt();
+    const hashedPassword2 = await bcrypt.hash(newPassword, salt);
+    await db.User.update({ password: hashedPassword2 }, { where: { id } });
+    const updatedUser = await db.User.findOne({ where: { id }, include: { model: db.Asset, as: 'ProfilePicture' } });
+    req.session.user = updatedUser.toJSON();
+    return res.status(200).json({ id });
+  } catch (err) {
+    return res.status(400).json({ message: 'There was an error updaing the password' });
   }
-  const salt = await bcrypt.genSalt();
-  const hashedPassword2 = await bcrypt.hash(newPassword, salt);
-  const user = await db.User.update({ password: hashedPassword2 }, { where: { id } });
-  return res.status(200).json({ id: user.id });
 };
 
 module.exports = { listUser, getMe, updateUser, findUser, changePassword };
