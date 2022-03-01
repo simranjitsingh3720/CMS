@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Drawer, Form, Input, Button, Checkbox, Select, Divider, Card, Space, message,
 } from 'antd';
@@ -9,13 +9,14 @@ import { useRequest } from '../../../../../helpers/request-helper';
 
 const { TextArea } = Input;
 
-function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData }) {
+function StructureDrawer({
+  fieldsId, closeSchemaDrawer, data = {}, getSchema, fieldData, isEditable,
+}) {
   const [form] = Form.useForm();
 
   const [dataType, setDataType] = useState('');
   const [appearanceType, setAppearanceType] = useState('');
   const [loading, setLoading] = useState(false);
-
   const handleOnDataTypeChange = (value) => {
     setDataType(value);
   };
@@ -29,16 +30,25 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
   };
 
   const [{ error },
-    executePatch,
+    executePatchCreate,
   ] = useRequest(
     {
-      url: `/schema/${data.slug}`,
+      url: `/schema/${data.slug}/field`,
+      method: 'POST',
+
+    },
+    { manual: true },
+  );
+  const [{ },
+    executePatchUpdate,
+  ] = useRequest(
+    {
+      url: `/schema/${data.slug}/field/${fieldsId}`,
       method: 'PATCH',
 
     },
     { manual: true },
   );
-
   const onFinish = async (values) => {
     const updatedValues = values;
 
@@ -66,46 +76,81 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
     updatedValues.isMultiple = undefined;
 
     setLoading(true);
-    let newSchema = data.schema || [];
-    newSchema = [...newSchema, updatedValues];
 
-    await executePatch({
+    if (!isEditable) {
+      await executePatchCreate({
+        data: {
 
-      data: {
-        schema: newSchema,
-      },
+          schema: values,
+          fieldId: values.id,
+        },
+      }).then((res) => {
+        if (res.data.message) {
+          message.error(res.data.message);
+        } else {
+          message.success('Field Added Successfully');
+          setLoading(false);
+          form.resetFields();
+          closeSchemaDrawer();
+          getSchema();
+        }
+      });
 
-    })
-      .then(() => {
+      if (error) {
+        message.error('Field Not Added');
+      }
+    } else {
+      await executePatchUpdate({
+        data: {
+          schema: values,
+
+        },
+      }).then(() => {
         getSchema();
       });
-    if (error) {
-      message.error('Schema Not Updated');
-    } else {
-      setLoading(false);
 
-      form.resetFields();
-      closeSchemaDrawer();
-      message.success('Field Added Successfully');
+      if (error) {
+        message.error('Field Not Updated');
+      } else {
+        setLoading(false);
+
+        form.resetFields();
+        closeSchemaDrawer();
+        message.success('Field Updated Successfully');
+      }
     }
   };
+
+  if (!isEditable) {
+    const handleValuesChange = (changedValues) => {
+      if (changedValues.name) {
+        const suggestedID = (changedValues.name || '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+        form.setFieldsValue({ id: suggestedID });
+      }
+    };
+  }
   return (
     <Drawer title={fieldData ? `Edit Field ${fieldData.name}` : 'Create a new Field'} placement="right" onClose={closeSchemaDrawer} size="large" visible>
 
       <Form
         name="basic"
-        labelCol={{
-          span: 6,
-        }}
-        wrapperCol={{
-          span: 10,
-        }}
+        form={form}
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 10 }}
         initialValues={{
-          remember: true,
+          name: (fieldData && fieldData.name),
+          id: (fieldData && fieldData.id),
+          type: (fieldData && fieldData.type),
+          appearanceType: (fieldData && fieldData.appearanceType),
+          defaultValue: (fieldData && fieldData.defaultValue),
+          required: (fieldData && fieldData.required),
+          description: (fieldData && fieldData.description),
+
         }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
+        onValuesChange={handleValuesChange}
       >
         <Space direction="vertical">
           <Card title="Field Details" style={{ width: 650 }}>
@@ -120,21 +165,18 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
               ]}
             >
 
-              <Input defaultValue={(fieldData && fieldData.name) || ''} />
+              <Input />
             </Form.Item>
+
             <Form.Item
               label="Field ID"
               name="id"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please input your field ID!',
-                },
-              ]}
+              rules={[{ required: true, message: 'Please input your field ID!' }]}
             >
+              <Input disabled={!!isEditable} />
 
-              <Input defaultValue={(fieldData && fieldData.id) || ''} />
             </Form.Item>
+
             <Form.Item
               label="Description"
               name="description"
@@ -244,10 +286,17 @@ function StructureDrawer({ closeSchemaDrawer, data = {}, getSchema, fieldData })
             span: 10,
           }}
         >
+          {isEditable ? (
+            <Button type="primary" htmlType="submit" style={{ marginTop: '15px' }}>
+              Update
+            </Button>
+          )
+            : (
+              <Button type="primary" htmlType="submit" style={{ marginTop: '15px' }}>
+                Submit
+              </Button>
+            )}
 
-          <Button type="primary" htmlType="submit" style={{ marginTop: '15px' }}>
-            Submit
-          </Button>
         </Form.Item>
 
       </Form>
