@@ -20,6 +20,7 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
     method: 'GET',
     params: {
       q: '',
+      p: false,
     },
   });
 
@@ -53,8 +54,9 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
         fetch();
       }, 1000);
     }).catch((err) => {
+      console.log('page ka data', data);
       (((data && data.list) || []).map((page) => (
-        (page.slug === values.slug) ? message.info('Page with this Slug name already Exists') : console.log(err)
+        (page.slug === values.slug) ? message.info('Slug Name Already Taken') : console.log(err)
       )));
     });
   };
@@ -66,7 +68,7 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
       icon: <ExclamationCircleOutlined />,
       content: <p className={styles.modal_content}>
         After Changing this Page to Home, current Page Name will be Renamed as Home
-      </p>,
+               </p>,
       okText: 'Yes',
       okType: 'primary',
       cancelText: 'No',
@@ -109,7 +111,7 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
         icon: <ExclamationCircleOutlined />,
         content: <p className={styles.modal_content}>
           After Deleting this Page you won't be able to use this slug
-                 </p>,
+        </p>,
         okText: 'Yes',
         okType: 'danger',
         cancelText: 'No',

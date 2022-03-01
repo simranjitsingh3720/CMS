@@ -12,7 +12,14 @@ export const createPage = async (req, res) => {
 
 export const listPagesBySlug = async (req, res) => {
   const { query } = req;
-  const { q, isHome } = query || '';
+  const { q, isHome, p } = query || '';
+  let setParanoid;
+  if (p === 'false') {
+    setParanoid = false;
+  } else {
+    setParanoid = true;
+  }
+
   if (!isHome) {
     const data = await db.Page.findAll({
       attributes: ['slug', 'name'],
@@ -21,6 +28,7 @@ export const listPagesBySlug = async (req, res) => {
           [Op.substring]: q,
         },
       },
+      paranoid: setParanoid,
     });
     return res.status(200).json({ list: data });
   }

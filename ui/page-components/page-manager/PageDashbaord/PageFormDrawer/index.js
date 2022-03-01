@@ -11,6 +11,7 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
   const [checked, setChecked] = useState(false);
   const [slugRule, setSlugRule] = useState(true);
 
+  const [form] = Form.useForm();
   const { push } = useRouter();
 
   const [{ data, loading, error }, refetch] = useRequest({
@@ -18,6 +19,7 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
     method: 'GET',
     params: {
       q: '',
+      p: false,
     },
   });
 
@@ -32,6 +34,7 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
   );
 
   const handleCreatePage = () => {
+    console.log(pageDetails);
     executePost({
       data: {
         pageDetails,
@@ -46,7 +49,7 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
     })
       .catch((err) => {
         (((data && data.list) || []).map((page) => (
-          (page.slug === pageDetails.slug) ? message.info('Page with this Slug name already Exists') : console.log('Error => ', err)
+          (page.slug === pageDetails.slug) ? message.info('Slug Name Already Taken') : console.log('Error => ', err)
         )));
       });
   };
@@ -55,6 +58,7 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
     <Drawer title="Create New Page" placement="right" onClose={onFormClose} visible={visible}>
       <Form
         name="basic"
+        form={form}
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
         onFinish={handleCreatePage}
@@ -90,6 +94,9 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
           onChange={() => {
             if (!checked) {
               setPageDetails({ ...pageDetails, slug: '', isHome: 1 });
+            } else {
+              setPageDetails({ ...pageDetails, isHome: 0 });
+              form.resetFields();
             }
             setChecked(!checked);
             setSlugRule(!slugRule);
