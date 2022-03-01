@@ -2,9 +2,11 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import {
   Table,
   Modal,
+  Empty,
 } from 'antd';
 import React from 'react';
 import getColumns from './getColumns/getColumns';
+import style from './style.module.scss';
 
 const { confirm } = Modal;
 
@@ -51,8 +53,14 @@ export default function ContentTable({
     <div>
       {columns.length >= 2 ? <Table columns={columns} dataSource={finalData} /> : (
         <div>
-          No Fields Found.
-          <h5>Please add some fields to add content</h5>
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description={(
+              <span>
+                No Content Found
+              </span>
+    )}
+          />
         </div>
       )}
     </div>
