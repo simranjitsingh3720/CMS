@@ -88,7 +88,7 @@ export default function NewContentDrawer({
             </Form.Item>
           ) : (
             <div>
-              {schemaDetails.schema ? (
+              {schemaDetails.schema && schemaDetails.schema.length >= 1 ? (
                 <Form.Item>
                   <Button type="primary" htmlType="submit">
                     Submit

@@ -45,13 +45,19 @@ export default function ContentTable({
   if (data) {
     finalData = data.list.map((content) => ({
       ...content.data,
-      Actions: { ...content.data, id: content.id },
+      Actions: { ...content.data, id: content.id, fixed: 'right' },
     }));
   }
 
   return (
     <div>
-      {columns.length >= 2 ? <Table columns={columns} dataSource={finalData} /> : (
+      {columns.length >= 2 ? (
+        <Table
+          columns={columns}
+          dataSource={finalData}
+          scroll={{ x: 1300 }}
+        />
+      ) : (
         <div>
           <Empty
             image={Empty.PRESENTED_IMAGE_SIMPLE}

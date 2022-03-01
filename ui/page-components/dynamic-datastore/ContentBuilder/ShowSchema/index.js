@@ -125,7 +125,19 @@ function ShowSchema() {
       </div>
       {/* {data && JSON.stringify(data.schema)} */}
       <div style={{ marginLeft: '50px', marginRight: '50px' }}>
-        { data && data.schema == null ? <div><Empty style={{ marginTop: '83px' }} image={Empty.PRESENTED_IMAGE_SIMPLE} /></div>
+        { data && data.schema == null ? (
+          <div>
+            <Empty
+              style={{ marginTop: '83px' }}
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description={(
+                <span>
+                  Add fields to store content
+                </span>
+    )}
+            />
+          </div>
+        )
 
           : ((data && data.schema) || []).map((fields) => (
 
