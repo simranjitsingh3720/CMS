@@ -20,6 +20,7 @@ const listSchemas = async (req, res) => {
       },
     },
   });
+
   return res.status(200).json({ list: schemas });
 };
 
@@ -80,20 +81,9 @@ const deleteSchemaBySlug = async (req, res) => {
       }
       return res.status(404).json({ message: 'Schema not found' });
     }
-    return res.status(404).json({ message: 'There are some content for this schema. Cannot delete this', contents });
+    return res.status(201).json({ message: 'There are some content for this schema. Cannot delete this ' });
   }
   return res.status(404).json({ message: 'Schema not found' });
-};
-
-const removeByAttr = function (arr, attr, value) {
-  let i = arr.length;
-  while (i--) {
-    if (arr[i] && arr[i].hasOwnProperty(attr)
-  && (arguments.length > 2 && arr[i][attr] === value)) {
-      arr.splice(i, 1);
-    }
-  }
-  return arr;
 };
 
 const deleteFieldBySlug = async (req, res) => {

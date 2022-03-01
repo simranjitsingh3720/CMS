@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import useAxios from 'axios-hooks';
 import { PlusOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { Modal, Button, Space, Empty } from 'antd';
+import { message, Modal, Empty } from 'antd';
 import ActionBar from '../../../../components/layout/ActionBar';
 import StructureDrawer from './StructureDrawer';
 import FieldCard from './FieldCard';
@@ -17,7 +16,7 @@ function ShowSchema() {
   const [editSchemaDrawer, setEditSchemaDrawer] = useState(false);
   const [fieldData, setFieldData] = useState({});
   const [isEditable, setIsEditable] = useState(false);
-  const [fieldsId, setFieldsId] = useState(false);
+  const [fieldsId, setFieldsId] = useState('');
 
   const showSchemaDrawer = () => {
     setIsEditable(false);
@@ -43,38 +42,36 @@ function ShowSchema() {
   }, fieldDelete] = useRequest(
     {
       method: 'DELETE',
-      url: `/schema/${schemaSlug}/field/${fieldsId}`,
 
     },
     { manual: true },
   );
-  const deleteField = (fieldSlug, id) => {
-    console.log(fieldSlug);
+
+  const [{ data, loading, error }, getSchema] = useRequest(
+    {
+      method: 'GET',
+      url: `/schema/${schemaSlug}`,
+    },
+    { manual: true },
+  );
+
+  const deleteField = (id) => {
     confirm({
       title: 'Do you Want to delete this Field',
       icon: <ExclamationCircleOutlined style={{ color: 'red' }} />,
-      // content: '',
       onOk() {
-        // const newSchema = data.schema || [];
-        // const filtered = newSchema.filter((el) => el.id !== id);
-        // console.log('Previous =>', newSchema);
-        // console.log('filtered => ', filtered);
-        // // console.log('new val =>', values);
-
-        // newSchema = [...filtered];
-        // console.log('Final => ', newSchema);
         fieldDelete({
-        //  url: `/schema/${schemaSlug}/field`,
-          data: {
-            schema: fieldData,
-          },
-        }).then(() => {
-          getSchema();
+          url: `/schema/${schemaSlug}/field/${id}`,
+        }).then((res) => {
+          if (res.data.message) {
+            message.error(res.data.message);
+          } else {
+            message.success('Field deleted successfully');
+            getSchema();
+          }
         });
-        console.log('OK');
       },
       onCancel() {
-        console.log('Cancel');
       },
     });
   };
@@ -86,13 +83,6 @@ function ShowSchema() {
       onClick: showSchemaDrawer,
     }],
   };
-  const [{ data, loading, error }, getSchema] = useRequest(
-    {
-      method: 'GET',
-      url: `/schema/${schemaSlug}`,
-    },
-    { manual: true },
-  );
 
   useEffect(() => {
     if (schemaSlug) {
@@ -133,7 +123,7 @@ function ShowSchema() {
           : null}
 
       </div>
-      {data && JSON.stringify(data.schema)}
+      {/* {data && JSON.stringify(data.schema)} */}
       <div style={{ marginLeft: '50px', marginRight: '50px' }}>
         { data && data.schema == null ? <div><Empty style={{ marginTop: '83px' }} image={Empty.PRESENTED_IMAGE_SIMPLE} /></div>
 

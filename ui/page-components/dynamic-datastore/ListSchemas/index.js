@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import confirm from 'antd/lib/modal/confirm';
-import { Spin, Empty } from 'antd';
+import { Spin, Empty, message } from 'antd';
 import SchemaCard from './SchemaCard';
 import SchemaDrawer from './SchemaDrawer';
 import ActionBar from '../../../components/layout/ActionBar';
@@ -71,6 +71,14 @@ function ListSchema() {
       onOk() {
         schemaDelete({
           url: `/schema/${schemaSlug}`,
+        }).then((res) => {
+          if (res.data.message) {
+            message.error(res.data.message);
+          } else {
+            message.success('Deleted Successfully');
+          }
+        }).catch((err) => {
+          message.error(err);
         });
       },
       onCancel() {
@@ -97,7 +105,13 @@ function ListSchema() {
       <ActionBar actions={actions} />
       <div>
         {isDrawer
-          ? <SchemaDrawer closeDrawer={closeDrawer} fetchAllSchema={fetchAllSchema} setIsDrawer={setIsDrawer} />
+          ? (
+            <SchemaDrawer
+              closeDrawer={closeDrawer}
+              fetchAllSchema={fetchAllSchema}
+              setIsDrawer={setIsDrawer}
+            />
+          )
           : null}
 
       </div>
@@ -105,7 +119,7 @@ function ListSchema() {
       <div style={{ textAlign: 'center' }}>
         {showLoading()}
       </div>
-      {data && JSON.stringify(data)}
+      {/* {data && JSON.stringify(data)} */}
 
       <div style={{ margin: '16px 32px' }}>
         { data && data.list.length <= 0 ? <div><Empty style={{ marginTop: '83px' }} image={Empty.PRESENTED_IMAGE_SIMPLE} /></div>

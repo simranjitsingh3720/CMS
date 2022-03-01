@@ -1,4 +1,3 @@
-const { message } = require('antd');
 const bcrypt = require('bcrypt');
 const db = require('../../db/models');
 
@@ -29,7 +28,7 @@ const signin = async (req, res) => {
     return res.status(400).send({ message: 'Requested email or password is missing' });
   }
 
-  const user = await db.User.findOne({ where: { email }, include: [db.Asset] });
+  const user = await db.User.findOne({ where: { email }, include: { model: db.Asset, as: 'ProfilePicture' } });
   if (!user) {
     return res.status(400).json({ message: 'Email does not exist' });
   }

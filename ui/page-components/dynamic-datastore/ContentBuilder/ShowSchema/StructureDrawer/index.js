@@ -17,9 +17,6 @@ function StructureDrawer({
   const [dataType, setDataType] = useState('');
   const [appearanceType, setAppearanceType] = useState('');
   const [loading, setLoading] = useState(false);
-  const [fieldId, setFieldId] = useState('');
-  console.log('xxxxxx', { fieldsId });
-
   const handleOnDataTypeChange = (value) => {
     setDataType(value);
   };
@@ -53,7 +50,6 @@ function StructureDrawer({
     { manual: true },
   );
   const onFinish = async (values) => {
-    console.log('xxxxxxyyyy', { values });
     const updatedValues = values;
 
     if (updatedValues.values) {
@@ -78,59 +74,32 @@ function StructureDrawer({
 
     updatedValues.values = undefined;
     updatedValues.isMultiple = undefined;
-    console.log('xxxxxxyyyyzz', { values });
 
     setLoading(true);
 
     if (!isEditable) {
-      let newSchema = data.schema || [];
-      const filtered = newSchema.filter((el) => el.id === fieldsId);
-      console.log(filtered);
-      if (!filtered.length) {
-        newSchema = [...newSchema, values];
+      await executePatchCreate({
+        data: {
 
-        await executePatchCreate({
-          data: {
-            schema: newSchema,
-          },
-        }).then(() => {
-          getSchema();
-        });
-
-        if (error) {
-          message.error('Field Not Added');
+          schema: values,
+          fieldId: values.id,
+        },
+      }).then((res) => {
+        if (res.data.message) {
+          message.error(res.data.message);
         } else {
+          message.success('Field Added Successfully');
           setLoading(false);
-
           form.resetFields();
           closeSchemaDrawer();
-          message.success('Field Added Successfully');
+          getSchema();
         }
-      } else {
-        message.error('A field with this ID already exists  ');
+      });
+
+      if (error) {
+        message.error('Field Not Added');
       }
     } else {
-      // const newSchema = data.schema || [];
-      // const filtered = newSchema.filter((el) => el.id === fieldsId);
-      // console.log('Previous =>', newSchema);
-      // console.log('filtered => ', filtered);
-      // console.log('new val =>', values);
-      // Object.keys(filtered).forEach((key) => {
-      //   filtered[key] = values[key];
-      // });
-      // console.log();
-      // newSchema = [...filtered, values];
-      // console.log('Final => ', newSchema);
-      //  -------------------->
-      // let newSchema = data.schema || [];
-      // const filtered = newSchema.filter((el) => el.id !== fieldsId);
-      // console.log('Previous =>', newSchema);
-      // console.log('filtered => ', filtered);
-      // console.log('new val =>', values);
-
-      // newSchema = [...filtered, values];
-      // console.log('Final => ', newSchema);
-      console.log(fieldData);
       await executePatchUpdate({
         data: {
           schema: values,
@@ -151,13 +120,6 @@ function StructureDrawer({
       }
     }
   };
-  // const handleFieldID = (e) => {
-  //   let val = e.target.value;
-
-  //   val = val.replace(/ /g, '_');
-
-  //   setFieldId(val);
-  // };
 
   if (!isEditable) {
     const handleValuesChange = (changedValues) => {
@@ -305,7 +267,7 @@ function StructureDrawer({
 
                 case 'switch':
                   return <Switch />;
-                case 'select':
+                case 'dropdown':
                   return <ValueNames />;
                 case 'radio':
                   return <ValueNames />;

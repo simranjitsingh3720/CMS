@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   message, Form, Input, Button, Row, Col, Typography,
 } from 'antd';
@@ -6,11 +6,13 @@ import { useRouter } from 'next/router';
 import { MailOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 import styles from '../style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
+import SessionContext from '../../../context/SessionContext';
 
 const { Title, Paragraph } = Typography;
 
 function PageSignup() {
   const router = useRouter();
+  const { refetch } = useContext(SessionContext);
 
   const [{ loading }, executePost] = useRequest(
     {
@@ -30,6 +32,7 @@ function PageSignup() {
         .then(() => {
           router.push('/admin');
           message.success('Welcome to CMS Page');
+          refetch();
         })
         .catch(() => message.error('Invalid Signup, Please try again'));
     }
