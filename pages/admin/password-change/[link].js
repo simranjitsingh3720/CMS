@@ -8,7 +8,15 @@ import { LockOutlined } from '@ant-design/icons';
 import styles from './style.module.scss';
 import Header from '../../../ui/page-components/auth/PageForgotPassword/Header';
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ req }) {
+  if (req.session.user) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/admin',
+      },
+    };
+  }
   return {
     props: {
       notDisplay: true,
