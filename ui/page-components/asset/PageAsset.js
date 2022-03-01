@@ -45,6 +45,34 @@ function PageAsset() {
         refetch={refetch}
         data={[]}
       />
+      {/* INITIAL DUMMY CARD====== */}
+      {/* <Card
+        style={{ width: 280, height: 330, padding: '0px 15px', paddingTop: '15px', borderRadius: '8px' }}
+        cover={(
+          <Asset
+            data={data}
+          />
+    )}
+        className={styles.asset_card}
+        actions={[
+          <Tooltip title="Edit Asset">
+            <EditOutlined key="edit" onClick={showModal} style={{ border: '0px' }} />
+
+          </Tooltip>,
+          <Tooltip title="Delete Asset">
+            <DeleteOutlined key="delete" onClick={showConfirm} style={{ border: '0px' }} />
+
+          </Tooltip>,
+        ]}
+      >
+        <Meta
+          title={data.name}
+          description={data.description}
+        />
+      </Card> */}
+
+      {/* ======= */}
+
       <List
         style={{ margin: '16px 32px' }}
         grid={{ gutter: 16, column: 4 }}
