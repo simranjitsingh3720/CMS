@@ -20,6 +20,7 @@ const listSchemas = async (req, res) => {
       },
     },
   });
+
   return res.status(200).json({ list: schemas });
 };
 

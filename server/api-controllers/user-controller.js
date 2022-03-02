@@ -29,7 +29,7 @@ const updateUser = async (req, res) => {
   try {
     await db.User.update({ ...req.body }, { where: { id: userId } });
     if (req.session.user && req.session.user.id === userId) {
-      const updatedUser = await db.User.findOne({ where: { id: userId }, include: [db.Asset] });
+      const updatedUser = await db.User.findOne({ where: { id: userId }, include: { model: db.Asset, as: 'ProfilePicture' } });
       req.session.user = updatedUser.toJSON();
     }
     return res.status(200).json({ id: userId });
@@ -41,7 +41,7 @@ const updateUser = async (req, res) => {
 const findUser = async (req, res) => {
   const { userId } = req.query;
 
-  const user = await db.User.findOne({ where: { id: userId }, include: [db.Asset] });
+  const user = await db.User.findOne({ where: { id: userId }, include: { model: db.Asset, as: 'ProfilePicture' } });
   if (!user) {
     return res.status(404).send({ message: 'no user found' });
   }
@@ -59,7 +59,7 @@ const changePassword = async (req, res) => {
     const salt = await bcrypt.genSalt();
     const hashedPassword2 = await bcrypt.hash(newPassword, salt);
     await db.User.update({ password: hashedPassword2 }, { where: { id } });
-    const updatedUser = await db.User.findOne({ where: { id }, include: [db.Asset] });
+    const updatedUser = await db.User.findOne({ where: { id }, include: { model: db.Asset, as: 'ProfilePicture' } });
     req.session.user = updatedUser.toJSON();
     return res.status(200).json({ id });
   } catch (err) {
