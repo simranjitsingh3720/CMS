@@ -6,7 +6,6 @@ import {
 } from 'antd';
 import React from 'react';
 import getColumns from './getColumns/getColumns';
-import style from './style.module.scss';
 
 const { confirm } = Modal;
 
@@ -45,7 +44,7 @@ export default function ContentTable({
   if (data) {
     finalData = data.list.map((content) => ({
       ...content.data,
-      Actions: { ...content.data, id: content.id, fixed: 'right' },
+      Actions: { ...content.data, id: content.id },
     }));
   }
 
