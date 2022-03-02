@@ -33,7 +33,6 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
   );
 
   const handleCreatePage = () => {
-    console.log(pageDetails);
     executePost({
       data: {
         pageDetails,

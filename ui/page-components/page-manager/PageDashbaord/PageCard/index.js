@@ -51,7 +51,6 @@ function PageCard({ searchValue }) {
   };
 
   useEffect(() => {
-    console.log('load card');
     refetch();
   }, []);
 

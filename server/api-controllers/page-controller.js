@@ -13,7 +13,6 @@ export const createPage = async (req, res) => {
 export const listPagesBySlug = async (req, res) => {
   const { query } = req;
   const { q, isHome } = query || '';
-
   if (!isHome) {
     const data = await db.Page.findAll({
       attributes: ['slug', 'name'],
@@ -78,7 +77,6 @@ export const updateHome = async (req, res) => {
     paranoid: false,
   });
   const { pageSlug } = req.query;
-  console.log(findOldHome);
 
   if (findOldHome.dataValues.slug) {
     const arr = findOldHome.dataValues.slug.split('-');
