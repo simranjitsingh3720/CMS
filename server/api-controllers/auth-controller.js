@@ -96,30 +96,26 @@ const recoverPassword = async (req, res) => {
     const values = {
       user: user.id,
       expiresAt: addMinutes(new Date(), 100),
-      // isEarlier: false,
-      // isUsed: false,
       isValid: true,
     };
     await db.ForgotPassword.create(values);
     // const name = `${user.firstName} ${user.lastName}`;
     // const link = `http://localhost:8000/admin/password-change/${ret.id}`;
     // sendEmail(email, name, link);
-    return res.status(200).send({ message: 'updated database' });
+    return res.status(200).json({ message: 'updated database' });
   }
-  return res.status(400).send({ message: 'Email not found in database' });
+  return res.status(400).json({ message: 'Email not found in database' });
 };
 
 const changePassword = async (req, res) => {
   const { password, token } = req.body;
   const user = await db.ForgotPassword.findOne({ where: { id: token } });
-  // if (user && user.isEarlier === false && user.expiresAt > addMinutes(new Date(), 0)) {
   if (user && user.isValid && user.expiresAt > addMinutes(new Date(), 0)) {
     const userReq = await db.User.findOne({ where: { id: user.user } });
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
     userReq.password = hashedPassword;
     await userReq.save();
-    // user.isUsed = true;
     user.isValid = false;
     await user.save();
     return res.status(200).json({ message: 'Password updated' });
@@ -133,15 +129,6 @@ const checkChangePasswordToken = async (req, res) => {
   if (!user || !user.isValid) {
     return res.status(400).json({ message: 'This password recovery link is invalid.' });
   }
-  // if (user.expiresAt <= addMinutes(new Date(), 0)) {
-  //   return res.status(400).json({ message: 'This password recovery link was expired.' });
-  // }
-  // if (user.isEarlier === true) {
-  //   return res.status(400).json({ message: 'This password recovery link has been rejected because another link was sent.' });
-  // }
-  // if (user.isUsed === true) {
-  //   return res.status(400).json({ message: 'This password recovery link has been already used.' });
-  // }
   return res.status(200).json({ message: 'Show the form to change the password.' });
 };
 

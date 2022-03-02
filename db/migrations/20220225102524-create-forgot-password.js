@@ -9,8 +9,6 @@ module.exports = {
       },
       user: { type: Sequelize.UUID, allowNull: false },
       expiresAt: { type: Sequelize.DATE, allowNull: false },
-      // isEarlier: { type: Sequelize.BOOLEAN, allowNull: false },
-      // isUsed: { type: Sequelize.BOOLEAN, allowNull: false },
       isValid: { type: Sequelize.BOOLEAN, allowNull: false },
       createdBy: { type: Sequelize.UUID },
       createdAt: { type: Sequelize.DATE },

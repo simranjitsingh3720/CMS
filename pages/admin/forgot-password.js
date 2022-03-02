@@ -13,7 +13,6 @@ export async function getServerSideProps({ req }) {
   }
   return {
     props: {
-      // title: 'Back to sign in',
       notDisplay: true,
     },
   };

@@ -16,8 +16,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       user: { type: DataTypes.UUID, allowNull: false },
       expiresAt: { type: DataTypes.DATE, allowNull: false },
-      // isEarlier: { type: DataTypes.BOOLEAN, allowNull: false },
-      // isUsed: { type: DataTypes.BOOLEAN, allowNull: false },
       isValid: { type: DataTypes.BOOLEAN, allowNull: false },
       createdBy: { type: DataTypes.UUID },
       createdAt: { type: DataTypes.DATE },

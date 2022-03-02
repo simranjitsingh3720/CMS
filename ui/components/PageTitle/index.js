@@ -13,7 +13,6 @@ function PageTitle({
         extra={extra}
         style={{ fontSize: '200px' }}
       />
-      {/* <Divider style={{ padding: 0, margin: 0, border: '2px solid red' }} /> */}
     </div>
   );
 }
