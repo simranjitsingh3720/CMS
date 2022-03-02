@@ -9,7 +9,7 @@ export default function Header() {
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
         <a className={style.back_link}>
           <ArrowLeftOutlined className={style.header_icon} />
-          <p className={style.header_title}>Back to sign in</p>
+          <p className={style.header_title}>Back to Sign In</p>
         </a>
       </Link>
     </div>
