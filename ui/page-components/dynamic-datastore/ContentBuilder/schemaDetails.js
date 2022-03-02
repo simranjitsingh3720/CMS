@@ -2,7 +2,7 @@ export const dataTypes = ['text', 'list', 'number', 'assets', 'dateAndTime', 'bo
 
 export const appearanceTypes = {
   text: ['short', 'long', 'dropdown', 'radio'],
-  list: ['checkbox', 'tags'],
+  list: ['checkbox'],
   number: ['number'],
   assets: ['fileUpload'],
   dateAndTime: ['dateAndTime'],

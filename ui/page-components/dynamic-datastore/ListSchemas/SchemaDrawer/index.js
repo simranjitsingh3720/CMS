@@ -40,6 +40,7 @@ function SchemaDrawer({ closeDrawer, setIsDrawer, fetchAllSchema }) {
   const onFinishFailed = (errorInfo) => {
     setError(errorInfo.message);
   };
+
   const handleValuesChange = (changedValues) => {
     if (changedValues.title) {
       const suggestedID = (changedValues.title || '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();

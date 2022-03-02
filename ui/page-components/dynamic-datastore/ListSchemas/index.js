@@ -122,7 +122,19 @@ function ListSchema() {
       {/* {data && JSON.stringify(data)} */}
 
       <div style={{ margin: '16px 32px' }}>
-        { data && data.list.length <= 0 ? <div><Empty style={{ marginTop: '83px' }} image={Empty.PRESENTED_IMAGE_SIMPLE} /></div>
+        { data && data.list.length <= 0 ? (
+          <div>
+            <Empty
+              style={{ marginTop: '83px' }}
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description={(
+                <span>
+                  No Schema Found
+                </span>
+    )}
+            />
+          </div>
+        )
 
           : ((data && data.list) || []).map((schema) => (
             <SchemaCard
