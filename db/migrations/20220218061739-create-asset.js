@@ -1,7 +1,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable(
-      'Assets',
+      'assets',
       {
         id: { type: Sequelize.UUID, primaryKey: true, defaultValue: Sequelize.UUIDV4 },
         url: { type: Sequelize.STRING },
@@ -19,6 +19,6 @@ module.exports = {
     );
   },
   async down(queryInterface) {
-    await queryInterface.dropTable('Assets');
+    await queryInterface.dropTable('assets');
   },
 };

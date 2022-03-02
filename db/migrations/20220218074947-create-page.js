@@ -1,7 +1,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable(
-      'Pages',
+      'pages',
       {
         id: { type: Sequelize.UUID, primaryKey: true, defaultValue: Sequelize.UUIDV4 },
         name: {
@@ -34,6 +34,6 @@ module.exports = {
     );
   },
   async down(queryInterface) {
-    await queryInterface.dropTable('Pages');
+    await queryInterface.dropTable('pages');
   },
 };
