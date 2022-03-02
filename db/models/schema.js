@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
       paranoid: true,
       modelName: 'Schema',
-      tableName: 'datastore_schemas',
+      tableName: 'Datastore_Schemas',
     },
   );
 

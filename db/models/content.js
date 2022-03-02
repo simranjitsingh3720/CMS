@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
       paranoid: true,
       modelName: 'Content',
-      tableName: 'datastore_contents',
+      tableName: 'Datastore_Contents',
     },
   );
 
