@@ -20,7 +20,6 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
     method: 'GET',
     params: {
       q: '',
-      p: false,
     },
   });
 
@@ -54,10 +53,8 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
         fetch();
       }, 1000);
     }).catch((err) => {
-      console.log('page ka data', data);
-      (((data && data.list) || []).map((page) => (
-        (page.slug === values.slug) ? message.info('Slug Name Already Taken') : console.log(err)
-      )));
+      message.info('Slug Name Already Taken');
+      console.log(err);
     });
   };
 

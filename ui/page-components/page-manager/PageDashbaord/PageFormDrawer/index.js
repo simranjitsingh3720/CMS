@@ -19,7 +19,6 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
     method: 'GET',
     params: {
       q: '',
-      p: false,
     },
   });
 
@@ -48,9 +47,8 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
       push('/admin/page-manager/builder');
     })
       .catch((err) => {
-        (((data && data.list) || []).map((page) => (
-          (page.slug === pageDetails.slug) ? message.info('Slug Name Already Taken') : console.log('Error => ', err)
-        )));
+        message.info('Slug Name Already Taken');
+        console.log('Error => ', err);
       });
   };
 
