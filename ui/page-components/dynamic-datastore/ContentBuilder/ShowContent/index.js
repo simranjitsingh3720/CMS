@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { PlusOutlined } from '@ant-design/icons';
+import { Spin } from 'antd';
 import NewContentDrawer from './NewContentDrawer';
 import ActionBar from '../../../../components/layout/ActionBar';
 import ContentTable from './ContentTable';
@@ -65,7 +66,7 @@ function ShowContent({ schema }) {
         <ActionBar actions={actions} />
       </div>
 
-      {loading ? <h1>LOADING</h1> : null}
+      {loading ? <Spin size="large" /> : null}
       {error ? <h1>{error}</h1> : null}
       {isContentDrawer ? (
         <NewContentDrawer

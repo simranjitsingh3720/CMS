@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
       slug: { type: DataTypes.STRING, unique: true },
-      schema: { type: DataTypes.JSON },
+      schema: { type: DataTypes.JSON, defaultValue: [] },
       title: { type: DataTypes.STRING },
       description: { type: DataTypes.STRING },
       createdBy: { type: DataTypes.UUID },

@@ -123,9 +123,8 @@ function ShowSchema() {
           : null}
 
       </div>
-      {/* {data && JSON.stringify(data.schema)} */}
       <div style={{ marginLeft: '50px', marginRight: '50px' }}>
-        { data && data.schema == null ? (
+        { (data && data.schema.length <= 0) ? (
           <div>
             <Empty
               style={{ marginTop: '83px' }}
