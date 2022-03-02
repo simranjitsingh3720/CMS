@@ -48,7 +48,7 @@ function Home() {
             stepsBeforeSave: 1,
             storeHtml: true,
             storeCss: true,
-            urlStore: `${process.env.NEXT_PUBLIC_APP_URL}/api/v1/page`,
+            urlStore: '/api/v1/page',
             headers: {
               'Content-Type': 'application/json',
               credentials: true,
