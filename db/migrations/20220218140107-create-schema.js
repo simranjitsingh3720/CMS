@@ -1,6 +1,6 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('datastore_schemas', {
+    await queryInterface.createTable('Datastore_Schemas', {
       id: { type: Sequelize.UUID, primaryKey: true, defaultValue: Sequelize.UUIDV4 },
       slug: { type: Sequelize.STRING, unique: true },
       schema: { type: Sequelize.JSON },
@@ -15,6 +15,6 @@ module.exports = {
     });
   },
   async down(queryInterface) {
-    await queryInterface.dropTable('datastore_schemas');
+    await queryInterface.dropTable('Datastore_Schemas');
   },
 };
