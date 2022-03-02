@@ -5,8 +5,9 @@
   "scripts": {
     "migrate": "yarn sequelize-cli db:create && yarn sequelize-cli db:migrate ",
     "dev": "node index.js",
-    "build": "next build",
-    "start": "next start",
+    "build": "NODE_ENV=production next build",
+    "start": "NODE_ENV=production pm2 start index.js --name cogo-cms",
+    "deploy": "yarn build && yarn start",
     "lint": "next lint"
   },
   "dependencies": {
@@ -42,6 +43,7 @@
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "pm2": "^5.2.0",
     "sequelize-cli": "^6.4.1"
   }
 }
