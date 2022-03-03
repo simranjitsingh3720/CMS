@@ -14,3 +14,42 @@
     border: none;
     border-radius: 15px;
 }
+
+.card{
+  width: 330px;
+  padding: 5px;
+  margin: 5px 15px;
+  background-color: #fff;
+
+  &_header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 15px;
+    font-weight: bold;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  &_body{
+    padding: 5px;
+  }
+
+  span{
+    font-weight: bold;
+    margin-right: 5px;
+  }
+
+  button{
+    background-color: rgb(125,76,205);
+    color: #fff;
+    border:none;
+    padding: 5px 20px;
+    border-radius: 15px;
+  }
+
+  &_action{
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 15px;
+    border-top: 1px solid #f0f0f0;
+  }
+}

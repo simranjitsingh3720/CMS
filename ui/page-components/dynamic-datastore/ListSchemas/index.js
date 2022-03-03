@@ -8,15 +8,33 @@ import SchemaDrawer from './SchemaDrawer';
 import ActionBar from '../../../components/layout/ActionBar';
 import styles from './style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
+import SchemaModal from './SchemaModal';
 
 function ListSchema() {
   const { push } = useRouter();
   const [searchValue, setSearchValue] = useState('');
   const [isDrawer, setIsDrawer] = useState(false);
+  const [isModalVisible, setIsModalVisible] = React.useState(false);
+  const [confirmLoading, setConfirmLoading] = React.useState(false);
 
   const showDrawer = () => {
     setIsDrawer(true);
   };
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setConfirmLoading(true);
+    setIsModalVisible(false);
+    setConfirmLoading(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
   const closeDrawer = () => {
     setIsDrawer(false);
   };
@@ -25,11 +43,14 @@ function ListSchema() {
     searchBar: {
       searchValue,
       setSearchValue,
+      placeholder: 'Enter Search Table',
     },
     buttons: [{
-      name: 'New Schema',
+      name: 'Create new table',
       icon: <PlusOutlined />,
-      onClick: showDrawer,
+      // onClick: showDrawer,
+      onClick: showModal,
+
     }],
   };
 
@@ -101,15 +122,19 @@ function ListSchema() {
   }, [deletedData]);
 
   return (
-    <div className={styles.listSchema_wrapper}>
+    <div>
       <ActionBar actions={actions} />
       <div>
-        {isDrawer
+        {isModalVisible
           ? (
-            <SchemaDrawer
-              closeDrawer={closeDrawer}
+            <SchemaModal
+              showModal={showModal}
+              isModalVisible={isModalVisible}
+              setIsModalVisible={setIsModalVisible}
+              confirmLoading={confirmLoading}
+              handleCancel={handleCancel}
+              handleOk={handleOk}
               fetchAllSchema={fetchAllSchema}
-              setIsDrawer={setIsDrawer}
             />
           )
           : null}
@@ -119,9 +144,8 @@ function ListSchema() {
       <div style={{ textAlign: 'center' }}>
         {showLoading()}
       </div>
-      {/* {data && JSON.stringify(data)} */}
 
-      <div style={{ margin: '16px 32px' }}>
+      <div className={styles.card_wrapper}>
         { data && data.list.length <= 0 ? (
           <div>
             <Empty
@@ -142,6 +166,7 @@ function ListSchema() {
               id={schema.id}
               schemaSlug={schema.slug}
               schemaName={schema.title}
+              schemaDesc={schema.description}
               showSchema={showSchema}
               deleteSchema={deleteSchema}
             />
