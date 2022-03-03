@@ -26,7 +26,7 @@ function PageSignin() {
     executePost({
       data: values,
     }).then(() => {
-      router.push('/admin');
+      router.redirect('/admin');
       message.success('Welcome to CMS Page 🎉');
     })
       .catch(() => message.error('Invalid Signin, Please try again'));
