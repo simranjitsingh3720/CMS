@@ -1,6 +1,7 @@
-import PageSignup from '../../ui/page-components/auth/PageSignup';
+import PageForgotPassword from '../../ui/page-components/auth/PageForgotPassword';
 
-export default PageSignup;
+export default PageForgotPassword;
+
 export async function getServerSideProps({ req }) {
   if (req.session.user) {
     return {
@@ -12,7 +13,7 @@ export async function getServerSideProps({ req }) {
   }
   return {
     props: {
-      title: 'signup',
+      notDisplay: true,
     },
   };
 }

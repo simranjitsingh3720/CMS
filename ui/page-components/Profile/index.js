@@ -4,7 +4,7 @@ import {
 import { LoadingOutlined, UserAddOutlined } from '@ant-design/icons';
 import { useState, useEffect, useContext } from 'react';
 import { useRequest } from '../../helpers/request-helper';
-import styles from './styles.module.scss';
+import styles from './style.module.scss';
 import SessionContext from '../../context/SessionContext';
 
 function Profile() {

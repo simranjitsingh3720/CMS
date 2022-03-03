@@ -16,7 +16,7 @@ function PageSignup() {
 
   const [{ loading }, executePost] = useRequest(
     {
-      url: '/auth/signup',
+      url: 'http://localhost:8000/api/v1/auth/signup',
       method: 'POST',
     },
     { manual: true },
@@ -101,7 +101,7 @@ function PageSignup() {
               },
             })]}
           >
-            <Input
+            <Input.Password
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
               placeholder="Password"
@@ -119,7 +119,7 @@ function PageSignup() {
               },
             })]}
           >
-            <Input
+            <Input.Password
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
               placeholder="Confirm Password"
