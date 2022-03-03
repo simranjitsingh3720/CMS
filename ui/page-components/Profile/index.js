@@ -203,7 +203,7 @@ function Profile() {
           listType="picture-card"
           className={styles.profile}
           showUploadList={false}
-          action="http://localhost:8000/admin/profile"
+          action="/admin/profile"
           onChange={handleChange}
         >
           {url
