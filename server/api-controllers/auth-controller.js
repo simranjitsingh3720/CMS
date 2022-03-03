@@ -104,7 +104,6 @@ const recoverPassword = async (req, res) => {
     };
     await db.ForgotPassword.create(values);
     // const name = `${user.firstName} ${user.lastName}`;
-    // const link = `http://localhost:8000/admin/password-change/${ret.id}`;
     // sendEmail(email, name, link);
     return res.status(200).json({ message: 'updated database' });
   }

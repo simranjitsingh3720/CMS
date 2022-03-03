@@ -16,7 +16,7 @@ function PageSignin() {
   const { refetch } = useContext(SessionContext);
   const [{ loading }, executePost] = useRequest(
     {
-      url: 'http://localhost:8000/api/v1/auth/signin',
+      url: '/api/v1/auth/signin',
       method: 'POST',
     },
     { manual: true },
