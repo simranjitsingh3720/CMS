@@ -14,7 +14,7 @@ export default function PagePasswordRecovery() {
   const [successfullySubmitted, setSuccessfullySubmitted] = useState(false);
   const [{ loading }, executePost] = useAxios(
     {
-      url: '/api/v1/auth/recover-password',
+      url: '/auth/recover-password',
       method: 'POST',
     },
     { manual: true },

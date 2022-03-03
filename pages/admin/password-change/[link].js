@@ -30,7 +30,7 @@ function Post() {
   const [msg, setMsg] = useState('');
   const [{ loading }, executePost] = useAxios(
     {
-      url: '/api/v1/auth/change-password',
+      url: '/auth/change-password',
       method: 'POST',
     },
     { manual: true },
@@ -40,7 +40,7 @@ function Post() {
   const data2 = { token: link };
   // eslint-disable-next-line no-empty-pattern
   const [{}, executePost2] = useAxios({
-    url: '/api/v1/auth/check-change-password-token',
+    url: '/auth/check-change-password-token',
     method: 'POST',
   }, {
     manual: true,

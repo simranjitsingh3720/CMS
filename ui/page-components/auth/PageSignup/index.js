@@ -16,7 +16,7 @@ function PageSignup() {
 
   const [{ loading }, executePost] = useRequest(
     {
-      url: '/api/v1/auth/signup',
+      url: '/auth/signup',
       method: 'POST',
     },
     { manual: true },
