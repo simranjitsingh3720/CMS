@@ -83,7 +83,6 @@ const signin = async (req, res) => {
 };
 
 const signout = async (req, res) => {
-  req.sessionID = null;
   await req.session.destroy();
 
   res.status(200).json({ message: 'session destroyed' });
