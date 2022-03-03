@@ -1,6 +1,6 @@
 import { Button, Input } from 'antd';
 import React from 'react';
-import styles from './styles.module.scss';
+import styles from './style.module.scss';
 
 function ActionBar({ children = null, actions = {} }) {
   let buttons = null;

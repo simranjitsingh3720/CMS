@@ -9,7 +9,7 @@ import {
 import { useState } from 'react';
 import Asset from './Asset';
 import AssetDrawer from '../AssetDrawer';
-import styles from './styles.module.scss';
+import styles from './style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
 
 const { Meta } = Card;

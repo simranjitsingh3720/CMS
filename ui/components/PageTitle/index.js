@@ -1,6 +1,5 @@
 import React from 'react';
 import { PageHeader } from 'antd';
-import styles from './style.module.scss';
 
 function PageTitle({
   title = null, onBack, subTitle = null, extra = [],
@@ -12,8 +11,7 @@ function PageTitle({
         title={title}
         subTitle={subTitle}
         extra={extra}
-        notDisplay={false}
-        className={styles.page_title}
+        style={{ fontSize: '200px' }}
       />
     </div>
   );
