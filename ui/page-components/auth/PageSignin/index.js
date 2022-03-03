@@ -13,7 +13,7 @@ const { Title, Paragraph } = Typography;
 
 function PageSignin() {
   const router = useRouter();
-
+  const { refetch } = useContext(SessionContext);
   const [{ loading }, executePost] = useRequest(
     {
       url: 'http://localhost:8000/api/v1/auth/signin',
@@ -27,6 +27,7 @@ function PageSignin() {
       data: values,
     }).then(() => {
       router.push('/admin');
+      refetch();
       message.success('Welcome to CMS Page 🎉');
     })
       .catch(() => message.error('Invalid Signin, Please try again'));
