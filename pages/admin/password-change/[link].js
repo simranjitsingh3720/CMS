@@ -38,7 +38,8 @@ function Post() {
   const router = useRouter();
   const { link } = router.query;
   const data2 = { token: link };
-  const [{ loading2 }, executePost2] = useAxios({
+  // eslint-disable-next-line no-empty-pattern
+  const [{}, executePost2] = useAxios({
     url: 'http://localhost:8000/api/v1/auth/check-change-password-token',
     method: 'POST',
   }, {
@@ -60,6 +61,7 @@ function Post() {
 
   useEffect(() => {
     updateData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function SubmitDetails(values) {
@@ -91,6 +93,7 @@ function Post() {
                     <Form
                       name="normal_login"
                       initialValues={{ remember: true }}
+                      // eslint-disable-next-line react/jsx-no-bind
                       onFinish={SubmitDetails}
                       className={styles.form_reset_password}
                     >
