@@ -1,6 +1,8 @@
 // eslint-disable-next-line import/no-import-module-exports
 import { addMinutes } from 'date-fns';
 
+const validator = require('validator');
+
 const bcrypt = require('bcrypt');
 // const mailjet = require('node-mailjet').connect(process.env.MAILJET_PUBLIC_KEY, process.env.MAILJET_PRIVATE_KEY);
 const db = require('../../db/models/index');
@@ -81,7 +83,9 @@ const signin = async (req, res) => {
 };
 
 const signout = async (req, res) => {
+  req.sessionID = null;
   await req.session.destroy();
+
   res.status(200).json({ message: 'session destroyed' });
 };
 
@@ -126,6 +130,9 @@ const changePassword = async (req, res) => {
 
 const checkChangePasswordToken = async (req, res) => {
   const { token } = req.body;
+  if (!validator.isUUID(token)) {
+    return res.status(400).json({ message: 'This password recovery link is invalid.' });
+  }
   const user = await db.ForgotPassword.findOne({ where: { id: token } });
   if (!user || !user.isValid) {
     return res.status(400).json({ message: 'This password recovery link is invalid.' });

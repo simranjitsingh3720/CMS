@@ -30,7 +30,7 @@ function Post() {
   const [msg, setMsg] = useState('');
   const [{ loading }, executePost] = useAxios(
     {
-      url: 'http://localhost:8000/api/auth/change-password',
+      url: 'http://localhost:8000/api/v1/auth/change-password',
       method: 'POST',
     },
     { manual: true },
@@ -39,7 +39,7 @@ function Post() {
   const { link } = router.query;
   const data2 = { token: link };
   const [{ loading2 }, executePost2] = useAxios({
-    url: 'http://localhost:8000/api/auth/check-change-password-token',
+    url: 'http://localhost:8000/api/v1/auth/check-change-password-token',
     method: 'POST',
   }, {
     manual: true,
@@ -71,7 +71,6 @@ function Post() {
       data,
     }).then(() => {
       message.success('Password Successfully updated! 🎉');
-
       router.push('http://localhost:8000/admin/signin');
     })
       .catch(() => message.error('Some problem!'));

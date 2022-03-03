@@ -1,4 +1,4 @@
-const { changePassword } = require('../../../server/api-controllers/auth-controller');
+const { changePassword } = require('../../../../server/api-controllers/auth-controller');
 
 const changePasswordHandler = (req, res) => {
   switch (req.method) {

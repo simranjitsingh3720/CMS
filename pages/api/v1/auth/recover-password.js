@@ -1,4 +1,4 @@
-const { recoverPassword } = require('../../../server/api-controllers/auth-controller');
+const { recoverPassword } = require('../../../../server/api-controllers/auth-controller');
 
 const recoverPasswordHandler = (req, res) => {
   switch (req.method) {

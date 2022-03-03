@@ -16,7 +16,7 @@ function PageSignin() {
 
   const [{ loading }, executePost] = useRequest(
     {
-      url: '/auth/signin',
+      url: 'http://localhost:8000/api/v1/auth/signin',
       method: 'POST',
     },
     { manual: true },
@@ -26,7 +26,7 @@ function PageSignin() {
     executePost({
       data: values,
     }).then(() => {
-      router.redirect('/admin');
+      router.push('/admin');
       message.success('Welcome to CMS Page 🎉');
     })
       .catch(() => message.error('Invalid Signin, Please try again'));

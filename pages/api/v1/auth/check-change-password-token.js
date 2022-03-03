@@ -1,4 +1,4 @@
-const { checkChangePasswordToken } = require('../../../server/api-controllers/auth-controller');
+const { checkChangePasswordToken } = require('../../../../server/api-controllers/auth-controller');
 
 const tokenHandler = (req, res) => {
   switch (req.method) {
