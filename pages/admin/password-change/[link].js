@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router';
-import useAxios from 'axios-hooks';
 import React, { useState, useEffect } from 'react';
 import {
   message, Alert, Form, Input, Button, Card,
 } from 'antd';
 import { LockOutlined } from '@ant-design/icons';
+import { useRequest } from '../../../ui/helpers/request-helper';
 import styles from './style.module.scss';
 import Header from '../../../ui/page-components/auth/PageForgotPassword/Header';
 
@@ -28,7 +28,7 @@ function Post() {
   const [success, setSuccess] = useState(false);
   const [apiHit, setApiHit] = useState(false);
   const [msg, setMsg] = useState('');
-  const [{ loading }, executePost] = useAxios(
+  const [{ loading }, executePost] = useRequest(
     {
       url: '/auth/change-password',
       method: 'POST',
@@ -39,7 +39,7 @@ function Post() {
   const { link } = router.query;
   const data2 = { token: link };
   // eslint-disable-next-line no-empty-pattern
-  const [{}, executePost2] = useAxios({
+  const [{}, executePost2] = useRequest({
     url: '/auth/check-change-password-token',
     method: 'POST',
   }, {
