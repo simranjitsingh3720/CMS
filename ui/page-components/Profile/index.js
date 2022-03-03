@@ -185,6 +185,7 @@ function Profile() {
             width: '130px',
             height: '130px',
             backgroundSize: 'cover',
+            backgroundPosition: 'center',
             borderRadius: '50%',
           }}
           />
@@ -203,7 +204,7 @@ function Profile() {
           listType="picture-card"
           className={styles.profile}
           showUploadList={false}
-          action="http://localhost:8000/admin/profile"
+          action="/admin/profile"
           onChange={handleChange}
         >
           {url
