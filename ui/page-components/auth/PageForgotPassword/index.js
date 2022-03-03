@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import useAxios from 'axios-hooks';
-
 import {
   Form, Input, Button, Card, Alert,
 } from 'antd';
 import { MailOutlined } from '@ant-design/icons';
+import { useRequest } from '../../../helpers/request-helper';
 import style from './style.module.scss';
 import Header from './Header';
 
@@ -12,9 +11,9 @@ export default function PagePasswordRecovery() {
   const [displayMessage, setDisplayMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [successfullySubmitted, setSuccessfullySubmitted] = useState(false);
-  const [{ loading }, executePost] = useAxios(
+  const [{ loading }, executePost] = useRequest(
     {
-      url: 'http://localhost:8000/api/v1/auth/recover-password',
+      url: '/auth/recover-password',
       method: 'POST',
     },
     { manual: true },
