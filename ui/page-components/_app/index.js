@@ -3,7 +3,8 @@ import axios from 'axios';
 import { ConfigProvider } from 'antd';
 import PageLayout from '../../components/layout/PageLayout';
 import theme from '../../theme';
-import RouteGuard from './RouteGuard';
+// import RouteGuard from './RouteGuard';
+import { SessionProvider } from '../../context/SessionContext';
 
 if (typeof window !== 'undefined') {
   ConfigProvider.config({
@@ -21,7 +22,7 @@ function CMSApp({ Component, pageProps, session }) {
   }
 
   return (
-    <>
+    <SessionProvider>
       <Head>
         <title>{title}</title>
       </Head>
@@ -32,7 +33,7 @@ function CMSApp({ Component, pageProps, session }) {
         </PageLayout>
         {/* </RouteGuard> */}
       </ConfigProvider>
-    </>
+    </SessionProvider>
   );
 }
 

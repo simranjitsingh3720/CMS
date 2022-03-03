@@ -20,6 +20,7 @@ const listSchemas = async (req, res) => {
       },
     },
   });
+
   return res.status(200).json({ list: schemas });
 };
 
@@ -80,9 +81,16 @@ const deleteSchemaBySlug = async (req, res) => {
       }
       return res.status(404).json({ message: 'Schema not found' });
     }
-    return res.status(404).json({ message: 'There are some content for this schema. Cannot delete this', contents });
+    return res.status(201).json({ message: 'There are some content for this schema. Cannot delete this ' });
   }
   return res.status(404).json({ message: 'Schema not found' });
+};
+
+const deleteFieldBySlug = async (req, res) => {
+  const { fieldSlug } = req.query;
+  await db.Schema.destroy({ where: { slug: fieldSlug } });
+
+  return res.status(200).json({ slug: fieldSlug });
 };
 
 module.exports = {
@@ -93,4 +101,5 @@ module.exports = {
   updateSchema,
   deleteSchema,
   deleteSchemaBySlug,
+  deleteFieldBySlug,
 };
