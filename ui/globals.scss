@@ -19,6 +19,14 @@
   height: 2.3rem;
 }
 
+.ant-card-bordered {
+  border: 3px solid #f0f0f0;
+}
+
+
+.ant-card.ant-card-bordered {
+  border-radius: 15px;
+}
 .ant-tabs-nav-list{
   width: 100%;
 }

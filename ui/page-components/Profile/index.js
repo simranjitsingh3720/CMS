@@ -1,10 +1,10 @@
 import {
-  Card, Form, Input, Button, message, Upload, Avatar,
+  Card, Form, Input, Button, message, Upload, Avatar, Switch,
 } from 'antd';
 import { LoadingOutlined, UserAddOutlined } from '@ant-design/icons';
 import { useState, useEffect, useContext } from 'react';
 import { useRequest } from '../../helpers/request-helper';
-import styles from './styles.module.scss';
+import styles from './style.module.scss';
 import SessionContext from '../../context/SessionContext';
 
 function Profile() {
@@ -39,6 +39,7 @@ function Profile() {
           lastName: res.data.user.lastName,
           email: res.data.user.email,
           phone: res.data.user.phone,
+          switch: res.data.user.flag,
         });
         if (res.data.user.ProfilePicture) { setUrl(res.data.user.ProfilePicture.url); }
       })
@@ -185,12 +186,29 @@ function Profile() {
             width: '130px',
             height: '130px',
             backgroundSize: 'cover',
+            backgroundPosition: 'center',
             borderRadius: '50%',
           }}
           />
         )}
     </div>
   );
+  const [{ loading: switchLoading }, handlePatch] = useRequest(
+    {
+      method: 'PATCH',
+      url: `/user/${data.id}`,
+    },
+    { manual: true },
+  );
+
+  const tutorialSwitch = (isChecked) => {
+    handlePatch({ data: { flag: isChecked } })
+      .then(() => {
+        refetch();
+        sessionRefetch();
+      });
+  };
+
   return (
     <div className="site-card-border-less-wrapper">
       <Card
@@ -203,7 +221,7 @@ function Profile() {
           listType="picture-card"
           className={styles.profile}
           showUploadList={false}
-          action="http://localhost:8000/admin/profile"
+          action="/admin/profile"
           onChange={handleChange}
         >
           {url
@@ -241,6 +259,9 @@ function Profile() {
           >
             <Input />
           </Form.Item>
+          <Form.Item name="switch" label="Enable Tutorial" valuePropName="checked">
+            <Switch onChange={tutorialSwitch} />
+          </Form.Item>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <Button
               type="primary"
@@ -250,6 +271,7 @@ function Profile() {
               Update
             </Button>
           </div>
+
         </Form>
       </Card>
 

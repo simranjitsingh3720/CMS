@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { List } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import AssetCard from './AssetCard';
@@ -6,10 +6,12 @@ import AssetDrawer from './AssetDrawer';
 import ActionBar from '../../components/layout/ActionBar';
 import { useRequest } from '../../helpers/request-helper';
 import Tutorial from '../../components/layout/Tutorial/index';
+import SessionContext from '../../context/SessionContext';
 
 function PageAsset() {
   const [visible, setVisible] = useState(false);
   const [searchValue, setSearchValue] = useState('');
+  const { session } = useContext(SessionContext);
 
   const steps = [
     {
@@ -62,7 +64,7 @@ function PageAsset() {
 
   return (
     <>
-      <Tutorial steps={steps} />
+      {session && session.user.flag && <Tutorial steps={steps} />}
       <div>
         <ActionBar actions={actions} />
 

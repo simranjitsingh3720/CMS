@@ -16,19 +16,23 @@ const { TextArea } = Input;
 
 export const getInitialValues = (fields, editableData, isEditable) => {
   const values = {};
+
   if (isEditable) {
-    Object.keys(editableData).forEach((data) => {
-      if (data !== 'id') { values[[data]] = editableData[data]; }
+    fields.forEach((data) => {
+      if (editableData[data.id]) {
+        values[[data.id]] = editableData[data.id] || '';
+      } else {
+        values[[data.id]] = data.defaultValue || '';
+      }
     });
-  } else {
+  } else if (fields) {
     fields.forEach((field) => {
       values[field.id] = field.defaultValue || '';
     });
   }
+
   return values;
 };
-
-const handleCheckBoxChange = (values) => {};
 
 function GetFields(appearenceType, field) {
   const {
@@ -58,14 +62,17 @@ function GetFields(appearenceType, field) {
     case 'number':
       return (
         <Form.Item name={id} label={name} rules={[{ required }]}>
-          <InputNumber />
+          <InputNumber style={{
+            width: 200,
+          }}
+          />
         </Form.Item>
       );
 
     case 'checkbox':
       return (
         <Form.Item name={id} label={name} rules={[{ required }]}>
-          <Checkbox.Group options={values} onChange={handleCheckBoxChange} />
+          <Checkbox.Group options={values} />
         </Form.Item>
       );
 

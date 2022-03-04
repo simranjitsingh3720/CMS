@@ -11,6 +11,7 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
   const [checked, setChecked] = useState(false);
   const [slugRule, setSlugRule] = useState(true);
 
+  const [form] = Form.useForm();
   const { push } = useRouter();
 
   const [{ data, loading, error }, refetch] = useRequest({
@@ -45,9 +46,8 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
       push('/admin/page-manager/builder');
     })
       .catch((err) => {
-        (((data && data.list) || []).map((page) => (
-          (page.slug === pageDetails.slug) ? message.info('Page with this Slug name already Exists') : console.log('Error => ', err)
-        )));
+        message.info('Slug Name Already Taken');
+        console.log('Error => ', err);
       });
   };
 
@@ -55,8 +55,10 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
     <Drawer title="Create New Page" placement="right" onClose={onFormClose} visible={visible}>
       <Form
         name="basic"
+        form={form}
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
+        onFinish={handleCreatePage}
         initialValues={{ remember: true }}
         autoComplete="off"
       >
@@ -75,7 +77,10 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
           name="slug"
           value={pageDetails.slug}
           onChange={(e) => setPageDetails({ ...pageDetails, slug: e.target.value })}
-          rules={[{ required: slugRule, message: 'Please enter Page Slug!' }]}
+          rules={[{ required: slugRule, message: 'Please enter Page Slug!' }, {
+            pattern: new RegExp('^[A-Za-z0-9]*$'),
+            message: 'Only Letters and Numbers are accepted',
+          }]}
         >
           <Input disabled={checked} />
         </Form.Item>
@@ -86,6 +91,9 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
           onChange={() => {
             if (!checked) {
               setPageDetails({ ...pageDetails, slug: '', isHome: 1 });
+            } else {
+              setPageDetails({ ...pageDetails, isHome: 0 });
+              form.resetFields();
             }
             setChecked(!checked);
             setSlugRule(!slugRule);
@@ -95,7 +103,7 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit" onClick={handleCreatePage}>
+          <Button type="primary" htmlType="submit">
             Submit
           </Button>
         </Form.Item>

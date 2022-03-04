@@ -10,11 +10,16 @@
     height:40px;
     font-size:15px
   }
-
 }
 
 .form_item {
   width: 100%;
+}
+
+.form_extra_item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 .form_container {
@@ -36,18 +41,6 @@
 	align-items: center;
 	justify-content: center;
 }
-
-.overlay_panel {
-	position: absolute;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
-	text-align: center;
-	top: 0;
-	height: 100%;
-}
-
 
 
 

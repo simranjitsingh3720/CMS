@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Drawer, Button, Form, Input } from 'antd';
 import { useRouter } from 'next/router';
+import TextArea from 'antd/lib/input/TextArea';
 import style from './style.module.scss';
 import { useRequest } from '../../../../helpers/request-helper';
 
-function SchemaDrawer({ closeDrawer, setIsDrawer }) {
+function SchemaDrawer({ closeDrawer, setIsDrawer, fetchAllSchema }) {
   const [error, setError] = useState('');
   const { push } = useRouter();
+  const [form] = Form.useForm();
 
   const [{}, executePost] = useRequest(
     {
@@ -27,6 +29,7 @@ function SchemaDrawer({ closeDrawer, setIsDrawer }) {
       },
     }).then((res) => {
       setIsDrawer(false);
+      fetchAllSchema();
       push('/admin/datastore/content-builder/[schemaId]', `/admin/datastore/content-builder/${res.data.slug}`);
     })
       .catch((err) => {
@@ -38,12 +41,20 @@ function SchemaDrawer({ closeDrawer, setIsDrawer }) {
     setError(errorInfo.message);
   };
 
+  const handleValuesChange = (changedValues) => {
+    if (changedValues.title) {
+      const suggestedID = (changedValues.title || '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+      form.setFieldsValue({ slug: suggestedID });
+    }
+  };
+
   return (
     <Drawer title="Create New Schema" placement="right" onClose={() => closeDrawer()} visible>
 
       <div className={style.error}>{error}</div>
       <Form
         name="basic"
+        form={form}
         labelCol={{
           span: 8,
         }}
@@ -56,6 +67,8 @@ function SchemaDrawer({ closeDrawer, setIsDrawer }) {
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
+        onValuesChange={handleValuesChange}
+
       >
         <Form.Item
           label="Schema Name"
@@ -81,6 +94,7 @@ function SchemaDrawer({ closeDrawer, setIsDrawer }) {
           ]}
         >
           <Input />
+
         </Form.Item>
 
         <Form.Item
@@ -88,12 +102,12 @@ function SchemaDrawer({ closeDrawer, setIsDrawer }) {
           name="description"
           rules={[
             {
-              required: true,
               message: 'Please input your Description!',
             },
           ]}
         >
-          <Input />
+          <TextArea />
+
         </Form.Item>
 
         <Form.Item

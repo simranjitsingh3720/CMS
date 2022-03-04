@@ -9,7 +9,6 @@ module.exports = (sequelize, DataTypes) => {
       models.Page.belongsTo(models.User, { foreignKey: 'deletedBy' });
     }
   }
-
   Page.init(
     {
       id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
@@ -42,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
       paranoid: true,
       modelName: 'Page',
-      tableName: 'pages',
+      tableName: 'Pages',
     },
   );
 

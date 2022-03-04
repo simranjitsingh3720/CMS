@@ -111,7 +111,8 @@ function PageCard({ searchValue }) {
         onFormClose={onClose}
         visible={visible}
         setVisible={setVisible}
-        data={pageData}
+        pageData={pageData}
+        fetch={refetch}
       />
       <div />
     </div>

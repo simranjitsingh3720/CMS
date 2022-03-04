@@ -74,6 +74,7 @@ export const updateHome = async (req, res) => {
         [Op.substring]: 'old-home',
       },
     },
+    paranoid: false,
   });
   const { pageSlug } = req.query;
 

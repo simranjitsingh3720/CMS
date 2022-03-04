@@ -2,6 +2,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import {
   Table,
   Modal,
+  Empty,
 } from 'antd';
 import React from 'react';
 import getColumns from './getColumns/getColumns';
@@ -49,7 +50,24 @@ export default function ContentTable({
 
   return (
     <div>
-      <Table columns={columns} dataSource={finalData} />
+      {columns.length >= 2 ? (
+        <Table
+          columns={columns}
+          dataSource={finalData}
+          scroll={{ x: 1300 }}
+        />
+      ) : (
+        <div>
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description={(
+              <span>
+                No Content Found
+              </span>
+    )}
+          />
+        </div>
+      )}
     </div>
   );
 }

@@ -2,34 +2,44 @@ import { Card, Button, Space } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import style from './style.module.scss';
 
-function FieldCard({ fields, setIsEditSchemaDrawer, setFieldData }) {
-  const handleEditSchemaFieldsDrawer = () => {
+function FieldCard({
+  fields, setIsEditable, setFieldsId,
+  setIsEditSchemaDrawer, setFieldData, deleteField, id,
+}) {
+  const handleEditSchemaFieldsDrawer = (fieldID) => {
     setFieldData(fields);
+    setIsEditable(true);
+    setFieldsId(fieldID);
     setIsEditSchemaDrawer(true);
   };
-
   return (
     <Card>
       <div className={style.Field_card}>
-        <div>
-          <p>{fields.name}</p>
-          <p>{fields.appearanceType}</p>
-          <p>{fields.type}</p>
+        <div className={style.Fields}>
+          <div style={{ fontWeight: 'bold' }}>{fields.name}</div>
+          <div>{fields.type}</div>
+          <div>{fields.appearanceType}</div>
 
         </div>
         <div>
-          <Button className={style.button} onClick={handleEditSchemaFieldsDrawer}>
-            <EditOutlined />
+          <Button
+            className={style.button}
+            onClick={() => handleEditSchemaFieldsDrawer(fields.id)}
+          >
+            <EditOutlined id="edit-structure" />
           </Button>
           <Space wrap>
-            <Button danger className={style.button}>
-              <DeleteOutlined />
+            <Button
+              danger
+              className={style.button}
+              onClick={() => deleteField(id)}
+            >
+              <DeleteOutlined id="delete-structure" />
             </Button>
           </Space>
         </div>
       </div>
     </Card>
-
   );
 }
 

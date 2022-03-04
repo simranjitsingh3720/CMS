@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       firstName: { type: DataTypes.STRING, allowNull: false },
       lastName: { type: DataTypes.STRING, allowNull: false },
       profilePicture: { type: DataTypes.UUID },
+      flag: { type: DataTypes.BOOLEAN, defaultValue: true },
       createdAt: { type: DataTypes.DATE },
       updatedBy: { type: DataTypes.UUID },
       updatedAt: { type: DataTypes.DATE },
@@ -33,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
       paranoid: true,
       modelName: 'User',
-      tableName: 'users',
+      tableName: 'Users',
     },
   );
   return User;

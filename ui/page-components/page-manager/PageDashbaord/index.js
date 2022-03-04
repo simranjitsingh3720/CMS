@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import PageCard from './PageCard';
 import ActionBar from '../../../components/layout/ActionBar';
 import PageFormDrawer from './PageFormDrawer';
 import styles from './style.module.scss';
 import Tutorial from '../../../components/layout/Tutorial';
+import SessionContext from '../../../context/SessionContext';
 
 function PageDashboard() {
   const [searchValue, setSearchValue] = useState('');
   const [visible, setVisible] = useState(false);
+  const { session } = useContext(SessionContext);
 
   const steps = [
     {
@@ -72,8 +74,7 @@ function PageDashboard() {
   return (
     <>
       <div>
-        <Tutorial steps={steps} />
-
+        {session && session.user.flag && <Tutorial steps={steps} />}
       </div>
       <div className={styles.page_dashboard_wrapper}>
         <ActionBar actions={actions} />
