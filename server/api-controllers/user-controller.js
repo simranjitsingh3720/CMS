@@ -1,4 +1,4 @@
-const { Op } = require('sequelize');
+const { Op, Sequelize } = require('sequelize');
 const bcrypt = require('bcrypt');
 const db = require('../../db/models/index');
 
@@ -8,8 +8,8 @@ const listUser = async (req, res) => {
   const users = await db.User.findAll({
     where: {
       [Op.or]: {
-        firstName: { [Op.substring]: q },
-        lastName: { [Op.substring]: q },
+        firstName: Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('firstName')), 'LIKE', `%${q}%`),
+        lastName: Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('lastName')), 'LIKE', `%${q}%`),
       },
     },
   });

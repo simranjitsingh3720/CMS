@@ -77,7 +77,7 @@ const signin = async (req, res) => {
   if (remember) {
     req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000;
   } else {
-    req.session.cookie.maxAge = 3 * 60 * 1000;
+    req.session.cookie.maxAge = 24 * 60 * 60 * 1000;
   }
   return res.status(200).json({ sessionId: req.session.id });
 };
@@ -104,7 +104,6 @@ const recoverPassword = async (req, res) => {
     };
     await db.ForgotPassword.create(values);
     // const name = `${user.firstName} ${user.lastName}`;
-    // const link = `http://localhost:8000/admin/password-change/${ret.id}`;
     // sendEmail(email, name, link);
     return res.status(200).json({ message: 'updated database' });
   }
