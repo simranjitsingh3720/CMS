@@ -17,7 +17,6 @@ function PageContent({ children = null }) {
         className={styles.site}
       >
         {!notDisplay && !blockRoute.includes(pathname) ? <PageTitle title={title} /> : null}
-
         {children}
       </div>
     </Content>

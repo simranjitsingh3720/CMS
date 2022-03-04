@@ -46,7 +46,7 @@ function PageAsset() {
         data={[]}
       />
       <List
-        style={{ margin: '16px 32px' }}
+        style={{ marginTop: '16px', marginBottom: '16px' }}
         grid={{ gutter: 16, column: 4 }}
         dataSource={data && (data.list || [])}
         renderItem={(item) => (
