@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router';
-import useAxios from 'axios-hooks';
 import React, { useState, useEffect } from 'react';
 import {
   message, Alert, Form, Input, Button, Card,
 } from 'antd';
 import { LockOutlined } from '@ant-design/icons';
+import { useRequest } from '../../../ui/helpers/request-helper';
 import styles from './style.module.scss';
 import Header from '../../../ui/page-components/auth/PageForgotPassword/Header';
 
@@ -28,9 +28,9 @@ function Post() {
   const [success, setSuccess] = useState(false);
   const [apiHit, setApiHit] = useState(false);
   const [msg, setMsg] = useState('');
-  const [{ loading }, executePost] = useAxios(
+  const [{ loading }, executePost] = useRequest(
     {
-      url: 'http://localhost:8000/api/v1/auth/change-password',
+      url: '/auth/change-password',
       method: 'POST',
     },
     { manual: true },
@@ -38,8 +38,9 @@ function Post() {
   const router = useRouter();
   const { link } = router.query;
   const data2 = { token: link };
-  const [{ loading2 }, executePost2] = useAxios({
-    url: 'http://localhost:8000/api/v1/auth/check-change-password-token',
+  // eslint-disable-next-line no-empty-pattern
+  const [{}, executePost2] = useRequest({
+    url: '/auth/check-change-password-token',
     method: 'POST',
   }, {
     manual: true,
@@ -60,6 +61,7 @@ function Post() {
 
   useEffect(() => {
     updateData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function SubmitDetails(values) {
@@ -71,7 +73,7 @@ function Post() {
       data,
     }).then(() => {
       message.success('Password Successfully updated! 🎉');
-      router.push('http://localhost:8000/admin/signin');
+      router.push('/admin/signin');
     })
       .catch(() => message.error('Some problem!'));
     return null;
@@ -91,6 +93,7 @@ function Post() {
                     <Form
                       name="normal_login"
                       initialValues={{ remember: true }}
+                      // eslint-disable-next-line react/jsx-no-bind
                       onFinish={SubmitDetails}
                       className={styles.form_reset_password}
                     >
