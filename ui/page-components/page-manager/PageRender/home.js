@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState, createRef } from 'react';
 import ReactHtmlParser from 'react-html-parser';
-import { Spin } from 'antd';
+import { Alert } from 'antd';
 import { useScreenshot } from 'use-react-screenshot';
 import { useRequest } from '../../../helpers/request-helper';
 
@@ -55,8 +55,22 @@ function PageRender() {
 
           </div>
         ) : (
-          <div>
-            <Spin size="large" />
+          <div style={{
+            width: '80%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+            margin: '12% auto',
+          }}
+          >
+            <Alert
+              message="Message"
+              description="You don't have home page, first create home page."
+              type="info"
+              showIcon
+            />
+            <a href="/admin">Go To Dashboard</a>
           </div>
         )}
       </div>
