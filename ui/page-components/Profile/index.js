@@ -4,7 +4,7 @@ import {
 import { LoadingOutlined, UserAddOutlined } from '@ant-design/icons';
 import { useState, useEffect, useContext } from 'react';
 import { useRequest } from '../../helpers/request-helper';
-import styles from './styles.module.scss';
+import styles from './style.module.scss';
 import SessionContext from '../../context/SessionContext';
 
 function Profile() {
@@ -185,6 +185,7 @@ function Profile() {
             width: '130px',
             height: '130px',
             backgroundSize: 'cover',
+            backgroundPosition: 'center',
             borderRadius: '50%',
           }}
           />
@@ -203,7 +204,7 @@ function Profile() {
           listType="picture-card"
           className={styles.profile}
           showUploadList={false}
-          action="http://localhost:8000/admin/profile"
+          action="/admin/profile"
           onChange={handleChange}
         >
           {url

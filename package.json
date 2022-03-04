@@ -17,6 +17,7 @@
     "axios": "^0.25.0",
     "axios-hooks": "^3.0.0",
     "bcrypt": "^5.0.1",
+    "date-fns": "^2.28.0",
     "dotenv": "^16.0.0",
     "dotenv-expand": "^8.0.1",
     "express": "^4.17.2",

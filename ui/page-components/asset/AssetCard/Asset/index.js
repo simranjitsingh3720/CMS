@@ -6,6 +6,7 @@ function Asset({ data }) {
           backgroundImage: `url(${data.url})`,
           height: '200px',
           backgroundSize: 'cover',
+          backgroundPosition: 'center',
         }}
         />
       );
