@@ -17,9 +17,8 @@ export const listPagesBySlug = async (req, res) => {
     const data = await db.Page.findAll({
       attributes: ['slug', 'name'],
       where: {
-        name: {
-          [Op.substring]: q,
-        },
+        name:
+          Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('name')), 'LIKE', `%${q}%`),
       },
     });
     return res.status(200).json({ list: data });

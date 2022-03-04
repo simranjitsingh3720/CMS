@@ -1,4 +1,4 @@
-const { Op } = require('sequelize');
+const { Sequelize } = require('sequelize');
 const db = require('../../db/models');
 
 const getSchema = async (req, res) => {
@@ -15,9 +15,8 @@ const listSchemas = async (req, res) => {
   const { q } = query;
   const schemas = await db.Schema.findAll({
     where: {
-      slug: {
-        [Op.substring]: q,
-      },
+      slug: Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('slug')), 'LIKE', `%${q}%`),
+
     },
   });
 
