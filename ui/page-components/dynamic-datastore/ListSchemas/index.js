@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import confirm from 'antd/lib/modal/confirm';
 import { Spin, Empty, message } from 'antd';
 import SchemaCard from './SchemaCard';
-import SchemaDrawer from './SchemaDrawer';
 import ActionBar from '../../../components/layout/ActionBar';
 import styles from './style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
@@ -13,13 +12,8 @@ import SchemaModal from './SchemaModal';
 function ListSchema() {
   const { push } = useRouter();
   const [searchValue, setSearchValue] = useState('');
-  const [isDrawer, setIsDrawer] = useState(false);
   const [isModalVisible, setIsModalVisible] = React.useState(false);
   const [confirmLoading, setConfirmLoading] = React.useState(false);
-
-  const showDrawer = () => {
-    setIsDrawer(true);
-  };
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -35,10 +29,6 @@ function ListSchema() {
     setIsModalVisible(false);
   };
 
-  const closeDrawer = () => {
-    setIsDrawer(false);
-  };
-
   const actions = {
     searchBar: {
       searchValue,
@@ -48,7 +38,6 @@ function ListSchema() {
     buttons: [{
       name: 'Create new table',
       icon: <PlusOutlined />,
-      // onClick: showDrawer,
       onClick: showModal,
 
     }],
@@ -59,7 +48,7 @@ function ListSchema() {
       method: 'GET',
       url: '/schema',
       params: {
-        q: searchValue,
+        q: searchValue.toLowerCase(),
       },
     },
   );
@@ -169,6 +158,7 @@ function ListSchema() {
               schemaDesc={schema.description}
               showSchema={showSchema}
               deleteSchema={deleteSchema}
+              totatlFields={schema.schema.length || 0}
             />
           ))}
       </div>

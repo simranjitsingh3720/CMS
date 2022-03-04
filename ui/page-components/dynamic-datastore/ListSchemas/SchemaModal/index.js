@@ -7,7 +7,7 @@ import { useRequest } from '../../../../helpers/request-helper';
 
 function SchemaModal({
   isModalVisible, setIsModalVisible,
-  confirmLoading, handleCancel, handleOk, fetchAllSchema,
+  confirmLoading, handleCancel, fetchAllSchema,
 }) {
   const [error, setError] = useState('');
   const { push } = useRouter();

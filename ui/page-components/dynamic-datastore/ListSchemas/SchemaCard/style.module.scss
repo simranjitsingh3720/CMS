@@ -17,39 +17,54 @@
 
 .card{
   width: 330px;
-  padding: 5px;
-  margin: 5px 15px;
+  padding: 4px;
+  margin: 4px 15px;
   background-color: #fff;
+  border-radius: 8px;
 
   &_header{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 5px 15px;
+    padding: 4px 15px;
     font-weight: bold;
     border-bottom: 1px solid #f0f0f0;
   }
-  &_body{
-    padding: 5px;
+
+  &_colorGray{
+    color: #999;
   }
 
-  span{
-    font-weight: bold;
-    margin-right: 5px;
+  &_fields{
+    font-size: 0.9em;
+  }
+
+  &_heading{
+    margin-bottom: 4px;
+  }
+
+  &_body{
+    padding: 4px;
   }
 
   button{
     background-color: rgb(125,76,205);
     color: #fff;
     border:none;
-    padding: 5px 20px;
+    padding: 4px 20px;
     border-radius: 15px;
   }
 
   &_action{
     display: flex;
     justify-content: space-between;
-    padding: 8px 15px;
+    align-items: center;
+    padding: 4px 15px;
     border-top: 1px solid #f0f0f0;
   }
+}
+
+.tableIcon{
+  font-size: 1.4rem;
+  color: #999;
 }
