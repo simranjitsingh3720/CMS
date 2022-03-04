@@ -133,34 +133,32 @@ function ListSchema() {
       <div style={{ textAlign: 'center' }}>
         {showLoading()}
       </div>
-
-      <div className={styles.card_wrapper}>
-        { data && data.list.length <= 0 ? (
-          <div>
-            <Empty
-              style={{ marginTop: '83px' }}
-              image={Empty.PRESENTED_IMAGE_SIMPLE}
-              description={(
-                <span>
-                  No Schema Found
-                </span>
+      { data && data.list.length <= 0 ? (
+        <div>
+          <Empty
+            style={{ marginTop: '83px' }}
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description={(
+              <span>
+                No Schema Found
+              </span>
     )}
-            />
-          </div>
-        )
-
-          : ((data && data.list) || []).map((schema) => (
-            <SchemaCard
-              key={schema.id}
-              id={schema.id}
-              schemaSlug={schema.slug}
-              schemaName={schema.title}
-              schemaDesc={schema.description}
-              showSchema={showSchema}
-              deleteSchema={deleteSchema}
-              totatlFields={schema.schema.length || 0}
-            />
-          ))}
+          />
+        </div>
+      ) : null}
+      <div className={styles.card_wrapper}>
+        {((data && data.list) || []).map((schema) => (
+          <SchemaCard
+            key={schema.id}
+            id={schema.id}
+            schemaSlug={schema.slug}
+            schemaName={schema.title}
+            schemaDesc={schema.description}
+            showSchema={showSchema}
+            deleteSchema={deleteSchema}
+            totatlFields={schema.schema.length || 0}
+          />
+        ))}
       </div>
     </div>
   );

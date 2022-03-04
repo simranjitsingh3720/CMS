@@ -16,9 +16,10 @@
 }
 
 .card{
-  width: 330px;
+  width: 350px;
+  max-height: fit-content;
   padding: 4px;
-  margin: 4px 15px;
+  margin: 16px;
   background-color: #fff;
   border-radius: 8px;
 
