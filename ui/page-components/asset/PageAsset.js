@@ -1,25 +1,37 @@
 import { useState } from 'react';
 import { List } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import Joyride from 'react-joyride';
 import AssetCard from './AssetCard';
 import AssetDrawer from './AssetDrawer';
 import ActionBar from '../../components/layout/ActionBar';
 import { useRequest } from '../../helpers/request-helper';
+import Tutorial from '../../components/layout/Tutorial/index';
 
 function PageAsset() {
   const [visible, setVisible] = useState(false);
   const [searchValue, setSearchValue] = useState('');
-  const isUserNew = true;
 
   const steps = [
     {
       target: '.first-step',
-      content: 'This is my awesome feature!',
+      content: 'Add your assets from here',
+      disableBeacon: 'true',
+
     },
     {
-      target: '.seconsd-step',
-      content: 'This another awesome feature!',
+      target: '.second-step',
+      content: 'Search your assets here',
+      disableBeacon: 'true',
+    },
+    {
+      target: '.third-step',
+      content: 'Edit your asset from here',
+      disableBeacon: 'true',
+    },
+    {
+      target: '.fourth-step',
+      content: 'Delete your asset from here',
+      disableBeacon: 'true',
     },
   ];
 
@@ -41,7 +53,7 @@ function PageAsset() {
       setSearchValue,
     },
     buttons: [{
-      name: <span className="first-step">Add Asset</span>,
+      name: 'Add Asset',
       icon: <PlusOutlined />,
       onClick: showDrawer,
     },
@@ -50,28 +62,33 @@ function PageAsset() {
 
   return (
     <>
-      <Joyride
-        steps={steps}
-      />
-      <ActionBar actions={actions} />
-      <AssetDrawer
-        flag
-        visible={visible}
-        setVisible={setVisible}
-        refetch={refetch}
-        data={[]}
-      />
+      <Tutorial steps={steps} />
+      <div>
+        <ActionBar actions={actions} />
 
-      <List
-        style={{ margin: '16px 32px' }}
-        grid={{ gutter: 16, column: 4 }}
-        dataSource={data && (data.list || [])}
-        renderItem={(item) => (
-          <List.Item>
-            <AssetCard key={item.id} data={item} refetch={refetch} />
-          </List.Item>
-        )}
-      />
+        <AssetDrawer
+          flag
+          visible={visible}
+          setVisible={setVisible}
+          refetch={refetch}
+          data={[]}
+        />
+
+        <List
+          style={{ margin: '16px 32px' }}
+          grid={{ gutter: 16, column: 4 }}
+          dataSource={data && (data.list || [])}
+          renderItem={(item) => (
+            <List.Item>
+              <AssetCard
+                key={item.id}
+                data={item}
+                refetch={refetch}
+              />
+            </List.Item>
+          )}
+        />
+      </div>
     </>
   );
 }

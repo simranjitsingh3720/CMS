@@ -1,0 +1,29 @@
+.tooltip{
+  display: flex;
+   justify-content: space-between;
+}
+
+.textButton{
+  color: #7D4CCD;
+}
+
+.card{
+  border-radius: 16px;
+  width: 320px;
+  
+  :global(.ant-card-body){
+    padding: 8px;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+.content {
+  text-align: center;
+  color: #666;
+  margin-bottom: 16px;
+}

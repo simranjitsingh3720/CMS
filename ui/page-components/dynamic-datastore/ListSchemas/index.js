@@ -3,6 +3,7 @@ import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import confirm from 'antd/lib/modal/confirm';
 import { Spin, Empty } from 'antd';
+import Tutorial from '../../../components/layout/Tutorial';
 import SchemaCard from './SchemaCard';
 import SchemaDrawer from './SchemaDrawer';
 import ActionBar from '../../../components/layout/ActionBar';
@@ -20,6 +21,32 @@ function ListSchema() {
   const closeDrawer = () => {
     setIsDrawer(false);
   };
+  const steps = [
+    {
+      target: '.first-step',
+      content: 'Add a new schema from here',
+      disableBeacon: 'true',
+      hideCloseButton: 'true',
+    },
+    {
+      target: '.second-step',
+      content: 'Search your schema here',
+      disableBeacon: 'true',
+      hideCloseButton: 'true',
+    },
+    {
+      target: '#third-step',
+      content: 'View your schema here',
+      disableBeacon: 'true',
+      hideCloseButton: 'true',
+    },
+    {
+      target: '#fourth-step',
+      content: 'Delete your schema from here',
+      disableBeacon: 'true',
+      hideCloseButton: 'true',
+    },
+  ];
 
   const actions = {
     searchBar: {
@@ -93,33 +120,38 @@ function ListSchema() {
   }, [deletedData]);
 
   return (
-    <div className={styles.listSchema_wrapper}>
-      <ActionBar actions={actions} />
+    <>
       <div>
-        {isDrawer
-          ? <SchemaDrawer closeDrawer={closeDrawer} setIsDrawer={setIsDrawer} />
-          : null}
-
+        <Tutorial steps={steps} />
       </div>
+      <div className={styles.listSchema_wrapper}>
+        <ActionBar actions={actions} />
+        <div>
+          {isDrawer
+            ? <SchemaDrawer closeDrawer={closeDrawer} setIsDrawer={setIsDrawer} />
+            : null}
 
-      <div style={{ textAlign: 'center' }}>
-        {showLoading()}
-      </div>
-      <div style={{ margin: '16px 32px' }}>
-        { data && data.list.length <= 0 ? <div><Empty style={{ marginTop: '83px' }} image={Empty.PRESENTED_IMAGE_SIMPLE} /></div>
+        </div>
 
-          : ((data && data.list) || []).map((schema) => (
-            <SchemaCard
-              key={schema.id}
-              id={schema.id}
-              schemaSlug={schema.slug}
-              schemaName={schema.title}
-              showSchema={showSchema}
-              deleteSchema={deleteSchema}
-            />
-          ))}
+        <div style={{ textAlign: 'center' }}>
+          {showLoading()}
+        </div>
+        <div style={{ margin: '16px 32px' }}>
+          { data && data.list.length <= 0 ? <div><Empty style={{ marginTop: '83px' }} image={Empty.PRESENTED_IMAGE_SIMPLE} /></div>
+
+            : ((data && data.list) || []).map((schema) => (
+              <SchemaCard
+                key={schema.id}
+                id={schema.id}
+                schemaSlug={schema.slug}
+                schemaName={schema.title}
+                showSchema={showSchema}
+                deleteSchema={deleteSchema}
+              />
+            ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

@@ -1,5 +1,5 @@
 import {
-  Card, Button, message, Modal, Tooltip,
+  Card, message, Modal, Tooltip,
 } from 'antd';
 import {
   DeleteOutlined,
@@ -56,13 +56,25 @@ function AssetCard({ data, refetch }) {
           />
     )}
         className={styles.asset_card}
+
+        // eslint-disable-next-line react/jsx-props-no-multi-spaces
         actions={[
           <Tooltip title="Edit Asset">
-            <EditOutlined key="edit" onClick={showModal} style={{ border: '0px' }} />
+            <EditOutlined
+              key="edit"
+              className="third-step"
+              onClick={showModal}
+              style={{ border: '0px' }}
+            />
 
           </Tooltip>,
           <Tooltip title="Delete Asset">
-            <DeleteOutlined key="delete" onClick={showConfirm} style={{ border: '0px' }} />
+            <DeleteOutlined
+              key="delete"
+              className="fourth-step"
+              onClick={showConfirm}
+              style={{ border: '0px' }}
+            />
 
           </Tooltip>,
         ]}
