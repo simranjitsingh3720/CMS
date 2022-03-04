@@ -64,7 +64,7 @@ function PageCard({ searchValue }) {
           : ((data && data.list) || []).map((page) => (
             <Card
               key={page.id}
-              style={{ width: 260, margin: 15 }}
+              style={{ width: 260, marginRight: 30 }}
               cover={(
                 <div
                   className={styles.card_image}

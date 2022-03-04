@@ -8,8 +8,7 @@ function SchemaCard({
   schemaName, schemaDesc, deleteSchema, showSchema, schemaSlug, totatlFields,
 }) {
   return (
-    <div>
-
+    <div className={styles.card_container}>
       <div className={styles.card}>
         <div className={styles.card_header}>
           <TableOutlined className={styles.tableIcon} />

@@ -15,8 +15,13 @@
     border-radius: 15px;
 }
 
+.card_container{
+  flex: calc(34% - 16px);
+  flex-grow: 0;
+}
 .card{
-  width: 350px;
+  display: flex;
+  flex-direction: column;
   max-height: fit-content;
   padding: 4px;
   margin: 16px;

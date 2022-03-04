@@ -48,7 +48,7 @@ function PageUser() {
   return (
     <>
       <ActionBar actions={actions} />
-      <Table columns={columns} dataSource={data} style={{ margin: '16px 32px' }} />
+      <Table columns={columns} dataSource={data} style={{ marginTop: '16px', marginBottom: '16px' }} />
     </>
   );
 }
