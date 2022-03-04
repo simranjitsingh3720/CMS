@@ -19,6 +19,11 @@ function PageBuilder() {
     },
   );
 
+  const [{ data }, refetch] = useRequest({
+    method: 'GET',
+    url: '/asset',
+  });
+
   const getApiM = () => {
     refetchPageData().then((res) => {
       let obj = null;
@@ -53,6 +58,17 @@ function PageBuilder() {
               credentials: true,
               optionSuccessStatus: 200,
             },
+          },
+          assetManager: {
+            assets: [
+              {
+                type: 'image',
+                src: data.url,
+                height: 350,
+                width: 250,
+                name: data.name,
+              },
+            ],
           },
 
         });
