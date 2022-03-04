@@ -7,8 +7,6 @@ function Home() {
   return (
     <div className={Styles.title}>
       Hello!
-      {' '}
-      {' '}
       {session ? (
         <span>
           {session.user.firstName}

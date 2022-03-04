@@ -20,7 +20,7 @@ export default function ContentBuilder() {
     { manual: true },
   );
   const callback = (key) => {
-    if (key === '2') {
+    if (key === '1') {
       getSchema();
     }
   };
@@ -33,14 +33,27 @@ export default function ContentBuilder() {
 
   return (
     <div className={styles.content_builder_wrapper}>
-      <Tabs defaultActiveKey="1" type="card" onChange={callback} size="large">
+      {/* <Tabs defaultActiveKey="1" type="card" onChange={callback} size="large">
         <TabPane tab="Structure" key="1">
           {schema ? <ShowSchema schema={schema} /> : <>NO SCHEMA FOUND</>}
         </TabPane>
         <TabPane tab="Contents" key="2">
           <ShowContent schema={schema} />
         </TabPane>
+      </Tabs> */}
+
+      <Tabs defaultActiveKey="1" onChange={callback} size="large">
+        <TabPane tab="Contents" key="1">
+          <ShowContent schema={schema} />
+        </TabPane>
+        <TabPane tab="Structure" key="2">
+          {schema ? <ShowSchema schema={schema} /> : <>NO SCHEMA FOUND</>}
+        </TabPane>
+        <TabPane tab="Settings" key="3">
+          <span style={{ fontSize: '55px', textAlign: 'center' }}>Settings</span>
+        </TabPane>
       </Tabs>
+
     </div>
 
   );

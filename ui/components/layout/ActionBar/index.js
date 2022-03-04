@@ -21,7 +21,7 @@ function ActionBar({ children = null, actions = {} }) {
       actions.searchBar.setSearchValue(e.target.value);
     };
     search = (
-      <Input placeholder="Enter search text" value={searchBar.searchValue} onChange={handleOnChange} className="action-searchBar" />
+      <Input placeholder={searchBar.placeholder ? searchBar.placeholder : 'Enter search text'} value={searchBar.searchValue} onChange={handleOnChange} className="action-searchBar" />
     );
   }
 
