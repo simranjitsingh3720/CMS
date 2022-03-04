@@ -4,32 +4,42 @@ import { useRouter } from 'next/router';
 import confirm from 'antd/lib/modal/confirm';
 import { Spin, Empty, message } from 'antd';
 import SchemaCard from './SchemaCard';
-import SchemaDrawer from './SchemaDrawer';
 import ActionBar from '../../../components/layout/ActionBar';
 import styles from './style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
+import SchemaModal from './SchemaModal';
 
 function ListSchema() {
   const { push } = useRouter();
   const [searchValue, setSearchValue] = useState('');
-  const [isDrawer, setIsDrawer] = useState(false);
+  const [isModalVisible, setIsModalVisible] = React.useState(false);
+  const [confirmLoading, setConfirmLoading] = React.useState(false);
 
-  const showDrawer = () => {
-    setIsDrawer(true);
+  const showModal = () => {
+    setIsModalVisible(true);
   };
-  const closeDrawer = () => {
-    setIsDrawer(false);
+
+  const handleOk = () => {
+    setConfirmLoading(true);
+    setIsModalVisible(false);
+    setConfirmLoading(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
   };
 
   const actions = {
     searchBar: {
       searchValue,
       setSearchValue,
+      placeholder: 'Enter Search Table',
     },
     buttons: [{
-      name: 'New Schema',
+      name: 'Create new table',
       icon: <PlusOutlined />,
-      onClick: showDrawer,
+      onClick: showModal,
+
     }],
   };
 
@@ -38,7 +48,7 @@ function ListSchema() {
       method: 'GET',
       url: '/schema',
       params: {
-        q: searchValue,
+        q: searchValue.toLowerCase(),
       },
     },
   );
@@ -101,15 +111,19 @@ function ListSchema() {
   }, [deletedData]);
 
   return (
-    <div className={styles.listSchema_wrapper}>
+    <div>
       <ActionBar actions={actions} />
       <div>
-        {isDrawer
+        {isModalVisible
           ? (
-            <SchemaDrawer
-              closeDrawer={closeDrawer}
+            <SchemaModal
+              showModal={showModal}
+              isModalVisible={isModalVisible}
+              setIsModalVisible={setIsModalVisible}
+              confirmLoading={confirmLoading}
+              handleCancel={handleCancel}
+              handleOk={handleOk}
               fetchAllSchema={fetchAllSchema}
-              setIsDrawer={setIsDrawer}
             />
           )
           : null}
@@ -119,33 +133,32 @@ function ListSchema() {
       <div style={{ textAlign: 'center' }}>
         {showLoading()}
       </div>
-      {/* {data && JSON.stringify(data)} */}
-
-      <div style={{ margin: '16px 32px' }}>
-        { data && data.list.length <= 0 ? (
-          <div>
-            <Empty
-              style={{ marginTop: '83px' }}
-              image={Empty.PRESENTED_IMAGE_SIMPLE}
-              description={(
-                <span>
-                  No Schema Found
-                </span>
+      { data && data.list.length <= 0 ? (
+        <div>
+          <Empty
+            style={{ marginTop: '83px' }}
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description={(
+              <span>
+                No Schema Found
+              </span>
     )}
-            />
-          </div>
-        )
-
-          : ((data && data.list) || []).map((schema) => (
-            <SchemaCard
-              key={schema.id}
-              id={schema.id}
-              schemaSlug={schema.slug}
-              schemaName={schema.title}
-              showSchema={showSchema}
-              deleteSchema={deleteSchema}
-            />
-          ))}
+          />
+        </div>
+      ) : null}
+      <div className={styles.card_wrapper}>
+        {((data && data.list) || []).map((schema) => (
+          <SchemaCard
+            key={schema.id}
+            id={schema.id}
+            schemaSlug={schema.slug}
+            schemaName={schema.title}
+            schemaDesc={schema.description}
+            showSchema={showSchema}
+            deleteSchema={deleteSchema}
+            totatlFields={schema.schema.length || 0}
+          />
+        ))}
       </div>
     </div>
   );
