@@ -1,13 +1,26 @@
 const authMiddleware = (req, res, next) => {
-  // console.log('middleware');
   const { path } = req;
-  // console.log('path ', path);
-  // const pathArr = path.split('/');
-  // console.log('pathArr => ', pathArr);
-  // if (!req.session.user) {
-  //   // not signed in
-  if (path === '/admin/signup' || path === '/admin/signin' || path === '/admin/forgot-password' || path === '/admin/password-change') {
-    return next();
+  console.log(path);
+  if (req.session.user) {
+    if (path === '/admin/signin' || path === '/admin/signup' || path === '/admin/forgot-password') {
+      res.redirect = '/admin';
+    }
+  } else {
+    if (path === '/admin/signin') {
+      // res.redirect('/admin/signin');
+      // res.redirect = '/admin/signin';
+      next();
+    }
+
+    if (path === '/admin/signup' || path === '/admin/forgot-password') {
+      next();
+    }
+    // res.redirect('/admin/signin');
+    res.redirect = '/admin/signin';
   }
-  return res.redirect('/admin/signin');
+
+  console.log('res ', res.redirect);
+
+  next();
 };
+module.exports = authMiddleware;
