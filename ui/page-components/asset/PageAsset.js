@@ -36,7 +36,7 @@ function PageAsset() {
   };
 
   return (
-    <>
+    <div style={{ padding: '16px' }}>
       <ActionBar actions={actions} />
       <AssetDrawer
         flag
@@ -55,7 +55,7 @@ function PageAsset() {
           </List.Item>
         )}
       />
-    </>
+    </div>
   );
 }
 

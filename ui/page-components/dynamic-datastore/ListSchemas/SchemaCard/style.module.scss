@@ -51,7 +51,16 @@
 
   &_body{
     padding: 4px;
-    min-height: 130px;
+    max-height: 130px;
+  }
+
+  &_para{
+    text-overflow:ellipsis;
+    overflow:hidden;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    white-space: normal;
   }
 
   button{
@@ -74,4 +83,7 @@
 .tableIcon{
   font-size: 1.4rem;
   color: #999;
+}
+.card_para{
+
 }

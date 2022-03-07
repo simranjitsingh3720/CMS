@@ -25,7 +25,7 @@ function SchemaCard({
             {totatlFields}
             {' Fields'}
           </h4>
-          <p>
+          <p className={styles.card_para}>
             {schemaDesc}
           </p>
         </div>

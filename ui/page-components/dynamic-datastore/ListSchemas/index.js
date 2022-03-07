@@ -111,7 +111,7 @@ function ListSchema() {
   }, [deletedData]);
 
   return (
-    <div>
+    <div style={{ padding: '16px' }}>
       <ActionBar actions={actions} />
       <div>
         {isModalVisible
