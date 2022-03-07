@@ -21,7 +21,9 @@ function PageBuilder() {
   const [{ data: imgData }, refetch] = useRequest({
     url: '/asset',
     method: 'GET',
-
+    params: {
+      q: '',
+    },
   });
 
   console.log('pahle', imgData);
