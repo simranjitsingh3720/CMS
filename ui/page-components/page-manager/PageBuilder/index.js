@@ -21,66 +21,65 @@ function PageBuilder() {
   const [{ data: imgData }, refetch] = useRequest({
     url: '/asset',
     method: 'GET',
-    params: {
-      q: '',
-    },
+
   });
 
   console.log('pahle', imgData);
 
   const getApiM = () => {
+    refetchPageData().then((res) => {
+      let obj = null;
+
+      let LandingPage = {};
+      obj = JSON.parse(res.data.data.data);
+      LandingPage = {
+        html: obj && obj['CMS-html'],
+        css: obj && obj['CMS-css'],
+        components: obj && obj['CMS-components'],
+        style: obj && obj['CMS-styles'],
+      };
+
+      if (!editor) {
+        const e = GrapesJS.init({
+          container: '#editor',
+          fromElement: false,
+          plugins: [gjsPresetWebpage],
+          components: LandingPage.html || '<span><span/>',
+          style: LandingPage.css || '<></>',
+          storageManager: {
+            id: 'CMS-',
+            type: 'remote',
+            autosave: true,
+            autoload: false,
+            stepsBeforeSave: 1,
+            storeHtml: true,
+            storeCss: true,
+            urlStore: `/api/v1/page/${router.query.pageSlug}`,
+            headers: {
+              'Content-Type': 'application/json',
+              credentials: true,
+              optionSuccessStatus: 200,
+            },
+          },
+          assetManager: {
+
+          },
+
+        });
+
+        setEditor(e);
+      }
+    });
+  };
+  if (editor) {
+    const assetManager = editor.AssetManager;
     ((imgData && imgData.list) || []).map((page) => (
-      refetchPageData().then((res) => {
-        let obj = null;
-
-        let LandingPage = {};
-        obj = JSON.parse(res.data.data.data);
-        LandingPage = {
-          html: obj && obj['CMS-html'],
-          css: obj && obj['CMS-css'],
-          components: obj && obj['CMS-components'],
-          style: obj && obj['CMS-styles'],
-        };
-
-        if (!editor) {
-          const e = GrapesJS.init({
-            container: '#editor',
-            fromElement: false,
-            plugins: [gjsPresetWebpage],
-            components: LandingPage.html || '<span><span/>',
-            style: LandingPage.css || '<></>',
-            storageManager: {
-              id: 'CMS-',
-              type: 'remote',
-              autosave: true,
-              autoload: false,
-              stepsBeforeSave: 1,
-              storeHtml: true,
-              storeCss: true,
-              urlStore: `/api/v1/page/${router.query.pageSlug}`,
-              headers: {
-                'Content-Type': 'application/json',
-                credentials: true,
-                optionSuccessStatus: 200,
-              },
-            },
-            assetManager: {
-              assets: [
-
-                // 'https://assets-global.website-files.com/5e557f57e065e822f0adb45d/607fb80c3127fd33d55408e4_B-L_image.png'
-                `url(${page.url})`,
-
-              ],
-            },
-
-          });
-
-          setEditor(e);
-        }
+      assetManager.add({
+        src: page.url,
+        name: page.name,
       })
     ));
-  };
-
+  }
   useEffect(() => {
     getApiM();
   }, [router.query.pageSlug]);
