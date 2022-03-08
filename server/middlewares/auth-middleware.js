@@ -1,6 +1,5 @@
 const authMiddleware = (req, res, next) => {
   const { path } = req;
-  console.log('path ', path);
   if (!path.startsWith('/admin')) {
     return next();
   }
