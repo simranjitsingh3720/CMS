@@ -80,7 +80,6 @@ function Tutorial({ steps, tutorialKey }) {
       showProgress="true"
       disableOverlayClose="true"
     />
-
   );
 }
 export default Tutorial;
