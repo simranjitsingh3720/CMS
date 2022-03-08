@@ -13,12 +13,19 @@ const getSchema = async (req, res) => {
 const listSchemas = async (req, res) => {
   const { query } = req;
   const { q } = query;
-  const schemas = await db.Schema.findAll({
-    where: {
-      slug: Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('slug')), 'LIKE', `%${q}%`),
+  let schemas = [];
 
-    },
-  });
+  if (q) {
+    schemas = await db.Schema.findAll({
+      where: {
+        slug: Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('slug')), 'LIKE', `%${q}%`),
+      },
+    });
+  } else {
+    schemas = await db.Schema.findAll({
+
+    });
+  }
 
   return res.status(200).json({ list: schemas });
 };

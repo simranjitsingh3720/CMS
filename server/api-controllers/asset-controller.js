@@ -20,12 +20,20 @@ const s3 = new aws.S3({
 const listAssets = async (req, res) => {
   const { query } = req;
   const { q } = query;
-  const assets = await db.Asset.findAll({
-    where: {
-      name: Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('name')), 'LIKE', `%${q}%`),
+  let assets = [];
 
-    },
-  });
+  if (q) {
+    assets = await db.Asset.findAll({
+      where: {
+        name: Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('name')), 'LIKE', `%${q}%`),
+
+      },
+    });
+  } else {
+    assets = await db.Asset.findAll({
+
+    });
+  }
   return res.status(200).json({ list: assets });
 };
 
@@ -69,7 +77,7 @@ const updateAsset = async (req, res) => {
   const data = req.body;
 
   const updatedAsset = await db.Asset.update({ ...data }, { where: { id: assetId } });
-  res.status(200).json({ id: updatedAsset.id });
+  res.status(200).json({ id: assetId });
 };
 
 module.exports = {

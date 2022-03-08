@@ -1,6 +1,9 @@
 const { updateUser, findUser } = require('../../../../server/api-controllers/user-controller');
 
 const userHandler = (req, res) => {
+  if (!req.session.user) {
+    res.status(401).json({ message: 'You are unauthorized to access this api.' });
+  }
   switch (req.method) {
     case 'PATCH':
       return updateUser(req, res);
