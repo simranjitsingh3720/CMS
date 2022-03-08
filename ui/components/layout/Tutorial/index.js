@@ -78,6 +78,7 @@ function Tutorial({ steps, tutorialKey }) {
       callback={cancelTut}
       steps={steps}
       showProgress="true"
+      disableOverlayClose="true"
     />
 
   );

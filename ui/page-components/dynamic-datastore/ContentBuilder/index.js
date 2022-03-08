@@ -47,25 +47,25 @@ export default function ContentBuilder() {
     },
     {
       target: '.first-step',
-      content: 'Add new structure here',
+      content: 'Add new content here',
       disableBeacon: 'true',
 
     },
     {
       target: '.second-step',
-      content: 'Search your structure here',
+      content: 'Search your content here',
       disableBeacon: 'true',
 
     },
 
     {
-      target: '#edit-structure',
-      content: 'Edit your structure here',
+      target: '#edit-content',
+      content: 'Edit your content here',
       disableBeacon: 'true',
     },
     {
-      target: '#delete-structure',
-      content: 'Delete your structure here',
+      target: '#delete-content',
+      content: 'Delete your content here',
       disableBeacon: 'true',
     },
 
