@@ -5,7 +5,7 @@ import DragHandler from '../DragHandler';
 const DragableItem = SortableElement(({ value, fieldActions }) => (
 
   <li style={{
-    display: 'flex', backgroundColor: '#fff', borderRadius: '15px', paddingLeft: '20px', margin: '3px', justifyContent: 'inline', border: '3px solid #f0f0f0',
+    display: 'flex', backgroundColor: '#fff', borderRadius: '15px', paddingLeft: '20px', marginBottom: '3px', justifyContent: 'inline', border: '3px solid #f0f0f0', alignItems: 'center',
   }}
   >
     <DragHandler />

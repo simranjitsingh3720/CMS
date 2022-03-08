@@ -156,7 +156,7 @@ function ShowSchema() {
           : null}
 
       </div>
-      <div style={{ marginLeft: '50px', marginRight: '50px' }}>
+      <div>
         { (data && data.schema.length <= 0) ? (
           <div>
             <Empty
