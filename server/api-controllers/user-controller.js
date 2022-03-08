@@ -5,14 +5,20 @@ const db = require('../../db/models/index');
 const listUser = async (req, res) => {
   const { query } = req;
   const { q } = query;
-  const users = await db.User.findAll({
-    where: {
-      [Op.or]: {
-        firstName: Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('firstName')), 'LIKE', `%${q}%`),
-        lastName: Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('lastName')), 'LIKE', `%${q}%`),
+
+  let users = [];
+  if (q) {
+    users = await db.User.findAll({
+      where: {
+        [Op.or]: {
+          firstName: Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('firstName')), 'LIKE', `%${q}%`),
+          lastName: Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('lastName')), 'LIKE', `%${q}%`),
+        },
       },
-    },
-  });
+    });
+  } else {
+    users = await db.User.findAll();
+  }
   return res.status(200).json({ list: users });
 };
 
