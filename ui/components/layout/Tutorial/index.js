@@ -10,32 +10,34 @@ function FunctionTooltip({
   tooltipProps, step, index, backProps, primaryProps, closeProps, isLastStep, skipProps,
 }) {
   return (
-    <Card className={style.card} {...tooltipProps}>
-      <div className={style.header}>
-        <CloseOutlined {...closeProps} />
-      </div>
-      <div className={style.content}>{step.content}</div>
-      <div className={style.tooltip}>
-        <Button type="text" size="small" style={{ color: '#AAA' }} {...skipProps}>Skip</Button>
-        <div>
-          {index > 0 && (
-          <Button
-            style={{ marginRight: 4 }}
-            size="small"
-            shape="round"
-            type="primary"
-            ghost
-            {...backProps}
-          >
-            Back
-          </Button>
-          )}
-          { isLastStep
-            ? <Button size="small" shape="round" type="primary" {...closeProps}>Close</Button>
-            : <Button size="small" shape="round" type="primary" {...primaryProps}>Next</Button>}
+    <div {...tooltipProps}>
+      <Card className={style.card}>
+        <div className={style.header}>
+          <CloseOutlined {...closeProps} />
         </div>
-      </div>
-    </Card>
+        <div className={style.content}>{step.content}</div>
+        <div className={style.tooltip}>
+          <Button type="text" size="small" style={{ color: '#AAA' }} {...skipProps}>Skip</Button>
+          <div>
+            {index > 0 && (
+            <Button
+              style={{ marginRight: 4 }}
+              size="small"
+              shape="round"
+              type="primary"
+              ghost
+              {...backProps}
+            >
+              Back
+            </Button>
+            )}
+            { isLastStep
+              ? <Button size="small" shape="round" type="primary" {...closeProps}>Close</Button>
+              : <Button size="small" shape="round" type="primary" {...primaryProps}>Next</Button>}
+          </div>
+        </div>
+      </Card>
+    </div>
   );
 }
 
