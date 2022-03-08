@@ -46,12 +46,13 @@
   }
 
   &_heading{
-    margin-bottom: 4px;
+    margin-bottom: -5px;
   }
 
   &_body{
-    padding: 4px;
+    padding: 4px 15px;
     height: 130px;
+    cursor: pointer;
   }
 
   &_para{

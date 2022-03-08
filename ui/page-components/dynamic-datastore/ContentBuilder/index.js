@@ -33,15 +33,6 @@ export default function ContentBuilder() {
 
   return (
     <div className={styles.content_builder_wrapper}>
-      {/* <Tabs defaultActiveKey="1" type="card" onChange={callback} size="large">
-        <TabPane tab="Structure" key="1">
-          {schema ? <ShowSchema schema={schema} /> : <>NO SCHEMA FOUND</>}
-        </TabPane>
-        <TabPane tab="Contents" key="2">
-          <ShowContent schema={schema} />
-        </TabPane>
-      </Tabs> */}
-
       <Tabs defaultActiveKey="1" onChange={callback} size="large">
         <TabPane tab="Contents" key="1">
           <ShowContent schema={schema} />
