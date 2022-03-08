@@ -13,7 +13,7 @@ function FieldCard({
     setIsEditSchemaDrawer(true);
   };
   return (
-    <Card>
+    <Card className={style.card_wrapper}>
       <div className={style.Field_card}>
         <div className={style.Fields}>
           <div style={{ fontWeight: 'bold' }}>{fields.name}</div>

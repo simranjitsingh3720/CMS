@@ -32,10 +32,6 @@ function ShowSchema() {
     setIsSchemaDrawer(false);
   };
 
-  const showEditSchemaDrawer = () => {
-    setEditSchemaDrawer(true);
-  };
-
   const closeEditSchemaDrawer = () => {
     setEditSchemaDrawer(false);
   };
@@ -81,7 +77,7 @@ function ShowSchema() {
             message.success('Field deleted successfully');
             setReFetchSchema(true);
           }
-        });
+        }).catch((err) => { console.log('delete error ', err); });
       },
       onCancel() {
       },
@@ -176,23 +172,19 @@ function ShowSchema() {
         )
 
           : (
-            <>
-              {JSON.stringify(data && data.schema)}
-              <DragableList
-                useDragHandle
-                fieldActions={{
-                  setEditSchemaDrawer,
-                  closeSchemaDrawer,
-                  setFieldsId,
-                  setIsEditable,
-                  setFieldData,
-                  deleteField,
-                }}
-                items={fields}
-                onSortEnd={onSortEnd}
-
-              />
-            </>
+            <DragableList
+              useDragHandle
+              fieldActions={{
+                setEditSchemaDrawer,
+                closeSchemaDrawer,
+                setFieldsId,
+                setIsEditable,
+                setFieldData,
+                deleteField,
+              }}
+              items={fields}
+              onSortEnd={onSortEnd}
+            />
           )}
       </div>
     </div>
