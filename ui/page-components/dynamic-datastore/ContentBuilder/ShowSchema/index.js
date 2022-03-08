@@ -5,7 +5,7 @@ import { message, Modal, Empty } from 'antd';
 import { arrayMoveImmutable } from 'array-move';
 import ActionBar from '../../../../components/layout/ActionBar';
 import StructureDrawer from './StructureDrawer';
-// import FieldCard from './FieldCard';
+import StructureModal from './StructureModal';
 import { useRequest } from '../../../../helpers/request-helper';
 import DragableList from './DragDrop/DragableList';
 
@@ -23,16 +23,21 @@ function ShowSchema() {
   const [reFetchSchema, setReFetchSchema] = useState(false);
   const [isFieldReordering, setIsFieldReordering] = useState(false);
 
-  const showSchemaDrawer = () => {
+  const showSchemaModal = () => {
     setIsEditable(false);
     setIsSchemaDrawer(true);
   };
 
-  const closeSchemaDrawer = () => {
+  const showEditSchemaModal = () => {
+    setIsEditable(true);
     setIsSchemaDrawer(false);
   };
 
-  const closeEditSchemaDrawer = () => {
+  const closeSchemaModal = () => {
+    setIsSchemaDrawer(false);
+  };
+
+  const closeEditSchemaModal = () => {
     setEditSchemaDrawer(false);
   };
 
@@ -88,7 +93,7 @@ function ShowSchema() {
     buttons: [{
       name: 'Add new Field',
       icon: <PlusOutlined />,
-      onClick: showSchemaDrawer,
+      onClick: showSchemaModal,
     }],
   };
 
@@ -114,9 +119,7 @@ function ShowSchema() {
           schema: fields,
         },
       }).then((res) => {
-        console.log('refetched ', res);
         setIsFieldReordering(false);
-        // setReFetchSchema(true);
       });
     }
   }, [isFieldReordering]);
@@ -129,24 +132,27 @@ function ShowSchema() {
       <div>
         {isSchemaDrawer
           ? (
-            <StructureDrawer
-              closeSchemaDrawer={closeSchemaDrawer}
-              getSchema={getSchema}
-              data={data}
-              fieldsId={fieldsId}
-              setReFetchSchema={setReFetchSchema}
-            />
+            <div>
+              <StructureModal
+                showSchemaModal={showSchemaModal}
+                closeSchemaDrawer={closeSchemaModal}
+                getSchema={getSchema}
+                data={data}
+                fieldsId={fieldsId}
+                setReFetchSchema={setReFetchSchema}
+              />
+            </div>
           )
           : null}
-
       </div>
       <div>
         {editSchemaDrawer
           ? (
-            <StructureDrawer
-              closeSchemaDrawer={closeEditSchemaDrawer}
+            <StructureModal
+              showSchemaModal={showEditSchemaModal}
+              closeSchemaDrawer={closeEditSchemaModal}
               getSchema={getSchema}
-              isEditable={isEditable}
+              isEditable
               fieldsId={fieldsId}
               fieldData={fieldData}
               data={data}
@@ -176,7 +182,7 @@ function ShowSchema() {
               useDragHandle
               fieldActions={{
                 setEditSchemaDrawer,
-                closeSchemaDrawer,
+                closeSchemaModal,
                 setFieldsId,
                 setIsEditable,
                 setFieldData,
