@@ -3,7 +3,6 @@ import { PlusOutlined } from '@ant-design/icons';
 import PageCard from './PageCard';
 import ActionBar from '../../../components/layout/ActionBar';
 import PageFormDrawer from './PageFormDrawer';
-import styles from './style.module.scss';
 import Tutorial from '../../../components/layout/Tutorial';
 import SessionContext from '../../../context/SessionContext';
 
@@ -73,10 +72,8 @@ function PageDashboard() {
 
   return (
     <>
+      {session && session.user.flag.page_manager && <Tutorial steps={steps} tutorialKey="page_manager" />}
       <div>
-        {session && session.user.flag && <Tutorial steps={steps} />}
-      </div>
-      <div className={styles.page_dashboard_wrapper}>
         <ActionBar actions={actions} />
         <PageCard searchValue={searchValue} />
         <PageFormDrawer

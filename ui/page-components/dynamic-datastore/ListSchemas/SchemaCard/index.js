@@ -1,34 +1,53 @@
-import { DeleteOutlined } from '@ant-design/icons';
-import { Card, Button, Space, Tooltip } from 'antd';
+import { DeleteOutlined, TableOutlined } from '@ant-design/icons';
+import {
+  Card, Col, Row, Button, Space, Tooltip,
+} from 'antd';
 import styles from './style.module.scss';
 
-function SchemaCard({ schemaName, deleteSchema, showSchema, schemaSlug }) {
+function SchemaCard({
+  schemaName, schemaDesc, deleteSchema, showSchema, schemaSlug, totatlFields,
+}) {
   return (
-    <Card>
-      <div className={styles.schema_card}>
-        <div style={{ display: 'flex' }}>
-          <div style={{ fontWeight: 'bold', marginRight: '10px' }}>
-            Name:
-            {' '}
+    <div className={styles.card_container}>
+      <div className={styles.card}>
+        <div className={styles.card_header}>
+          <TableOutlined className={styles.tableIcon} />
+          <h4 className={styles.card_colorGray}>
+            /
+            {schemaSlug}
+          </h4>
+        </div>
+        <div className={styles.card_body}>
+          <h2 className={styles.card_heading}>
             {schemaName}
+          </h2>
+          <h4 className={`${styles.card_colorGray} ${styles.card_fields}`}>
+            {totatlFields}
+            {' Fields'}
+          </h4>
+          <p>
+            {schemaDesc}
+          </p>
+        </div>
+        <div className={styles.card_action}>
+          <div>
+            <Button type="primary" onClick={() => showSchema(schemaSlug)} id="third-step">View Table</Button>
+
           </div>
           <div>
-            {`Slug: ${schemaSlug}`}
+            <Tooltip title="Delete Schema">
+              <DeleteOutlined
+                id="fourth-step"
+                style={{ color: 'red' }}
+                onClick={() => deleteSchema(schemaSlug)}
+                className={styles.button}
+              />
+            </Tooltip>
           </div>
         </div>
-        <div>
-          <Button type="primary" className={styles.button} id="third-step" onClick={() => showSchema(schemaSlug)}>View Schema</Button>
-          <Tooltip title="Delete Schema">
-            <DeleteOutlined
-              style={{ color: 'red' }}
-              onClick={() => deleteSchema(schemaSlug)}
-              className={styles.button}
-              id="fourth-step"
-            />
-          </Tooltip>
-        </div>
       </div>
-    </Card>
+
+    </div>
 
   );
 }

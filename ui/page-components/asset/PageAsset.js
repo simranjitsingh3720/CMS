@@ -64,7 +64,7 @@ function PageAsset() {
 
   return (
     <>
-      {session && session.user.flag && <Tutorial steps={steps} />}
+      {session && session.user.flag.asset && <Tutorial steps={steps} tutorialKey="asset" />}
       <div>
         <ActionBar actions={actions} />
 

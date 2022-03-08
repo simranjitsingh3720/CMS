@@ -92,6 +92,7 @@ function ShowSchema() {
 
   return (
     <div>
+
       <div>
         <ActionBar actions={actions} />
       </div>
@@ -151,7 +152,6 @@ function ShowSchema() {
               setIsEditable={setIsEditable}
               setFieldData={setFieldData}
               deleteField={deleteField}
-              className="first-step"
             />
 
           ))}

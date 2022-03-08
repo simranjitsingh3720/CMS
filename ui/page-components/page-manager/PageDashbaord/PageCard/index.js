@@ -35,7 +35,7 @@ function PageCard({ searchValue }) {
     url: '/page',
     method: 'GET',
     params: {
-      q: searchValue,
+      q: searchValue.toLowerCase(),
     },
   });
 
@@ -65,7 +65,7 @@ function PageCard({ searchValue }) {
             <Card
               id="third-step"
               key={page.id}
-              style={{ width: 260, margin: 15 }}
+              style={{ width: 260, marginRight: 30 }}
               cover={(
                 <div
                   className={styles.card_image}

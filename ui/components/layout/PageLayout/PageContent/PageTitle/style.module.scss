@@ -1,12 +1,5 @@
 .page_title{
-  padding-top: 16px;
-  padding-left: 32px;
-  padding-right: 32px;
-  padding-bottom: 0px;
-  margin-bottom: 16px;
-  font-size: 200px;
 
-  :global(.ant-page-header-heading-title) {
-    padding-left: 4px;
-  }
+ padding: 0 !important;
+ margin-bottom: 24px;
 }

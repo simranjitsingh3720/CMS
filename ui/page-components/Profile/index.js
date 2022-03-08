@@ -39,7 +39,6 @@ function Profile() {
           lastName: res.data.user.lastName,
           email: res.data.user.email,
           phone: res.data.user.phone,
-          switch: res.data.user.flag,
         });
         if (res.data.user.ProfilePicture) { setUrl(res.data.user.ProfilePicture.url); }
       })
@@ -66,14 +65,31 @@ function Profile() {
   );
 
   const SubmitDetails = (values) => {
-    detailPatch({
-      url: `/user/${data.id}`,
-      data: {
+    let submitData = {};
+    if (values.switch) {
+      submitData = {
         firstName: values.firstName,
         lastName: values.lastName,
         phone: values.phone,
+        flag: {
+          asset: true,
+          page_manager: true,
+          datastore: true,
+          datastore_contents: true,
+          datastore_structure: true,
+        },
+      };
+    } else {
+      submitData = {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        phone: values.phone,
+      };
+    }
 
-      },
+    detailPatch({
+      url: `/user/${data.id}`,
+      data: submitData,
     })
       .then(() => {
         message.success('User Updated');
@@ -193,21 +209,6 @@ function Profile() {
         )}
     </div>
   );
-  const [{ loading: switchLoading }, handlePatch] = useRequest(
-    {
-      method: 'PATCH',
-      url: `/user/${data.id}`,
-    },
-    { manual: true },
-  );
-
-  const tutorialSwitch = (isChecked) => {
-    handlePatch({ data: { flag: isChecked } })
-      .then(() => {
-        refetch();
-        sessionRefetch();
-      });
-  };
 
   return (
     <div className="site-card-border-less-wrapper">
@@ -260,7 +261,7 @@ function Profile() {
             <Input />
           </Form.Item>
           <Form.Item name="switch" label="Enable Tutorial" valuePropName="checked">
-            <Switch onChange={tutorialSwitch} />
+            <Switch />
           </Form.Item>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <Button

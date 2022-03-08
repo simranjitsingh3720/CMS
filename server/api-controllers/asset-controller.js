@@ -1,6 +1,6 @@
 const dotenv = require('dotenv');
 const aws = require('aws-sdk');
-const { Op } = require('sequelize');
+const { Sequelize } = require('sequelize');
 const db = require('../../db/models');
 
 dotenv.config();
@@ -22,9 +22,8 @@ const listAssets = async (req, res) => {
   const { q } = query;
   const assets = await db.Asset.findAll({
     where: {
-      name: {
-        [Op.substring]: q,
-      },
+      name: Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('name')), 'LIKE', `%${q}%`),
+
     },
   });
   return res.status(200).json({ list: assets });

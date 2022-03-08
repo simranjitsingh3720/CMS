@@ -22,7 +22,16 @@ module.exports = (sequelize, DataTypes) => {
       firstName: { type: DataTypes.STRING, allowNull: false },
       lastName: { type: DataTypes.STRING, allowNull: false },
       profilePicture: { type: DataTypes.UUID },
-      flag: { type: DataTypes.BOOLEAN, defaultValue: true },
+      flag: {
+        type: DataTypes.JSON,
+        defaultValue: {
+          asset: true,
+          page_manager: true,
+          datastore: true,
+          datastore_contents: true,
+          datastore_structure: true,
+        },
+      },
       createdAt: { type: DataTypes.DATE },
       updatedBy: { type: DataTypes.UUID },
       updatedAt: { type: DataTypes.DATE },

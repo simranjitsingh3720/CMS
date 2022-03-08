@@ -16,11 +16,11 @@ export default function getColumns(tableSchema, handleEditContent, handleDeleteC
     key: 'actions',
     render: (actions) => (
       <div>
-        <Button onClick={() => handleEditContent(actions)}>
+        <Button id="edit-structure" onClick={() => handleEditContent(actions)}>
           <EditOutlined />
         </Button>
         <Space wrap>
-          <Button danger onClick={() => handleDeleteContent(actions)}>
+          <Button id="delete-structure" danger onClick={() => handleDeleteContent(actions)}>
             <DeleteOutlined />
           </Button>
         </Space>

@@ -1,8 +1,10 @@
 import ReactJoyride, { STATUS } from 'react-joyride';
 import { Card, Button } from 'antd';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import style from './style.module.scss';
+import SessionContext from '../../../context/SessionContext';
+import { useRequest } from '../../../helpers/request-helper';
 
 function FunctionTooltip({
   tooltipProps, step, index, backProps, primaryProps, closeProps, isLastStep, skipProps,
@@ -37,12 +39,35 @@ function FunctionTooltip({
   );
 }
 
-function Tutorial({ steps }) {
+function Tutorial({ steps, tutorialKey }) {
+  const { session, refetch } = useContext(SessionContext);
   const [run, setRun] = useState();
+
+  const [{ data }, handlePatch] = useRequest(
+    {
+      method: 'PATCH',
+    },
+    { manual: true },
+  );
   const cancelTut = (tutData) => {
     const { status, action } = tutData;
-    if ([STATUS.FINISHED].includes(status) || action === 'close') {
+    if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status) || action === 'close') {
       setRun(false);
+
+      handlePatch({
+        url: `/user/${session.user.id}`,
+        data: {
+          flag: {
+            ...session.user.flag,
+            [tutorialKey]: false,
+          },
+
+        }
+        ,
+      })
+        .then(() => {
+          refetch();
+        });
     }
   };
   return (
