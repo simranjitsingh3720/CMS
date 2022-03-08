@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { PlusOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { message, Modal, Empty } from 'antd';
+import { arrayMoveImmutable } from 'array-move';
 import ActionBar from '../../../../components/layout/ActionBar';
 import StructureDrawer from './StructureDrawer';
-import FieldCard from './FieldCard';
+// import FieldCard from './FieldCard';
 import { useRequest } from '../../../../helpers/request-helper';
+import DragableList from './DragDrop/DragableList';
 
 const { confirm } = Modal;
 
@@ -17,6 +19,9 @@ function ShowSchema() {
   const [fieldData, setFieldData] = useState({});
   const [isEditable, setIsEditable] = useState(false);
   const [fieldsId, setFieldsId] = useState('');
+  const [fields, setFields] = useState([]);
+  const [reFetchSchema, setReFetchSchema] = useState(false);
+  const [isFieldReordering, setIsFieldReordering] = useState(false);
 
   const showSchemaDrawer = () => {
     setIsEditable(false);
@@ -35,11 +40,7 @@ function ShowSchema() {
     setEditSchemaDrawer(false);
   };
 
-  const [{
-    data: deletedData,
-    loading: deleteLoading,
-    error: deleteError,
-  }, fieldDelete] = useRequest(
+  const [{}, fieldDelete] = useRequest(
     {
       method: 'DELETE',
 
@@ -47,10 +48,21 @@ function ShowSchema() {
     { manual: true },
   );
 
-  const [{ data, loading, error }, getSchema] = useRequest(
+  const [{ data }, getSchema] = useRequest(
     {
       method: 'GET',
       url: `/schema/${schemaSlug}`,
+    },
+    { manual: true },
+  );
+
+  const [{ },
+    executeFieldsReordering,
+  ] = useRequest(
+    {
+      url: `/schema/${schemaSlug}/field/`,
+      method: 'PATCH',
+
     },
     { manual: true },
   );
@@ -67,7 +79,7 @@ function ShowSchema() {
             message.error(res.data.message);
           } else {
             message.success('Field deleted successfully');
-            getSchema();
+            setReFetchSchema(true);
           }
         });
       },
@@ -84,11 +96,34 @@ function ShowSchema() {
     }],
   };
 
+  const onSortEnd = ({ oldIndex, newIndex }) => {
+    setFields((sortAbleItems) => arrayMoveImmutable(sortAbleItems, oldIndex, newIndex));
+    setIsFieldReordering(true);
+  };
+
   useEffect(() => {
     if (schemaSlug) {
-      getSchema();
+      getSchema().then((res) => {
+        setReFetchSchema(false);
+        setFields(res.data.schema);
+      });
     }
-  }, [schemaSlug]);
+  }, [reFetchSchema]);
+
+  useEffect(() => {
+    if (fields.length > 0) {
+      console.log('field reordring');
+      executeFieldsReordering({
+        data: {
+          schema: fields,
+        },
+      }).then((res) => {
+        console.log('refetched ', res);
+        setIsFieldReordering(false);
+        // setReFetchSchema(true);
+      });
+    }
+  }, [isFieldReordering]);
 
   return (
     <div>
@@ -103,6 +138,7 @@ function ShowSchema() {
               getSchema={getSchema}
               data={data}
               fieldsId={fieldsId}
+              setReFetchSchema={setReFetchSchema}
             />
           )
           : null}
@@ -118,6 +154,7 @@ function ShowSchema() {
               fieldsId={fieldsId}
               fieldData={fieldData}
               data={data}
+              setReFetchSchema={setReFetchSchema}
             />
           )
           : null}
@@ -138,22 +175,25 @@ function ShowSchema() {
           </div>
         )
 
-          : ((data && data.schema) || []).map((fields) => (
+          : (
+            <>
+              {JSON.stringify(data && data.schema)}
+              <DragableList
+                useDragHandle
+                fieldActions={{
+                  setEditSchemaDrawer,
+                  closeSchemaDrawer,
+                  setFieldsId,
+                  setIsEditable,
+                  setFieldData,
+                  deleteField,
+                }}
+                items={fields}
+                onSortEnd={onSortEnd}
 
-            <FieldCard
-              setIsEditSchemaDrawer={setEditSchemaDrawer}
-              onClose={closeSchemaDrawer}
-              key={fields.id}
-              id={fields.id}
-              fields={fields}
-              fieldSlug={fields.id}
-              setFieldsId={setFieldsId}
-              setIsEditable={setIsEditable}
-              setFieldData={setFieldData}
-              deleteField={deleteField}
-            />
-
-          ))}
+              />
+            </>
+          )}
       </div>
     </div>
   );

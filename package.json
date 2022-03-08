@@ -13,6 +13,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "antd": "^4.18.5",
+    "array-move": "^4.0.0",
     "aws-sdk": "^2.1066.0",
     "axios": "^0.25.0",
     "axios-hooks": "^3.0.0",
@@ -35,6 +36,7 @@
     "react-dom": "17.0.2",
     "react-hook-form": "^7.26.1",
     "react-html-parser": "^2.0.2",
+    "react-sortable-hoc": "^2.0.0",
     "sass": "^1.49.7",
     "sequelize": "^6.15.0",
     "use-react-screenshot": "^3.0.0"
