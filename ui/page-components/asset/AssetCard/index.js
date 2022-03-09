@@ -49,7 +49,7 @@ function AssetCard({ data, refetch }) {
   return (
     <>
       <Card
-        style={{ width: 280, height: 330, padding: '0px 15px', paddingTop: '15px', borderRadius: '8px' }}
+        style={{ width: 280, padding: '0px 15px', paddingTop: '15px', borderRadius: '8px' }}
         cover={(
           <Asset
             data={data}
