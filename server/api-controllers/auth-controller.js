@@ -62,7 +62,6 @@ const signup = async (req, res) => {
 const signin = async (req, res) => {
   const { email, password, remember } = req.body;
 
-  console.log('login ', req.redirect);
   if (!email || !password) {
     return res.status(400).send({ message: 'Requested email or password is missing' });
   }
