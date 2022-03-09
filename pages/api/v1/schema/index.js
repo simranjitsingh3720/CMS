@@ -1,3 +1,5 @@
+import route from '../../../../server/helpers/route-helper';
+
 const { listSchemas, addSchema } = require('../../../../server/api-controllers/schema-controller');
 
 const schemaHandler = async (req, res) => {
@@ -6,7 +8,7 @@ const schemaHandler = async (req, res) => {
   }
   switch (req.method) {
     case 'GET':
-      return listSchemas(req, res);
+      return route('GET', listSchemas(req, res));
 
     case 'POST':
       return addSchema(req, res);

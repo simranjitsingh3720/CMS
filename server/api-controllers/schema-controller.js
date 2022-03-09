@@ -22,11 +22,8 @@ const listSchemas = async (req, res) => {
       },
     });
   } else {
-    schemas = await db.Schema.findAll({
-
-    });
+    schemas = await db.Schema.findAll();
   }
-
   return res.status(200).json({ list: schemas });
 };
 
