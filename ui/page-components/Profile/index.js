@@ -15,6 +15,7 @@ function Profile() {
   const [data, setData] = useState({});
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(false);
+  const [buttonFlag, setButtonFlag] = useState(true);
 
   const formItemLayout = {
     labelCol: {
@@ -99,6 +100,7 @@ function Profile() {
       .catch(() => {
         message.error('User Not Updated');
       });
+    setButtonFlag(true);
   };
 
   const changePassword = (values) => {
@@ -210,6 +212,10 @@ function Profile() {
     </div>
   );
 
+  const check = () => {
+    setButtonFlag(false);
+  };
+
   return (
     <div className="site-card-border-less-wrapper">
       <Card
@@ -239,14 +245,14 @@ function Profile() {
             label="First Name"
             rules={[{ required: true, message: 'Please enter first name!!' }]}
           >
-            <Input />
+            <Input onChange={check} />
           </Form.Item>
           <Form.Item
             name="lastName"
             label="Last Name"
             rules={[{ required: true, message: 'Please enter Last name!!' }]}
           >
-            <Input />
+            <Input onChange={check} />
           </Form.Item>
           <Form.Item
             name="email"
@@ -258,16 +264,17 @@ function Profile() {
             name="phone"
             label="Mobile Number"
           >
-            <Input />
+            <Input onChange={check} />
           </Form.Item>
           <Form.Item name="switch" label="Enable Tutorial" valuePropName="checked">
-            <Switch />
+            <Switch onChange={check} />
           </Form.Item>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <Button
               type="primary"
               htmlType="submit"
               loading={detailsLoading}
+              disabled={buttonFlag}
             >
               Update
             </Button>
