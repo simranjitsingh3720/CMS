@@ -1,4 +1,4 @@
-import PageDashboard from '../../../ui/page-components/page-manager/PageDashbaord';
+import PageDashboard from '../../../ui/page-components/page-manager/PageDashboard';
 
 export async function getServerSideProps() {
   return {

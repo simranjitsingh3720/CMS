@@ -6,7 +6,7 @@ import {
   Upload,
   message,
 } from 'antd';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRequest } from '../../../helpers/request-helper';
 
 function AssetCreateForm({ CloseDrawer, refetch }) {

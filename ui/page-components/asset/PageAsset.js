@@ -65,7 +65,7 @@ function PageAsset() {
   return (
     <>
       {session && session.user.flag.asset && <Tutorial steps={steps} tutorialKey="asset" />}
-      <div>
+      <div style={{ padding: '16px' }}>
         <ActionBar actions={actions} />
 
         <AssetDrawer

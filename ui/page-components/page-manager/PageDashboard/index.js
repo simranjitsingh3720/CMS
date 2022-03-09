@@ -71,6 +71,7 @@ function PageDashboard() {
   };
 
   return (
+<<<<<<< HEAD:ui/page-components/page-manager/PageDashbaord/index.js
     <>
       {session && session.user.flag.page_manager && <Tutorial steps={steps} tutorialKey="page_manager" />}
       <div>
@@ -84,6 +85,18 @@ function PageDashboard() {
         <div />
       </div>
     </>
+=======
+    <div style={{ padding: '16px' }}>
+      <ActionBar actions={actions} />
+      <PageCard searchValue={searchValue} />
+      <PageFormDrawer
+        onFormClose={onClose}
+        visible={visible}
+        setVisible={setVisible}
+      />
+      <div />
+    </div>
+>>>>>>> 6d1b21b401e32a48d3856aad0313783a65614e8d:ui/page-components/page-manager/PageDashboard/index.js
   );
 }
 

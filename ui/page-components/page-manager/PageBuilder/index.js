@@ -32,33 +32,33 @@ function PageBuilder() {
         style: obj && obj['CMS-styles'],
       };
 
-      if (!editor) {
-        const e = GrapesJS.init({
-          container: '#editor',
-          fromElement: false,
-          plugins: [gjsPresetWebpage],
-          components: LandingPage.html || '<span><span/>',
-          style: LandingPage.css || '<></>',
-          storageManager: {
-            id: 'CMS-',
-            type: 'remote',
-            autosave: true,
-            autoload: false,
-            stepsBeforeSave: 1,
-            storeHtml: true,
-            storeCss: true,
-            urlStore: `/api/v1/page/${router.query.pageSlug}`,
-            headers: {
-              'Content-Type': 'application/json',
-              credentials: true,
-              optionSuccessStatus: 200,
-            },
+      // if (!editor) {
+      const e = GrapesJS.init({
+        container: '#editor',
+        fromElement: false,
+        plugins: [gjsPresetWebpage],
+        components: LandingPage.html || '<span><span/>',
+        style: LandingPage.css || '<></>',
+        storageManager: {
+          id: 'CMS-',
+          type: 'remote',
+          autosave: true,
+          autoload: false,
+          stepsBeforeSave: 1,
+          storeHtml: true,
+          storeCss: true,
+          urlStore: `/api/v1/page/${router.query.pageSlug}`,
+          headers: {
+            'Content-Type': 'application/json',
+            credentials: true,
+            optionSuccessStatus: 200,
           },
+        },
 
-        });
+      });
 
-        setEditor(e);
-      }
+      setEditor(e);
+      // }
     });
   };
 
