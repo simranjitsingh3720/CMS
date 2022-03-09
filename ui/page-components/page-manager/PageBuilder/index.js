@@ -8,6 +8,9 @@ import { useRequest } from '../../../helpers/request-helper';
 function PageBuilder() {
   const [editor, setEditor] = useState(null);
   const router = useRouter();
+  const [imgFile, setImgFile] = useState('');
+  const [url, setUrl] = useState('');
+  const [yes, setYes] = useState(false);
 
   const [{ data: getData }, refetchPageData] = useRequest(
     {
@@ -18,13 +21,43 @@ function PageBuilder() {
       manual: true,
     },
   );
-  const [{ data: imgData }, refetch] = useRequest({
-    url: '/asset',
-    method: 'GET',
-    params: {
-      q: '',
+  const [{ data: imgData }, refetch] = useRequest(
+    {
+      url: '/asset',
+      method: 'GET',
+      params: { q: '' },
     },
-  });
+    {
+      // manual: true,
+    },
+  );
+
+  const [load, setLoad] = useState(false);
+
+  // eslint-disable-next-line no-empty-pattern
+  const [{ }, executePost] = useRequest(
+    {
+      url: '/asset/',
+      method: 'POST',
+    },
+    { manual: true },
+  );
+  // eslint-disable-next-line no-empty-pattern
+  const [{}, executePut] = useRequest(
+    {
+      method: 'PUT',
+    },
+    { manual: true },
+  );
+
+  const [{ loading: detailsLoading },
+    detailPatch,
+  ] = useRequest(
+    {
+      method: 'PATCH',
+    },
+    { manual: true },
+  );
 
   console.log('pahle', imgData);
 
@@ -65,6 +98,27 @@ function PageBuilder() {
           },
           assetManager: {
 
+            uploadFile(info) {
+              setImgFile(info.dataTransfer ? info.dataTransfer.files : info.target.files);
+              const file = info.dataTransfer ? info.dataTransfer.files : info.target.files;
+              executePost({
+                data: {
+                  name: file[0].name,
+                  mimeType: file[0].type,
+                  type: file[0].type.split('/')[0],
+                },
+              })
+                .then((result) => {
+                  const { writeUrl } = result.data;
+                  setUrl(result.data);
+                  executePut({
+                    url: writeUrl,
+                    data: file[0],
+                    headers: { type: file[0].type },
+                  });
+                  setYes(true);
+                });
+            },
           },
 
         });
@@ -81,8 +135,14 @@ function PageBuilder() {
         name: page.name,
       })
     ));
+    if (yes) {
+      assetManager.add({ src: url.readUrl, name: imgFile[0].name });
+    }
+    assetManager.getAll();
+    assetManager.render();
   }
   useEffect(() => {
+    refetch();
     getApiM();
   }, [router.query.pageSlug]);
 

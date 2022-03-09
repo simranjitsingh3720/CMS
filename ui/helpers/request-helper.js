@@ -9,5 +9,6 @@ export const useRequest = makeUseAxios({
   defaultOptions: {
     ssr: true,
     useCache: false,
+    manual: true,
   },
 });
