@@ -56,20 +56,20 @@ function Tutorial({ steps, tutorialKey }) {
     if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status) || action === 'close') {
       setRun(false);
 
-      handlePatch({
-        url: `/user/${session.user.id}`,
-        data: {
-          flag: {
-            ...session.user.flag,
-            [tutorialKey]: false,
-          },
+      // handlePatch({
+      //   url: `/user/${session.user.id}`,
+      //   data: {
+      //     flag: {
+      //       ...session.user.flag,
+      //       [tutorialKey]: false,
+      //     },
 
-        }
-        ,
-      })
-        .then(() => {
-          refetch();
-        });
+      //   }
+      //   ,
+      // })
+      //   .then(() => {
+      //     refetch();
+      //   });
     }
   };
   return (

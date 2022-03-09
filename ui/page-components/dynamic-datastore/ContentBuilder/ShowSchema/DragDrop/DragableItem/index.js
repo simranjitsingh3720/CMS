@@ -2,8 +2,7 @@ import { SortableElement } from 'react-sortable-hoc';
 import FieldCard from '../../FieldCard';
 import DragHandler from '../DragHandler';
 
-const DragableItem = SortableElement(({ value, fieldActions }) => (
-
+const DragableItem = SortableElement(({ value, fieldActions, steps }) => (
   <li style={{
     display: 'flex', backgroundColor: '#fff', borderRadius: '15px', paddingLeft: '20px', marginBottom: '3px', justifyContent: 'inline', border: '3px solid #f0f0f0', alignItems: 'center',
   }}
@@ -20,6 +19,7 @@ const DragableItem = SortableElement(({ value, fieldActions }) => (
       setIsEditable={fieldActions.setIsEditable}
       setFieldData={fieldActions.setFieldData}
       deleteField={fieldActions.deleteField}
+      steps={steps}
     />
   </li>
 ));

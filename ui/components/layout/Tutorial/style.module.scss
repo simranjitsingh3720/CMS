@@ -9,7 +9,7 @@
 
 .card{
   border-radius: 16px;
-  width: 320px;
+  width: 320px !important;
   
   :global(.ant-card-body){
     padding: 8px;

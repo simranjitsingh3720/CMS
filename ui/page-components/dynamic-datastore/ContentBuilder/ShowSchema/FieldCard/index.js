@@ -7,7 +7,7 @@ import SessionContext from '../../../../../context/SessionContext';
 
 function FieldCard({
   fields, setIsEditable, setFieldsId,
-  setIsEditSchemaDrawer, setFieldData, deleteField, id,
+  setIsEditSchemaDrawer, setFieldData, deleteField, id, steps,
 }) {
   const handleEditSchemaFieldsDrawer = (fieldID) => {
     setFieldData(fields);
@@ -17,19 +17,19 @@ function FieldCard({
   };
   const { session } = useContext(SessionContext);
 
-  const steps = [
-    {
-      target: '#edit_structure',
-      content: 'Edit your structure here',
-      disableBeacon: 'true',
-    },
-    {
-      target: '#delete_structure',
-      content: 'Delete your structure here',
-      disableBeacon: 'true',
-    },
+  // const steps = [
+  //   {
+  //     target: '#edit_structure',
+  //     content: 'Edit your structure here',
+  //     disableBeacon: 'true',
+  //   },
+  //   {
+  //     target: '#delete_structure',
+  //     content: 'Delete your structure here',
+  //     disableBeacon: 'true',
+  //   },
 
-  ];
+  // ];
   return (
     <>
       {session
@@ -46,18 +46,20 @@ function FieldCard({
           </div>
           <div>
             <Button
+              id="edit_structure"
               className={style.button}
               onClick={() => handleEditSchemaFieldsDrawer(fields.id)}
             >
-              <EditOutlined id="edit_structure" />
+              <EditOutlined />
             </Button>
             <Space wrap>
               <Button
                 danger
+                id="delete_structure"
                 className={style.button}
                 onClick={() => deleteField(id)}
               >
-                <DeleteOutlined id="delete_structure" />
+                <DeleteOutlined />
               </Button>
             </Space>
           </div>

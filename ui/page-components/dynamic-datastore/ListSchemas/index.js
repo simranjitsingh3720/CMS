@@ -132,12 +132,12 @@ function ListSchema() {
     },
     {
       target: '#third-step',
-      content: 'Edit your schema from here',
+      content: 'This is the format of your schema.You can get the details on clicking.',
       disableBeacon: 'true',
     },
     {
       target: '#fourth-step',
-      content: 'Delete your schema from here',
+      content: 'Get the options here',
       disableBeacon: 'true',
     },
 
@@ -147,7 +147,7 @@ function ListSchema() {
     <>
       {session && session.user.flag.datastore && <Tutorial steps={steps} tutorialKey="datastore" />}
 
-      <div>
+      <div style={{ padding: '16px' }}>
         <ActionBar actions={actions} />
         <div>
           {isModalVisible
