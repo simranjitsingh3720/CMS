@@ -66,15 +66,39 @@ const deleteField = async (req, res) => {
       },
     },
   });
-  if (contents[0]) {
+
+  if (contents && contents.length > 0) {
+    let isData = false;
     contents.forEach((content) => {
       const { data } = content.dataValues;
       if (data[fieldId]) {
-        return res.status(200).json({ message: 'Some contents exists for the respective field. Please delete the contents first to delete this field.' });
+        isData = true;
       }
     });
-  }
 
+    if (isData) {
+      return res.status(200).json({ message: 'Some contents exists for the respective field. Please delete the contents first to delete this field.' });
+    }
+
+    const data = await db.Schema.findOne({ where: { slug: schemaSlug } });
+    const newSchema = data.toJSON().schema;
+    let i = 0;
+    for (i = 0; i < newSchema.length; i += 1) {
+      if (newSchema[i].id === fieldId) {
+        newSchema.splice(i, 1);
+        break;
+      }
+    }
+    const updatedSchema = await db.Schema.update(
+      { schema: newSchema },
+      { where: { slug: schemaSlug } },
+    );
+
+    if (updatedSchema) {
+      return res.status(200).json({ id: 'contents' });
+    }
+    return res.status(404).json({ message: 'contents' });
+  }
   const data = await db.Schema.findOne({ where: { slug: schemaSlug } });
   const newSchema = data.toJSON().schema;
   let i = 0;
@@ -95,8 +119,22 @@ const deleteField = async (req, res) => {
   return res.status(404).json({ message: 'contents' });
 };
 
+const reOrderFields = async (req, res) => {
+  const { body, query } = req;
+  const { schemaSlug } = query;
+  const { schema } = body;
+
+  const updatedSchema = await db.Schema.update({ schema }, { where: { slug: schemaSlug } });
+
+  if (updatedSchema) {
+    return res.status(200).json({ id: schemaSlug });
+  }
+  return res.status(404).json({ message: 'Schema not found' });
+};
+
 module.exports = {
   updateField,
   deleteField,
   createField,
+  reOrderFields,
 };

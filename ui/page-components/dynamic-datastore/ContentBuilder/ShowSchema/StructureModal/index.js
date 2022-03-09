@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import {
-  Drawer, Form, Input, Button, Checkbox, Select, Divider, Card, Space, message,
+  Form, Input, Button, Checkbox, Select, Divider, Card, Space, message, Modal,
 } from 'antd';
 import { dataTypes, appearanceTypes } from '../../schemaDetails';
 import ValueNames from './apperanceComponent/ValueNames';
 import Switch from './apperanceComponent/Switch';
 import { useRequest } from '../../../../../helpers/request-helper';
+import styles from './style.module.scss';
 
 const { TextArea } = Input;
 
-function StructureDrawer({
-  fieldsId, closeSchemaDrawer, data = {}, fieldData, isEditable, setReFetchSchema,
+function StructureModal({
+  showSchemaModal, fieldsId, closeSchemaDrawer, data = {}, fieldData, isEditable, setReFetchSchema,
 }) {
   const [form] = Form.useForm();
   const [dataType, setDataType] = useState('');
@@ -129,14 +130,23 @@ function StructureDrawer({
       }
     };
   }
-  return (
-    <Drawer title={fieldData ? `Edit Field ${fieldData.name}` : 'Create a new Field'} placement="right" onClose={closeSchemaDrawer} size="large" visible>
 
+  return (
+
+    <Modal
+      title={fieldData ? `Edit Field ${fieldData.name}` : 'Create a new Field'}
+      visible={showSchemaModal}
+      confirmLoading={loading}
+      onCancel={closeSchemaDrawer}
+      width={1200}
+      footer={[]}
+
+    >
       <Form
         name="basic"
         form={form}
-        labelCol={{ span: 5 }}
-        wrapperCol={{ span: 18 }}
+        // labelCol={{ span: 8 }}
+        wrapperCol={{ span: 20 }}
         initialValues={{
           name: (fieldData && fieldData.name),
           id: (fieldData && fieldData.id),
@@ -152,8 +162,8 @@ function StructureDrawer({
         autoComplete="off"
         onValuesChange={handleValuesChange}
       >
-        <Space direction="vertical">
-          <Card title="Field Details" style={{ width: 650 }}>
+        <Space direction="vertical" className={styles.structureModal}>
+          <Card title="Field Details" style={{ width: 550 }}>
             <Form.Item
               label="Name"
               name="name"
@@ -210,9 +220,8 @@ function StructureDrawer({
 
             </Form.Item>
           </Card>
-          <Divider />
 
-          <Card title="Appearance Details" style={{ width: 650 }}>
+          <Card title="Appearance Details" style={{ width: 550 }}>
             <Form.Item name="type" label="Type" rules={[{ required: true }]}>
               <Select
                 defaultValue={(fieldData && fieldData.type)}
@@ -299,8 +308,9 @@ function StructureDrawer({
             )}
         </Form.Item>
       </Form>
-    </Drawer>
+    </Modal>
+
   );
 }
 
-export default StructureDrawer;
+export default StructureModal;

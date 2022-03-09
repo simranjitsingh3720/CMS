@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { PlusOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { message, Modal, Empty } from 'antd';
+import { arrayMoveImmutable } from 'array-move';
 import ActionBar from '../../../../components/layout/ActionBar';
-import StructureDrawer from './StructureDrawer';
-import FieldCard from './FieldCard';
+import StructureModal from './StructureModal';
 import { useRequest } from '../../../../helpers/request-helper';
+import DragableList from './DragDrop/DragableList';
 
 const { confirm } = Modal;
 
@@ -17,29 +18,29 @@ function ShowSchema() {
   const [fieldData, setFieldData] = useState({});
   const [isEditable, setIsEditable] = useState(false);
   const [fieldsId, setFieldsId] = useState('');
+  const [fields, setFields] = useState([]);
+  const [reFetchSchema, setReFetchSchema] = useState(false);
+  const [isFieldReordering, setIsFieldReordering] = useState(false);
 
-  const showSchemaDrawer = () => {
+  const showSchemaModal = () => {
     setIsEditable(false);
     setIsSchemaDrawer(true);
   };
 
-  const closeSchemaDrawer = () => {
+  const showEditSchemaModal = () => {
+    setIsEditable(true);
     setIsSchemaDrawer(false);
   };
 
-  const showEditSchemaDrawer = () => {
-    setEditSchemaDrawer(true);
+  const closeSchemaModal = () => {
+    setIsSchemaDrawer(false);
   };
 
-  const closeEditSchemaDrawer = () => {
+  const closeEditSchemaModal = () => {
     setEditSchemaDrawer(false);
   };
 
-  const [{
-    data: deletedData,
-    loading: deleteLoading,
-    error: deleteError,
-  }, fieldDelete] = useRequest(
+  const [{}, fieldDelete] = useRequest(
     {
       method: 'DELETE',
 
@@ -47,10 +48,21 @@ function ShowSchema() {
     { manual: true },
   );
 
-  const [{ data, loading, error }, getSchema] = useRequest(
+  const [{ data }, getSchema] = useRequest(
     {
       method: 'GET',
       url: `/schema/${schemaSlug}`,
+    },
+    { manual: true },
+  );
+
+  const [{ },
+    executeFieldsReordering,
+  ] = useRequest(
+    {
+      url: `/schema/${schemaSlug}/field/`,
+      method: 'PATCH',
+
     },
     { manual: true },
   );
@@ -67,9 +79,9 @@ function ShowSchema() {
             message.error(res.data.message);
           } else {
             message.success('Field deleted successfully');
-            getSchema();
+            setReFetchSchema(true);
           }
-        });
+        }).catch((err) => { console.log('delete error ', err); });
       },
       onCancel() {
       },
@@ -80,15 +92,36 @@ function ShowSchema() {
     buttons: [{
       name: 'Add new Field',
       icon: <PlusOutlined />,
-      onClick: showSchemaDrawer,
+      onClick: showSchemaModal,
     }],
+  };
+
+  const onSortEnd = ({ oldIndex, newIndex }) => {
+    setFields((sortAbleItems) => arrayMoveImmutable(sortAbleItems, oldIndex, newIndex));
+    setIsFieldReordering(true);
   };
 
   useEffect(() => {
     if (schemaSlug) {
-      getSchema();
+      getSchema().then((res) => {
+        setReFetchSchema(false);
+        setFields(res.data.schema);
+      });
     }
-  }, [schemaSlug]);
+  }, [reFetchSchema]);
+
+  useEffect(() => {
+    if (fields.length > 0) {
+      console.log('field reordring');
+      executeFieldsReordering({
+        data: {
+          schema: fields,
+        },
+      }).then((res) => {
+        setIsFieldReordering(false);
+      });
+    }
+  }, [isFieldReordering]);
 
   return (
     <div>
@@ -98,32 +131,37 @@ function ShowSchema() {
       <div>
         {isSchemaDrawer
           ? (
-            <StructureDrawer
-              closeSchemaDrawer={closeSchemaDrawer}
+            <div>
+              <StructureModal
+                showSchemaModal={showSchemaModal}
+                closeSchemaDrawer={closeSchemaModal}
+                getSchema={getSchema}
+                data={data}
+                fieldsId={fieldsId}
+                setReFetchSchema={setReFetchSchema}
+              />
+            </div>
+          )
+          : null}
+      </div>
+      <div>
+        {editSchemaDrawer
+          ? (
+            <StructureModal
+              showSchemaModal={showEditSchemaModal}
+              closeSchemaDrawer={closeEditSchemaModal}
               getSchema={getSchema}
-              data={data}
+              isEditable
               fieldsId={fieldsId}
+              fieldData={fieldData}
+              data={data}
+              setReFetchSchema={setReFetchSchema}
             />
           )
           : null}
 
       </div>
       <div>
-        {editSchemaDrawer
-          ? (
-            <StructureDrawer
-              closeSchemaDrawer={closeEditSchemaDrawer}
-              getSchema={getSchema}
-              isEditable={isEditable}
-              fieldsId={fieldsId}
-              fieldData={fieldData}
-              data={data}
-            />
-          )
-          : null}
-
-      </div>
-      <div style={{ marginLeft: '50px', marginRight: '50px' }}>
         { (data && data.schema.length <= 0) ? (
           <div>
             <Empty
@@ -138,22 +176,21 @@ function ShowSchema() {
           </div>
         )
 
-          : ((data && data.schema) || []).map((fields) => (
-
-            <FieldCard
-              setIsEditSchemaDrawer={setEditSchemaDrawer}
-              onClose={closeSchemaDrawer}
-              key={fields.id}
-              id={fields.id}
-              fields={fields}
-              fieldSlug={fields.id}
-              setFieldsId={setFieldsId}
-              setIsEditable={setIsEditable}
-              setFieldData={setFieldData}
-              deleteField={deleteField}
+          : (
+            <DragableList
+              useDragHandle
+              fieldActions={{
+                setEditSchemaDrawer,
+                closeSchemaModal,
+                setFieldsId,
+                setIsEditable,
+                setFieldData,
+                deleteField,
+              }}
+              items={fields}
+              onSortEnd={onSortEnd}
             />
-
-          ))}
+          )}
       </div>
     </div>
   );
