@@ -14,7 +14,6 @@ import SchemaModal from './SchemaModal';
 function ListSchema() {
   const { push } = useRouter();
   const [searchValue, setSearchValue] = useState('');
-  const [isDrawer, setIsDrawer] = useState(false);
   const { session } = useContext(SessionContext);
   const [isModalVisible, setIsModalVisible] = React.useState(false);
   const [confirmLoading, setConfirmLoading] = React.useState(false);

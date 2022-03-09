@@ -91,7 +91,7 @@ function PageSignup() {
           <Form.Item
             className={styles.form_item}
             name="password"
-            rules={[{ required: true, message: 'Please input your Password!' }, () => ({
+            rules={[{ required: true, message: 'Please input your Password!' }, (getFieldValue) => ({
               validator(_, value) {
                 const paswd = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,12}$/;
                 if (!value.match(paswd)) {

@@ -36,7 +36,7 @@ function FieldCard({
         && session.user.flag.datastore_structure
         && <Tutorial steps={steps} tutorialKey="datastore_structure" />}
 
-      <Card>
+      <Card className={style.card_wrapper} style={{ padding: '12px !important' }}>
         <div className={style.Field_card}>
           <div className={style.Fields}>
             <div style={{ fontWeight: 'bold' }}>{fields.name}</div>
