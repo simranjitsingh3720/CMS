@@ -1,4 +1,4 @@
-import { DeleteOutlined, EllipsisOutlined, TableOutlined } from '@ant-design/icons';
+import { EllipsisOutlined, TableOutlined } from '@ant-design/icons';
 import {
   Button, Popover,
 } from 'antd';

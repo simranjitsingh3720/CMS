@@ -76,10 +76,10 @@ export default function ContentBuilder() {
       {session && session.user.flag.datastore_contents && <Tutorial steps={steps} tutorialKey="datastore_contents" />}
       <div className={styles.content_builder_wrapper}>
         <Tabs defaultActiveKey="1" onChange={callback} size="large">
-          <TabPane tab={<span id="contents-tut">Contents</span>} key="1">
+          <TabPane tab="Contents" key="1">
             <ShowContent schema={schema} />
           </TabPane>
-          <TabPane tab={<span id="structure-tut">Structure</span>} key="2">
+          <TabPane tab="Structure" key="2">
             {schema ? <ShowSchema schema={schema} /> : <>NO SCHEMA FOUND</>}
           </TabPane>
           <TabPane tab="Settings" key="3">
