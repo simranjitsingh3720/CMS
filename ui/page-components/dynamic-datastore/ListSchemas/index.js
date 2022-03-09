@@ -12,8 +12,8 @@ import SchemaModal from './SchemaModal';
 function ListSchema() {
   const { push } = useRouter();
   const [searchValue, setSearchValue] = useState('');
-  const [isModalVisible, setIsModalVisible] = React.useState(false);
-  const [confirmLoading, setConfirmLoading] = React.useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -111,7 +111,7 @@ function ListSchema() {
   }, [deletedData]);
 
   return (
-    <div>
+    <div style={{ padding: '16px' }}>
       <ActionBar actions={actions} />
       <div>
         {isModalVisible

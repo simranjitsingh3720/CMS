@@ -33,7 +33,6 @@ export default function ContentBuilder() {
 
   return (
     <div className={styles.content_builder_wrapper}>
-
       <Tabs defaultActiveKey="1" onChange={callback} size="large">
         <TabPane tab="Contents" key="1">
           <ShowContent schema={schema} />
