@@ -59,7 +59,6 @@ function AssetCard({ data, refetch }) {
         actions={[
           <Tooltip title="Edit Asset">
             <EditOutlined key="edit" onClick={showModal} style={{ border: '0px' }} />
-
           </Tooltip>,
           <Tooltip title="Delete Asset">
             <DeleteOutlined key="delete" onClick={showConfirm} style={{ border: '0px' }} />

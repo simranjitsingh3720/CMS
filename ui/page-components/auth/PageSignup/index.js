@@ -97,6 +97,7 @@ function PageSignup() {
                 if (!value.match(paswd)) {
                   return Promise.reject(new Error('password between 6 to 12 characters which contain at least one letter, one numeric digit, and one special character'));
                 }
+                // add nothing to confirm password just to give control.
                 return Promise.resolve();
               },
             })]}
