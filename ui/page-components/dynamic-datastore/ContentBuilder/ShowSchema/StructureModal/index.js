@@ -130,6 +130,7 @@ function StructureModal({
       }
     };
   }
+
   return (
 
     <Modal

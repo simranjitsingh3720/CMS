@@ -4,7 +4,6 @@ import { PlusOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { message, Modal, Empty } from 'antd';
 import { arrayMoveImmutable } from 'array-move';
 import ActionBar from '../../../../components/layout/ActionBar';
-import StructureDrawer from './StructureDrawer';
 import StructureModal from './StructureModal';
 import { useRequest } from '../../../../helpers/request-helper';
 import DragableList from './DragDrop/DragableList';
