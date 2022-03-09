@@ -20,6 +20,7 @@ function Post() {
   const [success, setSuccess] = useState(false);
   const [apiHit, setApiHit] = useState(false);
   const [msg, setMsg] = useState('');
+  const [confirmPasswordMessage, setConfirmPasswordMessage] = useState('');
   const [{ loading }, executePost] = useRequest(
     {
       url: '/auth/change-password',
@@ -57,18 +58,23 @@ function Post() {
   }, []);
 
   function SubmitDetails(values) {
-    const data = {
-      ...values,
-      token: link,
-    };
-    executePost({
-      data,
-    }).then(() => {
-      message.success('Password Successfully updated! 🎉');
-      router.push('/admin/signin');
-    })
-      .catch(() => message.error('Some problem!'));
-    return null;
+    const { password, confirmPassword } = values;
+    if (password !== confirmPassword) {
+      setConfirmPasswordMessage('Confirmation mismatched');
+    } else {
+      const data = {
+        ...values,
+        token: link,
+      };
+      executePost({
+        data,
+      }).then(() => {
+        message.success('Password Successfully updated! 🎉');
+        router.push('/admin/signin');
+      })
+        .catch(() => message.error('Some problem!'));
+      return null;
+    }
   }
 
   return (
@@ -102,22 +108,29 @@ function Post() {
                           },
                         })]}
                       >
-                        <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} placeholder="Password" />
+                        <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} placeholder="Password" onChange={() => setConfirmPasswordMessage('')} />
                       </Form.Item>
                       <Form.Item
                         name="confirmPassword"
                         type="confirmPassword"
-                        rules={[{ required: true, message: 'Field should not be empty' }, ({ getFieldValue }) => ({
-                          validator(_, value) {
-                            if (!value || getFieldValue('password') === value) {
-                              return Promise.resolve();
-                            }
-                            return Promise.reject(new Error('The two passwords that you entered do not match!'));
-                          },
-                        })]}
+                        rules={[{ required: true, message: 'Field should not be empty' },
+                        ]}
+                        style={{ marginBottom: '0' }}
                       >
-                        <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} placeholder="Confirm Password" />
+                        <Input.Password
+                          prefix={(
+                            <LockOutlined
+                              className="site-form-item-icon"
+
+                            />
+                          )}
+                          onChange={() => setConfirmPasswordMessage('')}
+                          placeholder="Confirm Password"
+                        />
                       </Form.Item>
+                      <div style={{ width: '100%' }}>
+                        <p style={{ color: 'rgba(214, 40, 40, 1)' }}>{confirmPasswordMessage}</p>
+                      </div>
                       <Form.Item style={{ textAlign: 'center' }}>
                         <Button
                           type="primary"
