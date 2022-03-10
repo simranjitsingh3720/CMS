@@ -11,16 +11,19 @@ import {
   Upload,
   Button,
 } from 'antd';
+import moment from 'moment';
 
 const { TextArea } = Input;
-
 export const getInitialValues = (fields, editableData, isEditable) => {
   const values = {};
-
   if (isEditable) {
     fields.forEach((data) => {
       if (editableData[data.id]) {
-        values[[data.id]] = editableData[data.id] || '';
+        if (data.type === 'dateAndTime') {
+          values[[data.id]] = moment(editableData[data.id], 'YYYY/MM/DD HH:mm') || '';
+        } else {
+          values[[data.id]] = editableData[data.id] || '';
+        }
       } else {
         values[[data.id]] = data.defaultValue || '';
       }
@@ -103,7 +106,11 @@ function GetFields(appearenceType, field) {
     case 'dateAndTime':
       return (
         <Form.Item name={id} label={name} rules={[{ required }]}>
-          <DatePicker showTime />
+          <DatePicker
+            name="dateAndTime"
+            format="YYYY/MM/DD HH:mm"
+            showTime={{ format: 'HH:mm' }}
+          />
         </Form.Item>
       );
 
