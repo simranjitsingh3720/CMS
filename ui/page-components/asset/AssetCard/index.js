@@ -57,7 +57,6 @@ function AssetCard({ data, refetch }) {
     )}
         className={styles.asset_card}
 
-        // eslint-disable-next-line react/jsx-props-no-multi-spaces
         actions={[
           <Tooltip title="Edit Asset">
             <EditOutlined
