@@ -64,7 +64,6 @@ function AssetCard({ data, refetch }) {
               key="edit"
               className="third-step"
               onClick={showModal}
-              style={{ border: '0px' }}
             />
 
           </Tooltip>,
@@ -73,7 +72,6 @@ function AssetCard({ data, refetch }) {
               key="delete"
               className="fourth-step"
               onClick={showConfirm}
-              style={{ border: '0px' }}
             />
 
           </Tooltip>,
