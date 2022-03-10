@@ -27,18 +27,6 @@ const errorHandler = (err, res) => {
   });
 };
 
-// const route = async (method, req, res, cb) => {
-//   try {
-//     if (req.method !== method) {
-//       throw new MissingError('Route not found');
-//     }
-//     await cb(req, res);
-//   } catch (err) {
-//     console.log('HELLO');
-//     errorHandler(err, res);
-//   }
-// };
-
 const route = (methodControllers) => async (req, res) => {
   try {
     if (methodControllers.authRequired && !req.session.user) {

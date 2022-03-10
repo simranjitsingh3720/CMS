@@ -15,7 +15,7 @@ function PageAsset() {
     method: 'GET',
     url: '/asset',
     params: {
-      q: searchValue,
+      q: searchValue.toLowerCase(),
     },
   });
 
