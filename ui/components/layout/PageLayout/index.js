@@ -15,7 +15,9 @@ function PageLayout({
     <Layout className={styles.layout} hasSider>
       {(!blockRoute.includes(pathname)) ? <PageSider /> : null}
       <Layout className="site-layout">
-        <PageContent>{children}</PageContent>
+        <PageContent>
+          {children}
+        </PageContent>
       </Layout>
     </Layout>
   );

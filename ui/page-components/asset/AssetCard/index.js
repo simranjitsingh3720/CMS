@@ -1,5 +1,5 @@
 import {
-  Card, Button, message, Modal, Tooltip,
+  Card, message, Modal, Tooltip,
 } from 'antd';
 import {
   DeleteOutlined,
@@ -49,20 +49,30 @@ function AssetCard({ data, refetch }) {
   return (
     <>
       <Card
-        style={{ width: 280, height: 330, padding: '0px 15px', paddingTop: '15px', borderRadius: '8px' }}
+        style={{ width: 280, padding: '0px 15px', paddingTop: '15px', borderRadius: '8px' }}
         cover={(
           <Asset
             data={data}
           />
     )}
         className={styles.asset_card}
+
         actions={[
           <Tooltip title="Edit Asset">
-            <EditOutlined key="edit" onClick={showModal} style={{ border: '0px' }} />
+            <EditOutlined
+              key="edit"
+              className="third-step"
+              onClick={showModal}
+            />
+
 
           </Tooltip>,
           <Tooltip title="Delete Asset">
-            <DeleteOutlined key="delete" onClick={showConfirm} style={{ border: '0px' }} />
+            <DeleteOutlined
+              key="delete"
+              className="fourth-step"
+              onClick={showConfirm}
+            />
 
           </Tooltip>,
         ]}

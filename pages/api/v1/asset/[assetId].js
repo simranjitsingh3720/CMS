@@ -1,6 +1,9 @@
 const { findAsset, deleteAsset, updateAsset } = require('../../../../server/api-controllers/asset-controller');
 
 const assetHandler = (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ message: 'You are unauthorized to access this api.' });
+  }
   switch (req.method) {
     case 'GET':
       return findAsset(req, res);

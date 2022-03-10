@@ -1,8 +1,8 @@
-.card_component{
+.card_component {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin: 20px;
+  // margin: 10px;
   flex-wrap: wrap;
 }
 
@@ -13,33 +13,32 @@
   cursor: pointer;
 }
 
-.card_description{
+.card_description {
   margin: 0;
 }
 
-.card_image{
+.card_image {
   height: 150px;
-  width: 260px;
   border-bottom: 1px solid rgb(236, 233, 233);
 }
 
-.drawer_submit{
+.drawer_submit {
   border-color: rgb(17, 133, 241);
 }
 
-.modal_content{
+.modal_content {
   color: red;
   font-size: 0.9em;
 }
 
-.drawer_form{
+.drawer_form {
   border: 2px solid rgb(240, 235, 235);
   padding: 8px !important;
   padding-bottom: 2px !important;
   margin: 15px 2px !important;
 }
 
-.drawer_button{
+.drawer_button {
   margin-bottom: 6px !important;
   margin-right: -38px !important;
 }

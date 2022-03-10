@@ -3,7 +3,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import PageCard from './PageCard';
 import ActionBar from '../../../components/layout/ActionBar';
 import PageFormDrawer from './PageFormDrawer';
-import styles from './style.module.scss';
+import PageManagerTutorial from './PageManagerTutorial';
 
 function PageDashboard() {
   const [searchValue, setSearchValue] = useState('');
@@ -30,16 +30,19 @@ function PageDashboard() {
   };
 
   return (
-    <div className={styles.page_dashboard_wrapper}>
-      <ActionBar actions={actions} />
-      <PageCard searchValue={searchValue} />
-      <PageFormDrawer
-        onFormClose={onClose}
-        visible={visible}
-        setVisible={setVisible}
-      />
-      <div />
-    </div>
+    <>
+      <PageManagerTutorial />
+      <div style={{ padding: '16px' }}>
+        <ActionBar actions={actions} />
+        <PageCard searchValue={searchValue} />
+        <PageFormDrawer
+          onFormClose={onClose}
+          visible={visible}
+          setVisible={setVisible}
+        />
+        <div />
+      </div>
+    </>
   );
 }
 

@@ -8,15 +8,7 @@ import { useRequest } from '../../../ui/helpers/request-helper';
 import styles from './style.module.scss';
 import Header from '../../../ui/page-components/auth/PageForgotPassword/Header';
 
-export async function getServerSideProps({ req }) {
-  if (req.session.user) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/admin',
-      },
-    };
-  }
+export async function getServerSideProps() {
   return {
     props: {
       notDisplay: true,
@@ -100,31 +92,42 @@ function Post() {
                       <Form.Item
                         name="password"
                         type="password"
-                        rules={[{ required: true, message: 'Field should not be empty' }, () => ({
-                          validator(_, value) {
-                            const paswd = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,12}$/;
-                            if (!value.match(paswd)) {
-                              return Promise.reject(new Error('password between 6 to 12 characters which contain at least one letter, one numeric digit, and one special character'));
-                            }
-                            return Promise.resolve();
+                        rules={[
+                          {
+                            required: true,
+                            message: 'Please input your Password!',
                           },
-                        })]}
+                          {
+                            pattern: /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,12}$/,
+                            message: 'password between 6 to 12 characters which contain at least one letter, one numeric digit, and one special character',
+                          },
+                        ]}
                       >
                         <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} placeholder="Password" />
                       </Form.Item>
                       <Form.Item
                         name="confirmPassword"
                         type="confirmPassword"
-                        rules={[{ required: true, message: 'Field should not be empty' }, ({ getFieldValue }) => ({
-                          validator(_, value) {
-                            if (!value || getFieldValue('password') === value) {
-                              return Promise.resolve();
-                            }
-                            return Promise.reject(new Error('The two passwords that you entered do not match!'));
-                          },
-                        })]}
+                        rules={[{ required: true, message: 'Field should not be empty' },
+                          ({ getFieldValue }) => ({
+                            validator(_, value) {
+                              if (!value || getFieldValue('password') === value) {
+                                return Promise.resolve();
+                              }
+                              return Promise.reject(new Error('The two passwords that you entered do not match!'));
+                            },
+                          }),
+                        ]}
                       >
-                        <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} placeholder="Confirm Password" />
+                        <Input.Password
+                          prefix={(
+                            <LockOutlined
+                              className="site-form-item-icon"
+
+                            />
+                          )}
+                          placeholder="Confirm Password"
+                        />
                       </Form.Item>
                       <Form.Item style={{ textAlign: 'center' }}>
                         <Button

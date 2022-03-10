@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
       url: { type: DataTypes.STRING },
       name: { type: DataTypes.STRING },
-      description: { type: DataTypes.STRING, defaultValue: 'description' },
+      description: { type: DataTypes.STRING },
       type: { type: DataTypes.STRING },
       mimeType: { type: DataTypes.STRING },
       createdBy: { type: DataTypes.UUID },
