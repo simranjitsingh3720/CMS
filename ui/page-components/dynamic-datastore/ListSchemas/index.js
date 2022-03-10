@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import confirm from 'antd/lib/modal/confirm';
@@ -7,14 +7,12 @@ import SchemaCard from './SchemaCard';
 import ActionBar from '../../../components/layout/ActionBar';
 import styles from './style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
-import Tutorial from '../../../components/layout/Tutorial';
-import SessionContext from '../../../context/SessionContext';
 import SchemaModal from './SchemaModal';
+import SchemaTutorial from './SchemaTutorial';
 
 function ListSchema() {
   const { push } = useRouter();
   const [searchValue, setSearchValue] = useState('');
-  const { session } = useContext(SessionContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
@@ -113,39 +111,9 @@ function ListSchema() {
     }
   }, [deletedData]);
 
-  const steps = [
-    {
-      target: '#structure-tut',
-      content: 'View your structure here',
-      disableBeacon: 'true',
-    },
-    {
-      target: '.first-step',
-      content: 'Add your schema from here',
-      disableBeacon: 'true',
-
-    },
-    {
-      target: '.second-step',
-      content: 'Search your schema here',
-      disableBeacon: 'true',
-    },
-    {
-      target: '#third-step',
-      content: 'This is the format of your schema.You can get the details on clicking.',
-      disableBeacon: 'true',
-    },
-    {
-      target: '#fourth-step',
-      content: 'Get the options here',
-      disableBeacon: 'true',
-    },
-
-  ];
-
   return (
     <>
-      {session && session.user.flag.datastore && <Tutorial steps={steps} tutorialKey="datastore" />}
+      <SchemaTutorial />
 
       <div style={{ padding: '16px' }}>
         <ActionBar actions={actions} />

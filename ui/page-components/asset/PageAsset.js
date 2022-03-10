@@ -1,41 +1,15 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { List } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import AssetCard from './AssetCard';
 import AssetDrawer from './AssetDrawer';
 import ActionBar from '../../components/layout/ActionBar';
 import { useRequest } from '../../helpers/request-helper';
-import Tutorial from '../../components/layout/Tutorial/index';
-import SessionContext from '../../context/SessionContext';
+import AssetTutorial from './AssetTutorial';
 
 function PageAsset() {
   const [visible, setVisible] = useState(false);
   const [searchValue, setSearchValue] = useState('');
-  const { session } = useContext(SessionContext);
-
-  const steps = [
-    {
-      target: '.first-step',
-      content: 'Add your assets from here',
-      disableBeacon: 'true',
-
-    },
-    {
-      target: '.second-step',
-      content: 'Search your assets here',
-      disableBeacon: 'true',
-    },
-    {
-      target: '.third-step',
-      content: 'Edit your asset from here',
-      disableBeacon: 'true',
-    },
-    {
-      target: '.fourth-step',
-      content: 'Delete your asset from here',
-      disableBeacon: 'true',
-    },
-  ];
 
   const [{ data }, refetch] = useRequest({
     method: 'GET',
@@ -64,7 +38,7 @@ function PageAsset() {
 
   return (
     <>
-      {session && session.user.flag.asset && <Tutorial steps={steps} tutorialKey="asset" />}
+      <AssetTutorial />
       <div style={{ padding: '16px' }}>
         <ActionBar actions={actions} />
 

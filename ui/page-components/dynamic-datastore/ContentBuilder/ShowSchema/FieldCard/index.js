@@ -1,13 +1,11 @@
 import { Card, Button, Space } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { useContext } from 'react';
 import style from './style.module.scss';
-import Tutorial from '../../../../../components/layout/Tutorial';
-import SessionContext from '../../../../../context/SessionContext';
+import FieldTutorial from '../../FieldTutorial';
 
 function FieldCard({
   fields, setIsEditable, setFieldsId,
-  setIsEditSchemaDrawer, setFieldData, deleteField, id, steps,
+  setIsEditSchemaDrawer, setFieldData, deleteField, id,
 }) {
   const handleEditSchemaFieldsDrawer = (fieldID) => {
     setFieldData(fields);
@@ -15,21 +13,16 @@ function FieldCard({
     setFieldsId(fieldID);
     setIsEditSchemaDrawer(true);
   };
-  const { session } = useContext(SessionContext);
 
   return (
     <>
-      {session
-        && session.user.flag.datastore_structure
-        && <Tutorial steps={steps} tutorialKey="datastore_structure" />}
-
+      <FieldTutorial />
       <Card className={style.card_wrapper} style={{ padding: '12px !important' }}>
         <div className={style.Field_card}>
           <div className={style.Fields}>
             <div style={{ fontWeight: 'bold' }}>{fields.name}</div>
             <div>{fields.type}</div>
             <div>{fields.appearanceType}</div>
-
           </div>
           <div>
             <Button

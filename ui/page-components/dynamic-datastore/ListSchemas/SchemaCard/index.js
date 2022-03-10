@@ -28,7 +28,7 @@ function SchemaCard({
   // const buttonWidth = 70;
 
   return (
-    <div className={styles.card_container} id="third-step">
+    <div className={styles.card_container} id="fourth-step">
       <div className={styles.card}>
         <div className={styles.card_header}>
           <TableOutlined className={styles.tableIcon} />
@@ -39,7 +39,7 @@ function SchemaCard({
             trigger="click"
             visible={visible}
           >
-            <EllipsisOutlined onClick={handleVisible} id="fourth-step" />
+            <EllipsisOutlined onClick={handleVisible} className="fifth-step" />
           </Popover>
         </div>
         <div
