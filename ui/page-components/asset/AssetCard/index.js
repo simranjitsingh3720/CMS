@@ -66,6 +66,7 @@ function AssetCard({ data, refetch }) {
               onClick={showModal}
             />
 
+
           </Tooltip>,
           <Tooltip title="Delete Asset">
             <DeleteOutlined

@@ -51,6 +51,7 @@ export default function NewContentDrawer({
   };
 
   const onFinish = async (contentData) => {
+    // console.log(contentData);
     if (isEditable) {
       handleUpdateContent(contentData);
     } else {

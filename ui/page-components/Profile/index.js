@@ -301,18 +301,20 @@ function Profile() {
           <Form.Item
             name="newPassword"
             label="New Password"
-            rules={[{ required: true, message: 'Please enter New Password!!' }, ({ getFieldValue }) => ({
-              validator(_, value) {
-                const paswd = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,12}$/;
-                if (!value.match(paswd)) {
-                  return Promise.reject(new Error('password between 6 to 12 characters which contain at least one letter, one numeric digit, and one special character'));
-                }
-                if (getFieldValue('currentPassword') === value) {
-                  return Promise.reject(new Error('Password should be different from current passowrd'));
-                }
-                return Promise.resolve();
+            rules={[
+              { required: true, message: 'Please enter New Password!!' },
+              {
+                pattern: /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,12}$/,
+                message: 'password between 6 to 12 characters which contain at least one letter, one numeric digit, and one special character',
               },
-            })]}
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (getFieldValue('currentPassword') === value) {
+                    return Promise.reject(new Error('Password should be different from current password'));
+                  }
+                  return Promise.resolve();
+                },
+              })]}
           >
             <Input.Password />
           </Form.Item>

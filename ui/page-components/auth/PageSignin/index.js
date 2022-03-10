@@ -62,7 +62,13 @@ function PageSignin() {
           <Form.Item
             className={styles.form_item}
             name="email"
-            rules={[{ required: true, message: 'Please input your Email!' }]}
+            rules={[
+              { required: true, message: 'Please input your Email!' },
+              {
+                type: 'email',
+                message: 'Invalid email',
+              },
+            ]}
           >
             <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Email" />
           </Form.Item>
