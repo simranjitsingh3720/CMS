@@ -1,5 +1,4 @@
-const { request } = require('express');
-const { MissingError } = require('./error-helper');
+const { MissingError, AuthorizationError } = require('./error-helper');
 
 const nativeErrors = [
   'EvalError',
@@ -19,6 +18,7 @@ const errorHandler = (err, res) => {
       details: err.details,
     });
   }
+
   return res.status(500).json({
     code: err.name,
     messages: [
@@ -27,13 +27,29 @@ const errorHandler = (err, res) => {
   });
 };
 
-const route = (method, cb) => async (req, res) => {
-  console.log('request ', request.method);
+// const route = async (method, req, res, cb) => {
+//   try {
+//     if (req.method !== method) {
+//       throw new MissingError('Route not found');
+//     }
+//     await cb(req, res);
+//   } catch (err) {
+//     console.log('HELLO');
+//     errorHandler(err, res);
+//   }
+// };
+
+const route = (methodControllers) => async (req, res) => {
   try {
-    if (req.method !== method) {
+    if (methodControllers.authRequired && !req.session.user) {
+      throw new AuthorizationError('You are not authorized.');
+    }
+
+    const controller = methodControllers[req.method];
+    if (!controller) {
       throw new MissingError('Route not found');
     }
-    await cb(req, res);
+    await controller(req, res);
   } catch (err) {
     errorHandler(err, res);
   }

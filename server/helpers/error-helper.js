@@ -39,6 +39,18 @@ class DuplicateError extends ExtendedError {
   }
 }
 
+class UploadError extends ExtendedError {
+  constructor(message) {
+    super(message, 'UploadError', 404);
+  }
+}
+
+class ServerError extends ExtendedError {
+  constructor(message) {
+    super(message, 'ServerError', 500);
+  }
+}
+
 module.exports = {
   ExtendedError,
   ValidityError,
@@ -46,4 +58,6 @@ module.exports = {
   AuthorizationError,
   MissingError,
   DuplicateError,
+  UploadError,
+  ServerError,
 };

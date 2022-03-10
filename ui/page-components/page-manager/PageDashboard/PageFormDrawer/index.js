@@ -35,7 +35,7 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
   const handleCreatePage = () => {
     executePost({
       data: {
-        pageDetails,
+        ...pageDetails,
       },
     }).then(() => {
       setVisible(false);
