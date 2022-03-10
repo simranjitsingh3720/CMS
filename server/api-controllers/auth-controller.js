@@ -39,8 +39,16 @@ const db = require('../../db/models/index');
 
 const signup = async (req, res) => {
   const { body } = req;
+  const { firstName, lastName, email, password } = body;
+  if (!firstName || !lastName || !email || !password) {
+    return res.status(400).json({ message: 'Empty Fields are not allowed' });
+  }
+  const isValidEmail = (/\S+@\S+\.\S+/).test(email);
+  if (!isValidEmail) {
+    return res.status(400).json({ message: 'Email format not correct' });
+  }
   const salt = await bcrypt.genSalt();
-  const hashedPassword = await bcrypt.hash(body.password, salt);
+  const hashedPassword = await bcrypt.hash(password, salt);
   const userDetails = { ...body, password: hashedPassword };
   try {
     const user = await db.User.create(userDetails);
