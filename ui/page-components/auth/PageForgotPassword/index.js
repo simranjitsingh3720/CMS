@@ -57,8 +57,10 @@ export default function PagePasswordRecovery() {
                 <p style={{ width: '100%' }}>Please put your email here so that we can send you a password recovery link.</p>
                 <Form.Item
                   name="email"
-                  type="email"
-                  rules={[{ required: true, message: 'Please input your Email!' }]}
+                  rules={[{ required: true, message: 'Please input your Email!' }, {
+                    type: 'email',
+                    message: 'Invalid email',
+                  }]}
                 >
                   <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Email" style={{ height: '50px' }} />
                 </Form.Item>

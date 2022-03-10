@@ -27,11 +27,11 @@ function ActionBar({ children = null, actions = {} }) {
 
   return (
     <div className={styles.container}>
-      <div>
+      <div className="first-step">
         {buttons}
       </div>
       <div>{children}</div>
-      <div>
+      <div className="second-step">
         {search}
       </div>
     </div>

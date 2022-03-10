@@ -44,7 +44,6 @@ const listContents = async (req, res) => {
 const addContent = async (req, res) => {
   const { body, query } = req;
   const { schemaSlug } = query;
-
   // to get schema id from schema table
   const schema = await db.Schema.findOne({
     where: {
