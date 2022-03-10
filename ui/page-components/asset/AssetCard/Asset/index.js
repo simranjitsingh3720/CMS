@@ -4,7 +4,7 @@ function Asset({ data }) {
       return (
         <div style={{
           backgroundImage: `url(${data.url})`,
-          height: '200px',
+          height: '195px',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}

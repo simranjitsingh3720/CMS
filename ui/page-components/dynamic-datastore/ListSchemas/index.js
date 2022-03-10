@@ -8,6 +8,7 @@ import ActionBar from '../../../components/layout/ActionBar';
 import styles from './style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
 import SchemaModal from './SchemaModal';
+import SchemaTutorial from './SchemaTutorial';
 
 function ListSchema() {
   const { push } = useRouter();
@@ -111,56 +112,60 @@ function ListSchema() {
   }, [deletedData]);
 
   return (
-    <div style={{ padding: '16px' }}>
-      <ActionBar actions={actions} />
-      <div>
-        {isModalVisible
-          ? (
-            <SchemaModal
-              showModal={showModal}
-              isModalVisible={isModalVisible}
-              setIsModalVisible={setIsModalVisible}
-              confirmLoading={confirmLoading}
-              handleCancel={handleCancel}
-              handleOk={handleOk}
-              fetchAllSchema={fetchAllSchema}
-            />
-          )
-          : null}
+    <>
+      <SchemaTutorial />
 
-      </div>
-
-      <div style={{ textAlign: 'center' }}>
-        {showLoading()}
-      </div>
-      { data && data.list.length <= 0 ? (
+      <div style={{ padding: '16px' }}>
+        <ActionBar actions={actions} />
         <div>
-          <Empty
-            style={{ marginTop: '83px' }}
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description={(
-              <span>
-                No Schema Found
-              </span>
-    )}
-          />
+          {isModalVisible
+            ? (
+              <SchemaModal
+                showModal={showModal}
+                isModalVisible={isModalVisible}
+                setIsModalVisible={setIsModalVisible}
+                confirmLoading={confirmLoading}
+                handleCancel={handleCancel}
+                handleOk={handleOk}
+                fetchAllSchema={fetchAllSchema}
+              />
+            )
+            : null}
+
         </div>
-      ) : null}
-      <div className={styles.card_wrapper}>
-        {((data && data.list) || []).map((schema) => (
-          <SchemaCard
-            key={schema.id}
-            id={schema.id}
-            schemaSlug={schema.slug}
-            schemaName={schema.title}
-            schemaDesc={schema.description}
-            showSchema={showSchema}
-            deleteSchema={deleteSchema}
-            totatlFields={schema.schema.length || 0}
-          />
-        ))}
+
+        <div style={{ textAlign: 'center' }}>
+          {showLoading()}
+        </div>
+        { data && data.list.length <= 0 ? (
+          <div>
+            <Empty
+              style={{ marginTop: '83px' }}
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description={(
+                <span>
+                  No Schema Found
+                </span>
+    )}
+            />
+          </div>
+        ) : null}
+        <div className={styles.card_wrapper}>
+          {((data && data.list) || []).map((schema) => (
+            <SchemaCard
+              key={schema.id}
+              id={schema.id}
+              schemaSlug={schema.slug}
+              schemaName={schema.title}
+              schemaDesc={schema.description}
+              showSchema={showSchema}
+              deleteSchema={deleteSchema}
+              totatlFields={schema.schema.length || 0}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

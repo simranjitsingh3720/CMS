@@ -1,5 +1,5 @@
 import {
-  Card, Form, Input, Button, message, Upload, Avatar,
+  Card, Form, Input, Button, message, Upload, Avatar, Switch,
 } from 'antd';
 import { LoadingOutlined, UserAddOutlined } from '@ant-design/icons';
 import { useState, useEffect, useContext } from 'react';
@@ -15,6 +15,7 @@ function Profile() {
   const [data, setData] = useState({});
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(false);
+  const [buttonFlag, setButtonFlag] = useState(true);
 
   const formItemLayout = {
     labelCol: {
@@ -65,14 +66,31 @@ function Profile() {
   );
 
   const SubmitDetails = (values) => {
-    detailPatch({
-      url: `/user/${data.id}`,
-      data: {
+    let submitData = {};
+    if (values.switch) {
+      submitData = {
         firstName: values.firstName,
         lastName: values.lastName,
         phone: values.phone,
+        flag: {
+          asset: true,
+          page_manager: true,
+          datastore: true,
+          datastore_contents: true,
+          datastore_structure: true,
+        },
+      };
+    } else {
+      submitData = {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        phone: values.phone,
+      };
+    }
 
-      },
+    detailPatch({
+      url: `/user/${data.id}`,
+      data: submitData,
     })
       .then(() => {
         message.success('User Updated');
@@ -82,6 +100,7 @@ function Profile() {
       .catch(() => {
         message.error('User Not Updated');
       });
+    setButtonFlag(true);
   };
 
   const changePassword = (values) => {
@@ -192,6 +211,11 @@ function Profile() {
         )}
     </div>
   );
+
+  const check = () => {
+    setButtonFlag(false);
+  };
+
   return (
     <div className="site-card-border-less-wrapper">
       <Card
@@ -221,14 +245,14 @@ function Profile() {
             label="First Name"
             rules={[{ required: true, message: 'Please enter first name!!' }]}
           >
-            <Input />
+            <Input onChange={check} />
           </Form.Item>
           <Form.Item
             name="lastName"
             label="Last Name"
             rules={[{ required: true, message: 'Please enter Last name!!' }]}
           >
-            <Input />
+            <Input onChange={check} />
           </Form.Item>
           <Form.Item
             name="email"
@@ -240,17 +264,22 @@ function Profile() {
             name="phone"
             label="Mobile Number"
           >
-            <Input />
+            <Input onChange={check} />
+          </Form.Item>
+          <Form.Item name="switch" label="Enable Tutorial" valuePropName="checked">
+            <Switch onChange={check} />
           </Form.Item>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <Button
               type="primary"
               htmlType="submit"
               loading={detailsLoading}
+              disabled={buttonFlag}
             >
               Update
             </Button>
           </div>
+
         </Form>
       </Card>
 

@@ -1,6 +1,6 @@
-import { DeleteOutlined, EllipsisOutlined, TableOutlined } from '@ant-design/icons';
+import { EllipsisOutlined, TableOutlined } from '@ant-design/icons';
 import {
-  Button, Tooltip, Popover,
+  Button, Popover,
 } from 'antd';
 import { useState } from 'react';
 import styles from './style.module.scss';
@@ -28,7 +28,7 @@ function SchemaCard({
   // const buttonWidth = 70;
 
   return (
-    <div className={styles.card_container}>
+    <div className={styles.card_container} id="fourth-step">
       <div className={styles.card}>
         <div className={styles.card_header}>
           <TableOutlined className={styles.tableIcon} />
@@ -39,7 +39,7 @@ function SchemaCard({
             trigger="click"
             visible={visible}
           >
-            <EllipsisOutlined onClick={handleVisible} />
+            <EllipsisOutlined onClick={handleVisible} className="fifth-step" />
           </Popover>
         </div>
         <div
@@ -65,12 +65,13 @@ function SchemaCard({
         </div>
         {/* <div className={styles.card_action}>
           <div>
-            <Button type="primary" onClick={() => showSchema(schemaSlug)}>View Table</Button>
+            <Button type="primary" onClick={() => showSchema(schemaSlug)} id="third-step">View Table</Button>
 
           </div>
           <div>
             <Tooltip title="Delete Schema">
               <DeleteOutlined
+                id="fourth-step"
                 style={{ color: 'red' }}
                 onClick={() => deleteSchema(schemaSlug)}
                 className={styles.button}

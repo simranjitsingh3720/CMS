@@ -62,6 +62,7 @@ function ShowContent({ schema }) {
 
   return (
     <div>
+
       <div>
         <ActionBar actions={actions} />
       </div>

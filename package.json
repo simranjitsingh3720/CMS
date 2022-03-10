@@ -3,6 +3,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
+  
     "migrate": "yarn sequelize-cli db:create && yarn sequelize-cli db:migrate ",
     "dev": "node index.js",
     "build": "NODE_ENV=production next build",
@@ -37,6 +38,7 @@
     "react-dom": "17.0.2",
     "react-hook-form": "^7.26.1",
     "react-html-parser": "^2.0.2",
+    "react-joyride": "^2.3.2",
     "react-sortable-hoc": "^2.0.0",
     "sass": "^1.49.7",
     "sequelize": "^6.15.0",
