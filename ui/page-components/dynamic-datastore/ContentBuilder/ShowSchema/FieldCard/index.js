@@ -17,19 +17,6 @@ function FieldCard({
   };
   const { session } = useContext(SessionContext);
 
-  // const steps = [
-  //   {
-  //     target: '#edit_structure',
-  //     content: 'Edit your structure here',
-  //     disableBeacon: 'true',
-  //   },
-  //   {
-  //     target: '#delete_structure',
-  //     content: 'Delete your structure here',
-  //     disableBeacon: 'true',
-  //   },
-
-  // ];
   return (
     <>
       {session
