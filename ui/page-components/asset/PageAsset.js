@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { List } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import AssetCard from './AssetCard';
@@ -34,6 +34,10 @@ function PageAsset() {
     },
     ],
   };
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   return (
     <>

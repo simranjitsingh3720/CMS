@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import 'grapesjs/dist/css/grapes.min.css';
+// import './grapes.min.css';
 import GrapesJS from 'grapesjs';
 import gjsPresetWebpage from 'grapesjs-preset-webpage';
+import Draggable from 'react-draggable';
 import { useRequest } from '../../../helpers/request-helper';
 
 function PageBuilder() {
@@ -28,7 +29,7 @@ function PageBuilder() {
       params: { q: '' },
     },
     {
-      // manual: true,
+      manual: true,
     },
   );
 
@@ -59,8 +60,6 @@ function PageBuilder() {
     { manual: true },
   );
 
-  console.log('pahle', imgData);
-
   const getApiM = () => {
     refetchPageData().then((res) => {
       let obj = null;
@@ -79,8 +78,18 @@ function PageBuilder() {
           container: '#editor',
           fromElement: false,
           plugins: [gjsPresetWebpage],
+          pluginsOpts: {
+            [gjsPresetWebpage]: {
+              // The font imports are included on HTML <head/> when fonts are used on the template
+              fonts: {
+                Montserrat: 'https://fonts.googleapis.com/css?family=Montserrat',
+                'Open Sans': 'https://fonts.googleapis.com/css?family=Open+Sans',
+              },
+            },
+          },
           components: LandingPage.html || '<span><span/>',
           style: LandingPage.css || '<></>',
+
           storageManager: {
             id: 'CMS-',
             type: 'remote',
@@ -96,6 +105,10 @@ function PageBuilder() {
               optionSuccessStatus: 200,
             },
           },
+          defaults: {
+            toolbar: [], // this will prevent its rendering on the component
+          },
+
           assetManager: {
 
             uploadFile(info) {
@@ -123,6 +136,22 @@ function PageBuilder() {
 
         });
 
+        e.on('load', () => {
+          const styleManager = e.StyleManager;
+          const fontProperty = styleManager.getProperty('typography', 'font-family');
+
+          const list = [];
+          // empty list
+          fontProperty.set('list', list);
+
+          // custom list
+          list.push(fontProperty.addOption({ value: 'Montserrat, sans-serif', name: 'Montserrat' }));
+          list.push(fontProperty.addOption({ value: 'Open Sans, sans-serif', name: 'Open Sans' }));
+          fontProperty.set('list', list);
+
+          styleManager.render();
+        });
+
         setEditor(e);
       }
     });
@@ -140,6 +169,16 @@ function PageBuilder() {
     }
     assetManager.getAll();
     assetManager.render();
+    const bm = editor.Blocks; // `Blocks` is an alias of `BlockManager`
+
+    // Add a new Block
+    const block = bm.add('BLOCK-ID', {
+      // Your block properties...
+      label: 'My block',
+      content: `<svg style="width:48px;height:48px" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z" />
+      </svg>`,
+    });
   }
   useEffect(() => {
     refetch();
@@ -148,7 +187,11 @@ function PageBuilder() {
 
   return (
     <div>
+      <Draggable>
+        <div className="gjs-pn-panel" />
+      </Draggable>
       <div id="editor" />
+
     </div>
   );
 }
