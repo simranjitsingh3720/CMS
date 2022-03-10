@@ -13,7 +13,6 @@ const { Title, Paragraph } = Typography;
 function PageSignup() {
   const router = useRouter();
   const { refetch } = useContext(SessionContext);
-
   const [{ loading }, executePost] = useRequest(
     {
       url: '/auth/signup',
@@ -23,19 +22,15 @@ function PageSignup() {
   );
 
   const onFinish = (values) => {
-    if (values.password !== values.confirmPassword) {
-      message.error('Passwords do not match!!!');
-    } else {
-      executePost({
-        data: values,
+    executePost({
+      data: values,
+    })
+      .then(() => {
+        router.push('/admin');
+        message.success('Welcome to CMS Page');
+        refetch();
       })
-        .then(() => {
-          router.push('/admin');
-          message.success('Welcome to CMS Page');
-          refetch();
-        })
-        .catch(() => message.error('Invalid Signup, Please try again'));
-    }
+      .catch(() => message.error('Invalid Signup, Email already exists'));
   };
 
   const onSignInClick = async () => {
@@ -83,23 +78,26 @@ function PageSignup() {
           <Form.Item
             className={styles.form_item}
             name="email"
-            type="email"
-            rules={[{ required: true, message: 'Please input your Email!' }]}
+            rules={[{ required: true, message: 'Please input your Email!' }, {
+              type: 'email',
+              message: 'Invalid email',
+            }]}
           >
             <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Email" />
           </Form.Item>
           <Form.Item
             className={styles.form_item}
             name="password"
-            rules={[{ required: true, message: 'Please input your Password!' }, (getFieldValue) => ({
-              validator(_, value) {
-                const paswd = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,12}$/;
-                if (!value.match(paswd)) {
-                  return Promise.reject(new Error('password between 6 to 12 characters which contain at least one letter, one numeric digit, and one special character'));
-                }
-                return Promise.resolve();
+            rules={[
+              {
+                required: true,
+                message: 'Please input your Password!',
               },
-            })]}
+              {
+                pattern: /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,12}$/,
+                message: 'password between 6 to 12 characters which contain at least one letter, one numeric digit, and one special character',
+              },
+            ]}
           >
             <Input.Password
               prefix={<LockOutlined className="site-form-item-icon" />}
@@ -110,14 +108,20 @@ function PageSignup() {
           <Form.Item
             className={styles.form_item}
             name="confirmPassword"
-            rules={[{ required: true, message: 'This field cannot be empty!' }, ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (!value || getFieldValue('password') === value) {
-                  return Promise.resolve();
-                }
-                return Promise.reject(new Error('The two passwords that you entered do not match!'));
+            rules={[
+              {
+                required: true,
+                message: 'This field cannot be empty!',
               },
-            })]}
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue('password') === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error('The two passwords that you entered do not match!'));
+                },
+              }),
+            ]}
           >
             <Input.Password
               prefix={<LockOutlined className="site-form-item-icon" />}
