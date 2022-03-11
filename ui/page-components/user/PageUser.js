@@ -10,7 +10,7 @@ function PageUser() {
   const [{}, refetch] = useRequest({
     url: '/user',
     params: {
-      q: searchValue,
+      q: searchValue.toLowerCase(),
     },
   });
   useEffect(() => {
