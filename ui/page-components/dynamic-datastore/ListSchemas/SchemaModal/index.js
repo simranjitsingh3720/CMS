@@ -93,11 +93,14 @@ function SchemaModal({
           <Form.Item
             label="Slug"
             name="slug"
-            rules={[
-              {
-                required: true,
-                message: 'Please input your Slug!',
-              },
+            rules={[{
+              required: true,
+              message: 'Please input your Slug!',
+            },
+            {
+              pattern: new RegExp('^[A-Za-z0-9]*$'),
+              message: 'Only Letters and Numbers are accepted',
+            },
             ]}
           >
             <Input />
