@@ -24,6 +24,14 @@
 
 .drawer_submit {
   border-color: rgb(17, 133, 241);
+  background-color: green;
+  color: white;
+  width: 100px;
+}
+
+.drawer_submit:hover {
+  background-color: green;
+  color: black;
 }
 
 .modal_content {
