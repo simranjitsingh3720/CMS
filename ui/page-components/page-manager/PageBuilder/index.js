@@ -89,7 +89,42 @@ function PageBuilder() {
           },
           components: LandingPage.html || '<span><span/>',
           style: LandingPage.css || '<></>',
-
+          panels: {
+            defaults: [
+              {
+                id: 'panel-switcher',
+                el: '.panel__switcher',
+                buttons: [{
+                  id: 'show-layers',
+                  active: true,
+                  label: 'Layers',
+                  command: 'show-layers',
+                  togglable: false,
+                }, {
+                  id: 'show-style',
+                  active: true,
+                  label: 'Styles',
+                  command: 'show-styles',
+                  togglable: false,
+                }],
+              },
+            ],
+          },
+          layerManager: {
+            appendTo: '#layers-container',
+          },
+          blockManager: {
+            appendTo: '#blocks',
+          },
+          styleManager: {
+            appendTo: '#style-manager-container',
+          },
+          selectorManager: {
+            appendTo: '#selectors-container',
+          },
+          traitManager: {
+            appendTo: '#traits-container',
+          },
           storageManager: {
             id: 'CMS-',
             type: 'remote',
@@ -136,6 +171,34 @@ function PageBuilder() {
 
         });
 
+        // Define commands
+        e.Commands.add('show-layers', {
+          getRowEl(e) { return e.getContainer().closest('.editor-row'); },
+          getLayersEl(row) { return row.querySelector('.layers-container'); },
+
+          run(e, sender) {
+            const lmEl = this.getLayersEl(this.getRowEl(e));
+            lmEl.style.display = '';
+          },
+          stop(e, sender) {
+            const lmEl = this.getLayersEl(this.getRowEl(e));
+            lmEl.style.display = 'none';
+          },
+        });
+        e.Commands.add('show-styles', {
+          getRowEl(e) { return e.getContainer().closest('.editor-row'); },
+          getStyleEl(row) { return row.querySelector('.styles-container'); },
+
+          run(e, sender) {
+            const smEl = this.getStyleEl(this.getRowEl(e));
+            smEl.style.display = '';
+          },
+          stop(e, sender) {
+            const smEl = this.getStyleEl(this.getRowEl(e));
+            smEl.style.display = 'none';
+          },
+        });
+
         e.on('load', () => {
           const styleManager = e.StyleManager;
           const fontProperty = styleManager.getProperty('typography', 'font-family');
@@ -150,6 +213,17 @@ function PageBuilder() {
           fontProperty.set('list', list);
 
           styleManager.render();
+        });
+
+        const bm = e.BlockManager;
+        e.on('load', () => {
+          e.BlockManager.render([
+            bm.get('column1').set('category', ''),
+            bm.get('column2').set('category', ''),
+            bm.get('column3').set('category', ''),
+            bm.get('text').set('category', ''),
+            bm.get('image').set('category', ''),
+          ]);
         });
 
         setEditor(e);
@@ -188,7 +262,14 @@ function PageBuilder() {
   return (
     <div>
       <Draggable>
-        <div className="gjs-pn-panel" />
+        <div className="gjs-pn-panel gjs-pn-views-container gjs-one-bg gjs-two-color">
+          <span className="panel__switcher" />
+          <span id="layers-container" />
+          <span id="blocks" />
+          <span id="selectors-container" />
+          <span id="style-manager-container" />
+          <span id="traits-container" />
+        </div>
       </Draggable>
       <div id="editor" />
 

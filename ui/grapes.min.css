@@ -1673,7 +1673,7 @@ span.CodeMirror-selectedtext {
 .gjs-cv-canvas {
 	background-color: rgba(0, 0, 0, .15);
 	box-sizing: border-box;
-	width: 85%;
+	width: 100%;
 	height: calc(100% - 40px);
 	bottom: 0;
 	overflow: hidden;
@@ -2095,10 +2095,15 @@ div.gjs-com-hover-move {
 .gjs-pn-views-container {
 	height: 100%;
 	padding: 42px 0 0;
-	right: 0;
+	/* right: 0; */
 	width: 15%;
 	overflow: auto;
-	box-shadow: 0 0 5px rgba(0, 0, 0, .2)
+	box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+  z-index: 0;
+}
+
+.react-draggable{
+  z-index: 500;
 }
 
 .gjs-pn-buttons {
@@ -2513,6 +2518,7 @@ div.gjs-com-hover-move {
 	margin: 0 5px;
 	width: 6px
 }
+
 
 .gjs-add-trasp {
 	background: none;

@@ -35,7 +35,7 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
   const handleCreatePage = () => {
     executePost({
       data: {
-        pageDetails,
+        ...pageDetails,
       },
     }).then(() => {
       setVisible(false);
@@ -50,6 +50,7 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
         console.log('Error => ', err);
       });
   };
+  console.log(pageDetails);
 
   return (
     <Drawer title="Create New Page" placement="right" onClose={onFormClose} visible={visible}>
