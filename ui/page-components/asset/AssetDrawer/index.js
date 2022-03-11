@@ -1,4 +1,4 @@
-import { Drawer } from 'antd';
+import { Drawer, Modal } from 'antd';
 import AssetCreateForm from '../AssetCreateForm';
 import AssetEditForm from '../AssetEditForm';
 
@@ -10,10 +10,15 @@ function AssetDrawer({
   };
 
   return (
-    <Drawer title={flag ? 'Add Asset' : 'Edit Asset'} placement="right" onClose={onDrawerClose} visible={visible}>
+    <Modal
+      title={flag ? 'Add Asset' : 'Edit Asset'}
+      footer={null}
+      onClose={onDrawerClose}
+      visible={visible}
+    >
       {flag ? <AssetCreateForm CloseDrawer={onDrawerClose} refetch={refetch} />
         : <AssetEditForm onDrawerClose={onDrawerClose} refetch={refetch} data={data} />}
-    </Drawer>
+    </Modal>
   );
 }
 export default AssetDrawer;

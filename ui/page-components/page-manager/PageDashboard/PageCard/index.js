@@ -90,11 +90,11 @@ function PageCard({ searchValue }) {
 
               <div className="card_action">
                 <Tooltip title="View Page">
-                  <EyeOutlined key="view" onClick={() => { handleView(page.slug); }} style={{ fontSize: '16px' }} />
+                  <EyeOutlined key="view" onClick={() => { handleView(page.slug); }} style={{ fontSize: '16px' }} id="fifth-step" />
                 </Tooltip>
                 <Divider type="vertical" style={{ height: '22px', color: 'rgb(236, 233, 233)' }} />
                 <Tooltip title="Edit Page">
-                  <EditOutlined key="edit" onClick={() => { showDrawer(page); }} style={{ fontSize: '16px' }} />
+                  <EditOutlined key="edit" onClick={() => { showDrawer(page); }} style={{ fontSize: '16px' }} id="sixth-step" />
                 </Tooltip>
               </div>
 

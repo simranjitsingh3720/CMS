@@ -5,6 +5,7 @@ import AssetCard from './AssetCard';
 import AssetDrawer from './AssetDrawer';
 import ActionBar from '../../components/layout/ActionBar';
 import { useRequest } from '../../helpers/request-helper';
+import AssetTutorial from './AssetTutorial';
 
 function PageAsset() {
   const [visible, setVisible] = useState(false);
@@ -36,19 +37,22 @@ function PageAsset() {
   };
 
   return (
-    <div style={{ padding: '16px' }}>
-      <ActionBar actions={actions} />
-      <AssetDrawer
-        flag
-        visible={visible}
-        setVisible={setVisible}
-        refetch={refetch}
-        data={[]}
-      />
-      <div className="card_componentW">
-        {((data && data.list) || []).map((item) => (
-          <AssetCard key={item.id} data={item} refetch={refetch} />
-        ))}
+    <div>
+      <AssetTutorial />
+      <div style={{ padding: '16px' }}>
+        <ActionBar actions={actions} />
+        <AssetDrawer
+          flag
+          visible={visible}
+          setVisible={setVisible}
+          refetch={refetch}
+          data={[]}
+        />
+        <div className="card_componentW">
+          {((data && data.list) || []).map((item) => (
+            <AssetCard key={item.id} data={item} refetch={refetch} />
+          ))}
+        </div>
       </div>
     </div>
   );

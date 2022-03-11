@@ -1,14 +1,13 @@
 import {
-  Button,
-  Card, message, Modal, Popover,
+  Button, message, Modal, Popover,
 } from 'antd';
+import React, { useState, useRef } from 'react';
 import {
   ExclamationCircleOutlined,
   MoreOutlined,
   PictureOutlined,
   PlayCircleOutlined,
 } from '@ant-design/icons';
-import { useState } from 'react';
 import AssetDrawer from '../AssetDrawer';
 import styles from './style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
@@ -19,9 +18,8 @@ const { confirm } = Modal;
 function AssetCard({ data, refetch }) {
   const [visibleDrawer, setVisibleDrawer] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-
   const [visible, setVisible] = useState(null);
-
+  const refPlayVideo = useRef(null);
   const [{ deleteError }, handleDelete] = useRequest(
     {
       method: 'DELETE',
@@ -51,16 +49,8 @@ function AssetCard({ data, refetch }) {
     setVisibleDrawer(true);
   };
 
-  const handleClick = () => {
-    setVisible(false);
-  };
-
-  const handleVisible = () => {
-    setVisible(!visible);
-  };
-
   const showModalPic = () => {
-    console.log('CLICKED');
+    // refPlayVideo.current.internalPlayer.pauseVideo();
     setIsModalVisible(true);
   };
   const handleOk = () => {
@@ -71,11 +61,31 @@ function AssetCard({ data, refetch }) {
     setIsModalVisible(false);
   };
 
+  // const handleTest = () => {
+  //   refPlayVideo.current.internalPlayer.pauseVideo();
+  // };
+
   const content = (
     <div>
-      <Button type="text" onClick={showModal}>Rename Asset</Button>
+      <Button
+        type="text"
+        onClick={showModal}
+        key="edit"
+        className="third-step"
+      >
+        Rename Asset
+
+      </Button>
       <br />
-      <Button type="text" onClick={showConfirm}>Delete Asset</Button>
+      <Button
+        type="text"
+        onClick={showConfirm}
+        key="delete"
+        className="fourth-step"
+      >
+        Delete Asset
+
+      </Button>
     </div>
   );
 
@@ -146,13 +156,16 @@ function AssetCard({ data, refetch }) {
               src={data.url}
               controls
               autoPlay
-              loop
-              preload
+
+              // loop
               onClick={showModalPic}
+              // ref={refPlayVideo}
             >
               Your browser does not support the video tag.
             </video>
           ) }
+
+        {/* <button type="button" onClick={handleTest}>TEST CLick</button> */}
       </Modal>
     </>
   );

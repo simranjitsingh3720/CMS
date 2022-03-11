@@ -1,6 +1,6 @@
-import { DeleteOutlined, EllipsisOutlined, TableOutlined } from '@ant-design/icons';
+import { EllipsisOutlined, TableOutlined } from '@ant-design/icons';
 import {
-  Button, Tooltip, Popover,
+  Button, Popover,
 } from 'antd';
 import { useState } from 'react';
 import styles from './style.module.scss';
@@ -28,7 +28,7 @@ function SchemaCard({
 
   return (
     <>
-      <CardWrapper>
+      <CardWrapper id="fourth-step">
         <div className={styles.card_header}>
           <TableOutlined className={styles.tableIcon} />
           <Popover
@@ -41,7 +41,7 @@ function SchemaCard({
               type="button"
               className={styles.card_button}
             >
-              <EllipsisOutlined />
+              <EllipsisOutlined className="fifth-step" />
 
             </button>
 

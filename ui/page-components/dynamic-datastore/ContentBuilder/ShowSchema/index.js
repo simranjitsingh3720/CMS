@@ -125,6 +125,7 @@ function ShowSchema() {
 
   return (
     <div>
+
       <div>
         <ActionBar actions={actions} />
       </div>
