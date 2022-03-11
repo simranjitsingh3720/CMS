@@ -1,5 +1,6 @@
 import { Button, Card, Drawer, Form } from 'antd';
 import React from 'react';
+import moment from 'moment';
 import { useRequest } from '../../../../../helpers/request-helper';
 import GetFields, { getInitialValues } from './GetFields/GetFields';
 
@@ -25,10 +26,20 @@ export default function NewContentDrawer({
   );
 
   const handleAddContent = (contentData) => {
+    const x = { ...contentData };
+
+    schemaDetails.schema.forEach((field) => {
+      if (field.type === 'dateAndTime') {
+        const dateFormat = 'YYYY/MM/DD HH:mm';
+        const testDateUtc = moment.utc(x[field.id]);
+        const localDate = testDateUtc.local();
+        x[field.id] = localDate.format(dateFormat);
+      }
+    });
     if (schemaSlug) {
       addContent({
         url: `/content/${schemaSlug}`,
-        data: { data: contentData },
+        data: { data: x },
       }).then((res) => {
         closeContentDrawer();
       }).then((res) => {
@@ -38,10 +49,20 @@ export default function NewContentDrawer({
   };
 
   const handleUpdateContent = (contentData) => {
+    const x = { ...contentData };
+
+    schemaDetails.schema.forEach((field) => {
+      if (field.type === 'dateAndTime') {
+        const dateFormat = 'YYYY/MM/DD HH:mm';
+        const testDateUtc = moment.utc(x[field.id]);
+        const localDate = testDateUtc.local();
+        x[field.id] = localDate.format(dateFormat);
+      }
+    });
     if (schemaSlug) {
       updateContent({
         url: `/content/${schemaSlug}/${editableData.id}`,
-        data: { data: contentData },
+        data: { data: x },
       }).then((res) => {
         closeContentDrawer();
       }).then((res) => {
@@ -51,7 +72,6 @@ export default function NewContentDrawer({
   };
 
   const onFinish = async (contentData) => {
-    // console.log(contentData);
     if (isEditable) {
       handleUpdateContent(contentData);
     } else {
