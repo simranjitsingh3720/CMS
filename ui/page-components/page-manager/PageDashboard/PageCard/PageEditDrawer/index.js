@@ -186,6 +186,10 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
               required: pageData.slug !== "",
               message: "Please enter the slug!",
             },
+            {
+              pattern: new RegExp("^[A-Za-z0-9]*$"),
+              message: "Only Letters and Numbers are accepted",
+            },
           ]}
         >
           <Input disabled={pageData.slug === ""} />
