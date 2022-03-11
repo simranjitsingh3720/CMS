@@ -42,12 +42,15 @@ export default function ContentTable({
   let finalData = [];
 
   if (data) {
+    // console.log(data);
+
     finalData = data.list.map((content) => ({
       ...content.data,
       Actions: { ...content.data, id: content.id },
     }));
   }
 
+  console.log(finalData);
   return (
     <div>
       {columns.length >= 2 ? (
