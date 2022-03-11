@@ -1,11 +1,13 @@
 // eslint-disable-next-line import/no-import-module-exports
-import { addMinutes } from 'date-fns';
+const { addMinutes } = require('date-fns');
 
 const validator = require('validator');
-
 const bcrypt = require('bcrypt');
-// const mailjet = require('node-mailjet').connect(process.env.MAILJET_PUBLIC_KEY, process.env.MAILJET_PRIVATE_KEY);
 const db = require('../../db/models/index');
+const { ValidityError, ServerError } = require('../helpers/error-helper');
+
+// const mailjet = require('node-mailjet')
+//   .connect(process.env.MAILJET_PUBLIC_KEY, process.env.MAILJET_PRIVATE_KEY);
 
 // function sendEmail(recipient, name, link) {
 //   return mailjet
@@ -41,101 +43,153 @@ const signup = async (req, res) => {
   const { body } = req;
   const { firstName, lastName, email, password } = body;
   if (!firstName || !lastName || !email || !password) {
-    return res.status(400).json({ message: 'Empty Fields are not allowed' });
+    let message = '';
+    if (!firstName) {
+      message += 'firstName is required';
+    } else if (!lastName) {
+      message += 'lastName is required';
+    } else if (!email) {
+      message += 'email is required';
+    } else if (!password) {
+      message += 'password  is required';
+    }
+
+    throw new ValidityError(message);
   }
   const isValidEmail = (/\S+@\S+\.\S+/).test(email);
+
   if (!isValidEmail) {
-    return res.status(400).json({ message: 'Email format not correct' });
+    throw new ValidityError('Invalid Email ID');
   }
+
   const salt = await bcrypt.genSalt();
   const hashedPassword = await bcrypt.hash(password, salt);
   const userDetails = { ...body, password: hashedPassword };
-  try {
-    const user = await db.User.create(userDetails);
-    req.session.user = user;
-    return res.status(200).json({ id: user.id, sessionId: req.session.id });
-  } catch (err) {
-    return res.status(400).json({ message: 'Some problem in inserting user' });
-  }
+
+  const user = await db.User.create(userDetails);
+  req.session.user = user;
+  return res.status(200).json({ id: user.id, sessionId: req.session.id });
 };
 
 const signin = async (req, res) => {
   const { email, password, remember } = req.body;
+
   if (!email || !password) {
-    return res.status(400).send({ message: 'Requested email or password is missing' });
+    let message = '';
+
+    if (!email) {
+      message += 'email is required';
+    } else if (!password) {
+      message += 'password is required';
+    }
+    throw new ValidityError(message);
   }
 
   const user = await db.User.findOne({ where: { email }, include: { model: db.Asset, as: 'ProfilePicture' } });
   if (!user) {
-    return res.status(400).json({ message: 'Email does not exist' });
+    throw ValidityError('Email does not exist');
   }
+
   const isPasswordSame = await bcrypt.compare(password, user.password);
   if (!isPasswordSame) {
-    return res.status(400).json({ message: 'Password is incorrect' });
+    throw ValidityError('Password is incorrect');
   }
+
   req.session.user = user;
   if (remember) {
     req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000;
   } else {
     req.session.cookie.maxAge = 24 * 60 * 60 * 1000;
   }
+
   return res.status(200).json({ sessionId: req.session.id });
 };
 
 const signout = async (req, res) => {
   await req.session.destroy();
-
-  res.status(200).json({ message: 'session destroyed' });
+  res.status(200).json({ message: 'Logged Out Successfully' });
 };
 
 const recoverPassword = async (req, res) => {
   const { email } = req.body;
-  const user = await db.User.findOne({ where: { email } });
-  if (user) {
-    const fp = await db.ForgotPassword.findOne({ where: { user: user.id, isValid: true } });
-    if (fp) {
-      fp.isValid = false;
-      await fp.save();
-    }
-    const values = {
-      user: user.id,
-      expiresAt: addMinutes(new Date(), 100),
-      isValid: true,
-    };
-    await db.ForgotPassword.create(values);
-    // const name = `${user.firstName} ${user.lastName}`;
-    // sendEmail(email, name, link);
-    return res.status(200).json({ message: 'updated database' });
+
+  if (!email) {
+    throw ValidityError('Email required for recovery');
   }
-  return res.status(400).json({ message: 'Email not found in database' });
+
+  try {
+    const user = await db.User.findOne({ where: { email } });
+    if (user) {
+      const fp = await db.ForgotPassword.findOne({ where: { user: user.id, isValid: true } });
+      if (fp) {
+        fp.isValid = false;
+        await fp.save();
+      }
+      const values = {
+        user: user.id,
+        expiresAt: addMinutes(new Date(), 100),
+        isValid: true,
+      };
+      await db.ForgotPassword.create(values);
+      // const name = `${user.firstName} ${user.lastName}`;
+      // sendEmail(email, name, link);
+      return res.status(200).json({ message: 'Password recovered successfully' });
+    }
+    throw ValidityError('Email does not exists');
+  } catch (error) {
+    return res.status(500).json({ code: 'ServerError', message: 'Some problem in inserting user' });
+  }
 };
 
 const changePassword = async (req, res) => {
   const { password, token } = req.body;
-  const user = await db.ForgotPassword.findOne({ where: { id: token } });
-  if (user && user.isValid && user.expiresAt > addMinutes(new Date(), 0)) {
-    const userReq = await db.User.findOne({ where: { id: user.user } });
-    const salt = await bcrypt.genSalt();
-    const hashedPassword = await bcrypt.hash(password, salt);
-    userReq.password = hashedPassword;
-    await userReq.save();
-    user.isValid = false;
-    await user.save();
-    return res.status(200).json({ message: 'Password updated' });
+
+  if (!password) {
+    return res.status(400).json({ code: 'ValidationError', message: 'Password required' });
   }
-  return res.status(400).json({ message: 'Password not updated. Some problem' });
+
+  if (!token) {
+    return res.status(400).json({ code: 'ValidationError', message: 'Link is invalid' });
+  }
+
+  try {
+    const user = await db.ForgotPassword.findOne({ where: { id: token } });
+    if (user && user.isValid && user.expiresAt > addMinutes(new Date(), 0)) {
+      const userReq = await db.User.findOne({ where: { id: user.user } });
+      const salt = await bcrypt.genSalt();
+      const hashedPassword = await bcrypt.hash(password, salt);
+      userReq.password = hashedPassword;
+      await userReq.save();
+      user.isValid = false;
+      await user.save();
+      return res.status(200).json({ message: 'Password updated' });
+    }
+    return res.status(400).json({ code: 'ValidationError', message: 'Password not updated. Try again' });
+  } catch (error) {
+    return res.status(500).json({ code: 'ServerError', message: 'Server error.' });
+  }
 };
 
 const checkChangePasswordToken = async (req, res) => {
   const { token } = req.body;
+
+  if (!token) {
+    return res.status(400).json({ code: 'ValidationError', message: 'Invalid Link' });
+  }
+
   if (!validator.isUUID(token)) {
-    return res.status(400).json({ message: 'This password recovery link is invalid.' });
+    return res.status(400).json({ code: 'ValidationError', message: 'This password recovery link is invalid.' });
   }
-  const user = await db.ForgotPassword.findOne({ where: { id: token } });
-  if (!user || !user.isValid) {
-    return res.status(400).json({ message: 'This password recovery link is invalid.' });
+
+  try {
+    const user = await db.ForgotPassword.findOne({ where: { id: token } });
+    if (!user || !user.isValid) {
+      return res.status(400).json({ message: 'This password recovery link is invalid.' });
+    }
+    return res.status(200).json({ message: 'Show the form to change the password.' });
+  } catch (error) {
+    return res.status(500).json({ code: 'ServerError', message: 'Server error.' });
   }
-  return res.status(200).json({ message: 'Show the form to change the password.' });
 };
 
 module.exports = {
