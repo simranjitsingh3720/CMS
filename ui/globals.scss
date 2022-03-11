@@ -28,7 +28,7 @@
 }
 
 .ant-card.ant-card-bordered {
-  border-radius: 15px;
+  border-radius: 12px;
   width: 100%;
   margin: 0;
 }
@@ -38,5 +38,38 @@
 }
 
 .ant-card-body{
-  padding: 12px !important;
+  padding: 6px !important;
+}
+
+.card_componentW{
+  display: flex;
+  align-items: center;
+  margin: auto -16px auto -8px;
+  flex-wrap: wrap;
+}
+
+.card_title {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  padding-top: 6px;
+}
+
+.card_description{
+  margin: 0;
+}
+
+.card_action{
+  padding: 8px 0 0 0;
+  margin-top: 8px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 1px solid rgb(236, 233, 233);
+}
+.flex-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

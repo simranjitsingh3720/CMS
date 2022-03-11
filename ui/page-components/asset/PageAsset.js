@@ -45,16 +45,11 @@ function PageAsset() {
         refetch={refetch}
         data={[]}
       />
-      <List
-        style={{ marginTop: '16px', marginBottom: '16px' }}
-        grid={{ gutter: 16, column: 4 }}
-        dataSource={data && (data.list || [])}
-        renderItem={(item) => (
-          <List.Item>
-            <AssetCard key={item.id} data={item} refetch={refetch} />
-          </List.Item>
-        )}
-      />
+      <div className="card_componentW">
+        {((data && data.list) || []).map((item) => (
+          <AssetCard key={item.id} data={item} refetch={refetch} />
+        ))}
+      </div>
     </div>
   );
 }

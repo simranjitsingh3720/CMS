@@ -1,22 +1,26 @@
 import {
-  Card, message, Modal, Tooltip,
+  Button,
+  Card, message, Modal, Popover,
 } from 'antd';
 import {
-  DeleteOutlined,
-  EditOutlined,
   ExclamationCircleOutlined,
+  MoreOutlined,
+  PictureOutlined,
+  PlayCircleOutlined,
 } from '@ant-design/icons';
 import { useState } from 'react';
-import Asset from './Asset';
 import AssetDrawer from '../AssetDrawer';
 import styles from './style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
+import CardWrapper from '../../../components/CardWrapper';
 
-const { Meta } = Card;
 const { confirm } = Modal;
 
 function AssetCard({ data, refetch }) {
   const [visibleDrawer, setVisibleDrawer] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const [visible, setVisible] = useState(null);
 
   const [{ deleteError }, handleDelete] = useRequest(
     {
@@ -27,6 +31,7 @@ function AssetCard({ data, refetch }) {
   );
 
   const showConfirm = () => {
+    setVisible(false);
     confirm({
       title: 'Do you Want to delete these items?',
       icon: <ExclamationCircleOutlined />,
@@ -46,32 +51,73 @@ function AssetCard({ data, refetch }) {
     setVisibleDrawer(true);
   };
 
+  const handleClick = () => {
+    setVisible(false);
+  };
+
+  const handleVisible = () => {
+    setVisible(!visible);
+  };
+
+  const showModalPic = () => {
+    console.log('CLICKED');
+    setIsModalVisible(true);
+  };
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const content = (
+    <div>
+      <Button type="text" onClick={showModal}>Rename Asset</Button>
+      <br />
+      <Button type="text" onClick={showConfirm}>Delete Asset</Button>
+    </div>
+  );
+
   return (
     <>
-      <Card
-        style={{ width: 280, padding: '0px 15px', paddingTop: '15px', borderRadius: '8px' }}
-        cover={(
-          <Asset
-            data={data}
-          />
-    )}
-        className={styles.asset_card}
-        actions={[
-          <Tooltip title="Edit Asset">
-            <EditOutlined key="edit" onClick={showModal} style={{ border: '0px' }} />
+      <CardWrapper>
+        {(data && data.type === 'image')
+          ? (
+            <div
+              style={{
+                backgroundImage: `url(${data.url})`,
+                backgroundSize: 'cover',
+                height: '200px',
+              }}
+              onClick={showModalPic}
+            />
+          )
+          : (
+            <video style={{ height: '200px', width: '100%' }} src={data.url} onClick={showModalPic}>
+              Your browser does not support the video tag.
+            </video>
 
-          </Tooltip>,
-          <Tooltip title="Delete Asset">
-            <DeleteOutlined key="delete" onClick={showConfirm} style={{ border: '0px' }} />
+          ) }
 
-          </Tooltip>,
-        ]}
-      >
-        <Meta
-          title={data.name}
-          description={data.description}
-        />
-      </Card>
+        <div className={styles.asset_action}>
+          <div className="flex-container">
+            {data.type === 'image'
+              ? <PictureOutlined style={{ fontSize: '18px', marginRight: '5px' }} />
+              : <PlayCircleOutlined style={{ fontSize: '18px', marginRight: '5px' }} />}
+            <h3 style={{ margin: '0 ' }}>{data.name}</h3>
+          </div>
+          <Popover content={content} placement="bottomLeft">
+            <button
+              type="button"
+              className={styles.card_button}
+            >
+              <MoreOutlined />
+            </button>
+          </Popover>
+
+        </div>
+      </CardWrapper>
       <AssetDrawer
         flag={false}
         visible={visibleDrawer}
@@ -79,6 +125,35 @@ function AssetCard({ data, refetch }) {
         refetch={refetch}
         data={data}
       />
+
+      <Modal
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={null}
+        width={1200}
+        style={{ marginTop: '-40px' }}
+      >
+        {(data && data.type === 'image')
+          ? (
+            <div
+              style={{ backgroundImage: `url(${data.url})`, backgroundSize: 'cover', height: '80vh', width: '100%' }}
+            />
+          )
+          : (
+            <video
+              style={{ height: '100%', width: '100%' }}
+              src={data.url}
+              controls
+              autoPlay
+              loop
+              preload
+              onClick={showModalPic}
+            >
+              Your browser does not support the video tag.
+            </video>
+          ) }
+      </Modal>
     </>
   );
 }

@@ -3,11 +3,12 @@ import {
   EditOutlined,
   EyeOutlined,
 } from '@ant-design/icons';
-import { Card, Empty, Tooltip } from 'antd';
+import { Card, Empty, Tooltip, Divider } from 'antd';
 import { useRouter } from 'next/router';
 import styles from './style.module.scss';
 import PageEditDrawer from './PageEditDrawer';
 import { useRequest } from '../../../../helpers/request-helper';
+import CardWrapper from '../../../../components/CardWrapper';
 
 const { Meta } = Card;
 
@@ -58,49 +59,46 @@ function PageCard({ searchValue }) {
   if (error) return <p>Error!</p>;
 
   return (
-    <div>
-      <div className={styles.card_component}>
+    <>
+
+      <div className={styles.card_componentW}>
         { data && data.list.length <= 0 ? <div style={{ width: '100%' }}><Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /></div>
           : ((data && data.list) || []).map((page) => (
-            <Card
-              key={page.id}
-              style={{ width: 260, marginRight: 30 }}
-              cover={(
-                <div
-                  className={styles.card_image}
-                  style={{ backgroundImage: `url(${ssImage})`, backgroundSize: 'cover' }}
-                />
-
-              )}
-              actions={[
-                <Tooltip title="View Page">
-                  <EyeOutlined key="view" onClick={() => { handleView(page.slug); }} />
-                </Tooltip>,
-                <Tooltip title="Edit Page">
-                  <EditOutlined key="edit" onClick={() => { showDrawer(page); }} />
-                </Tooltip>,
-              ]}
-            >
+            <CardWrapper>
+              <div
+                className={styles.card_image}
+                style={{ backgroundImage: `url(${ssImage})`, backgroundSize: 'cover' }}
+              />
 
               <Meta
                 title={(
-                  <p className={styles.card_title}>
+                  <p className="card_title">
                     <span onClick={() => { handleEdit(page.slug); }}>
                       <span style={{ fontWeight: 'bold' }}>Title: </span>
                       {page.name}
                     </span>
                   </p>
-                  )}
+                   )}
                 description={(
-                  <p className={styles.card_description}>
+                  <p className="card_description">
                     <span style={{ fontWeight: 'bold' }}>Slug: </span>
                     /
                     {page.slug}
                   </p>
-                  )}
+                   )}
               />
 
-            </Card>
+              <div className="card_action">
+                <Tooltip title="View Page">
+                  <EyeOutlined key="view" onClick={() => { handleView(page.slug); }} style={{ fontSize: '16px' }} />
+                </Tooltip>
+                <Divider type="vertical" style={{ height: '22px', color: 'rgb(236, 233, 233)' }} />
+                <Tooltip title="Edit Page">
+                  <EditOutlined key="edit" onClick={() => { showDrawer(page); }} style={{ fontSize: '16px' }} />
+                </Tooltip>
+              </div>
+
+            </CardWrapper>
 
           ))}
 
@@ -114,7 +112,7 @@ function PageCard({ searchValue }) {
         fetch={refetch}
       />
       <div />
-    </div>
+    </>
   );
 }
 

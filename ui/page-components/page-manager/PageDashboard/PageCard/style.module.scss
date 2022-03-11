@@ -2,19 +2,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  // margin: 10px;
   flex-wrap: wrap;
-}
-
-.card_title {
-  margin: 0;
-  display: flex;
-  justify-content: space-between;
-  cursor: pointer;
-}
-
-.card_description{
-  margin: 0;
 }
 
 .card_image{
@@ -41,4 +29,11 @@
 .drawer_button{
   margin-bottom: 6px !important;
   margin-right: -38px !important;
+}
+
+.card_componentW{
+  display: flex;
+  align-items: center;
+  margin: auto -16px auto -8px;
+  flex-wrap: wrap;
 }
