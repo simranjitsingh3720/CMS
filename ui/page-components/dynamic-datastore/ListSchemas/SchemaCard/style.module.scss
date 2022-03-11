@@ -14,3 +14,77 @@
     border: none;
     border-radius: 15px;
 }
+
+.card_container{
+  flex: calc(34% - 16px);
+  flex-grow: 0;
+}
+.card{
+  display: flex;
+  flex-direction: column;
+  max-height: fit-content;
+  padding: 4px;
+  margin: 16px;
+  background-color: #fff;
+  border-radius: 8px;
+
+  &_header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 15px;
+    font-weight: bold;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  &_colorGray{
+    color: #999;
+  }
+
+  &_fields{
+    font-size: 0.9em;
+  }
+
+  &_heading{
+    margin-bottom: -5px;
+  }
+
+  &_body{
+    padding: 4px 15px;
+    height: 130px;
+    cursor: pointer;
+  }
+
+  &_para{
+    text-overflow:ellipsis;
+    overflow:hidden;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+  }
+
+  button{
+    background-color: rgb(125,76,205);
+    color: #fff;
+    border:none;
+    padding: 4px 20px;
+    border-radius: 15px;
+  }
+
+  &_action{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 15px;
+    border-top: 1px solid #f0f0f0;
+  }
+}
+
+.tableIcon{
+  font-size: 1.4rem;
+  color: #999;
+}
+.card_para{
+
+}

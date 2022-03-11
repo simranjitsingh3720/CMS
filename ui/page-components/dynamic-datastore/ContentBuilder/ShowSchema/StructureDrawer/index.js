@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Drawer, Form, Input, Button, Checkbox, Select, Divider, Card, Space, message,
 } from 'antd';
@@ -10,13 +10,13 @@ import { useRequest } from '../../../../../helpers/request-helper';
 const { TextArea } = Input;
 
 function StructureDrawer({
-  fieldsId, closeSchemaDrawer, data = {}, getSchema, fieldData, isEditable,
+  fieldsId, closeSchemaDrawer, data = {}, fieldData, isEditable, setReFetchSchema,
 }) {
   const [form] = Form.useForm();
-
   const [dataType, setDataType] = useState('');
   const [appearanceType, setAppearanceType] = useState('');
   const [loading, setLoading] = useState(false);
+
   const handleOnDataTypeChange = (value) => {
     setDataType(value);
   };
@@ -30,7 +30,7 @@ function StructureDrawer({
   };
 
   const [{ error },
-    executePatchCreate,
+    executeFieldCreate,
   ] = useRequest(
     {
       url: `/schema/${data.slug}/field`,
@@ -39,8 +39,9 @@ function StructureDrawer({
     },
     { manual: true },
   );
+
   const [{ },
-    executePatchUpdate,
+    executeFieldUpdate,
   ] = useRequest(
     {
       url: `/schema/${data.slug}/field/${fieldsId}`,
@@ -49,6 +50,7 @@ function StructureDrawer({
     },
     { manual: true },
   );
+
   const onFinish = async (values) => {
     const updatedValues = values;
 
@@ -78,9 +80,8 @@ function StructureDrawer({
     setLoading(true);
 
     if (!isEditable) {
-      await executePatchCreate({
+      await executeFieldCreate({
         data: {
-
           schema: values,
           fieldId: values.id,
         },
@@ -92,7 +93,7 @@ function StructureDrawer({
           setLoading(false);
           form.resetFields();
           closeSchemaDrawer();
-          getSchema();
+          setReFetchSchema(true);
         }
       });
 
@@ -100,13 +101,12 @@ function StructureDrawer({
         message.error('Field Not Added');
       }
     } else {
-      await executePatchUpdate({
+      await executeFieldUpdate({
         data: {
           schema: values,
-
         },
       }).then(() => {
-        getSchema();
+        setReFetchSchema(true);
       });
 
       if (error) {
@@ -135,8 +135,8 @@ function StructureDrawer({
       <Form
         name="basic"
         form={form}
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 10 }}
+        labelCol={{ span: 5 }}
+        wrapperCol={{ span: 18 }}
         initialValues={{
           name: (fieldData && fieldData.name),
           id: (fieldData && fieldData.id),
@@ -211,7 +211,8 @@ function StructureDrawer({
             </Form.Item>
           </Card>
           <Divider />
-          <Card title="Appearance Details">
+
+          <Card title="Appearance Details" style={{ width: 650 }}>
             <Form.Item name="type" label="Type" rules={[{ required: true }]}>
               <Select
                 defaultValue={(fieldData && fieldData.type)}
@@ -282,7 +283,7 @@ function StructureDrawer({
 
         <Form.Item
           wrapperCol={{
-            offset: 8,
+            offset: 19,
             span: 10,
           }}
         >
@@ -296,9 +297,7 @@ function StructureDrawer({
                 Submit
               </Button>
             )}
-
         </Form.Item>
-
       </Form>
     </Drawer>
   );

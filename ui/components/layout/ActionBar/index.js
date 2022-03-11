@@ -21,17 +21,17 @@ function ActionBar({ children = null, actions = {} }) {
       actions.searchBar.setSearchValue(e.target.value);
     };
     search = (
-      <Input placeholder="Enter search text" value={searchBar.searchValue} onChange={handleOnChange} className="action-searchBar" />
+      <Input placeholder={searchBar.placeholder ? searchBar.placeholder : 'Enter search text'} value={searchBar.searchValue} onChange={handleOnChange} className="action-searchBar" />
     );
   }
 
   return (
     <div className={styles.container}>
-      <div>
+      <div className="first-step">
         {buttons}
       </div>
       <div>{children}</div>
-      <div>
+      <div className="second-step">
         {search}
       </div>
     </div>

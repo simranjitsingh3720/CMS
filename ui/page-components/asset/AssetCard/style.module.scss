@@ -1,5 +1,14 @@
 .asset_card {
   :global(.ant-card-body) {
-      padding: 10px;
+  padding: 10px;
+  height: 68px;
   }
-}
+  :global(.ant-card-meta-description){
+  overflow: hidden;
+  text-overflow: ellipsis;
+  }
+  :global(.ant-card-meta-title){
+  overflow: hidden;
+  text-overflow: ellipsis;
+  }
+  }

@@ -63,8 +63,9 @@ function PageCard({ searchValue }) {
         { data && data.list.length <= 0 ? <div style={{ width: '100%' }}><Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /></div>
           : ((data && data.list) || []).map((page) => (
             <Card
+              id="third-step"
               key={page.id}
-              style={{ width: 260, margin: 15 }}
+              style={{ width: 260, marginRight: 30 }}
               cover={(
                 <div
                   className={styles.card_image}
@@ -74,10 +75,10 @@ function PageCard({ searchValue }) {
               )}
               actions={[
                 <Tooltip title="View Page">
-                  <EyeOutlined key="view" onClick={() => { handleView(page.slug); }} />
+                  <EyeOutlined key="view" onClick={() => { handleView(page.slug); }} id="fifth-step" />
                 </Tooltip>,
                 <Tooltip title="Edit Page">
-                  <EditOutlined key="edit" onClick={() => { showDrawer(page); }} />
+                  <EditOutlined key="edit" onClick={() => { showDrawer(page); }} id="sixth-step" />
                 </Tooltip>,
               ]}
             >
@@ -85,7 +86,7 @@ function PageCard({ searchValue }) {
               <Meta
                 title={(
                   <p className={styles.card_title}>
-                    <span onClick={() => { handleEdit(page.slug); }}>
+                    <span onClick={() => { handleEdit(page.slug); }} id="fourth-step">
                       <span style={{ fontWeight: 'bold' }}>Title: </span>
                       {page.name}
                     </span>

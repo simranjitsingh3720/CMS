@@ -10,7 +10,7 @@ function PageUser() {
   const [{}, refetch] = useRequest({
     url: '/user',
     params: {
-      q: searchValue,
+      q: searchValue.toLowerCase(),
     },
   });
   useEffect(() => {
@@ -46,10 +46,10 @@ function PageUser() {
   ];
 
   return (
-    <>
+    <div style={{ padding: '16px' }}>
       <ActionBar actions={actions} />
-      <Table columns={columns} dataSource={data} style={{ margin: '16px 32px' }} />
-    </>
+      <Table columns={columns} dataSource={data} style={{ marginTop: '16px', marginBottom: '16px' }} />
+    </div>
   );
 }
 export default PageUser;

@@ -13,13 +13,14 @@ function PageContent({ children = null }) {
   const { pathname } = router;
   return (
     <Content className={styles.content}>
+
       <div
         className={styles.site}
       >
         {!notDisplay && !blockRoute.includes(pathname) ? <PageTitle title={title} /> : null}
-
         {children}
       </div>
+
     </Content>
   );
 }

@@ -1,4 +1,5 @@
 const db = require('../../db/models');
+const { MissingError } = require('../helpers/error-helper');
 
 const getContent = async (req, res) => {
   const { schemaSlug, contentId } = req.query;
@@ -19,7 +20,7 @@ const getContent = async (req, res) => {
     content = { ...content.toJSON() };
     return res.status(200).json(content);
   }
-  return res.status(400).json({ message: 'Schema slug not found' });
+  throw new MissingError('Invalid content id');
 };
 
 const listContents = async (req, res) => {
@@ -37,13 +38,12 @@ const listContents = async (req, res) => {
 
     return res.status(200).json({ list: contents });
   }
-  return res.status(400).json({ message: 'invalid request' });
+  throw new MissingError('invalid slug');
 };
 
 const addContent = async (req, res) => {
   const { body, query } = req;
   const { schemaSlug } = query;
-
   // to get schema id from schema table
   const schema = await db.Schema.findOne({
     where: {
@@ -61,7 +61,7 @@ const addContent = async (req, res) => {
 
     return res.status(201).json({ id: content.id });
   }
-  return res.status(201).json({ message: 'Schema slug not found' });
+  throw new MissingError('Schema Not Found');
 };
 
 const updateContent = async (req, res) => {
@@ -85,20 +85,22 @@ const updateContent = async (req, res) => {
     if (updatedContent[0]) {
       return res.status(201).json({ id: contentId });
     }
-    return res.status(400).json({ message: 'No Data exists' });
+    throw new MissingError('No Data exists');
   }
 
-  return res.status(200).json({ message: 'Schema slug not found' });
+  throw new MissingError('Schema Not Found');
 };
 
 const deleteContent = async (req, res) => {
   const { schemaSlug, contentId } = req.query;
 
-  const schema = await db.Schema.findOne({
-    where: {
-      slug: schemaSlug,
+  const schema = await db.Schema.findOne(
+    {
+      where: {
+        slug: schemaSlug,
+      },
     },
-  });
+  );
 
   if (schema) {
     const deletedContent = await db.Content.destroy({
@@ -114,7 +116,7 @@ const deleteContent = async (req, res) => {
     return res.status(400).json({ message: 'No Data exists' });
   }
 
-  return res.status(400).json({ message: 'Schema slug not found' });
+  return res.status(400).json({ message: 'Schema not found' });
 };
 
 module.exports = {

@@ -1,19 +1,9 @@
+const route = require('../../../../../server/helpers/route-helper');
+
 const { getContent, updateContent, deleteContent } = require('../../../../../server/api-controllers/content-controller');
 
-const contentHandler = async (req, res) => {
-  switch (req.method) {
-    case 'GET':
-      return getContent(req, res);
-
-    case 'PATCH':
-      return updateContent(req, res);
-
-    case 'DELETE':
-      return deleteContent(req, res);
-
-    default:
-      return '';
-  }
-};
-
-export default contentHandler;
+module.exports = route({
+  GET: getContent,
+  PATCH: updateContent,
+  DELETE: deleteContent,
+});

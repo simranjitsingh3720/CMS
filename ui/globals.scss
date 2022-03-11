@@ -23,13 +23,21 @@
   border: 3px solid #f0f0f0;
 }
 
+.ant-card-cover{
+  margin:0 !important;
+}
 
 .ant-card.ant-card-bordered {
   border-radius: 15px;
-}
-.ant-tabs-nav-list{
   width: 100%;
+  margin: 0;
 }
-.ant-tabs-tab{
-  width: 50%;
+
+.ant-tabs-nav-wrap{
+  width: 100%;
+  border-bottom: 1px solid rgb(212, 197, 197) !important;
+}
+
+.ant-card-body{
+  padding: 12px !important;
 }

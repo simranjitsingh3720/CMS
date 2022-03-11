@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import axios from 'axios';
 import { ConfigProvider } from 'antd';
+import React from 'react';
 import PageLayout from '../../components/layout/PageLayout';
 import theme from '../../theme';
 // import RouteGuard from './RouteGuard';
@@ -46,7 +47,8 @@ CMSApp.getInitialProps = async ({ ctx }) => {
       sessionId: ctx?.req?.sessionID,
     };
   } else {
-    const res = await axios.get('/api/v1/user/me');
+    // for removing error provide full path
+    const res = await axios.get('http://localhost:8000/api/v1/user/me');
     session = res.data;
   }
   return { session };

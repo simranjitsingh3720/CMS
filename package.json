@@ -3,6 +3,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
+  
     "migrate": "yarn sequelize-cli db:create && yarn sequelize-cli db:migrate ",
     "dev": "node index.js",
     "build": "NODE_ENV=production next build",
@@ -12,7 +13,8 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
-    "antd": "^4.18.5",
+    "antd": "4.17.0",
+    "array-move": "^4.0.0",
     "aws-sdk": "^2.1066.0",
     "axios": "^0.25.0",
     "axios-hooks": "^3.0.0",
@@ -27,6 +29,7 @@
     "grapesjs": "^0.18.2",
     "grapesjs-preset-webpage": "^0.1.11",
     "html2canvas": "^1.4.1",
+    "moment": "^2.29.1",
     "mysql2": "^2.3.3",
     "next": "^12.0.9",
     "pg": "^8.7.3",
@@ -36,6 +39,8 @@
     "react-draggable": "^4.4.4",
     "react-hook-form": "^7.26.1",
     "react-html-parser": "^2.0.2",
+    "react-joyride": "^2.3.2",
+    "react-sortable-hoc": "^2.0.0",
     "sass": "^1.49.7",
     "sequelize": "^6.15.0",
     "use-react-screenshot": "^3.0.0"

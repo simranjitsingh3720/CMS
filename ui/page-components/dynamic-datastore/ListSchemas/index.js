@@ -4,32 +4,43 @@ import { useRouter } from 'next/router';
 import confirm from 'antd/lib/modal/confirm';
 import { Spin, Empty, message } from 'antd';
 import SchemaCard from './SchemaCard';
-import SchemaDrawer from './SchemaDrawer';
 import ActionBar from '../../../components/layout/ActionBar';
 import styles from './style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
+import SchemaModal from './SchemaModal';
+import SchemaTutorial from './SchemaTutorial';
 
 function ListSchema() {
   const { push } = useRouter();
   const [searchValue, setSearchValue] = useState('');
-  const [isDrawer, setIsDrawer] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
 
-  const showDrawer = () => {
-    setIsDrawer(true);
+  const showModal = () => {
+    setIsModalVisible(true);
   };
-  const closeDrawer = () => {
-    setIsDrawer(false);
+
+  const handleOk = () => {
+    setConfirmLoading(true);
+    setIsModalVisible(false);
+    setConfirmLoading(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
   };
 
   const actions = {
     searchBar: {
       searchValue,
       setSearchValue,
+      placeholder: 'Enter Search Table',
     },
     buttons: [{
-      name: 'New Schema',
+      name: 'Create new table',
       icon: <PlusOutlined />,
-      onClick: showDrawer,
+      onClick: showModal,
+
     }],
   };
 
@@ -38,7 +49,7 @@ function ListSchema() {
       method: 'GET',
       url: '/schema',
       params: {
-        q: searchValue,
+        q: searchValue.toLowerCase(),
       },
     },
   );
@@ -101,27 +112,31 @@ function ListSchema() {
   }, [deletedData]);
 
   return (
-    <div className={styles.listSchema_wrapper}>
-      <ActionBar actions={actions} />
-      <div>
-        {isDrawer
-          ? (
-            <SchemaDrawer
-              closeDrawer={closeDrawer}
-              fetchAllSchema={fetchAllSchema}
-              setIsDrawer={setIsDrawer}
-            />
-          )
-          : null}
+    <>
+      <SchemaTutorial />
 
-      </div>
+      <div style={{ padding: '16px' }}>
+        <ActionBar actions={actions} />
+        <div>
+          {isModalVisible
+            ? (
+              <SchemaModal
+                showModal={showModal}
+                isModalVisible={isModalVisible}
+                setIsModalVisible={setIsModalVisible}
+                confirmLoading={confirmLoading}
+                handleCancel={handleCancel}
+                handleOk={handleOk}
+                fetchAllSchema={fetchAllSchema}
+              />
+            )
+            : null}
 
-      <div style={{ textAlign: 'center' }}>
-        {showLoading()}
-      </div>
-      {/* {data && JSON.stringify(data)} */}
+        </div>
 
-      <div style={{ margin: '16px 32px' }}>
+        <div style={{ textAlign: 'center' }}>
+          {showLoading()}
+        </div>
         { data && data.list.length <= 0 ? (
           <div>
             <Empty
@@ -134,20 +149,23 @@ function ListSchema() {
     )}
             />
           </div>
-        )
-
-          : ((data && data.list) || []).map((schema) => (
+        ) : null}
+        <div className={styles.card_wrapper}>
+          {((data && data.list) || []).map((schema) => (
             <SchemaCard
               key={schema.id}
               id={schema.id}
               schemaSlug={schema.slug}
               schemaName={schema.title}
+              schemaDesc={schema.description}
               showSchema={showSchema}
               deleteSchema={deleteSchema}
+              totatlFields={schema.schema.length || 0}
             />
           ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
