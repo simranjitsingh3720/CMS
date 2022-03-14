@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { EditOutlined, EyeOutlined } from "@ant-design/icons";
-import { Card, Empty, Tooltip } from "antd";
-import { useRouter } from "next/router";
-import styles from "./style.module.scss";
-import PageEditDrawer from "./PageEditDrawer";
-import { useRequest } from "../../../../helpers/request-helper";
+import React, { useEffect, useState } from 'react';
+import { EditOutlined, EyeOutlined } from '@ant-design/icons';
+import { Card, Empty, Tooltip } from 'antd';
+import { useRouter } from 'next/router';
+import styles from './style.module.scss';
+import PageEditDrawer from './PageEditDrawer';
+import { useRequest } from '../../../../helpers/request-helper';
 
 const { Meta } = Card;
 
 function PageCard({ searchValue }) {
   const [ssImage, setSsImage] = useState(null);
   const [visible, setVisible] = useState(false);
-  const [pageData, setPageData] = useState("");
+  const [pageData, setPageData] = useState('');
 
   const { push } = useRouter();
 
@@ -24,12 +24,12 @@ function PageCard({ searchValue }) {
   };
 
   useEffect(() => {
-    setSsImage(localStorage.getItem("image"));
+    setSsImage(localStorage.getItem('image'));
   }, []);
 
   const [{ data, loading, error }, refetch] = useRequest({
-    url: "/page",
-    method: "GET",
+    url: '/page',
+    method: 'GET',
     params: {
       q: searchValue.toLowerCase(),
     },
@@ -38,15 +38,15 @@ function PageCard({ searchValue }) {
   const handleEdit = (newSlug) => {
     if (newSlug) {
       push(
-        "/admin/page-manager/builder/[pageID]",
-        `/admin/page-manager/builder/${newSlug}`
+        '/admin/page-manager/builder/[pageID]',
+        `/admin/page-manager/builder/${newSlug}`,
       );
     }
-    push("/admin/page-manager/builder");
+    push('/admin/page-manager/builder');
   };
 
   const handleView = (newSlug) => {
-    window.open(`/${newSlug}`, "_blank");
+    window.open(`/${newSlug}`, '_blank');
   };
 
   useEffect(() => {
@@ -57,7 +57,7 @@ function PageCard({ searchValue }) {
     <div>
       <div className={styles.card_component}>
         {data && data.list.length <= 0 ? (
-          <div style={{ width: "100%" }}>
+          <div style={{ width: '100%' }}>
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           </div>
         ) : (
@@ -66,15 +66,15 @@ function PageCard({ searchValue }) {
               id="third-step"
               key={page.id}
               style={{ width: 260, marginRight: 30 }}
-              cover={
+              cover={(
                 <div
                   className={styles.card_image}
                   style={{
                     backgroundImage: `url(${ssImage})`,
-                    backgroundSize: "cover",
+                    backgroundSize: 'cover',
                   }}
                 />
-              }
+              )}
               actions={[
                 <Tooltip title="View Page">
                   <EyeOutlined
@@ -97,7 +97,7 @@ function PageCard({ searchValue }) {
               ]}
             >
               <Meta
-                title={
+                title={(
                   <p className={styles.card_title}>
                     <span
                       onClick={() => {
@@ -105,17 +105,18 @@ function PageCard({ searchValue }) {
                       }}
                       id="fourth-step"
                     >
-                      <span style={{ fontWeight: "bold" }}>Title: </span>
+                      <span style={{ fontWeight: 'bold' }}>Title: </span>
                       {page.name}
                     </span>
                   </p>
-                }
-                description={
+                )}
+                description={(
                   <p className={styles.card_description}>
-                    <span style={{ fontWeight: "bold" }}>Slug: </span>/
+                    <span style={{ fontWeight: 'bold' }}>Slug: </span>
+                    /
                     {page.slug}
                   </p>
-                }
+                )}
               />
             </Card>
           ))

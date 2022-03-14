@@ -1,7 +1,7 @@
-import { MissingError, ValidityError } from "../helpers/error-helper";
+import { MissingError, ValidityError } from '../helpers/error-helper';
 
-const { Op, Sequelize } = require("sequelize");
-const db = require("../../db/models");
+const { Op, Sequelize } = require('sequelize');
+const db = require('../../db/models');
 
 export const createPage = async (req, res) => {
   const { body } = req;
@@ -9,11 +9,11 @@ export const createPage = async (req, res) => {
   const { name, slug } = body;
 
   if (!name || !slug) {
-    let message = "";
+    let message = '';
     if (!name) {
-      message = "name is required";
+      message = 'name is required';
     } else if (!slug) {
-      message = "slug is required";
+      message = 'slug is required';
     }
     throw new ValidityError(message);
   }
@@ -34,17 +34,17 @@ export const createPage = async (req, res) => {
 
 export const listPagesBySlug = async (req, res) => {
   const { query } = req;
-  const { q, isHome } = query || "";
+  const { q, isHome } = query || '';
 
   if (q) {
     if (!isHome) {
       const data = await db.Page.findAll({
-        attributes: ["slug", "name"],
+        attributes: ['slug', 'name'],
         where: {
           name: Sequelize.where(
-            Sequelize.fn("LOWER", Sequelize.col("name")),
-            "LIKE",
-            `%${q}%`
+            Sequelize.fn('LOWER', Sequelize.col('name')),
+            'LIKE',
+            `%${q}%`,
           ),
         },
       });
@@ -52,20 +52,20 @@ export const listPagesBySlug = async (req, res) => {
     }
   } else if (!isHome) {
     const data = await db.Page.findAll({
-      attributes: ["slug", "name"],
+      attributes: ['slug', 'name'],
     });
     return res.status(200).json({ list: data });
   }
 
-  const pageData = await db.Page.findOne({ where: { slug: "" } });
+  const pageData = await db.Page.findOne({ where: { slug: '' } });
   if (pageData) {
     return res.status(200).json({ data: pageData });
   }
-  return res.status(404).json({ message: "Page Not Found" });
+  return res.status(404).json({ message: 'Page Not Found' });
 };
 
 export const renderSingleData = async (req, res) => {
-  const { pageSlug } = req.query || "";
+  const { pageSlug } = req.query || '';
 
   if (pageSlug) {
     const pageData = await db.Page.findOne({ where: { slug: pageSlug } });
@@ -73,7 +73,7 @@ export const renderSingleData = async (req, res) => {
       return res.status(200).json({ data: pageData });
     }
   }
-  throw new MissingError("Page Not Found");
+  throw new MissingError('Page Not Found');
 };
 
 export const updateData = async (req, res) => {
@@ -85,19 +85,19 @@ export const updateData = async (req, res) => {
       data: stringyfiedCode,
       updatedBy: req.session.user.id,
     },
-    { where: { slug: pageSlug } }
+    { where: { slug: pageSlug } },
   );
   if (result) {
     return res.status(201).json({ data: result });
   }
-  throw new MissingError("Page Not Found");
+  throw new MissingError('Page Not Found');
 };
 
 export const updateHomeData = async (req, res) => {
   const code = req.body;
 
   if (!code) {
-    throw new ValidityError("Data required");
+    throw new ValidityError('Data required');
   }
 
   const stringyfiedCode = JSON.stringify(code);
@@ -106,29 +106,29 @@ export const updateHomeData = async (req, res) => {
       data: stringyfiedCode,
       updatedBy: req.session.user.id,
     },
-    { where: { slug: "" } }
+    { where: { slug: '' } },
   );
   if (result) {
     return res.status(201).json({ data: result });
   }
-  throw new MissingError("Page Not Found");
+  throw new MissingError('Page Not Found');
 };
 
 export const updateHome = async (req, res) => {
   const { pageSlug } = req.query;
 
   const findOldHome = await db.Page.findOne({
-    attributes: [[Sequelize.fn("MAX", Sequelize.col("slug")), "slug"]],
+    attributes: [[Sequelize.fn('MAX', Sequelize.col('slug')), 'slug']],
     where: {
       slug: {
-        [Op.substring]: "old-home",
+        [Op.substring]: 'old-home',
       },
     },
     paranoid: false,
   });
 
   if (findOldHome.dataValues.slug) {
-    const arr = findOldHome.dataValues.slug.split("-");
+    const arr = findOldHome.dataValues.slug.split('-');
     const countOldHome = ~~arr[arr.length - 1] + 1;
     const result = await db.Page.update(
       {
@@ -137,29 +137,29 @@ export const updateHome = async (req, res) => {
         name: `Old Home-${countOldHome}`,
         updatedBy: req.session.user.id,
       },
-      { where: { isHome: 1 } }
+      { where: { isHome: 1 } },
     );
     const result2 = await db.Page.update(
-      { slug: "", isHome: 1, name: "Home" },
-      { where: { slug: pageSlug } }
+      { slug: '', isHome: 1, name: 'Home' },
+      { where: { slug: pageSlug } },
     );
     if (result && result2) {
       return res.status(201).json({ data: result2 });
     }
   }
   const result = await db.Page.update(
-    { slug: "old-home", isHome: 0, name: "Old Home" },
-    { where: { isHome: 1 } }
+    { slug: 'old-home', isHome: 0, name: 'Old Home' },
+    { where: { isHome: 1 } },
   );
   const result2 = await db.Page.update(
-    { slug: "", isHome: 1, name: "Home" },
-    { where: { slug: pageSlug } }
+    { slug: '', isHome: 1, name: 'Home' },
+    { where: { slug: pageSlug } },
   );
   if (result && result2) {
     return res.status(201).json({ data: result2 });
   }
 
-  throw new MissingError("Page Not Found");
+  throw new MissingError('Page Not Found');
 };
 
 export const deletePage = async (req, res) => {
@@ -168,11 +168,11 @@ export const deletePage = async (req, res) => {
   if (deletedPage) {
     return res.status(200).json({ slug: pageSlug });
   }
-  throw new MissingError("Page Not Found");
+  throw new MissingError('Page Not Found');
 };
 
 export const updatePageData = async (req, res) => {
-  const { pageSlug } = req.query || "";
+  const { pageSlug } = req.query || '';
   const pageData = req.body;
   if (pageSlug) {
     const result = await db.Page.update(
@@ -180,7 +180,7 @@ export const updatePageData = async (req, res) => {
         name: pageData.name,
         slug: pageData.slug,
       },
-      { where: { slug: pageSlug } }
+      { where: { slug: pageSlug } },
     );
     if (result) {
       return res.status(201).json({ data: result });
@@ -188,10 +188,10 @@ export const updatePageData = async (req, res) => {
   }
   const result = await db.Page.update(
     { name: pageData.name },
-    { where: { slug: "" } }
+    { where: { slug: '' } },
   );
   if (result) {
     return res.status(201).json({ data: result });
   }
-  throw new MissingError("Page Not Found");
+  throw new MissingError('Page Not Found');
 };

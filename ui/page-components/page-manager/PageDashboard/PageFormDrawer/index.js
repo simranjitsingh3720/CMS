@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Button,
   Drawer,
@@ -8,16 +8,16 @@ import {
   Checkbox,
   Modal,
   Space,
-} from "antd";
-import { useRouter } from "next/router";
-import { useRequest } from "../../../../helpers/request-helper";
+} from 'antd';
+import { useRouter } from 'next/router';
+import { useRequest } from '../../../../helpers/request-helper';
 
 const { confirm } = Modal;
 
 function PageFormDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
   const [pageDetails, setPageDetails] = useState({
-    name: "",
-    slug: "",
+    name: '',
+    slug: '',
     isHome: 0,
   });
   const [checked, setChecked] = useState(false);
@@ -28,12 +28,12 @@ function PageFormDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
 
   const [{}, executePost] = useRequest(
     {
-      url: "/createPage",
-      method: "POST",
+      url: '/createPage',
+      method: 'POST',
     },
     {
       manual: true,
-    }
+    },
   );
 
   const handleCreatePage = () => {
@@ -44,17 +44,17 @@ function PageFormDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
     })
       .then(() => {
         setVisible(false);
-        message.success("Page Created Successfully", 5);
+        message.success('Page Created Successfully', 5);
         if (pageDetails.slug) {
           push(
-            "/admin/page-manager/builder/[pageID]",
-            `/admin/page-manager/builder/${pageDetails.slug}`
+            '/admin/page-manager/builder/[pageID]',
+            `/admin/page-manager/builder/${pageDetails.slug}`,
           );
         }
-        push("/admin/page-manager/builder");
+        push('/admin/page-manager/builder');
       })
       .catch((err) => {
-        message.info("Slug Name Already Taken");
+        message.info('Slug Name Already Taken');
       });
   };
 
@@ -77,10 +77,8 @@ function PageFormDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
           label="Page Name"
           name="page"
           value={pageDetails.name}
-          onChange={(e) =>
-            setPageDetails({ ...pageDetails, name: e.target.value })
-          }
-          rules={[{ required: true, message: "Please enter Page Name!" }]}
+          onChange={(e) => setPageDetails({ ...pageDetails, name: e.target.value })}
+          rules={[{ required: true, message: 'Please enter Page Name!' }]}
         >
           <Input />
         </Form.Item>
@@ -89,14 +87,12 @@ function PageFormDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
           label="Slug"
           name="slug"
           value={pageDetails.slug}
-          onChange={(e) =>
-            setPageDetails({ ...pageDetails, slug: e.target.value })
-          }
+          onChange={(e) => setPageDetails({ ...pageDetails, slug: e.target.value })}
           rules={[
-            { required: slugRule, message: "Please enter Page Slug!" },
+            { required: slugRule, message: 'Please enter Page Slug!' },
             {
-              pattern: new RegExp("^[A-Za-z0-9]*$"),
-              message: "Only Letters and Numbers are accepted",
+              pattern: new RegExp('^[A-Za-z0-9]*$'),
+              message: 'Only Letters and Numbers are accepted',
             },
           ]}
         >
@@ -109,7 +105,7 @@ function PageFormDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
           // wrapperCol={{ offset: 8, span: 16 }}
           onChange={() => {
             if (!checked) {
-              setPageDetails({ ...pageDetails, slug: "", isHome: 1 });
+              setPageDetails({ ...pageDetails, slug: '', isHome: 1 });
             } else {
               setPageDetails({ ...pageDetails, isHome: 0 });
               form.resetFields();
@@ -123,7 +119,7 @@ function PageFormDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
 
         <Form.Item
           wrapperCol={{ offset: 15, span: 10 }}
-          style={{ marginBottom: "0px " }}
+          style={{ marginBottom: '0px ' }}
         >
           <Space wrap>
             <Button type="primary" htmlType="submit">
