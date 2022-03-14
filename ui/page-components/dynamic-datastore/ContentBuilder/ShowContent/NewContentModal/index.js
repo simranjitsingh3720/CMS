@@ -1,4 +1,4 @@
-import { Button, Form, Modal } from 'antd';
+import { Button, Form, Modal, Space } from 'antd';
 import { React } from 'react';
 import moment from 'moment';
 import { useRequest } from '../../../../../helpers/request-helper';
@@ -85,7 +85,7 @@ export default function NewContentModal({
 
   return (
     <Modal
-      title={isEditable ? 'Edit content' : 'Add new Content'}
+      title={isEditable ? 'EDIT CONTENT' : 'ADD NEW CONTENT'}
       visible={showContentModal}
       onCancel={closeContentModal}
       width={700}
@@ -119,14 +119,18 @@ export default function NewContentModal({
             {schemaDetails.schema && schemaDetails.schema.length >= 1 ? (
               <Form.Item
                 wrapperCol={{
-                  offset: 10,
-                  span: 14,
+                  offset: 18,
                 }}
                 style={{ marginBottom: '0px' }}
               >
-                <Button type="primary" htmlType="submit">
-                  Submit
-                </Button>
+                <Space wrap>
+                  <Button type="primary" htmlType="submit">
+                    Submit
+                  </Button>
+                  <Button key="back" onClick={closeContentModal}>
+                    Cancel
+                  </Button>
+                </Space>
               </Form.Item>
             ) : (
               <div>
