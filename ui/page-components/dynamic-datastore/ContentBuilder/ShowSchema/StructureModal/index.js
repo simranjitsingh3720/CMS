@@ -245,7 +245,6 @@ function StructureModal({
                 defaultValue={(fieldData && fieldData.appearanceType) || appearanceTypes[dataType]}
                 placeholder="Select type of  appearance field..."
                 onChange={handleOnApperanceTypeChange}
-                // style={{ width: 200 }}
               >
                 {
             ((appearanceTypes && appearanceTypes[dataType])

@@ -26,7 +26,7 @@ function PageDashboard() {
     },
     buttons: [
       {
-        name: 'New page',
+        name: 'Add new page',
         icon: <PlusOutlined />,
         onClick: showDrawer,
       },

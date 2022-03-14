@@ -2,7 +2,7 @@ import { Form, Input, Button, message } from 'antd';
 import { useState } from 'react';
 import { useRequest } from '../../../helpers/request-helper';
 
-function AssetEditForm({ refetch, data, onDrawerClose }) {
+function AssetEditForm({ refetch, data, onModalClose }) {
   const [form] = Form.useForm();
   const formItemLayout = {
     labelCol: {
@@ -37,15 +37,16 @@ function AssetEditForm({ refetch, data, onDrawerClose }) {
       setLoading(false);
       refetch();
       form.resetFields();
-      onDrawerClose();
+      onModalClose();
       message.success('Asset Updated');
     }
   };
   return (
     <Form
       form={form}
+      layout="vertical"
       name="validate_other"
-      {...formItemLayout}
+      // {...formItemLayout}
       onFinish={SubmitDetails}
       loading={loading}
       initialValues={{ name: data.name, description: data.description }}
@@ -63,9 +64,17 @@ function AssetEditForm({ refetch, data, onDrawerClose }) {
       >
         <Input />
       </Form.Item>
-      <Button type="primary" loading={loading} htmlType="submit">
-        Submit
-      </Button>
+      <Form.Item
+        wrapperCol={{
+          span: 12,
+          offset: 20,
+        }}
+      >
+        <Button type="primary" loading={loading} htmlType="submit">
+          Submit
+        </Button>
+      </Form.Item>
+
     </Form>
   );
 }
