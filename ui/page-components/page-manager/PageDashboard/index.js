@@ -24,11 +24,13 @@ function PageDashboard() {
       placeholder: 'Enter Search Page',
 
     },
-    buttons: [{
-      name: 'New page',
-      icon: <PlusOutlined />,
-      onClick: showDrawer,
-    }],
+    buttons: [
+      {
+        name: 'New page',
+        icon: <PlusOutlined />,
+        onClick: showDrawer,
+      },
+    ],
   };
 
   return (
