@@ -23,7 +23,6 @@ function PageCard({ searchValue }) {
     setVisible(false);
   };
   const showDrawer = (data) => {
-    console.log(data);
     setVisible(true);
     setPageData(data);
   };
@@ -42,7 +41,10 @@ function PageCard({ searchValue }) {
 
   const handleEdit = (newSlug) => {
     if (newSlug) {
-      push('/admin/page-manager/builder/[pageID]', `/admin/page-manager/builder/${newSlug}`);
+      push(
+        '/admin/page-manager/builder/[pageID]',
+        `/admin/page-manager/builder/${newSlug}`,
+      );
     }
     push('/admin/page-manager/builder');
   };
@@ -55,13 +57,10 @@ function PageCard({ searchValue }) {
     refetch();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error!</p>;
-
   return (
     <>
 
-      <div className={styles.card_component_container}>
+      <div className="card_component_container">
         { data && data.list.length <= 0 ? <div style={{ width: '100%' }}><Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /></div>
           : ((data && data.list) || []).map((page) => (
             <CardWrapper>

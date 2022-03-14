@@ -13,6 +13,8 @@ import {
 } from 'antd';
 import moment from 'moment';
 
+// moment.tz.setDefault('America/Los_Angeles');
+
 const { TextArea } = Input;
 export const getInitialValues = (fields, editableData, isEditable) => {
   const values = {};
@@ -106,6 +108,7 @@ function GetFields(appearenceType, field) {
     case 'dateAndTime':
       return (
         <Form.Item name={id} label={name} rules={[{ required }]}>
+
           <DatePicker
             name="dateAndTime"
             format="YYYY/MM/DD HH:mm"

@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       schema: { type: DataTypes.JSON, defaultValue: [] },
       title: { type: DataTypes.STRING },
       description: { type: DataTypes.STRING },
-      createdBy: { type: DataTypes.UUID },
+      createdBy: { type: DataTypes.UUID, allowNull: false },
       createdAt: { type: DataTypes.DATE },
       updatedBy: { type: DataTypes.UUID },
       updatedAt: { type: DataTypes.DATE },
