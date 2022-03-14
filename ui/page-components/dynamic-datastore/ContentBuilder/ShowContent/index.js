@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { PlusOutlined } from '@ant-design/icons';
 import { Spin } from 'antd';
-import NewContentDrawer from './NewContentDrawer';
+import NewContentModal from './NewContentModal';
 import ActionBar from '../../../../components/layout/ActionBar';
 import ContentTable from './ContentTable';
 import { useRequest } from '../../../../helpers/request-helper';
 
 function ShowContent({ schema }) {
   const router = useRouter();
-  const [isContentDrawer, setIsContentDrawer] = useState(false);
+  const [isContentModal, setIsContentModal] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [isEditable, setIsEditable] = useState(false);
   const [editableData, setEditableData] = useState([]);
@@ -33,17 +33,17 @@ function ShowContent({ schema }) {
     setEditableData(content);
   };
 
-  const showContentDrawer = () => {
-    setIsContentDrawer(true);
+  const showContentModal = () => {
+    setIsContentModal(true);
   };
 
-  const closeContentDrawer = () => {
-    setIsContentDrawer(false);
+  const closeContentModal = () => {
+    setIsContentModal(false);
   };
 
   const addNewContent = () => {
     setIsEditable(false);
-    showContentDrawer();
+    showContentModal();
   };
 
   const actions = {
@@ -69,22 +69,22 @@ function ShowContent({ schema }) {
 
       {loading ? <Spin size="large" /> : null}
       {error ? <h1>{error}</h1> : null}
-      {isContentDrawer ? (
-        <NewContentDrawer
-          closeContentDrawer={closeContentDrawer}
+      {isContentModal ? (
+        <NewContentModal
+          closeContentModal={closeContentModal}
           schemaDetails={schema || []}
           getContent={getContent}
           isEditable={isEditable}
           editableData={editableData}
-          showContentDrawer={showContentDrawer}
+          showContentModal={showContentModal}
         />
       ) : null }
 
       <ContentTable
         tableSchema={schema || []}
         data={data}
-        showContentDrawer={showContentDrawer}
-        closeContentDrawer={closeContentDrawer}
+        showContentModal={showContentModal}
+        closeContentModal={closeContentModal}
         setIsEditable={setIsEditable}
         getEditableData={getEditableData}
         deleteContent={deleteContent}

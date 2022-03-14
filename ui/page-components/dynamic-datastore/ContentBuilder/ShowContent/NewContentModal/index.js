@@ -1,13 +1,13 @@
-import { Button, Card, Form, Modal } from 'antd';
+import { Button, Form, Modal } from 'antd';
 import { React } from 'react';
 import moment from 'moment';
 import { useRequest } from '../../../../../helpers/request-helper';
 import GetFields, { getInitialValues } from './GetFields/GetFields';
 
-export default function NewContentDrawer({
-  closeContentDrawer,
+export default function NewContentModal({
+  closeContentModal,
   schemaDetails, getContent, isEditable, editableData,
-  showContentDrawer,
+  showContentModal,
 }) {
   const fields = schemaDetails.schema || [];
   const initialValues = getInitialValues(schemaDetails.schema, editableData, isEditable);
@@ -42,7 +42,7 @@ export default function NewContentDrawer({
         url: `/content/${schemaSlug}`,
         data: { data: x },
       }).then((res) => {
-        closeContentDrawer();
+        closeContentModal();
       }).then((res) => {
         getContent();
       });
@@ -65,7 +65,7 @@ export default function NewContentDrawer({
         url: `/content/${schemaSlug}/${editableData.id}`,
         data: { data: x },
       }).then((res) => {
-        closeContentDrawer();
+        closeContentModal();
       }).then((res) => {
         getContent();
       });
@@ -86,8 +86,8 @@ export default function NewContentDrawer({
   return (
     <Modal
       title={isEditable ? 'Edit content' : 'Add new Content'}
-      visible={showContentDrawer}
-      onCancel={closeContentDrawer}
+      visible={showContentModal}
+      onCancel={closeContentModal}
       width={700}
       footer={[]}
     >

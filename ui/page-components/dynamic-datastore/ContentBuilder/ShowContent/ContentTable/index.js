@@ -11,12 +11,12 @@ const { confirm } = Modal;
 
 export default function ContentTable({
   tableSchema, data,
-  showContentDrawer, setIsEditable, getEditableData,
+  showContentModal, setIsEditable, getEditableData,
   deleteContent, getContent,
 }) {
   const handleEditContent = (content) => {
     getEditableData(content);
-    showContentDrawer(true);
+    showContentModal(true);
     setIsEditable(true);
   };
 
