@@ -5,7 +5,7 @@ import TextArea from 'antd/lib/input/TextArea';
 import style from './style.module.scss';
 import { useRequest } from '../../../../helpers/request-helper';
 
-function SchemaDrawer({ closeDrawer, setIsDrawer, fetchAllSchema }) {
+function SchemaDrawer({ closeModal, setIsDrawer, fetchAllSchema }) {
   const [error, setError] = useState('');
   const { push } = useRouter();
   const [form] = Form.useForm();
@@ -49,7 +49,7 @@ function SchemaDrawer({ closeDrawer, setIsDrawer, fetchAllSchema }) {
   };
 
   return (
-    <Drawer title="Create New Schema" placement="right" onClose={() => closeDrawer()} visible>
+    <Drawer title="Create New Schema" placement="right" onClose={() => closeModal()} visible>
 
       <div className={style.error}>{error}</div>
       <Form

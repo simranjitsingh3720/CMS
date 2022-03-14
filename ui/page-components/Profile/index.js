@@ -228,6 +228,7 @@ function Profile() {
           listType="picture-card"
           className={styles.profile}
           showUploadList={false}
+          accept="image/*"
           action="/admin/profile"
           onChange={handleChange}
         >

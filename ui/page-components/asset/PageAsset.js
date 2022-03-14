@@ -1,15 +1,14 @@
 import { useState } from 'react';
-import { List } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import AssetCard from './AssetCard';
-import AssetDrawer from './AssetDrawer';
+import AssetModal from './AssetModal';
 import ActionBar from '../../components/layout/ActionBar';
 import { useRequest } from '../../helpers/request-helper';
 import AssetTutorial from './AssetTutorial';
 
 function PageAsset() {
-  const [visible, setVisible] = useState(false);
   const [searchValue, setSearchValue] = useState('');
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const [{ data }, refetch] = useRequest({
     method: 'GET',
@@ -19,8 +18,8 @@ function PageAsset() {
     },
   });
 
-  const showDrawer = () => {
-    setVisible(true);
+  const showModal = () => {
+    setIsModalVisible(true);
   };
 
   const actions = {
@@ -28,41 +27,43 @@ function PageAsset() {
       searchValue,
       setSearchValue,
     },
-    buttons: [
-      {
-        name: 'Add Asset',
-        icon: <PlusOutlined />,
-        onClick: showDrawer,
-      },
+    buttons: [{
+      name: 'Add Asset',
+      icon: <PlusOutlined />,
+      onClick: showModal,
+    },
     ],
   };
 
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
   return (
-    <>
+    <div>
       <AssetTutorial />
       <div style={{ padding: '16px' }}>
         <ActionBar actions={actions} />
-
-        <AssetDrawer
+        <AssetModal
           flag
-          visible={visible}
-          setVisible={setVisible}
+          isModalVisible={isModalVisible}
+          setIsModalVisible={setIsModalVisible}
           refetch={refetch}
+          handleOk={handleOk}
+          handleCancel={handleCancel}
           data={[]}
         />
-
-        <List
-          style={{ margin: '16px 32px' }}
-          grid={{ gutter: 16, column: 4 }}
-          dataSource={data && (data.list || [])}
-          renderItem={(item) => (
-            <List.Item>
-              <AssetCard key={item.id} data={item} refetch={refetch} />
-            </List.Item>
-          )}
-        />
+        <div className="card_component_container">
+          {((data && data.list) || []).map((item) => (
+            <AssetCard key={item.id} data={item} refetch={refetch} />
+          ))}
+        </div>
       </div>
-    </>
+    </div>
   );
 }
 
