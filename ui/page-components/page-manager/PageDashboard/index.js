@@ -21,6 +21,8 @@ function PageDashboard() {
     searchBar: {
       searchValue,
       setSearchValue,
+      placeholder: 'Enter Search Page',
+
     },
     buttons: [{
       name: 'New page',

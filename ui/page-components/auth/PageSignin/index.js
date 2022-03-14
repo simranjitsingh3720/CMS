@@ -28,13 +28,16 @@ function PageSignin() {
     }).then(() => {
       router.push('/admin');
       refetch();
-      message.success('Welcome to CMS Page 🎉');
+      message.success('Welcome to Cogoport CMS 🎉');
     })
-      .catch(() => message.error('Invalid Signin, Please try again'));
+      .catch((error) => {
+        message.error(error.response.data.messages[0]);
+      });
   };
   const onSignUpClick = async () => {
     await router.push('/admin/signup');
   };
+
   return (
     <Row>
       <Col className={styles.overlay} span={12} style={{ backgroundColor: 'red', height: '100vh' }}>

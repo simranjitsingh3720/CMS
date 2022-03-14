@@ -8,7 +8,7 @@ export const createPage = async (req, res) => {
 
   const { name, slug } = body;
 
-  if (!name || !slug) {
+  if (!name) {
     let message = '';
     if (!name) {
       message = 'name is required';

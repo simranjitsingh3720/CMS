@@ -27,6 +27,8 @@ function PageAsset() {
     searchBar: {
       searchValue,
       setSearchValue,
+      placeholder: 'Enter Search Asset',
+
     },
     buttons: [{
       name: 'Add Asset',
@@ -41,7 +43,6 @@ function PageAsset() {
       <AssetTutorial />
       <div style={{ padding: '16px' }}>
         <ActionBar actions={actions} />
-
         <AssetDrawer
           flag
           visible={visible}

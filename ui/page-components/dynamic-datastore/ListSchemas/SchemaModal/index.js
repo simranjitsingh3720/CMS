@@ -62,13 +62,8 @@ function SchemaModal({
         <div className={styles.error}>{error}</div>
         <Form
           name="basic"
+          layout="vertical"
           form={form}
-          labelCol={{
-            span: 8,
-          }}
-          wrapperCol={{
-            span: 16,
-          }}
           initialValues={{
             remember: true,
           }}
@@ -122,7 +117,7 @@ function SchemaModal({
 
           <Form.Item
             wrapperCol={{
-              offset: 8,
+              offset: 15,
               span: 16,
             }}
           >

@@ -23,6 +23,8 @@ function PageUser() {
     searchBar: {
       searchValue,
       setSearchValue,
+      placeholder: 'Enter user name',
+
     },
   };
   const columns = [

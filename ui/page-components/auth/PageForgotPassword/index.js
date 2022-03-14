@@ -29,9 +29,10 @@ export default function PagePasswordRecovery() {
         setSubmitted(true);
         setSuccessfullySubmitted(true);
       })
-      .catch(() => {
+      .catch((error) => {
         setSubmitted(true);
-        setDisplayMessage('The email does not exist');
+        // setDisplayMessage('The email does not exist');
+        setDisplayMessage(error.response.data.messages[0]);
       });
   };
   return (

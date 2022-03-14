@@ -71,6 +71,7 @@ function ShowSchema() {
     confirm({
       title: 'Do you Want to delete this Field',
       icon: <ExclamationCircleOutlined style={{ color: 'red' }} />,
+      content: <div style={{ color: 'red' }}>It may contains some sensitive data.</div>,
       onOk() {
         fieldDelete({
           url: `/schema/${schemaSlug}/field/${id}`,
@@ -152,7 +153,7 @@ function ShowSchema() {
               showSchemaModal={showEditSchemaModal}
               closeSchemaDrawer={closeEditSchemaModal}
               getSchema={getSchema}
-              isEditable
+              isEditable={isEditable}
               fieldsId={fieldsId}
               fieldData={fieldData}
               data={data}

@@ -30,7 +30,9 @@ function PageSignup() {
         message.success('Welcome to CMS Page');
         refetch();
       })
-      .catch(() => message.error('Invalid Signup, Email already exists'));
+      .catch((error) => {
+        message.error(error.response.data.messages[0]);
+      });
   };
 
   const onSignInClick = async () => {
@@ -49,7 +51,6 @@ function PageSignup() {
             style={{ width: 160 }}
           >
             SIGN IN
-
           </Button>
         </Typography>
       </Col>

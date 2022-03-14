@@ -33,7 +33,7 @@ function AssetCard({ data, refetch }) {
       async onOk() {
         await handleDelete();
         if (deleteError) {
-          message.error('Item not deleted');
+          message.error(deleteError.response.data.messages[0]);
         } else {
           message.success('Item Deleted');
           await refetch();
@@ -64,7 +64,6 @@ function AssetCard({ data, refetch }) {
               className="third-step"
               onClick={showModal}
             />
-
 
           </Tooltip>,
           <Tooltip title="Delete Asset">

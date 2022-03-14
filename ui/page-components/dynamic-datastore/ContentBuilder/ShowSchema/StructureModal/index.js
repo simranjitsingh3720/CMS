@@ -145,8 +145,7 @@ function StructureModal({
       <Form
         name="basic"
         form={form}
-        // labelCol={{ span: 8 }}
-        wrapperCol={{ span: 20 }}
+        layout="vertical"
         initialValues={{
           name: (fieldData && fieldData.name),
           id: (fieldData && fieldData.id),
@@ -226,7 +225,7 @@ function StructureModal({
               <Select
                 defaultValue={(fieldData && fieldData.type)}
                 size="large"
-                style={{ width: 200 }}
+                // style={{ width: 200 }}
                 placeholder="Select type of field..."
                 onChange={(value) => handleOnDataTypeChange(value)}
                 allowClear
@@ -246,7 +245,7 @@ function StructureModal({
                 defaultValue={(fieldData && fieldData.appearanceType) || appearanceTypes[dataType]}
                 placeholder="Select type of  appearance field..."
                 onChange={handleOnApperanceTypeChange}
-                style={{ width: 200 }}
+                // style={{ width: 200 }}
               >
                 {
             ((appearanceTypes && appearanceTypes[dataType])

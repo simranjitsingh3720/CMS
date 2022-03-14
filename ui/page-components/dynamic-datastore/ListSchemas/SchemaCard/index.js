@@ -25,8 +25,6 @@ function SchemaCard({
     </div>
   );
 
-  // const buttonWidth = 70;
-
   return (
     <div className={styles.card_container} id="fourth-step">
       <div className={styles.card}>
@@ -63,23 +61,6 @@ function SchemaCard({
             {schemaDesc}
           </p>
         </div>
-        {/* <div className={styles.card_action}>
-          <div>
-            <Button type="primary" onClick={() => showSchema(schemaSlug)} id="third-step">View Table</Button>
-
-          </div>
-          <div>
-            <Tooltip title="Delete Schema">
-              <DeleteOutlined
-                id="fourth-step"
-                style={{ color: 'red' }}
-                onClick={() => deleteSchema(schemaSlug)}
-                className={styles.button}
-              />
-            </Tooltip>
-          </div>
-        </div> */}
-
       </div>
 
     </div>
