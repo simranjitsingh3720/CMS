@@ -68,7 +68,7 @@ function GetFields(appearenceType, field) {
       return (
         <Form.Item name={id} label={name} rules={[{ required }]}>
           <InputNumber style={{
-            width: 200,
+            width: '100%',
           }}
           />
         </Form.Item>
