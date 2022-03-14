@@ -2,7 +2,7 @@ import { Form, Input, Button, message } from 'antd';
 import { useState } from 'react';
 import { useRequest } from '../../../helpers/request-helper';
 
-function AssetEditForm({ refetch, data, onDrawerClose }) {
+function AssetEditForm({ refetch, data, onModalClose }) {
   const [form] = Form.useForm();
   const formItemLayout = {
     labelCol: {
@@ -37,7 +37,7 @@ function AssetEditForm({ refetch, data, onDrawerClose }) {
       setLoading(false);
       refetch();
       form.resetFields();
-      onDrawerClose();
+      onModalClose();
       message.success('Asset Updated');
     }
   };

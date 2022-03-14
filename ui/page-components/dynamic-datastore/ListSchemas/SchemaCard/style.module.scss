@@ -18,6 +18,7 @@
 .card_container{
   flex: calc(34% - 16px);
   flex-grow: 0;
+  display: none;
 }
 .card{
   display: flex;
@@ -85,6 +86,13 @@
   font-size: 1.4rem;
   color: #999;
 }
-.card_para{
-
+.card_button{
+  background-color: white;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  &:focus{
+    outline: none;
+    box-shadow: none;
+  }
 }
