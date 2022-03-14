@@ -12,6 +12,7 @@ function PageBuilder() {
   const [imgFile, setImgFile] = useState('');
   const [url, setUrl] = useState('');
   const [yes, setYes] = useState(false);
+  const [show, toggleShow] = useState(true);
 
   const [{ data: getData }, refetchPageData] = useRequest(
     {
@@ -110,6 +111,7 @@ function PageBuilder() {
               },
             ],
           },
+
           layerManager: {
             appendTo: '#layers-container',
           },
@@ -171,32 +173,79 @@ function PageBuilder() {
 
         });
 
-        // Define commands
-        e.Commands.add('show-layers', {
-          getRowEl(e) { return e.getContainer().closest('.editor-row'); },
-          getLayersEl(row) { return row.querySelector('.layers-container'); },
+        // // Define commands
+        // e.Commands.add('show-layers', {
+        //   getRowEl(e1) { return e1.getContainer().closest('.editor-row'); },
+        //   getLayersEl(row) { return row.querySelector('#layers-container'); },
 
-          run(e, sender) {
-            const lmEl = this.getLayersEl(this.getRowEl(e));
-            lmEl.style.display = '';
-          },
-          stop(e, sender) {
-            const lmEl = this.getLayersEl(this.getRowEl(e));
-            lmEl.style.display = 'none';
-          },
-        });
-        e.Commands.add('show-styles', {
-          getRowEl(e) { return e.getContainer().closest('.editor-row'); },
-          getStyleEl(row) { return row.querySelector('.styles-container'); },
+        //   run(e2, sender) {
+        //     const lmEl = this.getLayersEl(this.getRowEl(e2));
+        //     lmEl.style.display = '';
+        //   },
+        //   stop(e3, sender) {
+        //     const lmEl = this.getLayersEl(this.getRowEl(e3));
+        //     lmEl.style.display = 'none';
+        //   },
+        // });
+        // e.Commands.add('show-styles', {
+        //   getRowEl(e4) { return e4.getContainer().closest('.editor-row'); },
+        //   getStyleEl(row) { return row.querySelector('#style-manager-container'); },
 
-          run(e, sender) {
-            const smEl = this.getStyleEl(this.getRowEl(e));
-            smEl.style.display = '';
-          },
-          stop(e, sender) {
-            const smEl = this.getStyleEl(this.getRowEl(e));
-            smEl.style.display = 'none';
-          },
+        //   run(e5, sender) {
+        //     const smEl = this.getStyleEl(this.getRowEl(e5));
+        //     smEl.style.display = '';
+        //   },
+        //   stop(e6, sender) {
+        //     const smEl = this.getStyleEl(this.getRowEl(e6));
+        //     smEl.style.display = 'none';
+        //   },
+        // });
+        e.Panels.addPanel({
+          id: 'basic-actions',
+          el: '.panel__basic-actions',
+          buttons: [
+            {
+              id: 'show-layers',
+              active: true, // active by default
+              className: 'btn-toggle-borders',
+              label: '<i class="fa fa-bars" />',
+              command() {
+                const x = document.getElementById('layers-container');
+                if (x.style.display === 'none') {
+                  x.style.display = 'block';
+                } else {
+                  x.style.display = 'none';
+                }
+              },
+              togglable: false,
+            }, {
+              id: 'show-style',
+              active: true,
+              label: '<i class="fa fa-paint-brush" />',
+              command() {
+                const x = document.getElementById('style-manager-container');
+                if (x.style.display === 'none') {
+                  x.style.display = 'block';
+                } else {
+                  x.style.display = 'none';
+                }
+              },
+              togglable: false,
+            }, {
+              id: 'show-block',
+              active: true,
+              label: '<i class="fa fa-th-large" />',
+              command() {
+                const x = document.getElementById('blocks');
+                if (x.style.display === 'none') {
+                  x.style.display = 'block';
+                } else {
+                  x.style.display = 'none';
+                }
+              },
+              togglable: false, // For grouping context of buttons from the same panel
+            },
+          ],
         });
 
         e.on('load', () => {
@@ -261,9 +310,10 @@ function PageBuilder() {
 
   return (
     <div>
+
       <Draggable>
         <div className="gjs-pn-panel gjs-pn-views-container gjs-one-bg gjs-two-color">
-          <span className="panel__switcher" />
+          <div className="panel__basic-actions" />
           <span id="layers-container" />
           <span id="blocks" />
           <span id="selectors-container" />

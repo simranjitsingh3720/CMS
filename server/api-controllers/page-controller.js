@@ -5,10 +5,6 @@ const db = require('../../db/models');
 
 export const createPage = async (req, res) => {
   const { body } = req;
-<<<<<<< HEAD
-  console.log('det', body);
-  const result = await db.Page.create({ ...body });
-=======
 
   const { name, slug } = body;
 
@@ -28,7 +24,6 @@ export const createPage = async (req, res) => {
     updatedBy: req.session.user.id,
   });
 
->>>>>>> 9f0d78a3c9f0a66f9132562e03bf5bee2ac7eb3d
   if (result) {
     return res.status(201).json({ data: result });
   }

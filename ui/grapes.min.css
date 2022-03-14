@@ -2100,10 +2100,13 @@ div.gjs-com-hover-move {
 	overflow: auto;
 	box-shadow: 0 0 5px rgba(0, 0, 0, .2);
   z-index: 0;
+  overflow: hidden;
 }
 
 .react-draggable{
   z-index: 500;
+  overflow: hidden;
+
 }
 
 .gjs-pn-buttons {
@@ -3929,4 +3932,8 @@ div.gjs-com-hover-move {
 
 .cm-s-hopscotch span.cm-error {
 	color: #fff
+}
+
+.panel__basic-actions {
+  position: initial;
 }
