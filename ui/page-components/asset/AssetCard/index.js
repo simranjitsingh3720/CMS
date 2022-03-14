@@ -1,14 +1,14 @@
 import {
   Button, message, Modal, Popover,
 } from 'antd';
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import {
   ExclamationCircleOutlined,
   MoreOutlined,
   PictureOutlined,
   PlayCircleOutlined,
 } from '@ant-design/icons';
-import AssetDrawer from '../AssetDrawer';
+import AssetModal from '../AssetModal';
 import styles from './style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
 import CardWrapper from '../../../components/CardWrapper';
@@ -16,10 +16,8 @@ import CardWrapper from '../../../components/CardWrapper';
 const { confirm } = Modal;
 
 function AssetCard({ data, refetch }) {
-  const [visibleDrawer, setVisibleDrawer] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [visible, setVisible] = useState(null);
-  const refPlayVideo = useRef(null);
+  const [isPreviewModalVisible, setIsPreviewModalVisible] = useState(false);
   const [{ deleteError }, handleDelete] = useRequest(
     {
       method: 'DELETE',
@@ -29,7 +27,6 @@ function AssetCard({ data, refetch }) {
   );
 
   const showConfirm = () => {
-    setVisible(false);
     confirm({
       title: 'Do you Want to delete these items?',
       icon: <ExclamationCircleOutlined />,
@@ -45,31 +42,34 @@ function AssetCard({ data, refetch }) {
     });
   };
 
-  const showModal = () => {
-    setVisibleDrawer(true);
-  };
-
-  const showModalPic = () => {
-    // refPlayVideo.current.internalPlayer.pauseVideo();
+  const showEditModal = () => {
     setIsModalVisible(true);
   };
+
+  const showAssetPreviewModal = () => {
+    setIsPreviewModalVisible(true);
+  };
   const handleOk = () => {
-    setIsModalVisible(false);
+    setIsPreviewModalVisible(false);
   };
 
   const handleCancel = () => {
+    setIsPreviewModalVisible(false);
+  };
+
+  const handleOkEdit = () => {
     setIsModalVisible(false);
   };
 
-  // const handleTest = () => {
-  //   refPlayVideo.current.internalPlayer.pauseVideo();
-  // };
+  const handleCancelEdit = () => {
+    setIsModalVisible(false);
+  };
 
   const content = (
     <div>
       <Button
         type="text"
-        onClick={showModal}
+        onClick={showEditModal}
         key="edit"
         className="third-step"
       >
@@ -100,11 +100,11 @@ function AssetCard({ data, refetch }) {
                 backgroundSize: 'cover',
                 height: '200px',
               }}
-              onClick={showModalPic}
+              onClick={showAssetPreviewModal}
             />
           )
           : (
-            <video style={{ height: '200px', width: '100%' }} src={data.url} onClick={showModalPic}>
+            <video style={{ height: '200px', width: '100%' }} src={data.url} onClick={showAssetPreviewModal}>
               Your browser does not support the video tag.
             </video>
 
@@ -128,45 +128,44 @@ function AssetCard({ data, refetch }) {
 
         </div>
       </CardWrapper>
-      <AssetDrawer
+      <AssetModal
         flag={false}
-        visible={visibleDrawer}
-        setVisible={setVisibleDrawer}
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        refetch={refetch}
+        handleOk={handleOkEdit}
+        handleCancel={handleCancelEdit}
         refetch={refetch}
         data={data}
       />
 
-      <Modal
-        visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        footer={null}
-        width={1200}
-        style={{ marginTop: '-40px' }}
-      >
-        {(data && data.type === 'image')
-          ? (
-            <div
-              style={{ backgroundImage: `url(${data.url})`, backgroundSize: 'cover', height: '80vh', width: '100%' }}
-            />
-          )
-          : (
-            <video
-              style={{ height: '100%', width: '100%' }}
-              src={data.url}
-              controls
-              autoPlay
-
-              // loop
-              onClick={showModalPic}
-              // ref={refPlayVideo}
-            >
-              Your browser does not support the video tag.
-            </video>
-          ) }
-
-        {/* <button type="button" onClick={handleTest}>TEST CLick</button> */}
-      </Modal>
+      {isPreviewModalVisible ? (
+        <Modal
+          visible={isPreviewModalVisible}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          footer={null}
+          width={1200}
+          style={{ marginTop: '-40px' }}
+        >
+          {(data && data.type === 'image')
+            ? (
+              <div
+                style={{ backgroundImage: `url(${data.url})`, backgroundSize: 'cover', height: '80vh', width: '100%' }}
+              />
+            )
+            : (
+              <video
+                style={{ height: '80vh', width: '100%' }}
+                src={data.url}
+                controls
+                autoPlay
+              >
+                Your browser does not support the video tag.
+              </video>
+            ) }
+        </Modal>
+      ) : null}
     </>
   );
 }

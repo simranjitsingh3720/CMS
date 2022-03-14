@@ -61,7 +61,7 @@ function PageCard({ searchValue }) {
   return (
     <>
 
-      <div className={styles.card_componentW}>
+      <div className={styles.card_component_container}>
         { data && data.list.length <= 0 ? <div style={{ width: '100%' }}><Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /></div>
           : ((data && data.list) || []).map((page) => (
             <CardWrapper>

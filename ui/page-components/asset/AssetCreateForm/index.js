@@ -5,14 +5,14 @@ import {
   Button,
   Upload,
   message,
-  Modal,
 } from 'antd';
 import { useState } from 'react';
 import { useRequest } from '../../../helpers/request-helper';
 
-function AssetCreateForm({ CloseDrawer, refetch }) {
+function AssetCreateForm({ CloseModal, refetch }) {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const [assetTitle, setAssetTitle] = useState('');
 
   const formItemLayout = {
     labelCol: {
@@ -27,7 +27,8 @@ function AssetCreateForm({ CloseDrawer, refetch }) {
     if (Array.isArray(e)) {
       return e;
     }
-
+    setAssetTitle(e.file.name);
+    form.setFieldsValue({ name: assetTitle });
     return e && e.fileList;
   };
 
@@ -68,13 +69,13 @@ function AssetCreateForm({ CloseDrawer, refetch }) {
           .then(() => {
             setLoading(false);
             form.resetFields();
-            CloseDrawer();
+            CloseModal();
             message.success('Asset Added');
             refetch();
           })
           .catch(() => {
             setLoading(false);
-            CloseDrawer();
+            CloseModal();
             refetch();
             message.error('Asset Not Added');
           });
@@ -87,21 +88,7 @@ function AssetCreateForm({ CloseDrawer, refetch }) {
       name="validate_other"
       {...formItemLayout}
       onFinish={SubmitDetails}
-      initialValues={{ 'input-number': 3 }}
     >
-      <Form.Item
-        name="name"
-        label="Name"
-        rules={[{ required: true, message: 'Please enter name!!' }]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        name="description"
-        label="Description"
-      >
-        <Input />
-      </Form.Item>
       <Form.Item
         name="upload"
         label="Upload"
@@ -109,9 +96,22 @@ function AssetCreateForm({ CloseDrawer, refetch }) {
         rules={[{ required: true }]}
         getValueFromEvent={normFile}
       >
-        <Upload name="logo" action="/upload.do" listType="picture">
+        <Upload name="logo" action="/upload.do" listType="picture" maxCount={1}>
           <Button icon={<UploadOutlined />}>Click to upload</Button>
         </Upload>
+      </Form.Item>
+      <Form.Item
+        name="name"
+        label="Name"
+        rules={[{ required: true, message: 'Please enter name!!' }]}
+      >
+        <Input value={assetTitle} onChange={(e) => setAssetTitle(e.target.value)} />
+      </Form.Item>
+      <Form.Item
+        name="description"
+        label="Description"
+      >
+        <Input />
       </Form.Item>
 
       <Form.Item
