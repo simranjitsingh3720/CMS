@@ -1124,14 +1124,14 @@ span.CodeMirror-selectedtext {
 	background-position: center;
 	background-image: url(data:image/gif;base64,R0lGODlhFAAUAPcAAAAAAJmZmZ2dnZ6enqKioqOjo6SkpKWlpaampqenp6ioqKmpqaqqqqurq/Hx8fLy8vT09PX19ff39/j4+Pn5+fr6+vv7+wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAP8ALAAAAAAUABQAAAihAP9FoPCvoMGDBy08+EdhQAIJCCMybCDAAYUEARBAlFiQQoMABQhKUJBxY0SPICEYHBnggEmDKAuoPMjS5cGYMxHW3IiT478JJA8M/CjTZ0GgLRekNGpwAsYABHIypcAgQMsITDtWJYBR6NSqMico9cqR6tKfY7GeBCuVwlipDNmefAtTrkSzB1RaIAoXodsABiZAEFB06gIBWC1mLVgBa0AAOw==)
 }
-/* 
-// @font-face {
-// 	font-family: "font3336";
-// 	src: url("../fonts/main-fonts.eot?v=20");
-// 	src: url("../fonts/main-fonts.woff?v=20") format("woff"), url("../fonts/main-fonts.ttf?v=20") format("truetype"), url("../fonts/main-fonts.svg?v=20") format("svg"), url("../fonts/main-fonts.eot?v=20") format("embedded-opentype");
-// 	font-weight: normal;
-// 	font-style: normal
-// } */
+
+@font-face {
+	font-family: "font3336";
+	src: url("./fonts/main-fonts.eot?v=20");
+	src: url("./fonts/main-fonts.woff?v=20") format("woff"), url("./fonts/main-fonts.ttf?v=20") format("truetype"), url("./fonts/main-fonts.svg?v=20") format("svg"), url("./fonts/main-fonts.eot?v=20") format("embedded-opentype");
+	font-weight: normal;
+	font-style: normal
+}
 
 .gjs-is__grab,
 .gjs-is__grab * {
@@ -2081,7 +2081,7 @@ div.gjs-com-hover-move {
 }
 
 .gjs-pn-options {
-	right: 15%;
+	right: 0;
 	top: 0
 }
 
@@ -2089,23 +2089,24 @@ div.gjs-com-hover-move {
 	border-bottom: 2px solid rgba(0, 0, 0, .2);
 	right: 0;
 	width: 15%;
-	z-index: 4
+	z-index: 4;
+  display: none
 }
 
 .gjs-pn-views-container {
 	height: 100%;
-	padding: 42px 0 0;
+	padding: 10px 0 0;
 	/* right: 0; */
 	width: 15%;
 	overflow: auto;
 	box-shadow: 0 0 5px rgba(0, 0, 0, .2);
   z-index: 0;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .react-draggable{
   z-index: 500;
-  overflow: hidden;
+  /* overflow: hidden; */
 
 }
 

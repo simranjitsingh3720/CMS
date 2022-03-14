@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 // import './grapes.min.css';
+// import 'grapesjs/dist/css/grapes.min.css';
 import GrapesJS from 'grapesjs';
 import gjsPresetWebpage from 'grapesjs-preset-webpage';
 import Draggable from 'react-draggable';
@@ -200,6 +201,11 @@ function PageBuilder() {
         //     smEl.style.display = 'none';
         //   },
         // });
+        const layersContainer = document.getElementById('layers-container');
+        const stylesContainer = document.getElementById('style-manager-container');
+        const selectorsContainer = document.getElementById('selectors-container');
+        const blocksContainer = document.getElementById('blocks');
+
         e.Panels.addPanel({
           id: 'basic-actions',
           el: '.panel__basic-actions',
@@ -210,11 +216,13 @@ function PageBuilder() {
               className: 'btn-toggle-borders',
               label: '<i class="fa fa-bars" />',
               command() {
-                const x = document.getElementById('layers-container');
-                if (x.style.display === 'none') {
-                  x.style.display = 'block';
+                if (layersContainer.style.display === 'none') {
+                  layersContainer.style.display = 'block';
+                  stylesContainer.style.display = 'none';
+                  selectorsContainer.style.display = 'none';
+                  blocksContainer.style.display = 'none';
                 } else {
-                  x.style.display = 'none';
+                  layersContainer.style.display = 'none';
                 }
               },
               togglable: false,
@@ -223,11 +231,14 @@ function PageBuilder() {
               active: true,
               label: '<i class="fa fa-paint-brush" />',
               command() {
-                const x = document.getElementById('style-manager-container');
-                if (x.style.display === 'none') {
-                  x.style.display = 'block';
+                if (stylesContainer.style.display === 'none') {
+                  stylesContainer.style.display = 'block';
+                  selectorsContainer.style.display = 'block';
+                  layersContainer.style.display = 'none';
+                  blocksContainer.style.display = 'none';
                 } else {
-                  x.style.display = 'none';
+                  stylesContainer.style.display = 'none';
+                  selectorsContainer.style.display = 'none';
                 }
               },
               togglable: false,
@@ -236,11 +247,13 @@ function PageBuilder() {
               active: true,
               label: '<i class="fa fa-th-large" />',
               command() {
-                const x = document.getElementById('blocks');
-                if (x.style.display === 'none') {
-                  x.style.display = 'block';
+                if (blocksContainer.style.display === 'none') {
+                  blocksContainer.style.display = 'block';
+                  stylesContainer.style.display = 'none';
+                  selectorsContainer.style.display = 'none';
+                  layersContainer.style.display = 'none';
                 } else {
-                  x.style.display = 'none';
+                  blocksContainer.style.display = 'none';
                 }
               },
               togglable: false, // For grouping context of buttons from the same panel
@@ -264,16 +277,16 @@ function PageBuilder() {
           styleManager.render();
         });
 
-        const bm = e.BlockManager;
-        e.on('load', () => {
-          e.BlockManager.render([
-            bm.get('column1').set('category', ''),
-            bm.get('column2').set('category', ''),
-            bm.get('column3').set('category', ''),
-            bm.get('text').set('category', ''),
-            bm.get('image').set('category', ''),
-          ]);
-        });
+        // const bm = e.BlockManager;
+        // e.on('load', () => {
+        //   e.BlockManager.render([
+        //     bm.get('column1').set('category', ''),
+        //     bm.get('column2').set('category', ''),
+        //     bm.get('column3').set('category', ''),
+        //     bm.get('text').set('category', ''),
+        //     bm.get('image').set('category', ''),
+        //   ]);
+        // });
 
         setEditor(e);
       }
@@ -294,14 +307,14 @@ function PageBuilder() {
     assetManager.render();
     const bm = editor.Blocks; // `Blocks` is an alias of `BlockManager`
 
-    // Add a new Block
-    const block = bm.add('BLOCK-ID', {
-      // Your block properties...
-      label: 'My block',
-      content: `<svg style="width:48px;height:48px" viewBox="0 0 24 24">
-      <path fill="currentColor" d="M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z" />
-      </svg>`,
-    });
+    // // Add a new Block
+    // const block = bm.add('BLOCK-ID', {
+    //   // Your block properties...
+    //   label: 'My block',
+    //   content: `<svg style="width:48px;height:48px" viewBox="0 0 24 24">
+    //   <path fill="currentColor" d="M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z" />
+    //   </svg>`,
+    // });
   }
   useEffect(() => {
     refetch();
@@ -316,8 +329,8 @@ function PageBuilder() {
           <div className="panel__basic-actions" />
           <span id="layers-container" />
           <span id="blocks" />
-          <span id="selectors-container" />
-          <span id="style-manager-container" />
+          <span id="selectors-container" style={{ display: 'none' }} />
+          <span id="style-manager-container" style={{ display: 'none' }} />
           <span id="traits-container" />
         </div>
       </Draggable>
