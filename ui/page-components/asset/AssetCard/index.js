@@ -49,6 +49,10 @@ function AssetCard({ data, refetch }) {
   const showAssetPreviewModal = () => {
     setIsPreviewModalVisible(true);
   };
+
+  const onKeyPressHandler = () => {
+    console.log('HELLO');
+  };
   const handleOk = () => {
     setIsPreviewModalVisible(false);
   };
@@ -101,6 +105,8 @@ function AssetCard({ data, refetch }) {
                 height: '200px',
               }}
               onClick={showAssetPreviewModal}
+              onKeyPress={onKeyPressHandler}
+              role="button"
             />
           )
           : (
@@ -135,7 +141,6 @@ function AssetCard({ data, refetch }) {
         refetch={refetch}
         handleOk={handleOkEdit}
         handleCancel={handleCancelEdit}
-        refetch={refetch}
         data={data}
       />
 

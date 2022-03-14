@@ -14,6 +14,11 @@ function AssetEditForm({ refetch, data, onModalClose }) {
   };
   const [loading, setLoading] = useState(false);
 
+  form.setFieldsValue({
+    name: data.name,
+    description: data.description,
+  });
+
   const [{ error },
     executePatch,
   ] = useRequest(
@@ -48,7 +53,6 @@ function AssetEditForm({ refetch, data, onModalClose }) {
       {...formItemLayout}
       onFinish={SubmitDetails}
       loading={loading}
-      initialValues={{ name: data.name, description: data.description }}
     >
       <Form.Item
         name="name"

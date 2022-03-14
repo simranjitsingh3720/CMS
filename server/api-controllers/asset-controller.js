@@ -110,7 +110,7 @@ const deleteAsset = async (req, res) => {
 
   try {
     await db.Asset.destroy({ where: { id: assetId } });
-    res.status(200).json({ id: assetId });
+    return res.status(200).json({ id: assetId });
   } catch (err) {
     if (err?.parent?.code === '22P02') {
       return res.status(400).json({
