@@ -5,23 +5,17 @@ import {
   Button,
   Upload,
   message,
+  Space,
 } from 'antd';
 import { useState } from 'react';
 import { useRequest } from '../../../helpers/request-helper';
+
+const { TextArea } = Input;
 
 function AssetCreateForm({ CloseModal, refetch }) {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [assetTitle, setAssetTitle] = useState('');
-
-  const formItemLayout = {
-    labelCol: {
-      span: 8,
-    },
-    wrapperCol: {
-      span: 17,
-    },
-  };
 
   const normFile = (e) => {
     if (Array.isArray(e)) {
@@ -111,18 +105,24 @@ function AssetCreateForm({ CloseModal, refetch }) {
         name="description"
         label="Description"
       >
-        <Input />
+        <TextArea />
       </Form.Item>
 
       <Form.Item
         wrapperCol={{
-          span: 12,
-          offset: 20,
+          span: 20,
+          offset: loading ? 14 : 15,
         }}
+        style={{ marginBottom: '0px' }}
       >
-        <Button type="primary" loading={loading} htmlType="submit">
-          Submit
-        </Button>
+        <Space wrap>
+          <Button type="primary" loading={loading} htmlType="submit">
+            Submit
+          </Button>
+          <Button key="back" onClick={CloseModal}>
+            Cancel
+          </Button>
+        </Space>
       </Form.Item>
     </Form>
   );

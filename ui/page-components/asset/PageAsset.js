@@ -37,10 +37,6 @@ function PageAsset() {
     ],
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
   const handleCancel = () => {
     setIsModalVisible(false);
   };
@@ -55,7 +51,6 @@ function PageAsset() {
           isModalVisible={isModalVisible}
           setIsModalVisible={setIsModalVisible}
           refetch={refetch}
-          handleOk={handleOk}
           handleCancel={handleCancel}
           data={[]}
         />

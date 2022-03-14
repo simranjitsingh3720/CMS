@@ -6,30 +6,29 @@ const db = require('../../db/models');
 export const createPage = async (req, res) => {
   const { body } = req;
 
-  const { name, slug } = body;
+  const { name } = body;
 
   if (!name) {
     let message = '';
     if (!name) {
       message = 'name is required';
-    } else if (!slug) {
-      message = 'slug is required';
     }
     throw new ValidityError(message);
   }
 
-  const result = await db.Page.create({
-    ...body,
-    createdBy: req.session.user.id,
-    updatedBy: req.session.user.id,
-  });
+  try {
+    const result = await db.Page.create({
+      ...body,
+      createdBy: req.session.user.id,
+      updatedBy: req.session.user.id,
+    });
 
-  if (result) {
-    return res.status(201).json({ data: result });
+    if (result) {
+      return res.status(201).json({ data: result });
+    }
+  } catch (error) {
+    throw new ValidityError('Slug name already taken. try with another slug name');
   }
-  return res
-    .status(404)
-    .json({ message: "Something went wrong, page couldn't created" });
 };
 
 export const listPagesBySlug = async (req, res) => {
@@ -121,7 +120,7 @@ export const updateHome = async (req, res) => {
     attributes: [[Sequelize.fn('MAX', Sequelize.col('slug')), 'slug']],
     where: {
       slug: {
-        [Op.substring]: 'old-home',
+        [Op.substring]: 'oldHome',
       },
     },
     paranoid: false,
@@ -132,7 +131,7 @@ export const updateHome = async (req, res) => {
     const countOldHome = ~~arr[arr.length - 1] + 1;
     const result = await db.Page.update(
       {
-        slug: `old-home-${countOldHome}`,
+        slug: `oldHome${countOldHome}`,
         isHome: 0,
         name: `Old Home-${countOldHome}`,
         updatedBy: req.session.user.id,
@@ -148,7 +147,7 @@ export const updateHome = async (req, res) => {
     }
   }
   const result = await db.Page.update(
-    { slug: 'old-home', isHome: 0, name: 'Old Home' },
+    { slug: 'oldHome', isHome: 0, name: 'Old Home' },
     { where: { isHome: 1 } },
   );
   const result2 = await db.Page.update(

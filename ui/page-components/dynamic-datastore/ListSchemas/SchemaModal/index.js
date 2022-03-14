@@ -56,7 +56,7 @@ function SchemaModal({
       visible={isModalVisible}
       confirmLoading={confirmLoading}
       onCancel={handleCancel}
-      footer={[]}
+      footer={null}
     >
       <div>
         <div className={styles.error}>{error}</div>
@@ -120,6 +120,7 @@ function SchemaModal({
               offset: 15,
               span: 16,
             }}
+            style={{ marginBottom: '0px' }}
           >
             <Button type="primary" htmlType="submit">
               Submit

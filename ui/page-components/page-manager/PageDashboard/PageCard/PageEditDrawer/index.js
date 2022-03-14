@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Form, Input, Button, message, Modal,
+  Form, Input, Button, message, Modal, Space,
 } from 'antd';
 import {
   ExclamationCircleOutlined,
@@ -134,11 +134,7 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
       title="Edit Page Details"
       onCancel={onFormClose}
       visible={visible}
-      footer={[
-        <Button key="back" onClick={onFormClose}>
-          Cancel
-        </Button>,
-      ]}
+      footer={null}
     >
       <Form
         className={styles.drawer_form}
@@ -174,23 +170,28 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
           <Input disabled={pageData.slug === ''} />
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 16 }} className={styles.drawer_button}>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className={styles.drawer_submit}
-          >
-            Submit
-          </Button>
+        <Form.Item wrapperCol={{ offset: 15 }}>
+          <Space wrap>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className={styles.drawer_submit}
+            >
+              Submit
+            </Button>
+            <Button key="back" onClick={onFormClose}>
+              Cancel
+            </Button>
+          </Space>
         </Form.Item>
       </Form>
 
       <Form className={styles.drawer_form}>
         <Form.Item
           label={<label style={{ fontSize: 15 }}>Make this Page Home</label>}
-          wrapperCol={{ offset: 7 }}
-          className={styles.drawer_button}
+          wrapperCol={{ offset: 8 }}
           colon={false}
+          style={{ marginBottom: '4px' }}
         >
           <Button
             type="primary"
@@ -210,9 +211,11 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
           label={
             <label style={{ color: 'red', fontSize: 15 }}>Danger Zone</label>
           }
-          wrapperCol={{ offset: 10 }}
+          wrapperCol={{ offset: 11 }}
           className={styles.drawer_button}
           colon={false}
+          style={{ marginBottom: '4px' }}
+
         >
           <Button
             type="danger"

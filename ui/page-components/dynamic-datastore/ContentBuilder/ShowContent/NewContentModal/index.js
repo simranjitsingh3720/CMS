@@ -1,12 +1,13 @@
-import { Button, Card, Drawer, Form } from 'antd';
-import React from 'react';
+import { Button, Form, Modal, Space } from 'antd';
+import { React } from 'react';
 import moment from 'moment';
 import { useRequest } from '../../../../../helpers/request-helper';
 import GetFields, { getInitialValues } from './GetFields/GetFields';
 
-export default function NewContentDrawer({
-  closeContentDrawer,
+export default function NewContentModal({
+  closeContentModal,
   schemaDetails, getContent, isEditable, editableData,
+  showContentModal,
 }) {
   const fields = schemaDetails.schema || [];
   const initialValues = getInitialValues(schemaDetails.schema, editableData, isEditable);
@@ -41,7 +42,7 @@ export default function NewContentDrawer({
         url: `/content/${schemaSlug}`,
         data: { data: x },
       }).then((res) => {
-        closeContentDrawer();
+        closeContentModal();
       }).then((res) => {
         getContent();
       });
@@ -64,7 +65,7 @@ export default function NewContentDrawer({
         url: `/content/${schemaSlug}/${editableData.id}`,
         data: { data: x },
       }).then((res) => {
-        closeContentDrawer();
+        closeContentModal();
       }).then((res) => {
         getContent();
       });
@@ -83,48 +84,63 @@ export default function NewContentDrawer({
   };
 
   return (
-    <Drawer title={isEditable ? 'Edit content' : 'Add new Content'} placement="right" onClose={closeContentDrawer} size="large" visible>
+    <Modal
+      title={isEditable ? 'EDIT CONTENT' : 'ADD NEW CONTENT'}
+      visible={showContentModal}
+      onCancel={closeContentModal}
+      width={700}
+      footer={null}
+    >
       <Form
         name="Add new Content form"
-        labelCol={{
-          span: 6,
-        }}
-        wrapperCol={{
-          span: 10,
-        }}
+        layout="vertical"
         initialValues={initialValues}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-        <Card title="Field Contents" style={{ width: 650 }}>
-          {fields && fields.map((field) => (
-            GetFields(field.appearanceType, field)
-          ))}
-          {isEditable ? (
-            <Form.Item>
-              <Button type="primary" htmlType="submit">
-                Update
-              </Button>
-            </Form.Item>
-          ) : (
-            <div>
-              {schemaDetails.schema && schemaDetails.schema.length >= 1 ? (
-                <Form.Item>
+        {fields && fields.map((field) => (
+          GetFields(field.appearanceType, field)
+        ))}
+        {isEditable ? (
+          <Form.Item
+            wrapperCol={{
+              offset: 10,
+              span: 14,
+            }}
+            style={{ marginBottom: '0px' }}
+          >
+            <Button type="primary" htmlType="submit">
+              Update
+            </Button>
+          </Form.Item>
+        ) : (
+          <div>
+            {schemaDetails.schema && schemaDetails.schema.length >= 1 ? (
+              <Form.Item
+                wrapperCol={{
+                  offset: 18,
+                }}
+                style={{ marginBottom: '0px' }}
+              >
+                <Space wrap>
                   <Button type="primary" htmlType="submit">
                     Submit
                   </Button>
-                </Form.Item>
-              ) : (
-                <div>
-                  Please add some fields in the table
-                </div>
-              )}
-            </div>
-          )}
+                  <Button key="back" onClick={closeContentModal}>
+                    Cancel
+                  </Button>
+                </Space>
+              </Form.Item>
+            ) : (
+              <div>
+                Please add some fields in the table
+              </div>
+            )}
+          </div>
+        )}
 
-        </Card>
       </Form>
-    </Drawer>
+    </Modal>
   );
 }

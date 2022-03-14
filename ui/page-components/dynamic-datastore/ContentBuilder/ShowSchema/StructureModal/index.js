@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Form, Input, Button, Checkbox, Select, Divider, Card, Space, message, Modal,
+  Form, Input, Button, Checkbox, Select, Card, Space, message, Modal,
 } from 'antd';
 import { dataTypes, appearanceTypes } from '../../schemaDetails';
 import ValueNames from './apperanceComponent/ValueNames';
@@ -87,20 +87,14 @@ function StructureModal({
           fieldId: values.id,
         },
       }).then((res) => {
-        if (res.data.message) {
-          message.error(res.data.message);
-        } else {
-          message.success('Field Added Successfully');
-          setLoading(false);
-          form.resetFields();
-          closeSchemaDrawer();
-          setReFetchSchema(true);
-        }
+        message.success('Field Added Successfully');
+        setLoading(false);
+        form.resetFields();
+        closeSchemaDrawer();
+        setReFetchSchema(true);
+      }).catch((err) => {
+        message.error(err.response.data.messages[0]);
       });
-
-      if (error) {
-        message.error('Field Not Added');
-      }
     } else {
       await executeFieldUpdate({
         data: {
@@ -108,11 +102,11 @@ function StructureModal({
         },
       }).then(() => {
         setReFetchSchema(true);
+      }).catch((err) => {
+        message.error(err.response.data.messages[0]);
       });
 
-      if (error) {
-        message.error('Field Not Updated');
-      } else {
+      if (!error) {
         setLoading(false);
 
         form.resetFields();
@@ -134,12 +128,12 @@ function StructureModal({
   return (
 
     <Modal
-      title={fieldData ? `Edit Field ${fieldData.name}` : 'Create a new Field'}
+      title={fieldData ? `EDIT FIELD : ${fieldData.name}` : 'CREATE A NEW FIELD'}
       visible={showSchemaModal}
       confirmLoading={loading}
       onCancel={closeSchemaDrawer}
       width={1200}
-      footer={[]}
+      footer={null}
 
     >
       <Form
@@ -290,19 +284,30 @@ function StructureModal({
 
         <Form.Item
           wrapperCol={{
-            offset: 19,
-            span: 10,
+            offset: 20,
+            span: 16,
           }}
+          style={{ marginBottom: '0px' }}
         >
           {isEditable ? (
-            <Button type="primary" htmlType="submit" style={{ marginTop: '15px' }}>
-              Update
-            </Button>
+            <Space wrap>
+              <Button type="primary" htmlType="submit">
+                Update
+              </Button>
+              <Button key="back" onClick={closeSchemaDrawer}>
+                Cancel
+              </Button>
+            </Space>
           )
             : (
-              <Button type="primary" htmlType="submit" style={{ marginTop: '15px' }}>
-                Submit
-              </Button>
+              <Space wrap>
+                <Button type="primary" htmlType="submit">
+                  Submit
+                </Button>
+                <Button key="back" onClick={closeSchemaDrawer}>
+                  Cancel
+                </Button>
+              </Space>
             )}
         </Form.Item>
       </Form>

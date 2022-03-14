@@ -1,4 +1,4 @@
-import { Form, Input, Button, message } from 'antd';
+import { Form, Input, Button, message, Space } from 'antd';
 import { useState } from 'react';
 import { useRequest } from '../../../helpers/request-helper';
 
@@ -67,12 +67,19 @@ function AssetEditForm({ refetch, data, onModalClose }) {
       <Form.Item
         wrapperCol={{
           span: 12,
-          offset: 20,
+          offset: loading ? 14 : 15,
         }}
+        style={{ marginBottom: '0px' }}
+
       >
-        <Button type="primary" loading={loading} htmlType="submit">
-          Submit
-        </Button>
+        <Space wrap>
+          <Button type="primary" loading={loading} htmlType="submit">
+            Submit
+          </Button>
+          <Button key="back" onClick={onModalClose}>
+            Cancel
+          </Button>
+        </Space>
       </Form.Item>
 
     </Form>

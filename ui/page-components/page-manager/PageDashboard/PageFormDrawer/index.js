@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   Button,
-  Drawer,
   Form,
   Input,
   message,
@@ -12,9 +11,7 @@ import {
 import { useRouter } from 'next/router';
 import { useRequest } from '../../../../helpers/request-helper';
 
-const { confirm } = Modal;
-
-function PageFormDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
+function PageFormDrawer({ onFormClose, visible, setVisible }) {
   const [pageDetails, setPageDetails] = useState({
     name: '',
     slug: '',
@@ -54,7 +51,7 @@ function PageFormDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
         push('/admin/page-manager/builder');
       })
       .catch((err) => {
-        message.info('Slug Name Already Taken');
+        message.info(err.response.data.messages[0]);
       });
   };
 
@@ -63,7 +60,7 @@ function PageFormDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
       title="Edit Page Details"
       onCancel={onFormClose}
       visible={visible}
-      footer={[]}
+      footer={null}
     >
       <Form
         name="basic"
@@ -102,7 +99,6 @@ function PageFormDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
         <Form.Item
           name="index"
           valuePropName="checked"
-          // wrapperCol={{ offset: 8, span: 16 }}
           onChange={() => {
             if (!checked) {
               setPageDetails({ ...pageDetails, slug: '', isHome: 1 });
@@ -119,7 +115,7 @@ function PageFormDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
 
         <Form.Item
           wrapperCol={{ offset: 15, span: 10 }}
-          style={{ marginBottom: '0px ' }}
+          style={{ marginBottom: '0px' }}
         >
           <Space wrap>
             <Button type="primary" htmlType="submit">
