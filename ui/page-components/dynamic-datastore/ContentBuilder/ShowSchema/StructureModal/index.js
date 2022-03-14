@@ -145,8 +145,8 @@ function StructureModal({
       <Form
         name="basic"
         form={form}
-        // labelCol={{ span: 8 }}
-        wrapperCol={{ span: 20 }}
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 16 }}
         initialValues={{
           name: (fieldData && fieldData.name),
           id: (fieldData && fieldData.id),

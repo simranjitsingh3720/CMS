@@ -76,6 +76,7 @@ function ShowContent({ schema }) {
           getContent={getContent}
           isEditable={isEditable}
           editableData={editableData}
+          showContentDrawer={showContentDrawer}
         />
       ) : null }
 
