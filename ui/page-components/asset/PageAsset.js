@@ -28,11 +28,12 @@ function PageAsset() {
       searchValue,
       setSearchValue,
     },
-    buttons: [{
-      name: 'Add Asset',
-      icon: <PlusOutlined />,
-      onClick: showDrawer,
-    },
+    buttons: [
+      {
+        name: 'Add Asset',
+        icon: <PlusOutlined />,
+        onClick: showDrawer,
+      },
     ],
   };
 
@@ -56,11 +57,7 @@ function PageAsset() {
           dataSource={data && (data.list || [])}
           renderItem={(item) => (
             <List.Item>
-              <AssetCard
-                key={item.id}
-                data={item}
-                refetch={refetch}
-              />
+              <AssetCard key={item.id} data={item} refetch={refetch} />
             </List.Item>
           )}
         />
