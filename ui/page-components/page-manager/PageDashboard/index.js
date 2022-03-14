@@ -22,11 +22,13 @@ function PageDashboard() {
       searchValue,
       setSearchValue,
     },
-    buttons: [{
-      name: 'New page',
-      icon: <PlusOutlined />,
-      onClick: showDrawer,
-    }],
+    buttons: [
+      {
+        name: 'New page',
+        icon: <PlusOutlined />,
+        onClick: showDrawer,
+      },
+    ],
   };
 
   return (
