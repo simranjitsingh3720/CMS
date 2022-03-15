@@ -147,7 +147,7 @@ function AssetCard({ data, refetch }) {
           {(data && data.type === 'image')
             ? (
               <div
-                style={{ backgroundImage: `url(${data.url})`, backgroundSize: 'cover', height: '80vh', width: '100%' }}
+                style={{ backgroundImage: `url(${data.url})`, backgroundSize: 'cover', backgroundPosition: 'center', height: '80vh', width: '100%' }}
               />
             )
             : (
