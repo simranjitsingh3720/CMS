@@ -1,4 +1,4 @@
-import { Card, Button, Space } from 'antd';
+import { Card, Button, Space, Tooltip } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import style from './style.module.scss';
 import FieldTutorial from '../../FieldTutorial';
@@ -25,22 +25,27 @@ function FieldCard({
             <div>{fields.appearanceType}</div>
           </div>
           <div>
-            <Button
-              id="edit_structure"
-              className={style.button}
-              onClick={() => handleEditSchemaFieldsModal(fields.id)}
-            >
-              <EditOutlined />
-            </Button>
-            <Space wrap>
+            <Tooltip title="edit field">
               <Button
-                danger
-                id="delete_structure"
+                id="edit_structure"
                 className={style.button}
-                onClick={() => deleteField(id)}
+                onClick={() => handleEditSchemaFieldsModal(fields.id)}
               >
-                <DeleteOutlined />
+                <EditOutlined />
               </Button>
+            </Tooltip>
+            <Space wrap>
+              <Tooltip title="delete field">
+
+                <Button
+                  danger
+                  id="delete_structure"
+                  className={style.button}
+                  onClick={() => deleteField(id)}
+                >
+                  <DeleteOutlined />
+                </Button>
+              </Tooltip>
             </Space>
           </div>
         </div>
