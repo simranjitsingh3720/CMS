@@ -6,6 +6,7 @@ import PageLayout from '../../components/layout/PageLayout';
 import theme from '../../theme';
 // import RouteGuard from './RouteGuard';
 import { SessionProvider } from '../../context/SessionContext';
+import { request } from '../../helpers/request-helper';
 
 if (typeof window !== 'undefined') {
   ConfigProvider.config({
@@ -48,7 +49,7 @@ CMSApp.getInitialProps = async ({ ctx }) => {
     };
   } else {
     // for removing error provide full path
-    const res = await axios.get('http://localhost:8000/api/v1/user/me');
+    const res = await request.get('/user/me');
     session = res.data;
   }
   return { session };

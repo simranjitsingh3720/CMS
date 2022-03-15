@@ -150,7 +150,7 @@ function ListSchema() {
             />
           </div>
         ) : null}
-        <div className={styles.card_wrapper}>
+        <div className="card_component_container">
           {((data && data.list) || []).map((schema) => (
             <SchemaCard
               key={schema.id}
