@@ -27,10 +27,12 @@ function PageSignup() {
     })
       .then(() => {
         router.push('/admin');
-        message.success('Welcome to CMS Page');
+        message.success('Welcome to Cogoport CMS!!!!');
         refetch();
       })
-      .catch(() => message.error('Invalid Signup, Email already exists'));
+      .catch((error) => {
+        message.error(error.response.data.messages[0]);
+      });
   };
 
   const onSignInClick = async () => {
@@ -49,7 +51,6 @@ function PageSignup() {
             style={{ width: 160 }}
           >
             SIGN IN
-
           </Button>
         </Typography>
       </Col>

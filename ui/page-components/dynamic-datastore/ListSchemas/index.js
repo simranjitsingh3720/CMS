@@ -14,16 +14,9 @@ function ListSchema() {
   const { push } = useRouter();
   const [searchValue, setSearchValue] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
 
   const showModal = () => {
     setIsModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setConfirmLoading(true);
-    setIsModalVisible(false);
-    setConfirmLoading(false);
   };
 
   const handleCancel = () => {
@@ -44,7 +37,7 @@ function ListSchema() {
     }],
   };
 
-  const [{ data, loading, error }, fetchAllSchema] = useRequest(
+  const [{ data, loading }, fetchAllSchema] = useRequest(
     {
       method: 'GET',
       url: '/schema',
@@ -54,15 +47,8 @@ function ListSchema() {
     },
   );
 
-  const [{
-    data: deletedData,
-    loading: deleteLoading,
-    error: deleteError,
-  }, schemaDelete] = useRequest(
-    {
-      method: 'DELETE',
-
-    },
+  const [{ data: deletedData }, schemaDelete] = useRequest(
+    { method: 'DELETE' },
     { manual: true },
   );
 
@@ -82,18 +68,17 @@ function ListSchema() {
       onOk() {
         schemaDelete({
           url: `/schema/${schemaSlug}`,
-        }).then((res) => {
-          if (res.data.message) {
-            message.error(res.data.message);
-          } else {
-            message.success('Deleted Successfully');
-          }
+        }).then(() => {
+          message.success('Deleted Successfully');
         }).catch((err) => {
-          message.error(err);
+          if (err.response.data.code === 404) {
+            console.log('HELLLLLLLLLLLLLLL');
+          }
+          message.error(err.response.data.message || err.response.data.messages[0]);
         });
       },
       onCancel() {
-
+        console.log('Cancelled');
       },
     });
   };
@@ -124,9 +109,7 @@ function ListSchema() {
                 showModal={showModal}
                 isModalVisible={isModalVisible}
                 setIsModalVisible={setIsModalVisible}
-                confirmLoading={confirmLoading}
                 handleCancel={handleCancel}
-                handleOk={handleOk}
                 fetchAllSchema={fetchAllSchema}
               />
             )

@@ -1,4 +1,4 @@
-import { Button, Form, Modal, Space } from 'antd';
+import { Button, Form, message, Modal, Space } from 'antd';
 import { React } from 'react';
 import moment from 'moment';
 import { useRequest } from '../../../../../helpers/request-helper';
@@ -28,7 +28,6 @@ export default function NewContentModal({
 
   const handleAddContent = (contentData) => {
     const x = { ...contentData };
-
     schemaDetails.schema.forEach((field) => {
       if (field.type === 'dateAndTime') {
         const dateFormat = 'YYYY/MM/DD HH:mm';
@@ -37,14 +36,18 @@ export default function NewContentModal({
         x[field.id] = localDate.format(dateFormat);
       }
     });
+
     if (schemaSlug) {
       addContent({
         url: `/content/${schemaSlug}`,
         data: { data: x },
-      }).then((res) => {
+      }).then(() => {
         closeContentModal();
-      }).then((res) => {
+        message.success('Added Successfully');
+      }).then(() => {
         getContent();
+      }).catch((err) => {
+        message.error(err.response.data.message || err.response.data.messages[0]);
       });
     }
   };
@@ -64,10 +67,13 @@ export default function NewContentModal({
       updateContent({
         url: `/content/${schemaSlug}/${editableData.id}`,
         data: { data: x },
-      }).then((res) => {
+      }).then(() => {
         closeContentModal();
-      }).then((res) => {
+        message.success('Updated Successfully');
+      }).then(() => {
         getContent();
+      }).catch((err) => {
+        message.error(err.response.data.message || err.response.data.messages[0]);
       });
     }
   };
@@ -80,7 +86,8 @@ export default function NewContentModal({
     }
   };
 
-  const onFinishFailed = (errorInfo) => {
+  const onFinishFailed = () => {
+    message.error('Fields are required');
   };
 
   return (
@@ -89,7 +96,7 @@ export default function NewContentModal({
       visible={showContentModal}
       onCancel={closeContentModal}
       width={700}
-      footer={[]}
+      footer={null}
     >
       <Form
         name="Add new Content form"
@@ -105,14 +112,18 @@ export default function NewContentModal({
         {isEditable ? (
           <Form.Item
             wrapperCol={{
-              offset: 10,
-              span: 14,
+              offset: 18,
             }}
             style={{ marginBottom: '0px' }}
           >
-            <Button type="primary" htmlType="submit">
-              Update
-            </Button>
+            <Space>
+              <Button type="primary" htmlType="submit">
+                Update
+              </Button>
+              <Button key="back" onClick={closeContentModal}>
+                Cancel
+              </Button>
+            </Space>
           </Form.Item>
         ) : (
           <div>
@@ -123,7 +134,7 @@ export default function NewContentModal({
                 }}
                 style={{ marginBottom: '0px' }}
               >
-                <Space wrap>
+                <Space>
                   <Button type="primary" htmlType="submit">
                     Submit
                   </Button>

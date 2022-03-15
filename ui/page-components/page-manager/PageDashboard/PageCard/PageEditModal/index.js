@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
-  Form, Input, Button, message, Drawer, Modal,
+  Form, Input, Button, message, Modal, Space,
 } from 'antd';
 import {
   ExclamationCircleOutlined,
@@ -12,26 +12,17 @@ import { useRequest } from '../../../../../helpers/request-helper';
 
 const { confirm } = Modal;
 
-function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
+function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
   const [form] = Form.useForm();
 
-  const [{ data }, refetch] = useRequest({
-    url: '/page/',
-    method: 'GET',
-    params: {
-      q: '',
-    },
-  });
-
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const [{ error }, executePatch] = useRequest(
+  const [{ }, executePatch] = useRequest(
     {
       url: `/page/${pageData.slug}`,
       method: 'PATCH',
     },
     { manual: true },
   );
+
   const [{ data: homeData }, executeHandleHome] = useRequest(
     {
       method: 'POST',
@@ -40,11 +31,11 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
       manual: true,
     },
   );
-  const SubmitDetails = async (values) => {
+  const submitDetails = async (values) => {
     await executePatch({
       data: {
-        name: values.name || pageData.name,
-        slug: values.slug || pageData.slug,
+        name: values.name,
+        slug: values.slug,
       },
     })
       .then(() => {
@@ -56,13 +47,11 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
         }, 1000);
       })
       .catch((err) => {
-        message.info('Slug Name Already Taken');
-        console.log(err);
+        message.info(err.response.data.message || err.response.data.messages[0]);
       });
   };
 
   function showConfirmHome(slug) {
-    console.log(slug);
     confirm({
       title: 'Are you sure to Change this page to Home?',
       icon: <ExclamationCircleOutlined />,
@@ -78,12 +67,15 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
       onOk() {
         executeHandleHome({
           url: `updateHome/${slug}`,
+        }).then(() => {
+          message.success('Home Page Updated Successfully!');
+          setVisible(false);
+          setTimeout(() => {
+            fetch();
+          }, 1000);
+        }).catch((err) => {
+          message.error(err.response.data.message || err.response.data.messages[0]);
         });
-        message.success('Home Page Updated Successfully!');
-        setVisible(false);
-        setTimeout(() => {
-          fetch();
-        }, 1000);
       },
       onCancel() {
         console.log('Cancel');
@@ -101,7 +93,6 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
   );
 
   function showConfirmDelete(slugForDelete) {
-    console.log(slugForDelete);
     if (slugForDelete === '') {
       Modal.error({
         title: 'Home Page cannot be deleted...',
@@ -123,12 +114,15 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
         onOk() {
           handleDeletePage({
             url: `/page/${slugForDelete}`,
+          }).then((re) => {
+            message.success('Page Deleted Successfully!');
+            setVisible(false);
+            setTimeout(() => {
+              fetch();
+            }, 1000);
+          }).catch((err) => {
+            message.error(err.response.data.message || err.response.data.messages[0]);
           });
-          message.success('Page Deleted Successfully!');
-          setVisible(false);
-          setTimeout(() => {
-            fetch();
-          }, 1000);
         },
         onCancel() {
           console.log('Cancel');
@@ -143,21 +137,18 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
 
   return (
     <Modal
-      title="Edit Page Details"
+      title={`EDIT PAGE DETAILS : ${pageData.name}`}
       onCancel={onFormClose}
       visible={visible}
-      footer={[
-        <Button key="back" onClick={onFormClose}>
-          Cancel
-        </Button>,
-      ]}
+      footer={null}
     >
       <Form
         className={styles.drawer_form}
         form={form}
         name="basic"
         labelCol={{ span: 5 }}
-        onFinish={SubmitDetails}
+        onFinish={submitDetails}
+        layout="vertical"
         initialValues={{ name: pageData.name, slug: pageData.slug }}
       >
         <Form.Item
@@ -185,19 +176,28 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
           <Input disabled={pageData.slug === ''} />
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 16 }} className={styles.drawer_button}>
-          <Button htmlType="submit" className={styles.drawer_submit}>
-            Submit
-          </Button>
+        <Form.Item wrapperCol={{ offset: 15 }}>
+          <Space wrap>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className={styles.drawer_submit}
+            >
+              Submit
+            </Button>
+            <Button key="back" onClick={onFormClose}>
+              Cancel
+            </Button>
+          </Space>
         </Form.Item>
       </Form>
 
       <Form className={styles.drawer_form}>
         <Form.Item
           label={<label style={{ fontSize: 15 }}>Make this Page Home</label>}
-          wrapperCol={{ offset: 7 }}
-          className={styles.drawer_button}
+          wrapperCol={{ offset: 8 }}
           colon={false}
+          style={{ marginBottom: '4px' }}
         >
           <Button
             type="primary"
@@ -217,9 +217,11 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
           label={
             <label style={{ color: 'red', fontSize: 15 }}>Danger Zone</label>
           }
-          wrapperCol={{ offset: 10 }}
+          wrapperCol={{ offset: 11 }}
           className={styles.drawer_button}
           colon={false}
+          style={{ marginBottom: '4px' }}
+
         >
           <Button
             type="danger"
@@ -233,4 +235,4 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
     </Modal>
   );
 }
-export default PageEditDrawer;
+export default PageEditModal;

@@ -11,7 +11,7 @@ import styles from './style.module.scss';
 const { TextArea } = Input;
 
 function StructureModal({
-  showSchemaModal, fieldsId, closeSchemaDrawer, data = {}, fieldData, isEditable, setReFetchSchema,
+  showSchemaModal, fieldsId, closeSchemaModal, data = {}, fieldData, isEditable, setReFetchSchema,
 }) {
   const [form] = Form.useForm();
   const [dataType, setDataType] = useState('');
@@ -79,28 +79,21 @@ function StructureModal({
     updatedValues.isMultiple = undefined;
 
     setLoading(true);
-
     if (!isEditable) {
       await executeFieldCreate({
         data: {
           schema: values,
           fieldId: values.id,
         },
-      }).then((res) => {
-        if (res.data.message) {
-          message.error(res.data.message);
-        } else {
-          message.success('Field Added Successfully');
-          setLoading(false);
-          form.resetFields();
-          closeSchemaDrawer();
-          setReFetchSchema(true);
-        }
+      }).then(() => {
+        message.success('Field Added Successfully');
+        setLoading(false);
+        form.resetFields();
+        closeSchemaModal();
+        setReFetchSchema(true);
+      }).catch((err) => {
+        message.error(err.response.data.message || err.response.data.messages[0]);
       });
-
-      if (error) {
-        message.error('Field Not Added');
-      }
     } else {
       await executeFieldUpdate({
         data: {
@@ -108,15 +101,15 @@ function StructureModal({
         },
       }).then(() => {
         setReFetchSchema(true);
+      }).catch((err) => {
+        message.error(err.response.data.message || err.response.data.messages[0]);
       });
 
-      if (error) {
-        message.error('Field Not Updated');
-      } else {
+      if (!error) {
         setLoading(false);
 
         form.resetFields();
-        closeSchemaDrawer();
+        closeSchemaModal();
         message.success('Field Updated Successfully');
       }
     }
@@ -137,16 +130,15 @@ function StructureModal({
       title={fieldData ? `EDIT FIELD : ${fieldData.name}` : 'CREATE A NEW FIELD'}
       visible={showSchemaModal}
       confirmLoading={loading}
-      onCancel={closeSchemaDrawer}
+      onCancel={closeSchemaModal}
       width={1200}
-      footer={[]}
+      footer={null}
 
     >
       <Form
         name="basic"
         form={form}
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 16 }}
+        layout="vertical"
         initialValues={{
           name: (fieldData && fieldData.name),
           id: (fieldData && fieldData.id),
@@ -216,7 +208,12 @@ function StructureModal({
               name="required"
               valuePropName="checked"
             >
-              <Checkbox checked={(fieldData && fieldData.required) || false} style={{ marginLeft: '120px' }}>Required field</Checkbox>
+              <Checkbox
+                checked={(fieldData && fieldData.required) || false}
+              >
+                Required field
+
+              </Checkbox>
 
             </Form.Item>
           </Card>
@@ -226,7 +223,7 @@ function StructureModal({
               <Select
                 defaultValue={(fieldData && fieldData.type)}
                 size="large"
-                style={{ width: 200 }}
+                // style={{ width: 200 }}
                 placeholder="Select type of field..."
                 onChange={(value) => handleOnDataTypeChange(value)}
                 allowClear
@@ -246,7 +243,6 @@ function StructureModal({
                 defaultValue={(fieldData && fieldData.appearanceType) || appearanceTypes[dataType]}
                 placeholder="Select type of  appearance field..."
                 onChange={handleOnApperanceTypeChange}
-                style={{ width: 200 }}
               >
                 {
             ((appearanceTypes && appearanceTypes[dataType])
@@ -270,8 +266,7 @@ function StructureModal({
                       name="isMultiple"
                       valuePropName="checked"
                     >
-                      <Checkbox style={{ marginLeft: '120px' }}>Multiple Files</Checkbox>
-
+                      <Checkbox>Multiple Files</Checkbox>
                     </Form.Item>
                   );
 
@@ -298,21 +293,21 @@ function StructureModal({
           style={{ marginBottom: '0px' }}
         >
           {isEditable ? (
-            <Space wrap>
+            <Space>
               <Button type="primary" htmlType="submit">
                 Update
               </Button>
-              <Button key="back" onClick={closeSchemaDrawer}>
+              <Button key="back" onClick={closeSchemaModal}>
                 Cancel
               </Button>
             </Space>
           )
             : (
-              <Space wrap>
+              <Space>
                 <Button type="primary" htmlType="submit">
                   Submit
                 </Button>
-                <Button key="back" onClick={closeSchemaDrawer}>
+                <Button key="back" onClick={closeSchemaModal}>
                   Cancel
                 </Button>
               </Space>

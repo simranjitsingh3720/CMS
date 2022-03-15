@@ -13,8 +13,6 @@ import {
 } from 'antd';
 import moment from 'moment';
 
-// moment.tz.setDefault('America/Los_Angeles');
-
 const { TextArea } = Input;
 export const getInitialValues = (fields, editableData, isEditable) => {
   const values = {};
@@ -22,7 +20,11 @@ export const getInitialValues = (fields, editableData, isEditable) => {
     fields.forEach((data) => {
       if (editableData[data.id]) {
         if (data.type === 'dateAndTime') {
-          values[[data.id]] = moment(editableData[data.id], 'YYYY/MM/DD HH:mm') || '';
+          if (editableData[data.id] !== 'Invalid date') {
+            values[[data.id]] = moment(editableData[data.id], 'YYYY/MM/DD HH:mm') || '';
+          } else {
+            values[[data.id]] = '';
+          }
         } else {
           values[[data.id]] = editableData[data.id] || '';
         }

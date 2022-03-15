@@ -41,7 +41,6 @@ function ValueNames() {
           <>
             {fields.map((field, index) => (
               <Form.Item
-                {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
                 label={index === 0 ? 'Value' : ''}
                 required={false}
                 key={field.key}
@@ -78,7 +77,7 @@ function ValueNames() {
               <Button
                 type="dashed"
                 onClick={() => add()}
-                style={{ width: '50%' }}
+                style={{ width: '60%' }}
                 icon={<PlusOutlined />}
               >
                 Add Values
