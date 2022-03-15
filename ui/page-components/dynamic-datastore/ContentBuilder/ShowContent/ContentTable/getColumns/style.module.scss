@@ -1,0 +1,11 @@
+.actionContentButton{
+  border: none;
+  outline: none;
+
+  &:focus{
+  outline: none ;
+  border: none ;
+  box-shadow: none ;
+  }
+}
+

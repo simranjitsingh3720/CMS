@@ -5,23 +5,17 @@ import {
   Button,
   Upload,
   message,
+  Space,
 } from 'antd';
 import { useState } from 'react';
 import { useRequest } from '../../../helpers/request-helper';
 
-function AssetCreateForm({ CloseModal, refetch }) {
+const { TextArea } = Input;
+
+function AssetCreateForm({ closeModal, refetch }) {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [assetTitle, setAssetTitle] = useState('');
-
-  const formItemLayout = {
-    labelCol: {
-      span: 8,
-    },
-    wrapperCol: {
-      span: 17,
-    },
-  };
 
   const normFile = (e) => {
     if (Array.isArray(e)) {
@@ -69,15 +63,15 @@ function AssetCreateForm({ CloseModal, refetch }) {
           .then(() => {
             setLoading(false);
             form.resetFields();
-            CloseModal();
-            message.success('Asset Added');
+            closeModal();
+            message.success('Asset Added Successfully !!!');
             refetch();
           })
-          .catch(() => {
+          .catch((err) => {
             setLoading(false);
-            CloseModal();
+            closeModal();
             refetch();
-            message.error('Asset Not Added');
+            message.error(err.response.data.message || err.response.data.messages[0]);
           });
       });
   };
@@ -85,8 +79,8 @@ function AssetCreateForm({ CloseModal, refetch }) {
   return (
     <Form
       form={form}
+      layout="vertical"
       name="validate_other"
-      {...formItemLayout}
       onFinish={SubmitDetails}
     >
       <Form.Item
@@ -111,18 +105,24 @@ function AssetCreateForm({ CloseModal, refetch }) {
         name="description"
         label="Description"
       >
-        <Input />
+        <TextArea />
       </Form.Item>
 
       <Form.Item
         wrapperCol={{
-          span: 12,
-          offset: 6,
+          span: 20,
+          offset: loading ? 14 : 15,
         }}
+        style={{ marginBottom: '0px' }}
       >
-        <Button type="primary" loading={loading} htmlType="submit">
-          Submit
-        </Button>
+        <Space wrap>
+          <Button type="primary" loading={loading} htmlType="submit">
+            Submit
+          </Button>
+          <Button key="back" onClick={closeModal}>
+            Cancel
+          </Button>
+        </Space>
       </Form.Item>
     </Form>
   );

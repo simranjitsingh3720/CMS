@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { PlusOutlined } from '@ant-design/icons';
-import { Spin } from 'antd';
+import { message, Spin } from 'antd';
 import NewContentModal from './NewContentModal';
 import ActionBar from '../../../../components/layout/ActionBar';
 import ContentTable from './ContentTable';
@@ -22,7 +22,11 @@ function ShowContent({ schema }) {
     },
   );
 
-  const [{ data: deletedData }, deleteContent] = useRequest(
+  if (error) {
+    message.error(error.response.data.message || error.response.data.messages[0]);
+  }
+
+  const [{}, deleteContent] = useRequest(
     {
       method: 'DELETE',
     },
@@ -62,13 +66,15 @@ function ShowContent({ schema }) {
 
   return (
     <div>
-
       <div>
         <ActionBar actions={actions} />
       </div>
 
-      {loading ? <Spin size="large" /> : null}
-      {error ? <h1>{error}</h1> : null}
+      {loading ? (
+        <div style={{ textAlign: 'center' }}>
+          <Spin size="large" />
+        </div>
+      ) : null}
       {isContentModal ? (
         <NewContentModal
           closeContentModal={closeContentModal}

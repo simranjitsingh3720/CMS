@@ -4,7 +4,6 @@ import GrapesJS from 'grapesjs';
 import gjsPresetWebpage from 'grapesjs-preset-webpage';
 import Draggable from 'react-draggable';
 import { useRequest } from '../../../helpers/request-helper';
-// import { CustomFonts } from './fonts';
 
 function PageBuilder() {
   const [editor, setEditor] = useState(null);
@@ -69,7 +68,10 @@ function PageBuilder() {
           plugins: [gjsPresetWebpage],
           pluginsOpts: {
             [gjsPresetWebpage]: {
-              // fonts: CustomFonts,
+              fonts: {
+                Montserrat: 'https://fonts.googleapis.com/css?family=Montserrat',
+                'Open Sans': 'https://fonts.googleapis.com/css?family=Open+Sans',
+              },
               customStyleManager: [{
                 name: 'Animation',
                 open: false,
@@ -79,27 +81,27 @@ function PageBuilder() {
           },
           components: LandingPage.html || '<span><span/>',
           style: LandingPage.css || '<></>',
-          // panels: {
-          //   defaults: [
-          //     {
-          //       id: 'panel-switcher',
-          //       el: '.panel__switcher',
-          //       buttons: [{
-          //         id: 'show-layers',
-          //         active: true,
-          //         label: 'Layers',
-          //         command: 'show-layers',
-          //         togglable: false,
-          //       }, {
-          //         id: 'show-style',
-          //         active: true,
-          //         label: 'Styles',
-          //         command: 'show-styles',
-          //         togglable: false,
-          //       }],
-          //     },
-          //   ],
-          // },
+          panels: {
+            defaults: [
+              {
+                id: 'panel-switcher',
+                el: '.panel__switcher',
+                buttons: [{
+                  id: 'show-layers',
+                  active: true,
+                  label: 'Layers',
+                  command: 'show-layers',
+                  togglable: false,
+                }, {
+                  id: 'show-style',
+                  active: true,
+                  label: 'Styles',
+                  command: 'show-styles',
+                  togglable: false,
+                }],
+              },
+            ],
+          },
 
           layerManager: {
             appendTo: '#layers-container',
@@ -139,7 +141,6 @@ function PageBuilder() {
             uploadFile(info) {
               setImgFile(info.dataTransfer ? info.dataTransfer.files : info.target.files);
               const file = info.dataTransfer ? info.dataTransfer.files : info.target.files;
-              console.log(info);
               executePost({
                 data: {
                   name: file[0].name,
@@ -148,9 +149,7 @@ function PageBuilder() {
                 },
               })
                 .then((result) => {
-                  console.log('then statement');
                   const { writeUrl } = result.data;
-                  console.log('write url = > ', writeUrl);
                   setUrl(result.data);
                   executePut({
                     url: writeUrl,
@@ -244,8 +243,7 @@ function PageBuilder() {
   };
   if (editor) {
     const assetManager = editor.AssetManager;
-    // console.log(imgData.list);
-    console.log(assetManager);
+    console.log(imgData);
     ((imgData && imgData.list) || []).map((page) => (
       assetManager.add({
         src: page.url,
@@ -255,19 +253,18 @@ function PageBuilder() {
     if (yes) {
       assetManager.add({ src: url.readUrl, name: imgFile[0].name });
     }
-    // console.log(assetManager.getAll());
-    // console.log(assetManager.render());
+    assetManager.getAll();
+    assetManager.render();
+    // const bm = editor.Blocks; // `Blocks` is an alias of `BlockManager`
 
-    // assetManager.getAll();
-    // assetManager.render();
-    const bm = editor.Blocks; // `Blocks` is an alias of `BlockManager`
-
-    // Add a new Block
-    const block = bm.add('BLOCK-ID', {
-      // Your block properties...
-      label: 'Navbar Dropdown',
-      content: '<Button>CLICK ME</Button>',
-    });
+    // // Add a new Block
+    // const block = bm.add('BLOCK-ID', {
+    //   // Your block properties...
+    //   label: 'My block',
+    //   content: `<svg style="width:48px;height:48px" viewBox="0 0 24 24">
+    //   <path fill="currentColor" d="M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z" />
+    //   </svg>`,
+    // });
   }
   useEffect(() => {
     refetch();

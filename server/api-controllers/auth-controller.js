@@ -4,7 +4,7 @@ const { addMinutes } = require('date-fns');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
 const db = require('../../db/models/index');
-const { ValidityError, ServerError } = require('../helpers/error-helper');
+const { ValidityError } = require('../helpers/error-helper');
 
 // const mailjet = require('node-mailjet')
 //   .connect(process.env.MAILJET_PUBLIC_KEY, process.env.MAILJET_PRIVATE_KEY);
@@ -62,13 +62,19 @@ const signup = async (req, res) => {
     throw new ValidityError('Invalid Email ID');
   }
 
-  const salt = await bcrypt.genSalt();
-  const hashedPassword = await bcrypt.hash(password, salt);
-  const userDetails = { ...body, password: hashedPassword };
+  try {
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(password, salt);
+    const userDetails = { ...body, password: hashedPassword };
 
-  const user = await db.User.create(userDetails);
-  req.session.user = user;
-  return res.status(200).json({ id: user.id, sessionId: req.session.id });
+    const user = await db.User.create(userDetails);
+    req.session.user = user;
+    return res.status(200).json({ id: user.id, sessionId: req.session.id });
+  } catch (error) {
+    if (error.errors && error.errors[0].validatorKey === 'not_unique') {
+      throw new ValidityError('User email Exists');
+    }
+  }
 };
 
 const signin = async (req, res) => {
@@ -87,12 +93,12 @@ const signin = async (req, res) => {
 
   const user = await db.User.findOne({ where: { email }, include: { model: db.Asset, as: 'ProfilePicture' } });
   if (!user) {
-    throw ValidityError('Email does not exist');
+    throw new ValidityError('Email or password is incorrect');
   }
 
   const isPasswordSame = await bcrypt.compare(password, user.password);
   if (!isPasswordSame) {
-    throw ValidityError('Password is incorrect');
+    throw new ValidityError('Email or password is incorrect');
   }
 
   req.session.user = user;
@@ -114,7 +120,7 @@ const recoverPassword = async (req, res) => {
   const { email } = req.body;
 
   if (!email) {
-    throw ValidityError('Email required for recovery');
+    throw new ValidityError('Email required for recovery');
   }
 
   try {
@@ -135,9 +141,9 @@ const recoverPassword = async (req, res) => {
       // sendEmail(email, name, link);
       return res.status(200).json({ message: 'Password recovered successfully' });
     }
-    throw ValidityError('Email does not exists');
+    throw new ValidityError('Email does not exists');
   } catch (error) {
-    return res.status(500).json({ code: 'ServerError', message: 'Some problem in inserting user' });
+    throw new ValidityError('Email does not exists');
   }
 };
 

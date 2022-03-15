@@ -47,7 +47,7 @@ function Post() {
     }).catch((err) => {
       setApiHit(true);
       setSuccess(false);
-      setMsg(err.response.data.message);
+      setMsg(err.response.data.message || err.response.data.messages[0]);
     });
   }
 

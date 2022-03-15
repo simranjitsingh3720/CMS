@@ -26,17 +26,15 @@ function PageAsset() {
     searchBar: {
       searchValue,
       setSearchValue,
+      placeholder: 'Enter Search Asset',
+
     },
     buttons: [{
-      name: 'Add Asset',
+      name: 'Add new Asset',
       icon: <PlusOutlined />,
       onClick: showModal,
     },
     ],
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
   };
 
   const handleCancel = () => {
@@ -53,7 +51,6 @@ function PageAsset() {
           isModalVisible={isModalVisible}
           setIsModalVisible={setIsModalVisible}
           refetch={refetch}
-          handleOk={handleOk}
           handleCancel={handleCancel}
           data={[]}
         />

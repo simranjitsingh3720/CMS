@@ -30,12 +30,14 @@ function AssetCard({ data, refetch }) {
     confirm({
       title: 'Do you Want to delete these items?',
       icon: <ExclamationCircleOutlined />,
+      content: <div style={{ color: 'red' }}>It may contains some sensitive data.</div>,
       async onOk() {
         await handleDelete();
         if (deleteError) {
-          message.error('Item not deleted');
+          message.error(deleteError.response.data.messages[0]
+             || deleteError.response.data.messages);
         } else {
-          message.success('Item Deleted');
+          message.success('Asset Deleted');
           await refetch();
         }
       },
@@ -50,19 +52,8 @@ function AssetCard({ data, refetch }) {
     setIsPreviewModalVisible(true);
   };
 
-  const onKeyPressHandler = () => {
-    console.log('HELLO');
-  };
-  const handleOk = () => {
-    setIsPreviewModalVisible(false);
-  };
-
   const handleCancel = () => {
     setIsPreviewModalVisible(false);
-  };
-
-  const handleOkEdit = () => {
-    setIsModalVisible(false);
   };
 
   const handleCancelEdit = () => {
@@ -102,10 +93,10 @@ function AssetCard({ data, refetch }) {
               style={{
                 backgroundImage: `url(${data.url})`,
                 backgroundSize: 'cover',
+                backgroundPosition: 'center',
                 height: '200px',
               }}
               onClick={showAssetPreviewModal}
-              onKeyPress={onKeyPressHandler}
               role="button"
             />
           )
@@ -139,7 +130,7 @@ function AssetCard({ data, refetch }) {
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
         refetch={refetch}
-        handleOk={handleOkEdit}
+        // handleOk={handleOkEdit}
         handleCancel={handleCancelEdit}
         data={data}
       />
@@ -147,7 +138,7 @@ function AssetCard({ data, refetch }) {
       {isPreviewModalVisible ? (
         <Modal
           visible={isPreviewModalVisible}
-          onOk={handleOk}
+          // onOk={handleOk}
           onCancel={handleCancel}
           footer={null}
           width={1200}

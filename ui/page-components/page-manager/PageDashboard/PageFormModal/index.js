@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   Button,
-  Drawer,
   Form,
   Input,
   message,
@@ -12,9 +11,7 @@ import {
 import { useRouter } from 'next/router';
 import { useRequest } from '../../../../helpers/request-helper';
 
-const { confirm } = Modal;
-
-function PageFormDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
+function PageFormModal({ onFormClose, visible, setVisible }) {
   const [pageDetails, setPageDetails] = useState({
     name: '',
     slug: '',
@@ -26,7 +23,12 @@ function PageFormDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
   const [form] = Form.useForm();
   const { push } = useRouter();
 
-  const [{}, executePost] = useRequest(
+  // form.setFieldsValue({
+  //   name: pageDetails.name,
+  //   slug: pageDetails.slug,
+  // });
+
+  const [{ }, executePost] = useRequest(
     {
       url: '/createPage',
       method: 'POST',
@@ -54,29 +56,26 @@ function PageFormDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
         push('/admin/page-manager/builder');
       })
       .catch((err) => {
-        message.info('Slug Name Already Taken');
+        message.info(err.response.data.message || err.response.data.messages[0]);
       });
   };
-  console.log(pageDetails);
-
   return (
     <Modal
-      title="Edit Page Details"
+      title="ADD NEW PAGE DETAILS"
       onCancel={onFormClose}
       visible={visible}
-      footer={[]}
+      footer={null}
     >
       <Form
         name="basic"
         form={form}
         layout="vertical"
         onFinish={handleCreatePage}
-        initialValues={{ remember: true }}
-        autoComplete="off"
+        // autoComplete="off"
       >
         <Form.Item
           label="Page Name"
-          name="page"
+          name="name"
           value={pageDetails.name}
           onChange={(e) => setPageDetails({ ...pageDetails, name: e.target.value })}
           rules={[{ required: true, message: 'Please enter Page Name!' }]}
@@ -103,7 +102,6 @@ function PageFormDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
         <Form.Item
           name="index"
           valuePropName="checked"
-          // wrapperCol={{ offset: 8, span: 16 }}
           onChange={() => {
             if (!checked) {
               setPageDetails({ ...pageDetails, slug: '', isHome: 1 });
@@ -120,7 +118,7 @@ function PageFormDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
 
         <Form.Item
           wrapperCol={{ offset: 15, span: 10 }}
-          style={{ marginBottom: '0px ' }}
+          style={{ marginBottom: '0px' }}
         >
           <Space wrap>
             <Button type="primary" htmlType="submit">
@@ -136,4 +134,4 @@ function PageFormDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
   );
 }
 
-export default PageFormDrawer;
+export default PageFormModal;
