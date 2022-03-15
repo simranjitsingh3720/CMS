@@ -3,11 +3,12 @@ import {
   EditOutlined,
   EyeOutlined,
 } from '@ant-design/icons';
-import { Card, Empty, Tooltip } from 'antd';
+import { Card, Empty, Tooltip, Divider } from 'antd';
 import { useRouter } from 'next/router';
 import styles from './style.module.scss';
 import PageEditDrawer from './PageEditDrawer';
 import { useRequest } from '../../../../helpers/request-helper';
+import CardWrapper from '../../../../components/CardWrapper';
 
 const { Meta } = Card;
 
@@ -22,7 +23,6 @@ function PageCard({ searchValue }) {
     setVisible(false);
   };
   const showDrawer = (data) => {
-    console.log(data);
     setVisible(true);
     setPageData(data);
   };
@@ -41,7 +41,10 @@ function PageCard({ searchValue }) {
 
   const handleEdit = (newSlug) => {
     if (newSlug) {
-      push('/admin/page-manager/builder/[pageID]', `/admin/page-manager/builder/${newSlug}`);
+      push(
+        '/admin/page-manager/builder/[pageID]',
+        `/admin/page-manager/builder/${newSlug}`,
+      );
     }
     push('/admin/page-manager/builder');
   };
@@ -54,54 +57,47 @@ function PageCard({ searchValue }) {
     refetch();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error!</p>;
-
   return (
-    <div>
-      <div className={styles.card_component}>
+    <>
+
+      <div className="card_component_container">
         { data && data.list.length <= 0 ? <div style={{ width: '100%' }}><Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /></div>
           : ((data && data.list) || []).map((page) => (
-            <Card
-              id="third-step"
-              key={page.id}
-              style={{ width: 260, marginRight: 30 }}
-              cover={(
-                <div
-                  className={styles.card_image}
-                  style={{ backgroundImage: `url(${ssImage})`, backgroundSize: 'cover' }}
-                />
-
-              )}
-              actions={[
-                <Tooltip title="View Page">
-                  <EyeOutlined key="view" onClick={() => { handleView(page.slug); }} id="fifth-step" />
-                </Tooltip>,
-                <Tooltip title="Edit Page">
-                  <EditOutlined key="edit" onClick={() => { showDrawer(page); }} id="sixth-step" />
-                </Tooltip>,
-              ]}
-            >
+            <CardWrapper>
+              <div
+                className={styles.card_image}
+                style={{ backgroundImage: `url(${ssImage})`, backgroundSize: 'cover' }}
+              />
 
               <Meta
                 title={(
-                  <p className={styles.card_title}>
-                    <span onClick={() => { handleEdit(page.slug); }} id="fourth-step">
+                  <p className="card_title">
+                    <span onClick={() => { handleEdit(page.slug); }}>
                       <span style={{ fontWeight: 'bold' }}>Title: </span>
                       {page.name}
                     </span>
                   </p>
-                  )}
+                   )}
                 description={(
-                  <p className={styles.card_description}>
+                  <p className="card_description">
                     <span style={{ fontWeight: 'bold' }}>Slug: </span>
                     /
                     {page.slug}
                   </p>
-                  )}
+                   )}
               />
 
-            </Card>
+              <div className="card_action">
+                <Tooltip title="View Page">
+                  <EyeOutlined key="view" onClick={() => { handleView(page.slug); }} style={{ fontSize: '16px' }} id="fifth-step" />
+                </Tooltip>
+                <Divider type="vertical" style={{ height: '22px', color: 'rgb(236, 233, 233)' }} />
+                <Tooltip title="Edit Page">
+                  <EditOutlined key="edit" onClick={() => { showDrawer(page); }} style={{ fontSize: '16px' }} id="sixth-step" />
+                </Tooltip>
+              </div>
+
+            </CardWrapper>
 
           ))}
 
@@ -115,7 +111,7 @@ function PageCard({ searchValue }) {
         fetch={refetch}
       />
       <div />
-    </div>
+    </>
   );
 }
 

@@ -11,12 +11,12 @@ const { confirm } = Modal;
 
 export default function ContentTable({
   tableSchema, data,
-  showContentDrawer, setIsEditable, getEditableData,
+  showContentModal, setIsEditable, getEditableData,
   deleteContent, getContent,
 }) {
   const handleEditContent = (content) => {
     getEditableData(content);
-    showContentDrawer(true);
+    showContentModal(true);
     setIsEditable(true);
   };
 
@@ -42,12 +42,15 @@ export default function ContentTable({
   let finalData = [];
 
   if (data) {
+    // console.log(data);
+
     finalData = data.list.map((content) => ({
       ...content.data,
       Actions: { ...content.data, id: content.id },
     }));
   }
 
+  console.log(finalData);
   return (
     <div>
       {columns.length >= 2 ? (

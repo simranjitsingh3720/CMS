@@ -2063,7 +2063,8 @@ div.gjs-com-hover-move {
 	box-sizing: border-box;
 	text-align: center;
 	padding: 5px;
-	z-index: 3
+	z-index: 3;
+  /* 6 border-top: 20px solid #444444; */
 }
 
 .gjs-pn-panel .icon-undo,
@@ -2095,7 +2096,7 @@ div.gjs-com-hover-move {
 
 .gjs-pn-views-container {
 	height: 100%;
-	padding: 10px 0 0;
+	padding: 2px 0 0;
 	/* right: 0; */
 	width: 15%;
 	overflow: auto;
@@ -3938,3 +3939,15 @@ div.gjs-com-hover-move {
 .panel__basic-actions {
   position: initial;
 }
+
+.panel-btn:hover{
+  background-color: rgba(0, 0, 0, .15);
+	box-shadow: 0 0 3px rgba(0, 0, 0, .25) inset
+}
+
+.panel-btn:focus {
+  background-color: yellow;
+}
+ .top{
+   z-index: 600000;
+ }

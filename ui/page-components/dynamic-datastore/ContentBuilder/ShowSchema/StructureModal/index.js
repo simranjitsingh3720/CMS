@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Form, Input, Button, Checkbox, Select, Divider, Card, Space, message, Modal,
+  Form, Input, Button, Checkbox, Select, Card, Space, message, Modal,
 } from 'antd';
 import { dataTypes, appearanceTypes } from '../../schemaDetails';
 import ValueNames from './apperanceComponent/ValueNames';
@@ -134,7 +134,7 @@ function StructureModal({
   return (
 
     <Modal
-      title={fieldData ? `Edit Field ${fieldData.name}` : 'Create a new Field'}
+      title={fieldData ? `EDIT FIELD : ${fieldData.name}` : 'CREATE A NEW FIELD'}
       visible={showSchemaModal}
       confirmLoading={loading}
       onCancel={closeSchemaDrawer}
@@ -145,8 +145,8 @@ function StructureModal({
       <Form
         name="basic"
         form={form}
-        // labelCol={{ span: 8 }}
-        wrapperCol={{ span: 20 }}
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 16 }}
         initialValues={{
           name: (fieldData && fieldData.name),
           id: (fieldData && fieldData.id),
@@ -292,19 +292,30 @@ function StructureModal({
 
         <Form.Item
           wrapperCol={{
-            offset: 19,
-            span: 10,
+            offset: 20,
+            span: 16,
           }}
+          style={{ marginBottom: '0px' }}
         >
           {isEditable ? (
-            <Button type="primary" htmlType="submit" style={{ marginTop: '15px' }}>
-              Update
-            </Button>
+            <Space wrap>
+              <Button type="primary" htmlType="submit">
+                Update
+              </Button>
+              <Button key="back" onClick={closeSchemaDrawer}>
+                Cancel
+              </Button>
+            </Space>
           )
             : (
-              <Button type="primary" htmlType="submit" style={{ marginTop: '15px' }}>
-                Submit
-              </Button>
+              <Space wrap>
+                <Button type="primary" htmlType="submit">
+                  Submit
+                </Button>
+                <Button key="back" onClick={closeSchemaDrawer}>
+                  Cancel
+                </Button>
+              </Space>
             )}
         </Form.Item>
       </Form>

@@ -1,7 +1,5 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-// import './grapes.min.css';
-// import 'grapesjs/dist/css/grapes.min.css';
 import GrapesJS from 'grapesjs';
 import gjsPresetWebpage from 'grapesjs-preset-webpage';
 import Draggable from 'react-draggable';
@@ -13,7 +11,6 @@ function PageBuilder() {
   const [imgFile, setImgFile] = useState('');
   const [url, setUrl] = useState('');
   const [yes, setYes] = useState(false);
-  const [show, toggleShow] = useState(true);
 
   const [{ data: getData }, refetchPageData] = useRequest(
     {
@@ -35,8 +32,6 @@ function PageBuilder() {
     },
   );
 
-  const [load, setLoad] = useState(false);
-
   // eslint-disable-next-line no-empty-pattern
   const [{ }, executePost] = useRequest(
     {
@@ -49,15 +44,6 @@ function PageBuilder() {
   const [{}, executePut] = useRequest(
     {
       method: 'PUT',
-    },
-    { manual: true },
-  );
-
-  const [{ loading: detailsLoading },
-    detailPatch,
-  ] = useRequest(
-    {
-      method: 'PATCH',
     },
     { manual: true },
   );
@@ -82,11 +68,15 @@ function PageBuilder() {
           plugins: [gjsPresetWebpage],
           pluginsOpts: {
             [gjsPresetWebpage]: {
-              // The font imports are included on HTML <head/> when fonts are used on the template
               fonts: {
                 Montserrat: 'https://fonts.googleapis.com/css?family=Montserrat',
                 'Open Sans': 'https://fonts.googleapis.com/css?family=Open+Sans',
               },
+              customStyleManager: [{
+                name: 'Animation',
+                open: false,
+                buildProps: ['transform'],
+              }],
             },
           },
           components: LandingPage.html || '<span><span/>',
@@ -144,11 +134,10 @@ function PageBuilder() {
             },
           },
           defaults: {
-            toolbar: [], // this will prevent its rendering on the component
+            toolbar: [],
           },
 
           assetManager: {
-
             uploadFile(info) {
               setImgFile(info.dataTransfer ? info.dataTransfer.files : info.target.files);
               const file = info.dataTransfer ? info.dataTransfer.files : info.target.files;
@@ -174,33 +163,6 @@ function PageBuilder() {
 
         });
 
-        // // Define commands
-        // e.Commands.add('show-layers', {
-        //   getRowEl(e1) { return e1.getContainer().closest('.editor-row'); },
-        //   getLayersEl(row) { return row.querySelector('#layers-container'); },
-
-        //   run(e2, sender) {
-        //     const lmEl = this.getLayersEl(this.getRowEl(e2));
-        //     lmEl.style.display = '';
-        //   },
-        //   stop(e3, sender) {
-        //     const lmEl = this.getLayersEl(this.getRowEl(e3));
-        //     lmEl.style.display = 'none';
-        //   },
-        // });
-        // e.Commands.add('show-styles', {
-        //   getRowEl(e4) { return e4.getContainer().closest('.editor-row'); },
-        //   getStyleEl(row) { return row.querySelector('#style-manager-container'); },
-
-        //   run(e5, sender) {
-        //     const smEl = this.getStyleEl(this.getRowEl(e5));
-        //     smEl.style.display = '';
-        //   },
-        //   stop(e6, sender) {
-        //     const smEl = this.getStyleEl(this.getRowEl(e6));
-        //     smEl.style.display = 'none';
-        //   },
-        // });
         const layersContainer = document.getElementById('layers-container');
         const stylesContainer = document.getElementById('style-manager-container');
         const selectorsContainer = document.getElementById('selectors-container');
@@ -212,8 +174,8 @@ function PageBuilder() {
           buttons: [
             {
               id: 'show-layers',
-              active: true, // active by default
-              className: 'btn-toggle-borders',
+              active: true,
+              className: 'panel-btn',
               label: '<i class="fa fa-bars" />',
               command() {
                 if (layersContainer.style.display === 'none') {
@@ -229,6 +191,7 @@ function PageBuilder() {
             }, {
               id: 'show-style',
               active: true,
+              className: 'panel-btn',
               label: '<i class="fa fa-paint-brush" />',
               command() {
                 if (stylesContainer.style.display === 'none') {
@@ -245,6 +208,7 @@ function PageBuilder() {
             }, {
               id: 'show-block',
               active: true,
+              className: 'panel-btn',
               label: '<i class="fa fa-th-large" />',
               command() {
                 if (blocksContainer.style.display === 'none') {
@@ -256,7 +220,7 @@ function PageBuilder() {
                   blocksContainer.style.display = 'none';
                 }
               },
-              togglable: false, // For grouping context of buttons from the same panel
+              togglable: false,
             },
           ],
         });
@@ -266,34 +230,20 @@ function PageBuilder() {
           const fontProperty = styleManager.getProperty('typography', 'font-family');
 
           const list = [];
-          // empty list
           fontProperty.set('list', list);
-
-          // custom list
           list.push(fontProperty.addOption({ value: 'Montserrat, sans-serif', name: 'Montserrat' }));
           list.push(fontProperty.addOption({ value: 'Open Sans, sans-serif', name: 'Open Sans' }));
           fontProperty.set('list', list);
 
           styleManager.render();
         });
-
-        // const bm = e.BlockManager;
-        // e.on('load', () => {
-        //   e.BlockManager.render([
-        //     bm.get('column1').set('category', ''),
-        //     bm.get('column2').set('category', ''),
-        //     bm.get('column3').set('category', ''),
-        //     bm.get('text').set('category', ''),
-        //     bm.get('image').set('category', ''),
-        //   ]);
-        // });
-
         setEditor(e);
       }
     });
   };
   if (editor) {
     const assetManager = editor.AssetManager;
+    console.log(imgData);
     ((imgData && imgData.list) || []).map((page) => (
       assetManager.add({
         src: page.url,
@@ -305,7 +255,7 @@ function PageBuilder() {
     }
     assetManager.getAll();
     assetManager.render();
-    const bm = editor.Blocks; // `Blocks` is an alias of `BlockManager`
+    // const bm = editor.Blocks; // `Blocks` is an alias of `BlockManager`
 
     // // Add a new Block
     // const block = bm.add('BLOCK-ID', {
@@ -324,14 +274,14 @@ function PageBuilder() {
   return (
     <div>
 
-      <Draggable>
+      <Draggable handle=".handle">
         <div className="gjs-pn-panel gjs-pn-views-container gjs-one-bg gjs-two-color">
-          <div className="panel__basic-actions" />
-          <span id="layers-container" />
+          <div className="panel__basic-actions handle top" />
+          <span id="layers-container" className="handle" />
           <span id="blocks" />
-          <span id="selectors-container" style={{ display: 'none' }} />
-          <span id="style-manager-container" style={{ display: 'none' }} />
-          <span id="traits-container" />
+          <span id="selectors-container" className="handle" style={{ display: 'none' }} />
+          <span id="style-manager-container" className="handle" style={{ display: 'none' }} />
+          <span id="traits-container" className="handle" />
         </div>
       </Draggable>
       <div id="editor" />

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Form, Input, Button, message, Drawer, Modal,
 } from 'antd';
@@ -23,6 +23,8 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
     },
   });
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
   const [{ error }, executePatch] = useRequest(
     {
       url: `/page/${pageData.slug}`,
@@ -39,23 +41,24 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
     },
   );
   const SubmitDetails = async (values) => {
-    console.log(values);
     await executePatch({
       data: {
         name: values.name || pageData.name,
         slug: values.slug || pageData.slug,
       },
-    }).then(() => {
-      form.resetFields();
-      setVisible(false);
-      message.success('Page Updated Successfully');
-      setTimeout(() => {
-        fetch();
-      }, 1000);
-    }).catch((err) => {
-      message.info('Slug Name Already Taken');
-      console.log(err);
-    });
+    })
+      .then(() => {
+        form.resetFields();
+        setVisible(false);
+        message.success('Page Updated Successfully');
+        setTimeout(() => {
+          fetch();
+        }, 1000);
+      })
+      .catch((err) => {
+        message.info('Slug Name Already Taken');
+        console.log(err.response.data);
+      });
   };
 
   function showConfirmHome(slug) {
@@ -63,9 +66,12 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
     confirm({
       title: 'Are you sure to Change this page to Home?',
       icon: <ExclamationCircleOutlined />,
-      content: <p className={styles.modal_content}>
-        After Changing this Page to Home, current Page Name will be Renamed as Home
-      </p>,
+      content: (
+        <p className={styles.modal_content}>
+          After Changing this Page to Home, current Page Name will be Renamed as
+          Home
+        </p>
+      ),
       okText: 'Yes',
       okType: 'primary',
       cancelText: 'No',
@@ -106,9 +112,11 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
       confirm({
         title: 'Are you sure to delete this page?',
         icon: <ExclamationCircleOutlined />,
-        content: <p className={styles.modal_content}>
-          After Deleting this Page you won't be able to use this slug
-                 </p>,
+        content: (
+          <p className={styles.modal_content}>
+            After Deleting this Page you won't be able to use this slug
+          </p>
+        ),
         okText: 'Yes',
         okType: 'danger',
         cancelText: 'No',
@@ -134,15 +142,21 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
   }, [executePatch, form, deleteData, homeData]);
 
   return (
-
-    <Drawer title="Edit Page Details" placement="right" onClose={onFormClose} visible={visible}>
-
+    <Modal
+      title="Edit Page Details"
+      onCancel={onFormClose}
+      visible={visible}
+      footer={[
+        <Button key="back" onClick={onFormClose}>
+          Cancel
+        </Button>,
+      ]}
+    >
       <Form
         className={styles.drawer_form}
         form={form}
         name="basic"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
+        labelCol={{ span: 5 }}
         onFinish={SubmitDetails}
         initialValues={{ name: pageData.name, slug: pageData.slug }}
       >
@@ -157,6 +171,16 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
         <Form.Item
           label="Slug"
           name="slug"
+          rules={[
+            {
+              required: pageData.slug !== '',
+              message: 'Please enter the slug!',
+            },
+            {
+              pattern: new RegExp('^[A-Za-z0-9]*$'),
+              message: 'Only Letters and Numbers are accepted',
+            },
+          ]}
         >
           <Input disabled={pageData.slug === ''} />
         </Form.Item>
@@ -166,41 +190,47 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
             Submit
           </Button>
         </Form.Item>
-
       </Form>
 
-      <Form
-        className={styles.drawer_form}
-      >
+      <Form className={styles.drawer_form}>
         <Form.Item
           label={<label style={{ fontSize: 15 }}>Make this Page Home</label>}
-          wrapperCol={{ offset: 12 }}
+          wrapperCol={{ offset: 7 }}
           className={styles.drawer_button}
           colon={false}
         >
-          <Button type="primary" icon={<HomeOutlined />} disabled={pageData.slug === ''} onClick={() => { showConfirmHome(pageData.slug); }}>
+          <Button
+            type="primary"
+            icon={<HomeOutlined />}
+            disabled={pageData.slug === ''}
+            onClick={() => {
+              showConfirmHome(pageData.slug);
+            }}
+          >
             Make Home
           </Button>
         </Form.Item>
       </Form>
 
-      <Form
-        className={styles.drawer_form}
-      >
+      <Form className={styles.drawer_form}>
         <Form.Item
-          label={<label style={{ color: 'red', fontSize: 15 }}>Danger Zone</label>}
-          wrapperCol={{ offset: 12 }}
+          label={
+            <label style={{ color: 'red', fontSize: 15 }}>Danger Zone</label>
+          }
+          wrapperCol={{ offset: 10 }}
           className={styles.drawer_button}
           colon={false}
         >
-          <Button type="danger" icon={<DeleteOutlined />} onClick={() => showConfirmDelete(pageData.slug)}>
+          <Button
+            type="danger"
+            icon={<DeleteOutlined />}
+            onClick={() => showConfirmDelete(pageData.slug)}
+          >
             Delete Page
           </Button>
         </Form.Item>
       </Form>
-
-    </Drawer>
-
+    </Modal>
   );
 }
 export default PageEditDrawer;

@@ -1,26 +1,30 @@
 import React, { useState } from 'react';
 import {
-  Button, Drawer, Form, Input,
-  message, Checkbox,
+  Button,
+  Drawer,
+  Form,
+  Input,
+  message,
+  Checkbox,
+  Modal,
+  Space,
 } from 'antd';
 import { useRouter } from 'next/router';
 import { useRequest } from '../../../../helpers/request-helper';
 
-function PageFormDrawer({ onFormClose, visible, setVisible }) {
-  const [pageDetails, setPageDetails] = useState({ name: '', slug: '', isHome: 0 });
+const { confirm } = Modal;
+
+function PageFormDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
+  const [pageDetails, setPageDetails] = useState({
+    name: '',
+    slug: '',
+    isHome: 0,
+  });
   const [checked, setChecked] = useState(false);
   const [slugRule, setSlugRule] = useState(true);
 
   const [form] = Form.useForm();
   const { push } = useRouter();
-
-  const [{ data, loading, error }, refetch] = useRequest({
-    url: '/page/',
-    method: 'GET',
-    params: {
-      q: '',
-    },
-  });
 
   const [{}, executePost] = useRequest(
     {
@@ -37,28 +41,35 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
       data: {
         ...pageDetails,
       },
-    }).then(() => {
-      setVisible(false);
-      message.success('Page Created Successfully', 5);
-      if (pageDetails.slug) {
-        push('/admin/page-manager/builder/[pageID]', `/admin/page-manager/builder/${pageDetails.slug}`);
-      }
-      push('/admin/page-manager/builder');
     })
+      .then(() => {
+        setVisible(false);
+        message.success('Page Created Successfully', 5);
+        if (pageDetails.slug) {
+          push(
+            '/admin/page-manager/builder/[pageID]',
+            `/admin/page-manager/builder/${pageDetails.slug}`,
+          );
+        }
+        push('/admin/page-manager/builder');
+      })
       .catch((err) => {
         message.info('Slug Name Already Taken');
-        console.log('Error => ', err);
       });
   };
   console.log(pageDetails);
 
   return (
-    <Drawer title="Create New Page" placement="right" onClose={onFormClose} visible={visible}>
+    <Modal
+      title="Edit Page Details"
+      onCancel={onFormClose}
+      visible={visible}
+      footer={[]}
+    >
       <Form
         name="basic"
         form={form}
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
+        layout="vertical"
         onFinish={handleCreatePage}
         initialValues={{ remember: true }}
         autoComplete="off"
@@ -78,17 +89,21 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
           name="slug"
           value={pageDetails.slug}
           onChange={(e) => setPageDetails({ ...pageDetails, slug: e.target.value })}
-          rules={[{ required: slugRule, message: 'Please enter Page Slug!' }, {
-            pattern: new RegExp('^[A-Za-z0-9]*$'),
-            message: 'Only Letters and Numbers are accepted',
-          }]}
+          rules={[
+            { required: slugRule, message: 'Please enter Page Slug!' },
+            {
+              pattern: new RegExp('^[A-Za-z0-9]*$'),
+              message: 'Only Letters and Numbers are accepted',
+            },
+          ]}
         >
           <Input disabled={checked} />
         </Form.Item>
+
         <Form.Item
           name="index"
           valuePropName="checked"
-          wrapperCol={{ offset: 8, span: 16 }}
+          // wrapperCol={{ offset: 8, span: 16 }}
           onChange={() => {
             if (!checked) {
               setPageDetails({ ...pageDetails, slug: '', isHome: 1 });
@@ -103,13 +118,21 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
           <Checkbox>Make this Page Home</Checkbox>
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
+        <Form.Item
+          wrapperCol={{ offset: 15, span: 10 }}
+          style={{ marginBottom: '0px ' }}
+        >
+          <Space wrap>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+            <Button key="back" onClick={onFormClose}>
+              Cancel
+            </Button>
+          </Space>
         </Form.Item>
       </Form>
-    </Drawer>
+    </Modal>
   );
 }
 
