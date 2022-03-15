@@ -57,7 +57,7 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
       })
       .catch((err) => {
         message.info('Slug Name Already Taken');
-        console.log(err);
+        console.log(err.response.data);
       });
   };
 

@@ -57,6 +57,7 @@ function PageFormDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
         message.info('Slug Name Already Taken');
       });
   };
+  console.log(pageDetails);
 
   return (
     <Modal
