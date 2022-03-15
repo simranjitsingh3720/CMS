@@ -97,6 +97,7 @@ function AssetCard({ data, refetch }) {
                 height: '200px',
               }}
               onClick={showAssetPreviewModal}
+              role="button"
             />
           )
           : (

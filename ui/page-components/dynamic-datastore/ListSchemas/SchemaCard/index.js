@@ -2,18 +2,14 @@ import { EllipsisOutlined, TableOutlined } from '@ant-design/icons';
 import {
   Button, Popover,
 } from 'antd';
-import { useState } from 'react';
 import styles from './style.module.scss';
 import CardWrapper from '../../../../components/CardWrapper';
 
 function SchemaCard({
   schemaName, schemaDesc, deleteSchema, showSchema, schemaSlug, totatlFields,
 }) {
-  const [visible, setVisible] = useState(false);
-
   const handleClick = () => {
     deleteSchema(schemaSlug);
-    setVisible(false);
   };
 
   const content = (
