@@ -30,12 +30,14 @@ function AssetCard({ data, refetch }) {
     confirm({
       title: 'Do you Want to delete these items?',
       icon: <ExclamationCircleOutlined />,
+      content: <div style={{ color: 'red' }}>It may contains some sensitive data.</div>,
       async onOk() {
         await handleDelete();
         if (deleteError) {
-          message.error('Item not deleted');
+          message.error(deleteError.response.data.messages[0]
+             || deleteError.response.data.messages);
         } else {
-          message.success('Item Deleted');
+          message.success('Asset Deleted');
           await refetch();
         }
       },
@@ -49,16 +51,9 @@ function AssetCard({ data, refetch }) {
   const showAssetPreviewModal = () => {
     setIsPreviewModalVisible(true);
   };
-  const handleOk = () => {
-    setIsPreviewModalVisible(false);
-  };
 
   const handleCancel = () => {
     setIsPreviewModalVisible(false);
-  };
-
-  const handleOkEdit = () => {
-    setIsModalVisible(false);
   };
 
   const handleCancelEdit = () => {
@@ -133,16 +128,15 @@ function AssetCard({ data, refetch }) {
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
         refetch={refetch}
-        handleOk={handleOkEdit}
+        // handleOk={handleOkEdit}
         handleCancel={handleCancelEdit}
-        refetch={refetch}
         data={data}
       />
 
       {isPreviewModalVisible ? (
         <Modal
           visible={isPreviewModalVisible}
-          onOk={handleOk}
+          // onOk={handleOk}
           onCancel={handleCancel}
           footer={null}
           width={1200}

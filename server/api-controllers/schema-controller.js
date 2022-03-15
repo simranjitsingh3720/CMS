@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
 const db = require('../../db/models');
-const { MissingError, ValidityError } = require('../helpers/error-helper');
+const { MissingError, ValidityError, DuplicateError, ForbiddenError } = require('../helpers/error-helper');
 
 const getSchema = async (req, res) => {
   const { query } = req;
@@ -45,12 +45,16 @@ const addSchema = async (req, res) => {
     throw new ValidityError(message);
   }
 
-  const schema = await db.Schema.create({
-    ...body,
-    createdBy: req.session.user.id,
-    updatedBy: req.session.user.id,
-  });
-  return res.status(201).json({ id: schema.id, slug: schema.slug });
+  try {
+    const schema = await db.Schema.create({
+      ...body,
+      createdBy: req.session.user.id,
+      updatedBy: req.session.user.id,
+    });
+    return res.status(201).json({ id: schema.id, slug: schema.slug });
+  } catch (error) {
+    throw new DuplicateError(`Table with slug name ${slug} already exists`);
+  }
 };
 
 const updateSchema = async (req, res) => {
@@ -111,7 +115,7 @@ const deleteSchemaBySlug = async (req, res) => {
       }
       throw new MissingError('Schema not found');
     }
-    return res.status(201).json({ message: 'There are some content for this schema. Cannot delete this ' });
+    throw new ForbiddenError('There are some content for this schema, cannot delete');
   }
   throw new MissingError('Schema not found');
 };

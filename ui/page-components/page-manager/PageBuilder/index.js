@@ -81,28 +81,6 @@ function PageBuilder() {
           },
           components: LandingPage.html || '<span><span/>',
           style: LandingPage.css || '<></>',
-          panels: {
-            defaults: [
-              {
-                id: 'panel-switcher',
-                el: '.panel__switcher',
-                buttons: [{
-                  id: 'show-layers',
-                  active: true,
-                  label: 'Layers',
-                  command: 'show-layers',
-                  togglable: false,
-                }, {
-                  id: 'show-style',
-                  active: true,
-                  label: 'Styles',
-                  command: 'show-styles',
-                  togglable: false,
-                }],
-              },
-            ],
-          },
-
           layerManager: {
             appendTo: '#layers-container',
           },

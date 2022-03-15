@@ -1,4 +1,6 @@
-import { Button, Form, Input, Modal } from 'antd';
+import {
+  Button, Form, Input, message, Modal, Spin,
+} from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -7,9 +9,11 @@ import { useRequest } from '../../../../helpers/request-helper';
 
 function SchemaModal({
   isModalVisible, setIsModalVisible,
-  confirmLoading, handleCancel, fetchAllSchema,
+  handleCancel, fetchAllSchema,
 }) {
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
   const { push } = useRouter();
   const [form] = Form.useForm();
 
@@ -24,6 +28,7 @@ function SchemaModal({
   );
 
   const onFinish = (values) => {
+    setLoading(true);
     executePost({
       data: {
         title: values.title,
@@ -31,12 +36,15 @@ function SchemaModal({
         description: values.description,
       },
     }).then((res) => {
+      setLoading(false);
+      message.success('Table created successfully !!!');
       setIsModalVisible(false);
       fetchAllSchema();
       push('/admin/datastore/content-builder/[schemaId]', `/admin/datastore/content-builder/${res.data.slug}`);
     })
       .catch((err) => {
-        setError(err.message);
+        setLoading(false);
+        setError(err.response.data.message || err.response.data.messages[0]);
       });
   };
 
@@ -45,6 +53,7 @@ function SchemaModal({
   };
 
   const handleValuesChange = (changedValues) => {
+    setError('');
     if (changedValues.title) {
       const suggestedID = (changedValues.title || '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
       form.setFieldsValue({ slug: suggestedID });
@@ -54,21 +63,15 @@ function SchemaModal({
     <Modal
       title="Create New Table"
       visible={isModalVisible}
-      confirmLoading={confirmLoading}
       onCancel={handleCancel}
-      footer={[]}
+      footer={null}
     >
       <div>
         <div className={styles.error}>{error}</div>
         <Form
           name="basic"
+          layout="vertical"
           form={form}
-          labelCol={{
-            span: 8,
-          }}
-          wrapperCol={{
-            span: 16,
-          }}
           initialValues={{
             remember: true,
           }}
@@ -122,9 +125,10 @@ function SchemaModal({
 
           <Form.Item
             wrapperCol={{
-              offset: 8,
-              span: 16,
+              offset: 15,
+              span: 20,
             }}
+            style={{ marginBottom: '0px' }}
           >
             <Button type="primary" htmlType="submit">
               Submit
