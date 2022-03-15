@@ -23,12 +23,7 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
   const [form] = Form.useForm();
   const { push } = useRouter();
 
-  // form.setFieldsValue({
-  //   name: pageDetails.name,
-  //   slug: pageDetails.slug,
-  // });
-
-  const [{ }, executePost] = useRequest(
+  const [{}, executePost] = useRequest(
     {
       url: '/createPage',
       method: 'POST',
@@ -59,6 +54,7 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
         message.info(err.response.data.message || err.response.data.messages[0]);
       });
   };
+
   return (
     <Modal
       title="ADD NEW PAGE DETAILS"
@@ -71,11 +67,12 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
         form={form}
         layout="vertical"
         onFinish={handleCreatePage}
-        // autoComplete="off"
+        initialValues={{ remember: true }}
+        autoComplete="off"
       >
         <Form.Item
           label="Page Name"
-          name="name"
+          name="page"
           value={pageDetails.name}
           onChange={(e) => setPageDetails({ ...pageDetails, name: e.target.value })}
           rules={[{ required: true, message: 'Please enter Page Name!' }]}

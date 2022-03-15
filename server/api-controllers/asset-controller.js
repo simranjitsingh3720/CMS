@@ -63,9 +63,9 @@ const listAssets = async (req, res) => {
 const createAsset = async (req, res) => {
   const { body } = req;
 
-  // if (!body.name || !body.type || !body.mimeType) {
-  //   throw new ValidityError('name, type and mimeType, all are required.');
-  // }
+  if (!body.name || !body.type || !body.mimeType) {
+    throw new ValidityError('name, type and mimeType, all are required.');
+  }
 
   const asset = await db.Asset.create({ ...body, createdBy: req.session.user.id });
   const params = ({
