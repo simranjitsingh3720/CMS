@@ -54,6 +54,7 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
         message.info(err.response.data.message || err.response.data.messages[0]);
       });
   };
+  console.log(pageDetails);
 
   return (
     <Modal
