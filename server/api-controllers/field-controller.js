@@ -1,5 +1,5 @@
 const db = require('../../db/models');
-const { ValidityError, MissingError, DuplicateError, ServerError } = require('../helpers/error-helper');
+const { ValidityError, MissingError, DuplicateError, ServerError, ForbiddenError } = require('../helpers/error-helper');
 
 const createField = async (req, res) => {
   const { body, query } = req;
@@ -104,7 +104,7 @@ const deleteField = async (req, res) => {
     });
 
     if (isData) {
-      return res.status(200).json({ message: 'Some contents exists for the respective field. Please delete the contents first to delete this field.' });
+      throw new ForbiddenError('Some contents exists for the respective field. Please delete the contents first to delete this field.');
     }
 
     const data = await db.Schema.findOne({ where: { slug: schemaSlug } });
