@@ -75,14 +75,13 @@ function ShowSchema() {
       onOk() {
         fieldDelete({
           url: `/schema/${schemaSlug}/field/${id}`,
-        }).then((res) => {
-          if (res.data.message) {
-            message.error(res.data.message);
-          } else {
-            message.success('Field deleted successfully');
-            setReFetchSchema(true);
-          }
-        }).catch((err) => { console.log('delete error ', err); });
+        }).then(() => {
+          message.success('Field deleted successfully');
+          setReFetchSchema(true);
+        }).catch((err) => {
+          message.error(err.response.data.message
+          || err.response.data.messages[0]);
+        });
       },
       onCancel() {
       },
