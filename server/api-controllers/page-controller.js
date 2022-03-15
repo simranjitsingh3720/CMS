@@ -1,4 +1,4 @@
-import { MissingError, ValidityError } from '../helpers/error-helper';
+import { DuplicateError, MissingError, ValidityError } from '../helpers/error-helper';
 
 const { Op, Sequelize } = require('sequelize');
 const db = require('../../db/models');
@@ -173,24 +173,28 @@ export const deletePage = async (req, res) => {
 export const updatePageData = async (req, res) => {
   const { pageSlug } = req.query || '';
   const pageData = req.body;
-  if (pageSlug) {
+  try {
+    if (pageSlug) {
+      const result = await db.Page.update(
+        {
+          name: pageData.name,
+          slug: pageData.slug,
+        },
+        { where: { slug: pageSlug } },
+      );
+      if (result) {
+        return res.status(201).json({ data: result });
+      }
+    }
     const result = await db.Page.update(
-      {
-        name: pageData.name,
-        slug: pageData.slug,
-      },
-      { where: { slug: pageSlug } },
+      { name: pageData.name },
+      { where: { slug: '' } },
     );
     if (result) {
       return res.status(201).json({ data: result });
     }
+    throw new MissingError('Page Not Found');
+  } catch (error) {
+    throw new DuplicateError('Slug name already taken. Try with another slug name');
   }
-  const result = await db.Page.update(
-    { name: pageData.name },
-    { where: { slug: '' } },
-  );
-  if (result) {
-    return res.status(201).json({ data: result });
-  }
-  throw new MissingError('Page Not Found');
 };

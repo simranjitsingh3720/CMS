@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Table } from 'antd';
+import { message, Table } from 'antd';
 import ActionBar from '../../components/layout/ActionBar';
 import { useRequest } from '../../helpers/request-helper';
 
@@ -16,6 +16,8 @@ function PageUser() {
   useEffect(() => {
     refetch().then((res) => {
       setData(res.data.list);
+    }).catch((err) => {
+      message.error(err.response.data.message || err.response.data.messages[0]);
     });
   }, [searchValue]);
 
@@ -27,6 +29,7 @@ function PageUser() {
 
     },
   };
+
   const columns = [
     {
       title: 'First Name',

@@ -31,7 +31,6 @@ export default function PagePasswordRecovery() {
       })
       .catch((error) => {
         setSubmitted(true);
-        // setDisplayMessage('The email does not exist');
         setDisplayMessage(error.response.data.messages[0]);
       });
   };

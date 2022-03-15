@@ -6,7 +6,7 @@ import {
 import { Card, Empty, Tooltip, Divider } from 'antd';
 import { useRouter } from 'next/router';
 import styles from './style.module.scss';
-import PageEditDrawer from './PageEditDrawer';
+import PageEditModal from './PageEditModal';
 import { useRequest } from '../../../../helpers/request-helper';
 import CardWrapper from '../../../../components/CardWrapper';
 
@@ -22,7 +22,8 @@ function PageCard({ searchValue }) {
   const onClose = () => {
     setVisible(false);
   };
-  const showDrawer = (data) => {
+
+  const showModal = (data) => {
     setVisible(true);
     setPageData(data);
   };
@@ -31,7 +32,7 @@ function PageCard({ searchValue }) {
     setSsImage(localStorage.getItem('image'));
   }, []);
 
-  const [{ data, loading, error }, refetch] = useRequest({
+  const [{ data }, refetch] = useRequest({
     url: '/page',
     method: 'GET',
     params: {
@@ -61,7 +62,18 @@ function PageCard({ searchValue }) {
     <>
 
       <div className="card_component_container">
-        { data && data.list.length <= 0 ? <div style={{ width: '100%' }}><Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /></div>
+        { data && data.list.length <= 0 ? (
+          <div style={{ width: '100%' }}>
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description={(
+                <span>
+                  No Page Found
+                </span>
+    )}
+            />
+          </div>
+        )
           : ((data && data.list) || []).map((page) => (
             <CardWrapper>
               <div
@@ -93,7 +105,7 @@ function PageCard({ searchValue }) {
                 </Tooltip>
                 <Divider type="vertical" style={{ height: '22px', color: 'rgb(236, 233, 233)' }} />
                 <Tooltip title="Edit Page">
-                  <EditOutlined key="edit" onClick={() => { showDrawer(page); }} style={{ fontSize: '16px' }} id="sixth-step" />
+                  <EditOutlined key="edit" onClick={() => { showModal(page); }} style={{ fontSize: '16px' }} id="sixth-step" />
                 </Tooltip>
               </div>
 
@@ -103,7 +115,7 @@ function PageCard({ searchValue }) {
 
       </div>
       <div />
-      <PageEditDrawer
+      <PageEditModal
         onFormClose={onClose}
         visible={visible}
         setVisible={setVisible}

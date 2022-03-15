@@ -12,7 +12,7 @@ import { useRequest } from '../../../helpers/request-helper';
 
 const { TextArea } = Input;
 
-function AssetCreateForm({ CloseModal, refetch }) {
+function AssetCreateForm({ closeModal, refetch }) {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [assetTitle, setAssetTitle] = useState('');
@@ -63,15 +63,15 @@ function AssetCreateForm({ CloseModal, refetch }) {
           .then(() => {
             setLoading(false);
             form.resetFields();
-            CloseModal();
-            message.success('Asset Added');
+            closeModal();
+            message.success('Asset Added Successfully !!!');
             refetch();
           })
-          .catch(() => {
+          .catch((err) => {
             setLoading(false);
-            CloseModal();
+            closeModal();
             refetch();
-            message.error('Asset Not Added');
+            message.error(err.response.data.message || err.response.data.messages[0]);
           });
       });
   };
@@ -119,7 +119,7 @@ function AssetCreateForm({ CloseModal, refetch }) {
           <Button type="primary" loading={loading} htmlType="submit">
             Submit
           </Button>
-          <Button key="back" onClick={CloseModal}>
+          <Button key="back" onClick={closeModal}>
             Cancel
           </Button>
         </Space>

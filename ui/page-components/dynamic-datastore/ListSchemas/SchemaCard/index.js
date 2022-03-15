@@ -16,10 +16,6 @@ function SchemaCard({
     setVisible(false);
   };
 
-  const handleVisible = () => {
-    setVisible(!visible);
-  };
-  // const text = <span>Options</span>;
   const content = (
     <div>
       <Button type="text" onClick={handleClick}>Delete Schema</Button>

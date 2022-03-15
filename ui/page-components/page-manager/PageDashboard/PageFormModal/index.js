@@ -11,7 +11,7 @@ import {
 import { useRouter } from 'next/router';
 import { useRequest } from '../../../../helpers/request-helper';
 
-function PageFormDrawer({ onFormClose, visible, setVisible }) {
+function PageFormModal({ onFormClose, visible, setVisible }) {
   const [pageDetails, setPageDetails] = useState({
     name: '',
     slug: '',
@@ -51,13 +51,13 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
         push('/admin/page-manager/builder');
       })
       .catch((err) => {
-        message.info(err.response.data.messages[0]);
+        message.info(err.response.data.message || err.response.data.messages[0]);
       });
   };
 
   return (
     <Modal
-      title="Edit Page Details"
+      title="ADD NEW PAGE DETAILS"
       onCancel={onFormClose}
       visible={visible}
       footer={null}
@@ -131,4 +131,4 @@ function PageFormDrawer({ onFormClose, visible, setVisible }) {
   );
 }
 
-export default PageFormDrawer;
+export default PageFormModal;

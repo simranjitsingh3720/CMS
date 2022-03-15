@@ -34,9 +34,10 @@ function AssetCard({ data, refetch }) {
       async onOk() {
         await handleDelete();
         if (deleteError) {
-          message.error(deleteError.response.data.messages[0]);
+          message.error(deleteError.response.data.messages[0]
+             || deleteError.response.data.messages);
         } else {
-          message.success('Item Deleted');
+          message.success('Asset Deleted');
           await refetch();
         }
       },
@@ -50,16 +51,9 @@ function AssetCard({ data, refetch }) {
   const showAssetPreviewModal = () => {
     setIsPreviewModalVisible(true);
   };
-  const handleOk = () => {
-    setIsPreviewModalVisible(false);
-  };
 
   const handleCancel = () => {
     setIsPreviewModalVisible(false);
-  };
-
-  const handleOkEdit = () => {
-    setIsModalVisible(false);
   };
 
   const handleCancelEdit = () => {
@@ -134,7 +128,7 @@ function AssetCard({ data, refetch }) {
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
         refetch={refetch}
-        handleOk={handleOkEdit}
+        // handleOk={handleOkEdit}
         handleCancel={handleCancelEdit}
         data={data}
       />
@@ -142,7 +136,7 @@ function AssetCard({ data, refetch }) {
       {isPreviewModalVisible ? (
         <Modal
           visible={isPreviewModalVisible}
-          onOk={handleOk}
+          // onOk={handleOk}
           onCancel={handleCancel}
           footer={null}
           width={1200}

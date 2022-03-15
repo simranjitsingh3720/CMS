@@ -27,7 +27,7 @@ function PageSignup() {
     })
       .then(() => {
         router.push('/admin');
-        message.success('Welcome to CMS Page');
+        message.success('Welcome to Cogoport CMS!!!!');
         refetch();
       })
       .catch((error) => {

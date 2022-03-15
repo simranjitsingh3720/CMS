@@ -17,16 +17,7 @@ function Profile() {
   const [loading, setLoading] = useState(false);
   const [buttonFlag, setButtonFlag] = useState(true);
 
-  const formItemLayout = {
-    labelCol: {
-      span: 8,
-    },
-    wrapperCol: {
-      span: 17,
-    },
-  };
-
-  const [{ data: getdata }, handleGet, refetch] = useRequest({
+  const [{ }, handleGet, refetch] = useRequest({
     METHOD: 'GET',
     url: '/user/me',
   });
@@ -44,7 +35,7 @@ function Profile() {
         if (res.data.user.ProfilePicture) { setUrl(res.data.user.ProfilePicture.url); }
       })
       .catch((err) => {
-        console.log(err);
+        message.error(err.response.data.message || err.response.data.messages[0]);
       });
   }, []);
 
@@ -56,6 +47,7 @@ function Profile() {
     },
     { manual: true },
   );
+
   const [{ loading: passwordLoading },
     passwordPatch,
   ] = useRequest(
@@ -97,9 +89,10 @@ function Profile() {
         refetch();
         sessionRefetch();
       })
-      .catch(() => {
-        message.error('User Not Updated');
+      .catch((err) => {
+        message.error(err.response.data.message || err.response.data.messages[0]);
       });
+
     setButtonFlag(true);
   };
 
@@ -113,12 +106,12 @@ function Profile() {
     })
       .then(() => {
         form.resetFields();
-        message.success('successfully updated');
+        message.success('updated successfully');
         sessionRefetch();
       })
-      .catch(() => {
+      .catch((err) => {
         form.resetFields();
-        message.error('Password is not updated');
+        message.error(err.response.data.message || err.response.data.messages[0]);
       });
   };
 
@@ -178,14 +171,15 @@ function Profile() {
                   sessionRefetch();
                   refetch();
                 })
-                .catch(() => {
+                .catch((err) => {
                   setLoading(false);
-                  message.error('Profile Not Updated');
+                  message.error(err.response.data.message || err.response.data.messages[0]);
                 });
             })
-            .catch(() => {
+            .catch((err) => {
               setLoading(false);
               setLoad(false);
+              message.error(err.response.data.message || err.response.data.messages[0]);
             });
         });
     }
@@ -238,7 +232,8 @@ function Profile() {
         <Form
           form={dataForm}
           name="validate"
-          {...formItemLayout}
+          layout="vertical"
+          style={{ margin: '10px' }}
           onFinish={SubmitDetails}
         >
           <Form.Item
@@ -289,7 +284,7 @@ function Profile() {
         <Form
           form={form}
           name="validate_other"
-          {...formItemLayout}
+          layout="vertical"
           onFinish={changePassword}
         >
           <Form.Item
@@ -333,15 +328,17 @@ function Profile() {
           >
             <Input.Password />
           </Form.Item>
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button
-              type="primary"
-              htmlType="submit"
-              loading={passwordLoading}
-            >
-              Change
-            </Button>
-          </div>
+          <Form.Item>
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                loading={passwordLoading}
+              >
+                Change
+              </Button>
+            </div>
+          </Form.Item>
         </Form>
       </Card>
     </div>

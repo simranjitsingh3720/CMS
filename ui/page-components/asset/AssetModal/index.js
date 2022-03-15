@@ -10,13 +10,13 @@ function AssetModal({
   };
   return (
     <Modal
-      title={flag ? 'Add Asset' : 'Edit Asset'}
+      title={flag ? 'ADD ASSET' : 'EDIT ASSET'}
       footer={null}
       onCancel={handleCancel}
       visible={isModalVisible}
     >
-      {flag ? <AssetCreateForm CloseModal={onModalClose} refetch={refetch} />
-        : <AssetEditForm onModalClose={onModalClose} refetch={refetch} data={data} />}
+      {flag ? <AssetCreateForm closeModal={onModalClose} refetch={refetch} />
+        : <AssetEditForm closeModal={onModalClose} refetch={refetch} data={data} />}
     </Modal>
   );
 }

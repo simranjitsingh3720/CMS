@@ -5,13 +5,13 @@ import FieldTutorial from '../../FieldTutorial';
 
 function FieldCard({
   fields, setIsEditable, setFieldsId,
-  setIsEditSchemaDrawer, setFieldData, deleteField, id,
+  setIsEditSchemaModal, setFieldData, deleteField, id,
 }) {
-  const handleEditSchemaFieldsDrawer = (fieldID) => {
+  const handleEditSchemaFieldsModal = (fieldID) => {
     setFieldData(fields);
     setIsEditable(true);
     setFieldsId(fieldID);
-    setIsEditSchemaDrawer(true);
+    setIsEditSchemaModal(true);
   };
 
   return (
@@ -28,7 +28,7 @@ function FieldCard({
             <Button
               id="edit_structure"
               className={style.button}
-              onClick={() => handleEditSchemaFieldsDrawer(fields.id)}
+              onClick={() => handleEditSchemaFieldsModal(fields.id)}
             >
               <EditOutlined />
             </Button>

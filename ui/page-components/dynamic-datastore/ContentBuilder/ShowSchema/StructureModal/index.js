@@ -11,7 +11,7 @@ import styles from './style.module.scss';
 const { TextArea } = Input;
 
 function StructureModal({
-  showSchemaModal, fieldsId, closeSchemaDrawer, data = {}, fieldData, isEditable, setReFetchSchema,
+  showSchemaModal, fieldsId, closeSchemaModal, data = {}, fieldData, isEditable, setReFetchSchema,
 }) {
   const [form] = Form.useForm();
   const [dataType, setDataType] = useState('');
@@ -79,21 +79,20 @@ function StructureModal({
     updatedValues.isMultiple = undefined;
 
     setLoading(true);
-
     if (!isEditable) {
       await executeFieldCreate({
         data: {
           schema: values,
           fieldId: values.id,
         },
-      }).then((res) => {
+      }).then(() => {
         message.success('Field Added Successfully');
         setLoading(false);
         form.resetFields();
-        closeSchemaDrawer();
+        closeSchemaModal();
         setReFetchSchema(true);
       }).catch((err) => {
-        message.error(err.response.data.messages[0]);
+        message.error(err.response.data.message || err.response.data.messages[0]);
       });
     } else {
       await executeFieldUpdate({
@@ -103,14 +102,14 @@ function StructureModal({
       }).then(() => {
         setReFetchSchema(true);
       }).catch((err) => {
-        message.error(err.response.data.messages[0]);
+        message.error(err.response.data.message || err.response.data.messages[0]);
       });
 
       if (!error) {
         setLoading(false);
 
         form.resetFields();
-        closeSchemaDrawer();
+        closeSchemaModal();
         message.success('Field Updated Successfully');
       }
     }
@@ -131,7 +130,7 @@ function StructureModal({
       title={fieldData ? `EDIT FIELD : ${fieldData.name}` : 'CREATE A NEW FIELD'}
       visible={showSchemaModal}
       confirmLoading={loading}
-      onCancel={closeSchemaDrawer}
+      onCancel={closeSchemaModal}
       width={1200}
       footer={null}
 
@@ -209,7 +208,12 @@ function StructureModal({
               name="required"
               valuePropName="checked"
             >
-              <Checkbox checked={(fieldData && fieldData.required) || false} style={{ marginLeft: '120px' }}>Required field</Checkbox>
+              <Checkbox
+                checked={(fieldData && fieldData.required) || false}
+              >
+                Required field
+
+              </Checkbox>
 
             </Form.Item>
           </Card>
@@ -262,8 +266,7 @@ function StructureModal({
                       name="isMultiple"
                       valuePropName="checked"
                     >
-                      <Checkbox style={{ marginLeft: '120px' }}>Multiple Files</Checkbox>
-
+                      <Checkbox>Multiple Files</Checkbox>
                     </Form.Item>
                   );
 
@@ -290,21 +293,21 @@ function StructureModal({
           style={{ marginBottom: '0px' }}
         >
           {isEditable ? (
-            <Space wrap>
+            <Space>
               <Button type="primary" htmlType="submit">
                 Update
               </Button>
-              <Button key="back" onClick={closeSchemaDrawer}>
+              <Button key="back" onClick={closeSchemaModal}>
                 Cancel
               </Button>
             </Space>
           )
             : (
-              <Space wrap>
+              <Space>
                 <Button type="primary" htmlType="submit">
                   Submit
                 </Button>
-                <Button key="back" onClick={closeSchemaDrawer}>
+                <Button key="back" onClick={closeSchemaModal}>
                   Cancel
                 </Button>
               </Space>

@@ -3,6 +3,7 @@ import {
   Table,
   Modal,
   Empty,
+  message,
 } from 'antd';
 import React from 'react';
 import getColumns from './getColumns/getColumns';
@@ -28,12 +29,14 @@ export default function ContentTable({
       onOk() {
         deleteContent({
           url: `/content/${tableSchema.slug}/${content.id}`,
-        }).then((res) => {
+        }).then(() => {
           getContent();
+        }).catch((err) => {
+          message.error(err.response.data.message || err.response.data.messages[0]);
         });
       },
       onCancel() {
-
+        console.log('CANCELLED');
       },
     });
   };
@@ -41,11 +44,28 @@ export default function ContentTable({
   const columns = getColumns(tableSchema, handleEditContent, handleDeleteContent);
   let finalData = [];
 
+  const switchFieldsId = ((tableSchema && tableSchema.schema) || []).filter((field) => field.appearanceType === 'switch');
+
   if (data) {
-    finalData = data.list.map((content) => ({
-      ...content.data,
-      Actions: { ...content.data, id: content.id },
-    }));
+    finalData = data.list.map((content) => {
+      const updatedContent = { ...content.data };
+      if (switchFieldsId.length > 0) {
+        switchFieldsId.forEach((field) => {
+          if (updatedContent[field.id] !== undefined) {
+            if (updatedContent[field.id]) {
+              updatedContent[field.id] = field.Truelabel;
+            } else {
+              updatedContent[field.id] = field.Falselabel;
+            }
+          }
+        });
+      }
+
+      return {
+        ...updatedContent,
+        Actions: { ...content.data, id: content.id },
+      };
+    });
   }
 
   return (

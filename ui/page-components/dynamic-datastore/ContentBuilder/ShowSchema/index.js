@@ -13,8 +13,8 @@ const { confirm } = Modal;
 function ShowSchema() {
   const router = useRouter();
   const { schemaSlug } = router.query;
-  const [isSchemaDrawer, setIsSchemaDrawer] = useState(false);
-  const [editSchemaDrawer, setEditSchemaDrawer] = useState(false);
+  const [isSchemaModal, setIsSchemaModal] = useState(false);
+  const [editSchemaModal, setEditSchemaModal] = useState(false);
   const [fieldData, setFieldData] = useState({});
   const [isEditable, setIsEditable] = useState(false);
   const [fieldsId, setFieldsId] = useState('');
@@ -24,20 +24,20 @@ function ShowSchema() {
 
   const showSchemaModal = () => {
     setIsEditable(false);
-    setIsSchemaDrawer(true);
+    setIsSchemaModal(true);
   };
 
   const showEditSchemaModal = () => {
     setIsEditable(true);
-    setIsSchemaDrawer(false);
+    setIsSchemaModal(false);
   };
 
   const closeSchemaModal = () => {
-    setIsSchemaDrawer(false);
+    setIsSchemaModal(false);
   };
 
   const closeEditSchemaModal = () => {
-    setEditSchemaDrawer(false);
+    setEditSchemaModal(false);
   };
 
   const [{}, fieldDelete] = useRequest(
@@ -131,12 +131,12 @@ function ShowSchema() {
         <ActionBar actions={actions} />
       </div>
       <div>
-        {isSchemaDrawer
+        {isSchemaModal
           ? (
             <div>
               <StructureModal
                 showSchemaModal={showSchemaModal}
-                closeSchemaDrawer={closeSchemaModal}
+                closeSchemaModal={closeSchemaModal}
                 getSchema={getSchema}
                 data={data}
                 fieldsId={fieldsId}
@@ -147,11 +147,11 @@ function ShowSchema() {
           : null}
       </div>
       <div>
-        {editSchemaDrawer
+        {editSchemaModal
           ? (
             <StructureModal
               showSchemaModal={showEditSchemaModal}
-              closeSchemaDrawer={closeEditSchemaModal}
+              closeSchemaModal={closeEditSchemaModal}
               getSchema={getSchema}
               isEditable={isEditable}
               fieldsId={fieldsId}
@@ -182,7 +182,7 @@ function ShowSchema() {
             <DragableList
               useDragHandle
               fieldActions={{
-                setEditSchemaDrawer,
+                setEditSchemaModal,
                 closeSchemaModal,
                 setFieldsId,
                 setIsEditable,

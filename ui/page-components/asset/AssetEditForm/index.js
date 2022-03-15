@@ -2,16 +2,9 @@ import { Form, Input, Button, message, Space } from 'antd';
 import { useState } from 'react';
 import { useRequest } from '../../../helpers/request-helper';
 
-function AssetEditForm({ refetch, data, onModalClose }) {
+function AssetEditForm({ refetch, data, closeModal }) {
   const [form] = Form.useForm();
-  const formItemLayout = {
-    labelCol: {
-      span: 8,
-    },
-    wrapperCol: {
-      span: 17,
-    },
-  };
+
   const [loading, setLoading] = useState(false);
 
   const [{ error },
@@ -32,13 +25,13 @@ function AssetEditForm({ refetch, data, onModalClose }) {
       },
     });
     if (error) {
-      message.error('Asset Not Updated');
+      message.error(error.response.data.message[0] || error.response.data.message);
     } else {
       setLoading(false);
       refetch();
       form.resetFields();
-      onModalClose();
-      message.success('Asset Updated');
+      closeModal();
+      message.success('Asset updated successfully !!!!');
     }
   };
   return (
@@ -46,7 +39,6 @@ function AssetEditForm({ refetch, data, onModalClose }) {
       form={form}
       layout="vertical"
       name="validate_other"
-      // {...formItemLayout}
       onFinish={SubmitDetails}
       loading={loading}
       initialValues={{ name: data.name, description: data.description }}
@@ -76,7 +68,7 @@ function AssetEditForm({ refetch, data, onModalClose }) {
           <Button type="primary" loading={loading} htmlType="submit">
             Submit
           </Button>
-          <Button key="back" onClick={onModalClose}>
+          <Button key="back" onClick={closeModal}>
             Cancel
           </Button>
         </Space>

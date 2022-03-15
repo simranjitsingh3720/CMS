@@ -9,8 +9,8 @@ const DragableItem = SortableElement(({ value, fieldActions }) => (
   >
     <DragHandler />
     <FieldCard
-      setIsEditSchemaDrawer={fieldActions.setEditSchemaDrawer}
-      onClose={fieldActions.closeSchemaDrawer}
+      setIsEditSchemaModal={fieldActions.setEditSchemaModal}
+      onClose={fieldActions.closeSchemaModal}
       key={value.id}
       id={value.id}
       fields={value}

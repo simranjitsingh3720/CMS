@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   Form, Input, Button, message, Modal, Space,
 } from 'antd';
@@ -12,7 +12,7 @@ import { useRequest } from '../../../../../helpers/request-helper';
 
 const { confirm } = Modal;
 
-function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
+function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
   const [form] = Form.useForm();
 
   const [{ }, executePatch] = useRequest(
@@ -31,7 +31,7 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
       manual: true,
     },
   );
-  const SubmitDetails = async (values) => {
+  const submitDetails = async (values) => {
     await executePatch({
       data: {
         name: values.name,
@@ -47,7 +47,7 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
         }, 1000);
       })
       .catch((err) => {
-        message.info('Slug Name Already Taken');
+        message.info(err.response.data.message || err.response.data.messages[0]);
       });
   };
 
@@ -67,12 +67,15 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
       onOk() {
         executeHandleHome({
           url: `updateHome/${slug}`,
+        }).then(() => {
+          message.success('Home Page Updated Successfully!');
+          setVisible(false);
+          setTimeout(() => {
+            fetch();
+          }, 1000);
+        }).catch((err) => {
+          message.error(err.response.data.message || err.response.data.messages[0]);
         });
-        message.success('Home Page Updated Successfully!');
-        setVisible(false);
-        setTimeout(() => {
-          fetch();
-        }, 1000);
       },
       onCancel() {
         console.log('Cancel');
@@ -111,12 +114,15 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
         onOk() {
           handleDeletePage({
             url: `/page/${slugForDelete}`,
+          }).then((re) => {
+            message.success('Page Deleted Successfully!');
+            setVisible(false);
+            setTimeout(() => {
+              fetch();
+            }, 1000);
+          }).catch((err) => {
+            message.error(err.response.data.message || err.response.data.messages[0]);
           });
-          message.success('Page Deleted Successfully!');
-          setVisible(false);
-          setTimeout(() => {
-            fetch();
-          }, 1000);
         },
         onCancel() {
           console.log('Cancel');
@@ -131,7 +137,7 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
 
   return (
     <Modal
-      title="Edit Page Details"
+      title={`EDIT PAGE DETAILS : ${pageData.name}`}
       onCancel={onFormClose}
       visible={visible}
       footer={null}
@@ -141,7 +147,7 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
         form={form}
         name="basic"
         labelCol={{ span: 5 }}
-        onFinish={SubmitDetails}
+        onFinish={submitDetails}
         layout="vertical"
         initialValues={{ name: pageData.name, slug: pageData.slug }}
       >
@@ -229,4 +235,4 @@ function PageEditDrawer({ onFormClose, visible, setVisible, pageData, fetch }) {
     </Modal>
   );
 }
-export default PageEditDrawer;
+export default PageEditModal;
