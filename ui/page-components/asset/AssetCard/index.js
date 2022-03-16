@@ -5,19 +5,19 @@ import React, { useState } from 'react';
 import {
   ExclamationCircleOutlined,
   MoreOutlined,
-  PictureOutlined,
-  PlayCircleOutlined,
 } from '@ant-design/icons';
 import AssetModal from '../AssetModal';
 import styles from './style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
 import CardWrapper from '../../../components/CardWrapper';
+import { CardPreview, CardTitle, Preview } from './Asset/Preview';
 
 const { confirm } = Modal;
 
 function AssetCard({ data, refetch }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isPreviewModalVisible, setIsPreviewModalVisible] = useState(false);
+
   const [{ deleteError }, handleDelete] = useRequest(
     {
       method: 'DELETE',
@@ -69,7 +69,6 @@ function AssetCard({ data, refetch }) {
         className="third-step"
       >
         Rename Asset
-
       </Button>
       <br />
       <Button
@@ -87,31 +86,12 @@ function AssetCard({ data, refetch }) {
   return (
     <>
       <CardWrapper>
-        {(data && data.type === 'image')
-          ? (
-            <div
-              style={{
-                backgroundImage: `url(${data.url})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                height: '200px',
-              }}
-              onClick={showAssetPreviewModal}
-              role="button"
-            />
-          )
-          : (
-            <video style={{ height: '200px', width: '100%' }} src={data.url} onClick={showAssetPreviewModal}>
-              Your browser does not support the video tag.
-            </video>
-
-          ) }
+        <CardPreview data={data} showAssetPreviewModal={showAssetPreviewModal} />
 
         <div className={styles.asset_action}>
           <div className="flex-container">
-            {data.type === 'image'
-              ? <PictureOutlined style={{ fontSize: '18px', marginRight: '5px' }} />
-              : <PlayCircleOutlined style={{ fontSize: '18px', marginRight: '5px' }} />}
+            <CardTitle data={data} />
+            {' '}
             <h3 style={{ margin: '0 ' }}>{data.name}</h3>
           </div>
           <Popover content={content} placement="bottomLeft">
@@ -144,22 +124,7 @@ function AssetCard({ data, refetch }) {
           width={1200}
           style={{ marginTop: '-40px' }}
         >
-          {(data && data.type === 'image')
-            ? (
-              <div
-                style={{ backgroundImage: `url(${data.url})`, backgroundSize: 'cover', backgroundPosition: 'center', height: '80vh', width: '100%' }}
-              />
-            )
-            : (
-              <video
-                style={{ height: '80vh', width: '100%' }}
-                src={data.url}
-                controls
-                autoPlay
-              >
-                Your browser does not support the video tag.
-              </video>
-            ) }
+          <Preview data={data} />
         </Modal>
       ) : null}
     </>

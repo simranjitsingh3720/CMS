@@ -116,11 +116,12 @@ function AssetCreateForm({ closeModal, refetch }) {
         style={{ marginBottom: '0px' }}
       >
         <Space wrap>
-          <Button type="primary" loading={loading} htmlType="submit">
-            Submit
-          </Button>
+
           <Button key="back" onClick={closeModal}>
             Cancel
+          </Button>
+          <Button type="primary" loading={loading} htmlType="submit">
+            Submit
           </Button>
         </Space>
       </Form.Item>

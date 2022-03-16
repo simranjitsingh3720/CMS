@@ -126,15 +126,14 @@ function SchemaModal({
           <Form.Item
             wrapperCol={{
               offset: 15,
-              span: 20,
             }}
             style={{ marginBottom: '0px' }}
           >
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-            <Button className={styles.cancelButton} onClick={handleCancel} htmlType="cancel">
+            <Button onClick={handleCancel} htmlType="cancel">
               Cancel
+            </Button>
+            <Button className={styles.submitButton} type="primary" htmlType="submit">
+              Submit
             </Button>
           </Form.Item>
         </Form>

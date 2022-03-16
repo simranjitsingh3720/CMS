@@ -117,11 +117,12 @@ export default function NewContentModal({
             style={{ marginBottom: '0px' }}
           >
             <Space>
-              <Button type="primary" htmlType="submit">
-                Update
-              </Button>
+
               <Button key="back" onClick={closeContentModal}>
                 Cancel
+              </Button>
+              <Button type="primary" htmlType="submit">
+                Update
               </Button>
             </Space>
           </Form.Item>
@@ -135,11 +136,12 @@ export default function NewContentModal({
                 style={{ marginBottom: '0px' }}
               >
                 <Space>
-                  <Button type="primary" htmlType="submit">
-                    Submit
-                  </Button>
+
                   <Button key="back" onClick={closeContentModal}>
                     Cancel
+                  </Button>
+                  <Button type="primary" htmlType="submit">
+                    Submit
                   </Button>
                 </Space>
               </Form.Item>

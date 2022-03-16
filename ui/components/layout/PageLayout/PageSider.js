@@ -87,7 +87,7 @@ function PageSider() {
       <Menu theme="dark" mode="inline" selectedKeys={Router.pathname}>
         <Header className="site-layout-background" style={{ color: 'white', paddingLeft: '20px' }}>
           <strong>
-            <Link href="/"> CMS</Link>
+            <Link href="/admin"> CMS</Link>
           </strong>
         </Header>
 
