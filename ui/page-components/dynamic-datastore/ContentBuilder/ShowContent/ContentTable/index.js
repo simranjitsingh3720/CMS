@@ -50,7 +50,7 @@ export default function ContentTable({
   let finalData = [];
 
   const switchFieldsId = ((tableSchema && tableSchema.schema) || []).filter((field) => field.appearanceType === 'Switch');
-  const dateFieldsId = ((tableSchema && tableSchema.schema) || []).filter((field) => field.appearanceType === 'dateAndTime');
+  const dateFieldsId = ((tableSchema && tableSchema.schema) || []).filter((field) => field.appearanceType === 'Date and Time');
 
   if (data) {
     finalData = data.list.map((content) => {

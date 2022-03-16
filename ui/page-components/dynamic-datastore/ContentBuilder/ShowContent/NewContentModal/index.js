@@ -30,7 +30,7 @@ export default function NewContentModal({
   const handleAddContent = (contentData) => {
     const x = { ...contentData };
     schemaDetails.schema.forEach((field) => {
-      if (field.type === 'dateAndTime') {
+      if (field.type === 'Date and Time') {
         x[field.id] = moment(x[field.id]).toISOString(true);
       }
     });
@@ -54,7 +54,7 @@ export default function NewContentModal({
     const x = { ...contentData };
 
     schemaDetails.schema.forEach((field) => {
-      if (field.type === 'dateAndTime') {
+      if (field.type === 'Date and Time') {
         x[field.id] = moment(x[field.id]).toISOString(true);
       }
     });

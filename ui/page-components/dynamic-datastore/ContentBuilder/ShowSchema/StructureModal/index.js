@@ -118,8 +118,12 @@ function StructureModal({
 
   if (!isEditable) {
     const handleValuesChange = (changedValues) => {
-      if (changedValues.name) {
+      if (changedValues.name !== '' && changedValues.name !== undefined) {
         form.setFieldsValue({ id: _.snakeCase(changedValues.name) });
+      }
+
+      if (changedValues.name === '') {
+        form.setFieldsValue({ id: '' });
       }
     };
   }

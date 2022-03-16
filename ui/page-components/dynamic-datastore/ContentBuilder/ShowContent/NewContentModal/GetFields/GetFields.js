@@ -110,9 +110,8 @@ function GetFields(appearenceType, field) {
     case 'Date and Time':
       return (
         <Form.Item name={id} label={name} rules={[{ required }]}>
-
           <DatePicker
-            name="dateAndTime"
+            name="Date and Time"
             format="YYYY/MM/DD HH:mm:ss"
             showTime={{ format: 'HH:mm:ss' }}
           />
