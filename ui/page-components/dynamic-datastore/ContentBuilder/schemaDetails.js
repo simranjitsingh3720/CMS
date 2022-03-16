@@ -1,10 +1,10 @@
-export const dataTypes = ['text', 'list', 'number', 'assets', 'dateAndTime', 'boolean'];
+export const dataTypes = ['Text', 'List', 'Number', 'Assets', 'Date and Time', 'Boolean'];
 
 export const appearanceTypes = {
-  text: ['short', 'long', 'dropdown', 'radio'],
-  list: ['checkbox'],
-  number: ['number'],
-  assets: ['fileUpload'],
-  dateAndTime: ['dateAndTime'],
-  boolean: ['switch', 'Boolean Radio'],
+  Text: ['Short', 'Long', 'Dropdown', 'Radio'],
+  List: ['Checkbox'],
+  Number: ['Number'],
+  Assets: ['FileUpload'],
+  'Date and Time': ['Date and Time'],
+  Boolean: ['Switch', 'Boolean radio'],
 };

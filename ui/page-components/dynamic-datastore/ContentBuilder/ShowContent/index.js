@@ -51,10 +51,6 @@ function ShowContent({ schema }) {
   };
 
   const actions = {
-    searchBar: {
-      searchValue,
-      setSearchValue,
-    },
     buttons: [
       {
         name: 'Add new content',

@@ -27,8 +27,8 @@ function StructureModal({
     setAppearanceType(value);
   };
 
-  const onFinishFailed = (errorInfo) => {
-    message.error('Failed');
+  const onFinishFailed = () => {
+    console.log('fields required');
   };
 
   const [{ error },
@@ -118,8 +118,12 @@ function StructureModal({
 
   if (!isEditable) {
     const handleValuesChange = (changedValues) => {
-      if (changedValues.name) {
+      if (changedValues.name !== '' && changedValues.name !== undefined) {
         form.setFieldsValue({ id: _.snakeCase(changedValues.name) });
+      }
+
+      if (changedValues.name === '') {
+        form.setFieldsValue({ id: '' });
       }
     };
   }
@@ -127,7 +131,7 @@ function StructureModal({
   return (
 
     <Modal
-      title={fieldData ? `EDIT FIELD : ${fieldData.name}` : 'CREATE A NEW FIELD'}
+      title={fieldData ? `Edit ${fieldData.name} field` : 'Create a new field'}
       visible={showSchemaModal}
       confirmLoading={loading}
       onCancel={closeSchemaModal}
@@ -193,7 +197,7 @@ function StructureModal({
               ]}
             >
 
-              <TextArea rows={4} defaultValue={(fieldData && fieldData.description) || ''} />
+              <TextArea rows={2} defaultValue={(fieldData && fieldData.description) || ''} />
 
             </Form.Item>
             <Form.Item
@@ -261,9 +265,9 @@ function StructureModal({
 
             {(() => {
               switch (appearanceType) {
-                case 'checkbox':
+                case 'Checkbox':
                   return <ValueNames />;
-                case 'fileUpload':
+                case 'FileUpload':
                   return (
 
                     <Form.Item
@@ -274,13 +278,13 @@ function StructureModal({
                     </Form.Item>
                   );
 
-                case 'switch':
+                case 'Switch':
                   return <Switch />;
-                case 'dropdown':
+                case 'Dropdown':
                   return <ValueNames />;
-                case 'radio':
+                case 'Radio':
                   return <ValueNames />;
-                case 'Boolean Radio':
+                case 'Boolean radio':
                   return <Switch />;
                 default:
                   return null;
@@ -290,31 +294,31 @@ function StructureModal({
         </Space>
 
         <Form.Item
-          wrapperCol={{
-            offset: 20,
-            span: 16,
-          }}
           style={{ marginBottom: '0px' }}
         >
           {isEditable ? (
-            <Space>
-              <Button type="primary" htmlType="submit">
-                Update
-              </Button>
-              <Button key="back" onClick={closeSchemaModal}>
-                Cancel
-              </Button>
-            </Space>
-          )
-            : (
-              <Space>
+            <div className={styles.actionButton}>
+              <Space wrap>
                 <Button type="primary" htmlType="submit">
-                  Submit
+                  Update
                 </Button>
-                <Button key="back" onClick={closeSchemaModal}>
+                <Button key="back" onClick={closeSchemaModal} htmlType="cancel">
                   Cancel
                 </Button>
               </Space>
+            </div>
+          )
+            : (
+              <div className={styles.actionButton}>
+                <Space wrap>
+                  <Button type="primary" htmlType="submit">
+                    Submit
+                  </Button>
+                  <Button key="back" htmlType="cancel" onClick={closeSchemaModal}>
+                    Cancel
+                  </Button>
+                </Space>
+              </div>
             )}
         </Form.Item>
       </Form>

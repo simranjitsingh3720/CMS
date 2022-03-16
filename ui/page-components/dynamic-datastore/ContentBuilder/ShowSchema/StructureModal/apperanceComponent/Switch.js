@@ -3,13 +3,6 @@ import { Form, Input, Button, Checkbox } from 'antd';
 import React from 'react';
 
 export default function Switch() {
-  const onFinish = (values) => {
-    console.log('Success:', values);
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
   return (
     <div>
       <Form.Item

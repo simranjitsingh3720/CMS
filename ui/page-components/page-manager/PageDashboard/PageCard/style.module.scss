@@ -20,9 +20,11 @@
   border-bottom: 1px solid rgb(236, 233, 233);
 }
 
-
-
-
+.actionButton{
+   display: flex;
+   justify-content: flex-end;
+   align-items: flex-end
+}
 
 .modal_content {
   font-size: 0.9em;

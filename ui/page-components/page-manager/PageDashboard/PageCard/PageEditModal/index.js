@@ -31,6 +31,7 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
       manual: true,
     },
   );
+
   const submitDetails = async (values) => {
     await executePatch({
       data: {
@@ -39,12 +40,11 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
       },
     })
       .then(() => {
-        form.resetFields();
         setVisible(false);
         message.success('Page Updated Successfully');
-        setTimeout(() => {
-          fetch();
-        }, 1000);
+        // setTimeout(() => {
+        fetch();
+        // }, 1000);
       })
       .catch((err) => {
         message.info(err.response.data.message || err.response.data.messages[0]);
@@ -137,7 +137,7 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
 
   return (
     <Modal
-      title={`EDIT PAGE DETAILS : ${pageData.name}`}
+      title={`Edit ${pageData.name} page`}
       onCancel={onFormClose}
       visible={visible}
       footer={null}
@@ -177,18 +177,20 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 15 }}>
-          <Space wrap>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className={styles.drawer_submit}
-            >
-              Submit
-            </Button>
-            <Button key="back" onClick={onFormClose}>
-              Cancel
-            </Button>
-          </Space>
+          <div className={styles.actionButton}>
+            <Space wrap>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className={styles.drawer_submit}
+              >
+                Submit
+              </Button>
+              <Button key="back" onClick={onFormClose}>
+                Cancel
+              </Button>
+            </Space>
+          </div>
         </Form.Item>
       </Form>
 

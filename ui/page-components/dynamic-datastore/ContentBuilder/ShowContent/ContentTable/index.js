@@ -49,16 +49,12 @@ export default function ContentTable({
   const columns = getColumns(tableSchema, handleEditContent, handleDeleteContent);
   let finalData = [];
 
-  const switchFieldsId = ((tableSchema && tableSchema.schema) || []).filter((field) => field.appearanceType === 'switch');
-  const dateFieldsId = ((tableSchema && tableSchema.schema) || []).filter((field) => field.appearanceType === 'dateAndTime');
-  console.log(dateFieldsId);
-  console.log(switchFieldsId);
+  const switchFieldsId = ((tableSchema && tableSchema.schema) || []).filter((field) => field.appearanceType === 'Switch');
+  const dateFieldsId = ((tableSchema && tableSchema.schema) || []).filter((field) => field.appearanceType === 'Date and Time');
 
   if (data) {
-    console.log(data);
     finalData = data.list.map((content) => {
       const updatedContent = { ...content.data };
-      console.log(updatedContent);
 
       if (switchFieldsId.length > 0) {
         switchFieldsId.forEach((field) => {
@@ -75,7 +71,6 @@ export default function ContentTable({
       if (dateFieldsId.length > 0) {
         dateFieldsId.forEach((field) => {
           if (updatedContent[field.id] !== null) {
-            console.log(updatedContent[field.id]);
             const dateFormat = 'YYYY/MM/DD HH:mm:ss';
             const testDateUtc = moment.utc(updatedContent[field.id]);
             const localDate = testDateUtc.local();
