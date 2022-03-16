@@ -10,6 +10,7 @@ import {
 } from 'antd';
 import { useRouter } from 'next/router';
 import { useRequest } from '../../../../helpers/request-helper';
+import styles from '../style.module.scss';
 
 function PageFormModal({ onFormClose, visible, setVisible }) {
   const [pageDetails, setPageDetails] = useState({
@@ -54,11 +55,10 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
         message.info(err.response.data.message || err.response.data.messages[0]);
       });
   };
-  console.log(pageDetails);
 
   return (
     <Modal
-      title="ADD NEW PAGE DETAILS"
+      title="Add new page"
       onCancel={onFormClose}
       visible={visible}
       footer={null}
@@ -118,14 +118,17 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
           wrapperCol={{ offset: 15, span: 10 }}
           style={{ marginBottom: '0px' }}
         >
-          <Space wrap>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-            <Button key="back" onClick={onFormClose}>
-              Cancel
-            </Button>
-          </Space>
+          <div className={styles.actionButton}>
+
+            <Space wrap>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+              <Button key="back" onClick={onFormClose}>
+                Cancel
+              </Button>
+            </Space>
+          </div>
         </Form.Item>
       </Form>
     </Modal>

@@ -9,6 +9,7 @@ import {
 } from 'antd';
 import { useState } from 'react';
 import { useRequest } from '../../../helpers/request-helper';
+import styles from '../AssetModal/style.module.scss';
 
 const { TextArea } = Input;
 
@@ -105,7 +106,7 @@ function AssetCreateForm({ closeModal, refetch }) {
         name="description"
         label="Description"
       >
-        <TextArea />
+        <TextArea rows={2} />
       </Form.Item>
 
       <Form.Item
@@ -115,14 +116,17 @@ function AssetCreateForm({ closeModal, refetch }) {
         }}
         style={{ marginBottom: '0px' }}
       >
-        <Space wrap>
-          <Button type="primary" loading={loading} htmlType="submit">
-            Submit
-          </Button>
-          <Button key="back" onClick={closeModal}>
-            Cancel
-          </Button>
-        </Space>
+        <div className={styles.actionButton}>
+          <Space wrap>
+            <Button type="primary" loading={loading} htmlType="submit">
+              Submit
+            </Button>
+            <Button key="back" onClick={closeModal}>
+              Cancel
+            </Button>
+          </Space>
+        </div>
+
       </Form.Item>
     </Form>
   );

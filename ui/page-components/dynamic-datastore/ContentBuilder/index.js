@@ -14,6 +14,7 @@ export default function ContentBuilder() {
   const router = useRouter();
   const { schemaSlug } = router.query;
   const [notFound, setNotFound] = useState(false);
+  const [defaultKey, setDefaultKey] = useState(null);
 
   const [{ data: schema }, getSchema] = useRequest(
     {
@@ -36,7 +37,13 @@ export default function ContentBuilder() {
 
   useEffect(() => {
     if (schemaSlug) {
-      getSchema().then(() => {}).catch((err) => {
+      getSchema().then((res) => {
+        if (res.data.schema.length > 0) {
+          setDefaultKey('1');
+        } else {
+          setDefaultKey('2');
+        }
+      }).catch((err) => {
         if (err.response.data.code === 'MissingError') {
           setNotFound(true);
         } else {
@@ -51,19 +58,21 @@ export default function ContentBuilder() {
       {notFound ? <Error message="Page Not Found" code={404} /> : (
         <>
           <ContentTutorial />
-          <div className={styles.content_builder_wrapper}>
-            <Tabs defaultActiveKey="1" onChange={callback} size="large">
-              <TabPane tab="Contents" key="1">
-                <ShowContent schema={schema} />
-              </TabPane>
-              <TabPane tab="Structure" key="2">
-                {schema ? <ShowSchema schema={schema} /> : <>NO SCHEMA FOUND</>}
-              </TabPane>
-              <TabPane tab="Settings" key="3">
-                <span style={{ fontSize: '55px', textAlign: 'center' }}>Settings</span>
-              </TabPane>
-            </Tabs>
-          </div>
+          {defaultKey ? (
+            <div className={styles.content_builder_wrapper}>
+              <Tabs defaultActiveKey={defaultKey} onChange={callback} size="large">
+                <TabPane tab="Contents" key="1">
+                  <ShowContent schema={schema} />
+                </TabPane>
+                <TabPane tab="Structure" key="2">
+                  {schema ? <ShowSchema schema={schema} /> : <>NO SCHEMA FOUND</>}
+                </TabPane>
+                <TabPane tab="Settings" key="3">
+                  <span style={{ fontSize: '55px', textAlign: 'center' }}>Settings</span>
+                </TabPane>
+              </Tabs>
+            </div>
+          ) : null}
         </>
       ) }
 

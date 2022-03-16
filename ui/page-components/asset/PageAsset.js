@@ -26,7 +26,7 @@ function PageAsset() {
     searchBar: {
       searchValue,
       setSearchValue,
-      placeholder: 'Enter Search Asset',
+      placeholder: 'Search asset by name',
 
     },
     buttons: [{
