@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   Form, Input, Button, Checkbox, Select, Card, Space, message, Modal,
 } from 'antd';
+import _ from 'lodash';
 import { dataTypes, appearanceTypes } from '../../schemaDetails';
 import ValueNames from './apperanceComponent/ValueNames';
 import Switch from './apperanceComponent/Switch';
@@ -118,8 +119,7 @@ function StructureModal({
   if (!isEditable) {
     const handleValuesChange = (changedValues) => {
       if (changedValues.name) {
-        const suggestedID = (changedValues.name || '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
-        form.setFieldsValue({ id: suggestedID });
+        form.setFieldsValue({ id: _.snakeCase(changedValues.name) });
       }
     };
   }
@@ -164,6 +164,7 @@ function StructureModal({
                   required: true,
                   message: 'Please input your field name!',
                 },
+
               ]}
             >
 
@@ -173,7 +174,10 @@ function StructureModal({
             <Form.Item
               label="Field ID"
               name="id"
-              rules={[{ required: true, message: 'Please input your field ID!' }]}
+              rules={[{ required: true, message: 'Please input your field ID!' }, {
+                pattern: new RegExp('^[A-Za-z0-9_]*$'),
+                message: 'Only Letters and Numbers are accepted',
+              }]}
             >
               <Input disabled={!!isEditable} />
 
@@ -222,7 +226,7 @@ function StructureModal({
             <Form.Item name="type" label="Type" rules={[{ required: true }]}>
               <Select
                 defaultValue={(fieldData && fieldData.type)}
-                size="large"
+                size="medium"
                 // style={{ width: 200 }}
                 placeholder="Select type of field..."
                 onChange={(value) => handleOnDataTypeChange(value)}
@@ -239,7 +243,7 @@ function StructureModal({
             </Form.Item>
             <Form.Item name="appearanceType" label="Appearance Type" rules={[{ required: true }]}>
               <Select
-                size="large"
+                size="medium"
                 defaultValue={(fieldData && fieldData.appearanceType) || appearanceTypes[dataType]}
                 placeholder="Select type of  appearance field..."
                 onChange={handleOnApperanceTypeChange}

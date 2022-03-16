@@ -4,6 +4,8 @@ import moment from 'moment';
 import { useRequest } from '../../../../../helpers/request-helper';
 import GetFields, { getInitialValues } from './GetFields/GetFields';
 
+// moment().tz('America/Los_Angeles').format();
+
 export default function NewContentModal({
   closeContentModal,
   schemaDetails, getContent, isEditable, editableData,
@@ -30,10 +32,11 @@ export default function NewContentModal({
     const x = { ...contentData };
     schemaDetails.schema.forEach((field) => {
       if (field.type === 'dateAndTime') {
-        const dateFormat = 'YYYY/MM/DD HH:mm';
-        const testDateUtc = moment.utc(x[field.id]);
-        const localDate = testDateUtc.local();
-        x[field.id] = localDate.format(dateFormat);
+        // const dateFormat = 'YYYY/MM/DD HH:mm:ss';
+        // const testDateUtc = moment.utc(x[field.id]);
+        // const localDate = testDateUtc.local();
+        // x[field.id] = localDate.format(dateFormat);
+        x[field.id] = moment(x[field.id]).toISOString(true);
       }
     });
 
@@ -57,10 +60,11 @@ export default function NewContentModal({
 
     schemaDetails.schema.forEach((field) => {
       if (field.type === 'dateAndTime') {
-        const dateFormat = 'YYYY/MM/DD HH:mm';
-        const testDateUtc = moment.utc(x[field.id]);
-        const localDate = testDateUtc.local();
-        x[field.id] = localDate.format(dateFormat);
+        // const dateFormat = 'YYYY/MM/DD HH:mm:ss';
+        // const testDateUtc = moment.utc(x[field.id]);
+        // const localDate = testDateUtc.local();
+        // x[field.id] = localDate.format(dateFormat);
+        x[field.id] = moment(x[field.id]).toISOString(true);
       }
     });
     if (schemaSlug) {
