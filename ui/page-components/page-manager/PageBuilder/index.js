@@ -147,42 +147,118 @@ function PageBuilder() {
         const blocksContainer = document.getElementById('blocks');
         const traitsContainer = document.getElementById('traits-container');
 
+        const pn = e.Panels;
+        const crc = 'create-comp';
+        const mvc = 'move-comp';
+        const swv = 'sw-visibility';
+        const expt = 'export-template';
+        const osm = 'open-sm';
+        const otm = 'open-tm';
+        const ola = 'open-layers';
+        const obl = 'open-blocks';
+        const ful = 'fullscreen';
+        const prv = 'preview';
+
+        pn.getPanels().reset([{
+          id: 'commands',
+          buttons: [{}],
+        },
+        {
+          id: 'options',
+          buttons: [
+            {
+              id: 'undo',
+              className: 'fa fa-undo',
+              command: (e) => e.runCommand('core:undo'),
+              attributes: {
+                title: 'Undo',
+                'data-tooltip-pos': 'bottom',
+              },
+            }, {
+              id: 'redo',
+              className: 'fa fa-repeat',
+              command: (e) => e.runCommand('core:redo'),
+              attributes: {
+                title: 'Redo',
+                'data-tooltip-pos': 'bottom',
+              },
+            }, {
+              id: swv,
+              command: swv,
+              context: swv,
+              className: 'fa fa-square-o',
+              attributes: {
+                title: 'View Components',
+                'data-tooltip-pos': 'bottom',
+              },
+            }, {
+              id: prv,
+              context: prv,
+              command: (e) => e.runCommand(prv),
+              className: 'fa fa-eye',
+              attributes: {
+                title: 'Preview',
+                'data-tooltip-pos': 'bottom',
+              },
+            },
+          ],
+        },
+        ]);
+
+        e.Panels.addPanel({
+          id: 'devices-b',
+          visible: true,
+          buttons: [{
+            id: 'set-device-desktop',
+            command(e, Model, Options) { e.setDevice('Desktop'); },
+            className: 'fa fa-desktop',
+            attributes: {
+              title: 'Desktop',
+              'data-tooltip-pos': 'bottom',
+            },
+            active: true,
+          }, {
+            id: 'set-device-tablet',
+            command(e, Model, Options) { e.setDevice('Tablet'); },
+            className: 'fa fa-tablet',
+            attributes: {
+              title: 'Tablet',
+              'data-tooltip-pos': 'bottom',
+            },
+          }, {
+            id: 'set-device-mobile',
+            command(e, Model, Options) { e.setDevice('Mobile portrait'); },
+            className: 'fa fa-mobile',
+            attributes: {
+              title: 'Mobile',
+              'data-tooltip-pos': 'bottom',
+            },
+          }],
+        });
+
         e.Panels.addPanel({
           id: 'basic-actions',
           el: '.panel__basic-actions',
           buttons: [
             {
-              id: 'show-layers',
+              id: 'show-block',
               active: true,
               className: 'panel-btn',
-              label: '<i class="fa fa-bars" />',
+              label: '<i class="fa fa-th-large" />',
               command() {
-                if (layersContainer.style.display === 'none') {
-                  layersContainer.style.display = 'block';
+                if (blocksContainer.style.display === 'none') {
+                  blocksContainer.style.display = 'block';
                   stylesContainer.style.display = 'none';
                   selectorsContainer.style.display = 'none';
-                  blocksContainer.style.display = 'none';
+                  layersContainer.style.display = 'none';
                   traitsContainer.style.display = 'none';
                 } else {
-                  layersContainer.style.display = 'none';
+                  blocksContainer.style.display = 'none';
                 }
               },
-              togglable: false,
-            }, {
-              id: 'show-traits',
-              active: true,
-              className: 'panel-btn',
-              label: '<i class="fa fa-cog" />',
-              command() {
-                if (traitsContainer.style.display === 'none') {
-                  traitsContainer.style.display = 'block';
-                  blocksContainer.style.display = 'none';
-                  stylesContainer.style.display = 'none';
-                  selectorsContainer.style.display = 'none';
-                  layersContainer.style.display = 'none';
-                } else {
-                  traitsContainer.style.display = 'none';
-                }
+              attributes: {
+                title: 'Show Blocks',
+                'data-tooltip-pos': 'bottom',
               },
               togglable: false,
             }, {
@@ -202,22 +278,51 @@ function PageBuilder() {
                   selectorsContainer.style.display = 'none';
                 }
               },
+              attributes: {
+                title: 'Show Styles',
+                'data-tooltip-pos': 'bottom',
+              },
               togglable: false,
             }, {
-              id: 'show-block',
+              id: 'show-traits',
               active: true,
               className: 'panel-btn',
-              label: '<i class="fa fa-th-large" />',
+              label: '<i class="fa fa-cog" />',
               command() {
-                if (blocksContainer.style.display === 'none') {
-                  blocksContainer.style.display = 'block';
+                if (traitsContainer.style.display === 'none') {
+                  traitsContainer.style.display = 'block';
+                  blocksContainer.style.display = 'none';
                   stylesContainer.style.display = 'none';
                   selectorsContainer.style.display = 'none';
                   layersContainer.style.display = 'none';
+                } else {
+                  traitsContainer.style.display = 'none';
+                }
+              },
+              attributes: {
+                title: 'Show Properties',
+                'data-tooltip-pos': 'bottom',
+              },
+              togglable: false,
+            }, {
+              id: 'show-layers',
+              active: true,
+              className: 'panel-btn',
+              label: '<i class="fa fa-bars" />',
+              command() {
+                if (layersContainer.style.display === 'none') {
+                  layersContainer.style.display = 'block';
+                  stylesContainer.style.display = 'none';
+                  selectorsContainer.style.display = 'none';
+                  blocksContainer.style.display = 'none';
                   traitsContainer.style.display = 'none';
                 } else {
-                  blocksContainer.style.display = 'none';
+                  layersContainer.style.display = 'none';
                 }
+              },
+              attributes: {
+                title: 'Show DOM Structure',
+                'data-tooltip-pos': 'bottom',
               },
               togglable: false,
             },

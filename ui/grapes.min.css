@@ -2095,7 +2095,9 @@ div.gjs-com-hover-move {
 }
 
 .gjs-pn-views-container {
-	height: 90%;
+	max-height: 80vh;
+  min-height: 20vh;
+  /* height: 50%; */
 	padding: 2px 0 0;
 	/* right: 0; */
 	width: 15%;
