@@ -3952,5 +3952,20 @@ div.gjs-com-hover-move {
   background-color: yellow;
 }
  .top{
-   z-index: 600000;
+   margin-top:1px
+ }
+
+ .top-panel{
+   display: flex;
+   justify-content: space-between;
+ }
+
+ .panel-drag{
+   margin: 10px;
+   font-size: 20px;
+   color: grey;
+ }
+
+ .panel-drag:hover{
+   cursor:row-resize;
  }

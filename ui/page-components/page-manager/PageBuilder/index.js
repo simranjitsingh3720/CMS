@@ -308,7 +308,7 @@ function PageBuilder() {
               id: 'show-layers',
               active: true,
               className: 'panel-btn',
-              label: '<i class="fa fa-bars" />',
+              label: '<i class="fa fa-list-alt" />',
               command() {
                 if (layersContainer.style.display === 'none') {
                   layersContainer.style.display = 'block';
@@ -620,7 +620,10 @@ function PageBuilder() {
 
       <Draggable handle=".handle">
         <div className="gjs-pn-panel gjs-pn-views-container gjs-one-bg gjs-two-color">
-          <div className="panel__basic-actions handle top" />
+          <div className="top-panel">
+            <div className="fa fa-bars panel-drag handle" />
+            <div className="panel__basic-actions top" />
+          </div>
           <span id="layers-container" className="handle" />
           <span id="blocks" />
           <span id="selectors-container" className="handle" style={{ display: 'none' }} />
