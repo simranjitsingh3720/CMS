@@ -148,15 +148,7 @@ function PageBuilder() {
         const traitsContainer = document.getElementById('traits-container');
 
         const pn = e.Panels;
-        const crc = 'create-comp';
-        const mvc = 'move-comp';
         const swv = 'sw-visibility';
-        const expt = 'export-template';
-        const osm = 'open-sm';
-        const otm = 'open-tm';
-        const ola = 'open-layers';
-        const obl = 'open-blocks';
-        const ful = 'fullscreen';
         const prv = 'preview';
 
         pn.getPanels().reset([{
@@ -617,7 +609,6 @@ function PageBuilder() {
 
   return (
     <div>
-
       <Draggable handle=".handle">
         <div className="gjs-pn-panel gjs-pn-views-container gjs-one-bg gjs-two-color">
           <div className="top-panel">
