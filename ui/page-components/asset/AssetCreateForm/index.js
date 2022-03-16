@@ -58,7 +58,7 @@ function AssetCreateForm({ closeModal, refetch }) {
         executePut({
           url: writeUrl,
           data: file,
-          headers: { type: values.upload[0].originFileObj.type },
+          headers: { type: values.upload[0].originFileObj.type, 'Content-Type': `${values.upload[0].originFileObj.type}` },
         })
           .then(() => {
             setLoading(false);

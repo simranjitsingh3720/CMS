@@ -87,21 +87,8 @@ export function Preview({ data }) {
     );
   }
   return (
-    <div>
-      {/* <iframe src={data.url} title="W3Schools Free Online Web Tutorials" width="100%" height="100%" allowFullScreen /> */}
-      <embed src={data.url} height="" width="" />
-      {/* <Document file="https://arxiv.org/pdf/quant-ph/0410100.pdf" onLoadSuccess={onDocumentLoadSuccess}>
-        <Page pageNumber={pageNumber} />
-      </Document>
-      <p>
-        Page
-        {' '}
-        {pageNumber}
-        {' '}
-        of
-        {' '}
-        {numPages}
-      </p> */}
+    <div style={{ height: '80vh', width: '100%' }}>
+      <iframe src={data.url} title="W3Schools Free Online Web Tutorials" width="100%" height="100%" allowFullScreen />
     </div>
   );
 }

@@ -1,16 +1,20 @@
 import {
   Button, message, Modal, Popover,
+  Typography,
 } from 'antd';
 import React, { useState } from 'react';
 import {
   ExclamationCircleOutlined,
   MoreOutlined,
 } from '@ant-design/icons';
+import Text from 'antd/lib/typography/Text';
 import AssetModal from '../AssetModal';
 import styles from './style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
 import CardWrapper from '../../../components/CardWrapper';
 import { CardPreview, CardTitle, Preview } from './Asset/Preview';
+
+const { Title } = Typography;
 
 const { confirm } = Modal;
 
@@ -92,7 +96,7 @@ function AssetCard({ data, refetch }) {
           <div className="flex-container">
             <CardTitle data={data} />
             {' '}
-            <h3 style={{ margin: '0 ' }}>{data.name}</h3>
+            <Text>{data.name}</Text>
           </div>
           <Popover content={content} placement="bottomLeft">
             <button

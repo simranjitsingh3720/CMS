@@ -67,7 +67,8 @@ function ShowContent({ schema }) {
   return (
     <div>
       <div>
-        <ActionBar actions={actions} />
+        {(schema && schema.schema.length !== 0)
+          ? <ActionBar actions={actions} /> : null }
       </div>
 
       {loading ? (

@@ -8,6 +8,7 @@ import {
   Empty, Popover, Button,
 } from 'antd';
 import { useRouter } from 'next/router';
+import Text from 'antd/lib/typography/Text';
 import styles from './style.module.scss';
 import PageEditModal from './PageEditModal';
 import { useRequest } from '../../../../helpers/request-helper';
@@ -111,15 +112,16 @@ function PageCard({ searchValue }) {
 
               <div className={styles.page_action}>
                 <div>
-                  <h3 style={{ margin: '0 ' }}>
+                  <Text style={{ margin: '0 ' }}>
                     Title:
                     {' '}
                     {page.name}
-                  </h3>
-                  <p style={{ color: 'gray', margin: '0' }}>
+                  </Text>
+                  <br />
+                  <Text style={{ color: 'gray', margin: '0' }}>
                     Slug: /
                     {page.slug}
-                  </p>
+                  </Text>
                 </div>
                 <Popover content={contentT(page)} placement="bottomLeft">
                   <button
