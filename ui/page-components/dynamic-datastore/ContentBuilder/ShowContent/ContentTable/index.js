@@ -15,7 +15,7 @@ const { confirm } = Modal;
 export default function ContentTable({
   tableSchema, data,
   showContentModal, setIsEditable, getEditableData,
-  deleteContent, getContent,
+  deleteContent, getContent, setDefaultKey, defaultKey,
 }) {
   const handleEditContent = (content) => {
     getEditableData(content);
@@ -69,6 +69,7 @@ export default function ContentTable({
       };
     });
   }
+
   return (
     <div>
       {columns.length >= 2 ? (
@@ -82,7 +83,7 @@ export default function ContentTable({
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           <Button type="primary" shape="round">
             <PlusOutlined />
-            Go to Structure
+            Go to Strsssssucture
           </Button>
         </div>
       )}

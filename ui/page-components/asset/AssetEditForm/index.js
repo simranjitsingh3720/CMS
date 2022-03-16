@@ -1,6 +1,8 @@
 import { Form, Input, Button, message, Space } from 'antd';
+import TextArea from 'antd/lib/input/TextArea';
 import { useState } from 'react';
 import { useRequest } from '../../../helpers/request-helper';
+import styles from '../AssetModal/style.module.scss';
 
 function AssetEditForm({ refetch, data, closeModal }) {
   const [form] = Form.useForm();
@@ -58,7 +60,7 @@ function AssetEditForm({ refetch, data, closeModal }) {
         name="description"
         label="Description"
       >
-        <Input />
+        <TextArea rows={2} />
       </Form.Item>
       <Form.Item
         wrapperCol={{
@@ -68,15 +70,17 @@ function AssetEditForm({ refetch, data, closeModal }) {
         style={{ marginBottom: '0px' }}
 
       >
-        <Space wrap>
+        <div className={styles.actionButton}>
+          <Space wrap>
+            <Button key="back" onClick={closeModal}>
+              Cancel
+            </Button>
+            <Button type="primary" loading={loading} htmlType="submit">
+              Submit
+            </Button>
 
-          <Button key="back" onClick={closeModal}>
-            Cancel
-          </Button>
-          <Button type="primary" loading={loading} htmlType="submit">
-            Submit
-          </Button>
-        </Space>
+          </Space>
+        </div>
       </Form.Item>
 
     </Form>

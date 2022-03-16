@@ -40,9 +40,13 @@
 }
 
 
+.actionButton{
+   display: flex;
+   justify-content: flex-end;
+   align-items: flex-end
+}
 
 .modal_content {
-  color: red;
   font-size: 0.9em;
 }
 

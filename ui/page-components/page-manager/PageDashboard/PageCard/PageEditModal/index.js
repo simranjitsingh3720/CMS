@@ -31,6 +31,7 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
       manual: true,
     },
   );
+
   const submitDetails = async (values) => {
     await executePatch({
       data: {
@@ -39,12 +40,11 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
       },
     })
       .then(() => {
-        form.resetFields();
         setVisible(false);
         message.success('Page Updated Successfully');
-        setTimeout(() => {
-          fetch();
-        }, 1000);
+        // setTimeout(() => {
+        fetch();
+        // }, 1000);
       })
       .catch((err) => {
         message.info(err.response.data.message || err.response.data.messages[0]);
@@ -102,7 +102,7 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
     } else {
       confirm({
         title: 'Are you sure to delete this page?',
-        icon: <ExclamationCircleOutlined />,
+        icon: <ExclamationCircleOutlined style={{ color: 'rgb(214, 40, 40)' }} />,
         content: (
           <p className={styles.modal_content}>
             After Deleting this Page you won't be able to use this slug
@@ -137,7 +137,7 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
 
   return (
     <Modal
-      title={`EDIT PAGE DETAILS : ${pageData.name}`}
+      title={`Edit ${pageData.name} page`}
       onCancel={onFormClose}
       visible={visible}
       footer={null}
@@ -177,19 +177,20 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 15 }}>
-          <Space wrap>
-
-            <Button key="back" onClick={onFormClose}>
-              Cancel
-            </Button>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className={styles.drawer_submit}
-            >
-              Submit
-            </Button>
-          </Space>
+          <div className={styles.actionButton}>
+            <Space wrap>
+              <Button key="back" onClick={onFormClose}>
+                Cancel
+              </Button>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className={styles.drawer_submit}
+              >
+                Submit
+              </Button>
+            </Space>
+          </div>
         </Form.Item>
       </Form>
 

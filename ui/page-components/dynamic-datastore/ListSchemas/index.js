@@ -27,13 +27,12 @@ function ListSchema() {
     searchBar: {
       searchValue,
       setSearchValue,
-      placeholder: 'Enter Search Table',
+      placeholder: 'Search data table by name',
     },
     buttons: [{
-      name: 'Add New Table',
+      name: 'Create New Data Table',
       icon: <PlusOutlined />,
       onClick: showModal,
-
     }],
   };
 

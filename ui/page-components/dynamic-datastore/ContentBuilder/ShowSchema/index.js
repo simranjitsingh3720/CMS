@@ -71,7 +71,10 @@ function ShowSchema() {
     confirm({
       title: 'Do you Want to delete this Field',
       icon: <ExclamationCircleOutlined style={{ color: 'red' }} />,
-      content: <div style={{ color: 'red' }}>It may contains some sensitive data.</div>,
+      content: <div>It may contains some sensitive data.</div>,
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
       onOk() {
         fieldDelete({
           url: `/schema/${schemaSlug}/field/${id}`,
@@ -104,12 +107,11 @@ function ShowSchema() {
 
   useEffect(() => {
     if (fields.length > 0) {
-      console.log('field reordring');
       executeFieldsReordering({
         data: {
           schema: fields,
         },
-      }).then((res) => {
+      }).then(() => {
         setIsFieldReordering(false);
       });
     }
