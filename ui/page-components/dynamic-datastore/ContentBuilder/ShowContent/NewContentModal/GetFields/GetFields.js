@@ -21,7 +21,7 @@ export const getInitialValues = (fields, editableData, isEditable) => {
       if (editableData[data.id]) {
         if (data.type === 'Date and Time') {
           if (editableData[data.id] !== 'Invalid date') {
-            values[[data.id]] = moment(editableData[data.id], 'YYYY/MM/DD HH:mm') || '';
+            values[[data.id]] = moment(editableData[data.id], 'YYYY/MM/DD HH:mm:ss') || '';
           } else {
             values[[data.id]] = '';
           }
@@ -112,9 +112,9 @@ function GetFields(appearenceType, field) {
         <Form.Item name={id} label={name} rules={[{ required }]}>
 
           <DatePicker
-            name="Date and Time"
-            format="YYYY/MM/DD HH:mm"
-            showTime={{ format: 'HH:mm' }}
+            name="dateAndTime"
+            format="YYYY/MM/DD HH:mm:ss"
+            showTime={{ format: 'HH:mm:ss' }}
           />
         </Form.Item>
       );

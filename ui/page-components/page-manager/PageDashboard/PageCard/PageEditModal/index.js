@@ -102,7 +102,7 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
     } else {
       confirm({
         title: 'Are you sure to delete this page?',
-        icon: <ExclamationCircleOutlined />,
+        icon: <ExclamationCircleOutlined style={{ color: 'rgb(214, 40, 40)' }} />,
         content: (
           <p className={styles.modal_content}>
             After Deleting this Page you won't be able to use this slug

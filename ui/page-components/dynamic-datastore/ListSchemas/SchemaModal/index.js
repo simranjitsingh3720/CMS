@@ -5,6 +5,7 @@ import {
 import TextArea from 'antd/lib/input/TextArea';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import _ from 'lodash';
 import styles from './style.module.scss';
 import { useRequest } from '../../../../helpers/request-helper';
 
@@ -59,8 +60,7 @@ function SchemaModal({
     setError('');
 
     if (changedValues.title !== '' && changedValues.title !== undefined) {
-      const suggestedID = (changedValues.title || '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
-      form.setFieldsValue({ slug: suggestedID });
+      form.setFieldsValue({ slug: _.snakeCase(changedValues.title) });
     }
 
     if (changedValues.title === '') {
@@ -112,7 +112,7 @@ function SchemaModal({
               message: 'Please input your Slug!',
             },
             {
-              pattern: new RegExp('^[A-Za-z0-9]*$'),
+              pattern: new RegExp('^[A-Za-z0-9_]*$'),
               message: 'Only Letters and Numbers are accepted',
             },
             ]}
