@@ -26,11 +26,15 @@ export default function ContentTable({
     confirm({
       title: 'Are you sure to delete the content? ',
       icon: <ExclamationCircleOutlined style={{ color: 'red' }} />,
-      content: <div style={{ color: 'red' }}>It may contains some sensitive information.</div>,
+      content: <div>It may contains some sensitive information.</div>,
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
       onOk() {
         deleteContent({
           url: `/content/${tableSchema.slug}/${content.id}`,
         }).then(() => {
+          message.success('Deleted Successfully !');
           getContent();
         }).catch((err) => {
           message.error(err.response.data.message || err.response.data.messages[0]);
