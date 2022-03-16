@@ -30,7 +30,7 @@ function ListSchema() {
       placeholder: 'Search data table by name',
     },
     buttons: [{
-      name: 'Create new data table',
+      name: 'Create New Data Table',
       icon: <PlusOutlined />,
       onClick: showModal,
     }],

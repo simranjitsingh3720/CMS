@@ -110,12 +110,13 @@ export default function NewContentModal({
           >
             <div className={styles.actionButton}>
               <Space wrap>
-                <Button type="primary" htmlType="submit">
-                  Update
-                </Button>
                 <Button key="back" onClick={closeContentModal}>
                   Cancel
                 </Button>
+                <Button type="primary" htmlType="submit">
+                  Update
+                </Button>
+
               </Space>
             </div>
 
@@ -128,12 +129,13 @@ export default function NewContentModal({
               >
                 <div className={styles.actionButton}>
                   <Space wrap>
-                    <Button type="primary" htmlType="submit">
-                      Submit
-                    </Button>
                     <Button key="back" onClick={closeContentModal}>
                       Cancel
                     </Button>
+                    <Button type="primary" htmlType="submit">
+                      Submit
+                    </Button>
+
                   </Space>
                 </div>
               </Form.Item>

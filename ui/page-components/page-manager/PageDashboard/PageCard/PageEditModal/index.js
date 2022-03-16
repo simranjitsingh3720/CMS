@@ -179,15 +179,15 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
         <Form.Item wrapperCol={{ offset: 15 }}>
           <div className={styles.actionButton}>
             <Space wrap>
+              <Button key="back" onClick={onFormClose}>
+                Cancel
+              </Button>
               <Button
                 type="primary"
                 htmlType="submit"
                 className={styles.drawer_submit}
               >
                 Submit
-              </Button>
-              <Button key="back" onClick={onFormClose}>
-                Cancel
               </Button>
             </Space>
           </div>
@@ -226,7 +226,9 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
 
         >
           <Button
-            type="danger"
+            // type="danger"
+            danger
+            ghost
             icon={<DeleteOutlined />}
             onClick={() => showConfirmDelete(pageData.slug)}
           >

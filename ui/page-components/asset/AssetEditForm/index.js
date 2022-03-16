@@ -72,12 +72,13 @@ function AssetEditForm({ refetch, data, closeModal }) {
       >
         <div className={styles.actionButton}>
           <Space wrap>
-            <Button type="primary" loading={loading} htmlType="submit">
-              Submit
-            </Button>
             <Button key="back" onClick={closeModal}>
               Cancel
             </Button>
+            <Button type="primary" loading={loading} htmlType="submit">
+              Submit
+            </Button>
+
           </Space>
         </div>
       </Form.Item>

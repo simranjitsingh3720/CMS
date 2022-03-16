@@ -33,6 +33,8 @@ export default function ContentBuilder() {
         }
       });
     }
+
+    setDefaultKey(key);
   };
 
   useEffect(() => {
@@ -60,9 +62,13 @@ export default function ContentBuilder() {
           <ContentTutorial />
           {defaultKey ? (
             <div className={styles.content_builder_wrapper}>
-              <Tabs defaultActiveKey={defaultKey} onChange={callback} size="large">
+              <Tabs defaultActiveKey={defaultKey} onChange={callback} size="large" activeKey={defaultKey}>
                 <TabPane tab="Contents" key="1">
-                  <ShowContent schema={schema} />
+                  <ShowContent
+                    schema={schema}
+                    setDefaultKey={setDefaultKey}
+                    defaultKey={defaultKey}
+                  />
                 </TabPane>
                 <TabPane tab="Structure" key="2">
                   {schema ? <ShowSchema schema={schema} /> : <>NO SCHEMA FOUND</>}

@@ -29,13 +29,13 @@
   background-color: #fff;
   border-radius: 8px;
 
-  &_header{
+  &_footer{
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 4px 15px;
     font-weight: bold;
-    border-bottom: 1px solid #f0f0f0;
+    border-top: 1px solid #f0f0f0;
   }
 
   &_colorGray{

@@ -135,7 +135,7 @@ function StructureModal({
       visible={showSchemaModal}
       confirmLoading={loading}
       onCancel={closeSchemaModal}
-      width={1200}
+      width={1100}
       footer={null}
 
     >
@@ -159,32 +159,32 @@ function StructureModal({
         onValuesChange={handleValuesChange}
       >
         <Space direction="vertical" className={styles.structureModal}>
-          <Card title="Field Details" style={{ width: 550 }}>
-            <Form.Item
-              label="Name"
-              name="name"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please input your field name!',
-                },
+          <Card title="Field Details" style={{ width: 500 }}>
+            <Form.Item style={{ marginBottom: '0' }}>
+              <Form.Item
+                label="Name"
+                name="name"
+                style={{ display: 'inline-block', width: 'calc(50% - 8px)' }}
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input your field name!',
+                  },
+                ]}
+              >
 
-              ]}
-            >
+                <Input />
+              </Form.Item>
 
-              <Input />
-            </Form.Item>
+              <Form.Item
+                label="Field ID"
+                name="id"
+                style={{ display: 'inline-block', width: 'calc(50% - 8px)', margin: '0 8px' }}
+                rules={[{ required: true, message: 'Please input your field ID!' }]}
+              >
+                <Input disabled={!!isEditable} />
 
-            <Form.Item
-              label="Field ID"
-              name="id"
-              rules={[{ required: true, message: 'Please input your field ID!' }, {
-                pattern: new RegExp('^[A-Za-z0-9_]*$'),
-                message: 'Only Letters and Numbers are accepted',
-              }]}
-            >
-              <Input disabled={!!isEditable} />
-
+              </Form.Item>
             </Form.Item>
 
             <Form.Item
@@ -196,9 +196,7 @@ function StructureModal({
                 },
               ]}
             >
-
               <TextArea rows={2} defaultValue={(fieldData && fieldData.description) || ''} />
-
             </Form.Item>
             <Form.Item
               label="Default Value"
@@ -226,7 +224,7 @@ function StructureModal({
             </Form.Item>
           </Card>
 
-          <Card title="Appearance Details" style={{ width: 550 }}>
+          <Card title="Appearance Details" style={{ width: 500 }}>
             <Form.Item name="type" label="Type" rules={[{ required: true }]}>
               <Select
                 defaultValue={(fieldData && fieldData.type)}
@@ -311,11 +309,12 @@ function StructureModal({
             : (
               <div className={styles.actionButton}>
                 <Space wrap>
-                  <Button type="primary" htmlType="submit">
-                    Submit
-                  </Button>
+
                   <Button key="back" htmlType="cancel" onClick={closeSchemaModal}>
                     Cancel
+                  </Button>
+                  <Button type="primary" htmlType="submit">
+                    Submit
                   </Button>
                 </Space>
               </div>

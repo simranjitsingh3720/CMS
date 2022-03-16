@@ -115,17 +115,16 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
         </Form.Item>
 
         <Form.Item
-          wrapperCol={{ offset: 15, span: 10 }}
+          wrapperCol={{ offset: 15, span: 15 }}
           style={{ marginBottom: '0px' }}
         >
           <div className={styles.actionButton}>
-
             <Space wrap>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
               <Button key="back" onClick={onFormClose}>
                 Cancel
+              </Button>
+              <Button type="primary" htmlType="submit">
+                Submit
               </Button>
             </Space>
           </div>

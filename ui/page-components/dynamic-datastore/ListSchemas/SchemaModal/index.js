@@ -137,12 +137,11 @@ function SchemaModal({
           <Form.Item style={{ marginBottom: '0px' }}>
             <div className={styles.actionButton}>
               <Space wrap>
-                <Button type="primary" htmlType="submit">
-                  Submit
-                </Button>
-
                 <Button onClick={handleCancel} htmlType="cancel">
                   Cancel
+                </Button>
+                <Button type="primary" htmlType="submit">
+                  Submit
                 </Button>
               </Space>
             </div>

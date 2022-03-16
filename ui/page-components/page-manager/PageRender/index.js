@@ -51,9 +51,7 @@ function PageRender() {
 
           </div>
         ) : (
-          <div>
-            <Spin size="large" />
-          </div>
+          <div />
         )}
       </div>
     </div>

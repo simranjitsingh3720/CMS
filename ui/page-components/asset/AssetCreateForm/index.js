@@ -59,7 +59,7 @@ function AssetCreateForm({ closeModal, refetch }) {
         executePut({
           url: writeUrl,
           data: file,
-          headers: { type: values.upload[0].originFileObj.type },
+          headers: { type: values.upload[0].originFileObj.type, 'Content-Type': `${values.upload[0].originFileObj.type}` },
         })
           .then(() => {
             setLoading(false);
@@ -118,12 +118,13 @@ function AssetCreateForm({ closeModal, refetch }) {
       >
         <div className={styles.actionButton}>
           <Space wrap>
-            <Button type="primary" loading={loading} htmlType="submit">
-              Submit
-            </Button>
             <Button key="back" onClick={closeModal}>
               Cancel
             </Button>
+            <Button type="primary" loading={loading} htmlType="submit">
+              Submit
+            </Button>
+
           </Space>
         </div>
 
