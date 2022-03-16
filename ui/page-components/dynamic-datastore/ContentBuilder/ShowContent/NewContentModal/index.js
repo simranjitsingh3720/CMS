@@ -4,8 +4,6 @@ import moment from 'moment';
 import { useRequest } from '../../../../../helpers/request-helper';
 import GetFields, { getInitialValues } from './GetFields/GetFields';
 
-// moment().tz('America/Los_Angeles').format();
-
 export default function NewContentModal({
   closeContentModal,
   schemaDetails, getContent, isEditable, editableData,
