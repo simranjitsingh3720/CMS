@@ -30,10 +30,7 @@ export default function NewContentModal({
     const x = { ...contentData };
     schemaDetails.schema.forEach((field) => {
       if (field.type === 'dateAndTime') {
-        const dateFormat = 'YYYY/MM/DD HH:mm';
-        const testDateUtc = moment.utc(x[field.id]);
-        const localDate = testDateUtc.local();
-        x[field.id] = localDate.format(dateFormat);
+        x[field.id] = moment(x[field.id]).toISOString(true);
       }
     });
 
@@ -57,10 +54,7 @@ export default function NewContentModal({
 
     schemaDetails.schema.forEach((field) => {
       if (field.type === 'dateAndTime') {
-        const dateFormat = 'YYYY/MM/DD HH:mm';
-        const testDateUtc = moment.utc(x[field.id]);
-        const localDate = testDateUtc.local();
-        x[field.id] = localDate.format(dateFormat);
+        x[field.id] = moment(x[field.id]).toISOString(true);
       }
     });
     if (schemaSlug) {
