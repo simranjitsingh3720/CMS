@@ -70,8 +70,8 @@ export function Preview({ data }) {
       <div
         style={{ height: '80vh', backgroundColor: '#000', textAlign: 'center' }}
       >
-        sss
-        <img src={data.url} alt="asset" style={{ width: 'auto', height: '100%' }} />
+
+        <img src={data.url} alt="asset" style={{ width: '100%', height: '100%' }} />
       </div>
     );
   } if (data && data.type === 'video') {
