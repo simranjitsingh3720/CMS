@@ -63,7 +63,10 @@ function ListSchema() {
     confirm({
       title: 'Are you sure to delete this table? ',
       icon: <ExclamationCircleOutlined style={{ color: 'red' }} />,
-      content: <div style={{ color: 'red' }}>It may contains some sensitive data.</div>,
+      content: <div>It may contains some sensitive data.</div>,
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
       onOk() {
         schemaDelete({
           url: `/schema/${schemaSlug}`,
