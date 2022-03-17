@@ -109,13 +109,14 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
 
         { pageDetails.slug
           ? (
-            <p style={{ fontWeight: 'bold' }}>
+            <p>
               This page will be hosted on
               {' '}
-              {process.env.NEXT_PUBLIC_APP_LIVE_URL}
-              /
-              {slugName}
-
+              <span style={{ fontWeight: 'bold' }}>
+                {process.env.NEXT_PUBLIC_APP_LIVE_URL}
+                /
+                {slugName}
+              </span>
             </p>
           ) : ''}
 
