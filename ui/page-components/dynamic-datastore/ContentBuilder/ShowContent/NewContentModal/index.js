@@ -33,10 +33,6 @@ export default function NewContentModal({
       if (field.type === 'Date and Time') {
         x[field.id] = moment(x[field.id]).toISOString(true);
       }
-
-      // if (field.type === 'Assets') {
-      //   console.log('CONTENTSSSSS ', x[field.id]);
-      // }
     });
 
     if (schemaSlug) {

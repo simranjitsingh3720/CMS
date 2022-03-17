@@ -88,7 +88,7 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
           onChange={(e) => setPageDetails({ ...pageDetails, name: e.target.value })}
           rules={[{ required: true, message: 'Please enter Page Name!' }]}
         >
-          <Input />
+          <Input autoFocus />
         </Form.Item>
 
         <Form.Item

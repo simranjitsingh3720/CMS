@@ -101,7 +101,7 @@ function SchemaModal({
               },
             ]}
           >
-            <Input />
+            <Input autoFocus />
           </Form.Item>
 
           <Form.Item
