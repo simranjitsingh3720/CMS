@@ -7,10 +7,10 @@ import ActionBar from '../../../../components/layout/ActionBar';
 import ContentTable from './ContentTable';
 import { useRequest } from '../../../../helpers/request-helper';
 
-function ShowContent({ schema, setDefaultKey, defaultKey }) {
+function ShowContent({ schema, setDefaultKey }) {
   const router = useRouter();
   const [isContentModal, setIsContentModal] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
+  // const [searchValue, setSearchValue] = useState('');
   const [isEditable, setIsEditable] = useState(false);
   const [editableData, setEditableData] = useState([]);
   const { schemaSlug } = router.query;
@@ -63,6 +63,7 @@ function ShowContent({ schema, setDefaultKey, defaultKey }) {
   const handleChangeTab = () => {
     setDefaultKey('2');
   };
+
   return (
     <div>
       <div>
