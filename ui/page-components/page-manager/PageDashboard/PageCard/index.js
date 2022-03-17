@@ -110,7 +110,11 @@ function PageCard({ searchValue }) {
                 />
               </div>
 
-              <div className={styles.page_action}>
+              <div
+                className={styles.page_action}
+                onClick={() => { handleEdit(page.slug); }}
+                role="button"
+              >
                 <div>
                   <Text style={{ margin: '0 ' }}>
                     Title:
@@ -123,7 +127,7 @@ function PageCard({ searchValue }) {
                     {page.slug}
                   </Text>
                 </div>
-                <Popover content={contentT(page)} placement="bottomLeft">
+                <Popover content={contentT(page)} placement="bottomLeft" onClick={(e) => e.stopPropagation()}>
                   <button
                     type="button"
                     className={styles.page_button}
@@ -131,7 +135,6 @@ function PageCard({ searchValue }) {
                     <MoreOutlined />
                   </button>
                 </Popover>
-
               </div>
             </CardWrapper>
 

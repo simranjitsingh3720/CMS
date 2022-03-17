@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Form, Input, Button, Checkbox, Select, Card, Space, message, Modal,
 } from 'antd';
@@ -18,6 +18,8 @@ function StructureModal({
   const [dataType, setDataType] = useState('');
   const [appearanceType, setAppearanceType] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const myRef = useRef();
 
   const handleOnDataTypeChange = (value) => {
     setDataType(value);
@@ -173,7 +175,7 @@ function StructureModal({
                 ]}
               >
 
-                <Input />
+                <Input ref={myRef} autoFocus />
               </Form.Item>
 
               <Form.Item
