@@ -1,13 +1,18 @@
 import {
-  LayoutOutlined, TableOutlined, PictureOutlined, UserOutlined,
+  LayoutOutlined, TableOutlined, PictureOutlined, UserOutlined, HomeOutlined,
 } from '@ant-design/icons';
 
 const navData = [{
+  name: 'Home Page',
+  path: '/',
+  icon: <HomeOutlined />,
+},
+{
   name: 'Page Manager',
   path: '/admin/page-manager',
   icon: <LayoutOutlined />,
 }, {
-  name: 'Datastore',
+  name: 'Data Table',
   path: '/admin/datastore',
   icon: <TableOutlined />,
 },
@@ -15,7 +20,6 @@ const navData = [{
   name: 'Assets',
   path: '/admin/assets',
   icon: <PictureOutlined />,
-
 },
 {
   name: 'Users',

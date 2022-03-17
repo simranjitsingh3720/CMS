@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { PlusOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { message, Modal, Empty } from 'antd';
+import { message, Modal, Empty, Button } from 'antd';
 import { arrayMoveImmutable } from 'array-move';
 import ActionBar from '../../../../components/layout/ActionBar';
 import StructureModal from './StructureModal';
@@ -71,7 +71,10 @@ function ShowSchema() {
     confirm({
       title: 'Do you Want to delete this Field',
       icon: <ExclamationCircleOutlined style={{ color: 'red' }} />,
-      content: <div style={{ color: 'red' }}>It may contains some sensitive data.</div>,
+      content: <div>It may contains some sensitive data.</div>,
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
       onOk() {
         fieldDelete({
           url: `/schema/${schemaSlug}/field/${id}`,
@@ -86,14 +89,6 @@ function ShowSchema() {
       onCancel() {
       },
     });
-  };
-
-  const actions = {
-    buttons: [{
-      name: 'Add new Field',
-      icon: <PlusOutlined />,
-      onClick: showSchemaModal,
-    }],
   };
 
   const onSortEnd = ({ oldIndex, newIndex }) => {
@@ -112,23 +107,29 @@ function ShowSchema() {
 
   useEffect(() => {
     if (fields.length > 0) {
-      console.log('field reordring');
       executeFieldsReordering({
         data: {
           schema: fields,
         },
-      }).then((res) => {
+      }).then(() => {
         setIsFieldReordering(false);
       });
     }
   }, [isFieldReordering]);
 
+  const actions = {
+    buttons: [{
+      name: 'Add new Field',
+      icon: <PlusOutlined />,
+      onClick: showSchemaModal,
+    }],
+  };
+
   return (
     <div>
-
-      <div>
-        <ActionBar actions={actions} />
-      </div>
+      {fields.length !== 0
+        ? <ActionBar actions={actions} />
+        : null }
       <div>
         {isSchemaModal
           ? (
@@ -164,16 +165,18 @@ function ShowSchema() {
       </div>
       <div>
         { (data && data.schema.length <= 0) ? (
-          <div>
-            <Empty
-              style={{ marginTop: '83px' }}
-              image={Empty.PRESENTED_IMAGE_SIMPLE}
-              description={(
-                <span>
-                  Add fields to store content
-                </span>
-    )}
-            />
+          <div style={{
+            position: 'absolute',
+            top: '50%',
+            right: '50%',
+            transform: 'translate(100%,-50%)',
+          }}
+          >
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            <Button type="primary" shape="round" onClick={showSchemaModal}>
+              <PlusOutlined />
+              Add New Fields
+            </Button>
           </div>
         )
 

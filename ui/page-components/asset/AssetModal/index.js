@@ -10,7 +10,7 @@ function AssetModal({
   };
   return (
     <Modal
-      title={flag ? 'ADD ASSET' : 'EDIT ASSET'}
+      title={flag ? 'Add a new asset' : `Edit ${data.name}`}
       footer={null}
       onCancel={handleCancel}
       visible={isModalVisible}

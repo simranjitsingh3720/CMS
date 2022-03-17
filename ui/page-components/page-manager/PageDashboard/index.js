@@ -21,12 +21,12 @@ function PageDashboard() {
     searchBar: {
       searchValue,
       setSearchValue,
-      placeholder: 'Enter Search Page',
+      placeholder: 'Search page by name',
 
     },
     buttons: [
       {
-        name: 'Add new page',
+        name: 'Add New Page',
         icon: <PlusOutlined />,
         onClick: showModal,
       },

@@ -1,16 +1,18 @@
+/* eslint-disable jsx-a11y/interactive-supports-focus */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useEffect, useState } from 'react';
 import {
-  EditOutlined,
-  EyeOutlined,
+  MoreOutlined,
 } from '@ant-design/icons';
-import { Card, Empty, Tooltip, Divider } from 'antd';
+import {
+  Empty, Popover, Button,
+} from 'antd';
 import { useRouter } from 'next/router';
+import Text from 'antd/lib/typography/Text';
 import styles from './style.module.scss';
 import PageEditModal from './PageEditModal';
 import { useRequest } from '../../../../helpers/request-helper';
 import CardWrapper from '../../../../components/CardWrapper';
-
-const { Meta } = Card;
 
 function PageCard({ searchValue }) {
   const [ssImage, setSsImage] = useState(null);
@@ -58,9 +60,30 @@ function PageCard({ searchValue }) {
     refetch();
   }, []);
 
+  const contentT = (page) => (
+    <div>
+      <Button
+        type="text"
+        onClick={() => { showModal(page); }}
+        key="edit"
+        className="third-step"
+      >
+        Edit Page
+      </Button>
+      <br />
+      <Button
+        type="text"
+        onClick={() => { handleView(page.slug); }}
+        key="delete"
+        className="fourth-step"
+      >
+        View Page
+      </Button>
+    </div>
+  );
+
   return (
     <>
-
       <div className="card_component_container">
         { data && data.list.length <= 0 ? (
           <div style={{ width: '100%' }}>
@@ -78,37 +101,38 @@ function PageCard({ searchValue }) {
             <CardWrapper>
               <div
                 className={styles.card_image}
-                style={{ backgroundImage: `url(${ssImage})`, backgroundSize: 'cover' }}
-              />
-
-              <Meta
-                title={(
-                  <p className="card_title">
-                    <span onClick={() => { handleEdit(page.slug); }}>
-                      <span style={{ fontWeight: 'bold' }}>Title: </span>
-                      {page.name}
-                    </span>
-                  </p>
-                   )}
-                description={(
-                  <p className="card_description">
-                    <span style={{ fontWeight: 'bold' }}>Slug: </span>
-                    /
-                    {page.slug}
-                  </p>
-                   )}
-              />
-
-              <div className="card_action">
-                <Tooltip title="View Page">
-                  <EyeOutlined key="view" onClick={() => { handleView(page.slug); }} style={{ fontSize: '16px' }} id="fifth-step" />
-                </Tooltip>
-                <Divider type="vertical" style={{ height: '22px', color: 'rgb(236, 233, 233)' }} />
-                <Tooltip title="Edit Page">
-                  <EditOutlined key="edit" onClick={() => { showModal(page); }} style={{ fontSize: '16px' }} id="sixth-step" />
-                </Tooltip>
+                onClick={() => { handleEdit(page.slug); }}
+                role="button"
+              >
+                <div
+                  className={styles.card_image}
+                  style={{ backgroundImage: `url(${ssImage})`, backgroundSize: 'cover' }}
+                />
               </div>
 
+              <div className={styles.page_action}>
+                <div>
+                  <Text style={{ margin: '0 ' }}>
+                    Title:
+                    {' '}
+                    {page.name}
+                  </Text>
+                  <br />
+                  <Text style={{ color: 'gray', margin: '0' }}>
+                    Slug: /
+                    {page.slug}
+                  </Text>
+                </div>
+                <Popover content={contentT(page)} placement="bottomLeft">
+                  <button
+                    type="button"
+                    className={styles.page_button}
+                  >
+                    <MoreOutlined />
+                  </button>
+                </Popover>
+
+              </div>
             </CardWrapper>
 
           ))}

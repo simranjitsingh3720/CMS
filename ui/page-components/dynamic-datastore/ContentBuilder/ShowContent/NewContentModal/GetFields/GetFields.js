@@ -19,9 +19,9 @@ export const getInitialValues = (fields, editableData, isEditable) => {
   if (isEditable) {
     fields.forEach((data) => {
       if (editableData[data.id]) {
-        if (data.type === 'dateAndTime') {
+        if (data.type === 'Date and Time') {
           if (editableData[data.id] !== 'Invalid date') {
-            values[[data.id]] = moment(editableData[data.id], 'YYYY/MM/DD HH:mm') || '';
+            values[[data.id]] = moment(editableData[data.id], 'YYYY/MM/DD HH:mm:ss') || '';
           } else {
             values[[data.id]] = '';
           }
@@ -52,21 +52,21 @@ function GetFields(appearenceType, field) {
   }
 
   switch (appearenceType) {
-    case 'short':
+    case 'Short':
       return (
         <Form.Item name={id} label={name} rules={[{ required }]}>
           <Input />
         </Form.Item>
       );
 
-    case 'long':
+    case 'Long':
       return (
         <Form.Item name={id} label={name} rules={[{ required }]}>
-          <TextArea rows={4} />
+          <TextArea rows={2} />
         </Form.Item>
       );
 
-    case 'number':
+    case 'Number':
       return (
         <Form.Item name={id} label={name} rules={[{ required }]}>
           <InputNumber style={{
@@ -76,14 +76,14 @@ function GetFields(appearenceType, field) {
         </Form.Item>
       );
 
-    case 'checkbox':
+    case 'Checkbox':
       return (
         <Form.Item name={id} label={name} rules={[{ required }]}>
           <Checkbox.Group options={values} />
         </Form.Item>
       );
 
-    case 'radio':
+    case 'Radio':
       return (
         <Form.Item name={id} label={name} rules={[{ required }]}>
           <Radio.Group>
@@ -92,7 +92,7 @@ function GetFields(appearenceType, field) {
         </Form.Item>
       );
 
-    case 'dropdown':
+    case 'Dropdown':
       return (
         <Form.Item name={id} label={name} rules={[{ required }]}>
           <Select>
@@ -107,19 +107,18 @@ function GetFields(appearenceType, field) {
         </Form.Item>
       );
 
-    case 'dateAndTime':
+    case 'Date and Time':
       return (
         <Form.Item name={id} label={name} rules={[{ required }]}>
-
           <DatePicker
-            name="dateAndTime"
-            format="YYYY/MM/DD HH:mm"
-            showTime={{ format: 'HH:mm' }}
+            name="Date and Time"
+            format="YYYY/MM/DD HH:mm:ss"
+            showTime={{ format: 'HH:mm:ss' }}
           />
         </Form.Item>
       );
 
-    case 'switch':
+    case 'Switch':
       return (
         <Form.Item name={id} label={name} rules={[{ required }]} valuePropName="checked">
           <Switch
@@ -130,7 +129,7 @@ function GetFields(appearenceType, field) {
         </Form.Item>
       );
 
-    case 'Boolean Radio':
+    case 'Boolean radio':
       return (
         <Form.Item name={id} label={name} rules={[{ required }]}>
           <Radio.Group>
@@ -140,7 +139,7 @@ function GetFields(appearenceType, field) {
         </Form.Item>
       );
 
-    case 'fileUpload':
+    case 'FileUpload':
       return (
         <Form.Item name={id} label={name} rules={[{ required }]}>
           <Upload>

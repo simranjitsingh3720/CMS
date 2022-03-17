@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { PlusOutlined } from '@ant-design/icons';
-import { message, Spin } from 'antd';
+import { Button, Empty, message, Spin } from 'antd';
 import NewContentModal from './NewContentModal';
 import ActionBar from '../../../../components/layout/ActionBar';
 import ContentTable from './ContentTable';
 import { useRequest } from '../../../../helpers/request-helper';
 
-function ShowContent({ schema }) {
+function ShowContent({ schema, setDefaultKey, defaultKey }) {
   const router = useRouter();
   const [isContentModal, setIsContentModal] = useState(false);
   const [searchValue, setSearchValue] = useState('');
@@ -51,10 +51,6 @@ function ShowContent({ schema }) {
   };
 
   const actions = {
-    searchBar: {
-      searchValue,
-      setSearchValue,
-    },
     buttons: [
       {
         name: 'Add new content',
@@ -64,10 +60,14 @@ function ShowContent({ schema }) {
     ],
   };
 
+  const handleChangeTab = () => {
+    setDefaultKey('2');
+  };
   return (
     <div>
       <div>
-        <ActionBar actions={actions} />
+        {(schema && schema.schema.length !== 0)
+          ? <ActionBar actions={actions} /> : null }
       </div>
 
       {loading ? (
@@ -86,17 +86,34 @@ function ShowContent({ schema }) {
         />
       ) : null }
 
-      <ContentTable
-        tableSchema={schema || []}
-        data={data}
-        showContentModal={showContentModal}
-        closeContentModal={closeContentModal}
-        setIsEditable={setIsEditable}
-        getEditableData={getEditableData}
-        deleteContent={deleteContent}
-        getContent={getContent}
-
-      />
+      {schema.schema.length > 0
+        ? (
+          <ContentTable
+            tableSchema={schema || []}
+            data={data}
+            setDefaultKey={setDefaultKey}
+            showContentModal={showContentModal}
+            closeContentModal={closeContentModal}
+            setIsEditable={setIsEditable}
+            getEditableData={getEditableData}
+            deleteContent={deleteContent}
+            getContent={getContent}
+          />
+        )
+        : (
+          <div style={{
+            position: 'absolute',
+            top: '50%',
+            right: '50%',
+            transform: 'translate(100%,-50%)',
+          }}
+          >
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            <Button type="primary" shape="round" onClick={handleChangeTab}>
+              Go to Structure
+            </Button>
+          </div>
+        )}
     </div>
   );
 }

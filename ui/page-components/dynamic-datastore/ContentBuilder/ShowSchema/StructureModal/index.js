@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   Form, Input, Button, Checkbox, Select, Card, Space, message, Modal,
 } from 'antd';
+import _ from 'lodash';
 import { dataTypes, appearanceTypes } from '../../schemaDetails';
 import ValueNames from './apperanceComponent/ValueNames';
 import Switch from './apperanceComponent/Switch';
@@ -26,8 +27,8 @@ function StructureModal({
     setAppearanceType(value);
   };
 
-  const onFinishFailed = (errorInfo) => {
-    message.error('Failed');
+  const onFinishFailed = () => {
+    console.log('fields required');
   };
 
   const [{ error },
@@ -117,9 +118,12 @@ function StructureModal({
 
   if (!isEditable) {
     const handleValuesChange = (changedValues) => {
-      if (changedValues.name) {
-        const suggestedID = (changedValues.name || '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
-        form.setFieldsValue({ id: suggestedID });
+      if (changedValues.name !== '' && changedValues.name !== undefined) {
+        form.setFieldsValue({ id: _.snakeCase(changedValues.name) });
+      }
+
+      if (changedValues.name === '') {
+        form.setFieldsValue({ id: '' });
       }
     };
   }
@@ -127,11 +131,11 @@ function StructureModal({
   return (
 
     <Modal
-      title={fieldData ? `EDIT FIELD : ${fieldData.name}` : 'CREATE A NEW FIELD'}
+      title={fieldData ? `Edit ${fieldData.name} field` : 'Create a new field'}
       visible={showSchemaModal}
       confirmLoading={loading}
       onCancel={closeSchemaModal}
-      width={1200}
+      width={1100}
       footer={null}
 
     >
@@ -155,28 +159,32 @@ function StructureModal({
         onValuesChange={handleValuesChange}
       >
         <Space direction="vertical" className={styles.structureModal}>
-          <Card title="Field Details" style={{ width: 550 }}>
-            <Form.Item
-              label="Name"
-              name="name"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please input your field name!',
-                },
-              ]}
-            >
+          <Card title="Field Details" style={{ width: 500 }}>
+            <Form.Item style={{ marginBottom: '0' }}>
+              <Form.Item
+                label="Name"
+                name="name"
+                style={{ display: 'inline-block', width: 'calc(50% - 8px)' }}
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input your field name!',
+                  },
+                ]}
+              >
 
-              <Input />
-            </Form.Item>
+                <Input />
+              </Form.Item>
 
-            <Form.Item
-              label="Field ID"
-              name="id"
-              rules={[{ required: true, message: 'Please input your field ID!' }]}
-            >
-              <Input disabled={!!isEditable} />
+              <Form.Item
+                label="Field ID"
+                name="id"
+                style={{ display: 'inline-block', width: 'calc(50% - 8px)', margin: '0 8px' }}
+                rules={[{ required: true, message: 'Please input your field ID!' }]}
+              >
+                <Input disabled={!!isEditable} />
 
+              </Form.Item>
             </Form.Item>
 
             <Form.Item
@@ -188,9 +196,7 @@ function StructureModal({
                 },
               ]}
             >
-
-              <TextArea rows={4} defaultValue={(fieldData && fieldData.description) || ''} />
-
+              <TextArea rows={2} defaultValue={(fieldData && fieldData.description) || ''} />
             </Form.Item>
             <Form.Item
               label="Default Value"
@@ -218,11 +224,11 @@ function StructureModal({
             </Form.Item>
           </Card>
 
-          <Card title="Appearance Details" style={{ width: 550 }}>
+          <Card title="Appearance Details" style={{ width: 500 }}>
             <Form.Item name="type" label="Type" rules={[{ required: true }]}>
               <Select
                 defaultValue={(fieldData && fieldData.type)}
-                size="large"
+                size="medium"
                 // style={{ width: 200 }}
                 placeholder="Select type of field..."
                 onChange={(value) => handleOnDataTypeChange(value)}
@@ -239,7 +245,7 @@ function StructureModal({
             </Form.Item>
             <Form.Item name="appearanceType" label="Appearance Type" rules={[{ required: true }]}>
               <Select
-                size="large"
+                size="medium"
                 defaultValue={(fieldData && fieldData.appearanceType) || appearanceTypes[dataType]}
                 placeholder="Select type of  appearance field..."
                 onChange={handleOnApperanceTypeChange}
@@ -257,9 +263,9 @@ function StructureModal({
 
             {(() => {
               switch (appearanceType) {
-                case 'checkbox':
+                case 'Checkbox':
                   return <ValueNames />;
-                case 'fileUpload':
+                case 'FileUpload':
                   return (
 
                     <Form.Item
@@ -270,13 +276,13 @@ function StructureModal({
                     </Form.Item>
                   );
 
-                case 'switch':
+                case 'Switch':
                   return <Switch />;
-                case 'dropdown':
+                case 'Dropdown':
                   return <ValueNames />;
-                case 'radio':
+                case 'Radio':
                   return <ValueNames />;
-                case 'Boolean Radio':
+                case 'Boolean radio':
                   return <Switch />;
                 default:
                   return null;
@@ -286,31 +292,32 @@ function StructureModal({
         </Space>
 
         <Form.Item
-          wrapperCol={{
-            offset: 20,
-            span: 16,
-          }}
           style={{ marginBottom: '0px' }}
         >
           {isEditable ? (
-            <Space>
-              <Button type="primary" htmlType="submit">
-                Update
-              </Button>
-              <Button key="back" onClick={closeSchemaModal}>
-                Cancel
-              </Button>
-            </Space>
-          )
-            : (
-              <Space>
+            <div className={styles.actionButton}>
+              <Space wrap>
                 <Button type="primary" htmlType="submit">
-                  Submit
+                  Update
                 </Button>
-                <Button key="back" onClick={closeSchemaModal}>
+                <Button key="back" onClick={closeSchemaModal} htmlType="cancel">
                   Cancel
                 </Button>
               </Space>
+            </div>
+          )
+            : (
+              <div className={styles.actionButton}>
+                <Space wrap>
+
+                  <Button key="back" htmlType="cancel" onClick={closeSchemaModal}>
+                    Cancel
+                  </Button>
+                  <Button type="primary" htmlType="submit">
+                    Submit
+                  </Button>
+                </Space>
+              </div>
             )}
         </Form.Item>
       </Form>

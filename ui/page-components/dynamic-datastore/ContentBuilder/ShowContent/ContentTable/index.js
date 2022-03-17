@@ -1,19 +1,21 @@
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import {
   Table,
   Modal,
-  Empty,
   message,
+  Button,
+  Empty,
 } from 'antd';
 import React from 'react';
 import getColumns from './getColumns/getColumns';
+import styles from './style.module.scss';
 
 const { confirm } = Modal;
 
 export default function ContentTable({
   tableSchema, data,
   showContentModal, setIsEditable, getEditableData,
-  deleteContent, getContent,
+  deleteContent, getContent, setDefaultKey, defaultKey,
 }) {
   const handleEditContent = (content) => {
     getEditableData(content);
@@ -77,15 +79,12 @@ export default function ContentTable({
           scroll={{ x: 1300 }}
         />
       ) : (
-        <div>
-          <Empty
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description={(
-              <span>
-                No Content Found
-              </span>
-    )}
-          />
+        <div className={styles.add_button_container}>
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+          <Button type="primary" shape="round">
+            <PlusOutlined />
+            Go to Strsssssucture
+          </Button>
         </div>
       )}
     </div>

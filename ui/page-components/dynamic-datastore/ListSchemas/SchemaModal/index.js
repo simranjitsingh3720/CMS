@@ -1,9 +1,11 @@
 import {
-  Button, Form, Input, message, Modal, Spin,
+  Alert,
+  Button, Form, Input, message, Modal, Space,
 } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import _ from 'lodash';
 import styles from './style.module.scss';
 import { useRequest } from '../../../../helpers/request-helper';
 
@@ -12,6 +14,7 @@ function SchemaModal({
   handleCancel, fetchAllSchema,
 }) {
   const [error, setError] = useState('');
+
   const [loading, setLoading] = useState(false);
 
   const { push } = useRouter();
@@ -44,6 +47,7 @@ function SchemaModal({
     })
       .catch((err) => {
         setLoading(false);
+
         setError(err.response.data.message || err.response.data.messages[0]);
       });
   };
@@ -54,20 +58,27 @@ function SchemaModal({
 
   const handleValuesChange = (changedValues) => {
     setError('');
-    if (changedValues.title) {
-      const suggestedID = (changedValues.title || '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
-      form.setFieldsValue({ slug: suggestedID });
+
+    if (changedValues.title !== '' && changedValues.title !== undefined) {
+      form.setFieldsValue({ slug: _.snakeCase(changedValues.title) });
+    }
+
+    if (changedValues.title === '') {
+      form.setFieldsValue({ slug: '' });
     }
   };
   return (
     <Modal
-      title="Create New Table"
+      title="Create new data table"
       visible={isModalVisible}
       onCancel={handleCancel}
       footer={null}
     >
       <div>
-        <div className={styles.error}>{error}</div>
+        <div className={styles.error}>
+          {error
+            ? <Alert message={error} type="error" closable onClose={() => { setError(''); }} /> : null}
+        </div>
         <Form
           name="basic"
           layout="vertical"
@@ -101,7 +112,7 @@ function SchemaModal({
               message: 'Please input your Slug!',
             },
             {
-              pattern: new RegExp('^[A-Za-z0-9]*$'),
+              pattern: new RegExp('^[A-Za-z0-9_]*$'),
               message: 'Only Letters and Numbers are accepted',
             },
             ]}
@@ -119,23 +130,21 @@ function SchemaModal({
               },
             ]}
           >
-            <TextArea />
+            <TextArea rows={2} />
 
           </Form.Item>
 
-          <Form.Item
-            wrapperCol={{
-              offset: 15,
-              span: 20,
-            }}
-            style={{ marginBottom: '0px' }}
-          >
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-            <Button className={styles.cancelButton} onClick={handleCancel} htmlType="cancel">
-              Cancel
-            </Button>
+          <Form.Item style={{ marginBottom: '0px' }}>
+            <div className={styles.actionButton}>
+              <Space wrap>
+                <Button onClick={handleCancel} htmlType="cancel">
+                  Cancel
+                </Button>
+                <Button type="primary" htmlType="submit">
+                  Submit
+                </Button>
+              </Space>
+            </div>
           </Form.Item>
         </Form>
       </div>

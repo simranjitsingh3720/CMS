@@ -3,6 +3,7 @@ import { React } from 'react';
 import moment from 'moment';
 import { useRequest } from '../../../../../helpers/request-helper';
 import GetFields, { getInitialValues } from './GetFields/GetFields';
+import styles from './style.module.scss';
 
 export default function NewContentModal({
   closeContentModal,
@@ -29,11 +30,8 @@ export default function NewContentModal({
   const handleAddContent = (contentData) => {
     const x = { ...contentData };
     schemaDetails.schema.forEach((field) => {
-      if (field.type === 'dateAndTime') {
-        const dateFormat = 'YYYY/MM/DD HH:mm';
-        const testDateUtc = moment.utc(x[field.id]);
-        const localDate = testDateUtc.local();
-        x[field.id] = localDate.format(dateFormat);
+      if (field.type === 'Date and Time') {
+        x[field.id] = moment(x[field.id]).toISOString(true);
       }
     });
 
@@ -56,11 +54,8 @@ export default function NewContentModal({
     const x = { ...contentData };
 
     schemaDetails.schema.forEach((field) => {
-      if (field.type === 'dateAndTime') {
-        const dateFormat = 'YYYY/MM/DD HH:mm';
-        const testDateUtc = moment.utc(x[field.id]);
-        const localDate = testDateUtc.local();
-        x[field.id] = localDate.format(dateFormat);
+      if (field.type === 'Date and Time') {
+        x[field.id] = moment(x[field.id]).toISOString(true);
       }
     });
     if (schemaSlug) {
@@ -92,7 +87,7 @@ export default function NewContentModal({
 
   return (
     <Modal
-      title={isEditable ? 'EDIT CONTENT' : 'ADD NEW CONTENT'}
+      title={isEditable ? 'Edit content' : 'Add new content'}
       visible={showContentModal}
       onCancel={closeContentModal}
       width={700}
@@ -111,37 +106,38 @@ export default function NewContentModal({
         ))}
         {isEditable ? (
           <Form.Item
-            wrapperCol={{
-              offset: 18,
-            }}
             style={{ marginBottom: '0px' }}
           >
-            <Space>
-              <Button type="primary" htmlType="submit">
-                Update
-              </Button>
-              <Button key="back" onClick={closeContentModal}>
-                Cancel
-              </Button>
-            </Space>
+            <div className={styles.actionButton}>
+              <Space wrap>
+                <Button key="back" onClick={closeContentModal}>
+                  Cancel
+                </Button>
+                <Button type="primary" htmlType="submit">
+                  Update
+                </Button>
+
+              </Space>
+            </div>
+
           </Form.Item>
         ) : (
           <div>
             {schemaDetails.schema && schemaDetails.schema.length >= 1 ? (
               <Form.Item
-                wrapperCol={{
-                  offset: 18,
-                }}
                 style={{ marginBottom: '0px' }}
               >
-                <Space>
-                  <Button type="primary" htmlType="submit">
-                    Submit
-                  </Button>
-                  <Button key="back" onClick={closeContentModal}>
-                    Cancel
-                  </Button>
-                </Space>
+                <div className={styles.actionButton}>
+                  <Space wrap>
+                    <Button key="back" onClick={closeContentModal}>
+                      Cancel
+                    </Button>
+                    <Button type="primary" htmlType="submit">
+                      Submit
+                    </Button>
+
+                  </Space>
+                </div>
               </Form.Item>
             ) : (
               <div>

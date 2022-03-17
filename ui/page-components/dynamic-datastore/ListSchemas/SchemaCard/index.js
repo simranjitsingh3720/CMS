@@ -1,4 +1,4 @@
-import { EllipsisOutlined, TableOutlined } from '@ant-design/icons';
+import { EllipsisOutlined, MoreOutlined, TableOutlined } from '@ant-design/icons';
 import {
   Button, Popover,
 } from 'antd';
@@ -20,26 +20,11 @@ function SchemaCard({
 
   return (
     <CardWrapper id="fourth-step">
-      <div className={styles.card_header}>
-        <TableOutlined className={styles.tableIcon} />
-        <Popover
-          placement="bottomLeft"
-          content={content}
-          trigger="hover"
-        >
-          <button
-            type="button"
-            className={styles.card_button}
-          >
-            <EllipsisOutlined className="fifth-step" />
 
-          </button>
-
-        </Popover>
-      </div>
       <div
         className={styles.card_body}
         onClick={() => showSchema(schemaSlug)}
+        role="button"
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <h2 className={styles.card_heading}>
@@ -57,6 +42,21 @@ function SchemaCard({
         <p className={styles.card_para}>
           {schemaDesc}
         </p>
+      </div>
+      <div className={styles.card_footer}>
+        <div />
+        <Popover
+          placement="bottomLeft"
+          content={content}
+          trigger="hover"
+        >
+          <button
+            type="button"
+            className={styles.card_button}
+          >
+            <MoreOutlined className="fifth-step" />
+          </button>
+        </Popover>
       </div>
 
     </CardWrapper>
