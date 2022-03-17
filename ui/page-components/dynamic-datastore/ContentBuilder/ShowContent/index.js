@@ -67,7 +67,7 @@ function ShowContent({ schema, setDefaultKey }) {
   return (
     <div>
       <div>
-        {(schema && schema.schema.length !== 0)
+        {(schema && schema.schema.length !== 0 && data && data.list.length > 0)
           ? <ActionBar actions={actions} /> : null }
       </div>
 
@@ -87,7 +87,7 @@ function ShowContent({ schema, setDefaultKey }) {
         />
       ) : null }
 
-      {schema.schema.length > 0
+      {schema.schema.length > 0 && data && data.list.length > 0
         ? (
           <ContentTable
             tableSchema={schema || []}
@@ -109,10 +109,38 @@ function ShowContent({ schema, setDefaultKey }) {
             transform: 'translate(100%,-50%)',
           }}
           >
-            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-            <Button type="primary" shape="round" onClick={handleChangeTab}>
-              Go to Structure
-            </Button>
+            {schema.schema.length <= 0 ? (
+              <Empty
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                description={(
+                  <span>
+                    Oops!! No Schema Found.
+                    <br />
+                    Add Schema in the structure tab
+                    <br />
+                    <br />
+                    <Button type="primary" shape="round" onClick={handleChangeTab}>
+                      Go to Structure
+                    </Button>
+                  </span>
+                  )}
+              />
+            ) : (
+              <Empty
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                description={(
+                  <span>
+                    Oops!! No Content Found.
+                    <br />
+                    <br />
+                    <Button type="primary" shape="round" onClick={addNewContent}>
+                      <PlusOutlined />
+                      Add new Content
+                    </Button>
+                  </span>
+                  )}
+              />
+            )}
           </div>
         )}
     </div>

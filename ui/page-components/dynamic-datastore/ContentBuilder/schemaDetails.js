@@ -5,6 +5,6 @@ export const appearanceTypes = {
   List: ['Checkbox'],
   Number: ['Number'],
   Assets: ['FileUpload'],
-  'Date and Time': ['Date and Time'],
+  'Date and Time': ['Date', 'Date and Time'],
   Boolean: ['Switch', 'Boolean radio'],
 };
