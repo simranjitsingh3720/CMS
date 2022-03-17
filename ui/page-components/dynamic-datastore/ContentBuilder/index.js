@@ -3,6 +3,7 @@ import { message, Tabs } from 'antd';
 import { useRouter } from 'next/router';
 import ShowSchema from './ShowSchema';
 import ShowContent from './ShowContent';
+import ShowSettings from './ShowSettings';
 import styles from './style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
 import ContentTutorial from './ContentTutorial';
@@ -74,7 +75,7 @@ export default function ContentBuilder() {
                   {schema ? <ShowSchema schema={schema} /> : <>NO SCHEMA FOUND</>}
                 </TabPane>
                 <TabPane tab="Settings" key="3">
-                  <span style={{ fontSize: '55px', textAlign: 'center' }}>Settings</span>
+                  {schema ? <ShowSettings schema={schema} /> : <h1>Settings</h1> }
                 </TabPane>
               </Tabs>
             </div>
