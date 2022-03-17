@@ -1,5 +1,5 @@
 import {
-  Button, message, Modal, Popover,
+  Button, Divider, message, Modal, Popover,
   Typography,
 } from 'antd';
 import React, { useState } from 'react';
@@ -74,6 +74,7 @@ function AssetCard({ data, refetch }) {
       >
         Rename Asset
       </Button>
+      <Divider />
       <br />
       <Button
         type="text"
