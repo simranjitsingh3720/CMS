@@ -106,6 +106,15 @@ function GetFields(appearenceType, field) {
           </Select>
         </Form.Item>
       );
+    case 'Date':
+      return (
+        <Form.Item name={id} label={name} rules={[{ required }]}>
+          <DatePicker
+            name="Date"
+            format="YYYY/MM/DD "
+          />
+        </Form.Item>
+      );
 
     case 'Date and Time':
       return (
