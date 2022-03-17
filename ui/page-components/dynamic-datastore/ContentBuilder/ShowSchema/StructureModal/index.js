@@ -297,11 +297,11 @@ function StructureModal({
           {isEditable ? (
             <div className={styles.actionButton}>
               <Space wrap>
-                <Button type="primary" htmlType="submit">
-                  Update
-                </Button>
                 <Button key="back" onClick={closeSchemaModal} htmlType="cancel">
                   Cancel
+                </Button>
+                <Button type="primary" htmlType="submit">
+                  Update
                 </Button>
               </Space>
             </div>
