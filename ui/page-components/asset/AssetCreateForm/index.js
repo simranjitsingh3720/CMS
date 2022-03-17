@@ -45,6 +45,9 @@ function AssetCreateForm({ closeModal, refetch }) {
 
   const SubmitDetails = (values) => {
     setLoading(true);
+    console.log('name', values.name);
+    console.log('mimetype', values.upload[0].originFileObj.type);
+    console.log('type', values.upload[0].originFileObj.type.split('/')[0]);
     executePost({
       data: {
         name: values.name,
@@ -55,7 +58,9 @@ function AssetCreateForm({ closeModal, refetch }) {
     })
       .then((res) => {
         const { writeUrl } = res.data;
+        console.log('data', values.upload[0].originFileObj);
         const file = values.upload[0].originFileObj;
+        console.log('file', values);
         executePut({
           url: writeUrl,
           data: file,

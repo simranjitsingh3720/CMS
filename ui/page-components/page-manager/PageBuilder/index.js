@@ -128,6 +128,7 @@ function PageBuilder() {
               })
                 .then((result) => {
                   const { writeUrl } = result.data;
+                  console.log(file[0]);
                   setUrl(result.data);
                   executePut({
                     url: writeUrl,
