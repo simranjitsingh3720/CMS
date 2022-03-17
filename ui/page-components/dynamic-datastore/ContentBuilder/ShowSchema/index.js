@@ -172,14 +172,22 @@ function ShowSchema() {
             transform: 'translate(100%,-50%)',
           }}
           >
-            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-            <Button type="primary" shape="round" onClick={showSchemaModal}>
-              <PlusOutlined />
-              Add New Fields
-            </Button>
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description={(
+                <span>
+                  Oops!! No Fields Found.
+                  <br />
+                  <br />
+                  <Button type="primary" shape="round" onClick={showSchemaModal}>
+                    <PlusOutlined />
+                    Add New Fields
+                  </Button>
+                </span>
+                  )}
+            />
           </div>
         )
-
           : (
             <DragableList
               useDragHandle
