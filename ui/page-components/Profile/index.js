@@ -286,6 +286,7 @@ function Profile() {
           name="validate_other"
           layout="vertical"
           onFinish={changePassword}
+          style={{ margin: '10px' }}
         >
           <Form.Item
             name="currentPassword"

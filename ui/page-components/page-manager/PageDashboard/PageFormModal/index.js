@@ -88,7 +88,7 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
           onChange={(e) => setPageDetails({ ...pageDetails, name: e.target.value })}
           rules={[{ required: true, message: 'Please enter Page Name!' }]}
         >
-          <Input />
+          <Input autoFocus />
         </Form.Item>
 
         <Form.Item
@@ -109,13 +109,14 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
 
         { pageDetails.slug
           ? (
-            <p style={{ fontWeight: 'bold' }}>
+            <p>
               This page will be hosted on
               {' '}
-              {process.env.NEXT_PUBLIC_APP_LIVE_URL}
-              /
-              {slugName}
-
+              <span style={{ fontWeight: 'bold' }}>
+                {process.env.NEXT_PUBLIC_APP_LIVE_URL}
+                /
+                {slugName}
+              </span>
             </p>
           ) : ''}
 

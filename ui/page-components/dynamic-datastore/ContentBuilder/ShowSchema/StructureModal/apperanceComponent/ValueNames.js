@@ -58,7 +58,11 @@ function ValueNames() {
                   ]}
                   noStyle
                 >
-                  <Input placeholder="Value" style={{ width: '60%' }} />
+                  <Input
+                    placeholder="Value"
+                    autoFocus
+                    style={{ width: '60%' }}
+                  />
                 </Form.Item>
                 {fields.length > 1 ? (
                   <MinusCircleOutlined

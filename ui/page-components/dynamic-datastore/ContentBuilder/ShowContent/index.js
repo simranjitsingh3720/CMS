@@ -7,10 +7,10 @@ import ActionBar from '../../../../components/layout/ActionBar';
 import ContentTable from './ContentTable';
 import { useRequest } from '../../../../helpers/request-helper';
 
-function ShowContent({ schema, setDefaultKey, defaultKey }) {
+function ShowContent({ schema, setDefaultKey }) {
   const router = useRouter();
   const [isContentModal, setIsContentModal] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
+  // const [searchValue, setSearchValue] = useState('');
   const [isEditable, setIsEditable] = useState(false);
   const [editableData, setEditableData] = useState([]);
   const { schemaSlug } = router.query;
@@ -63,10 +63,11 @@ function ShowContent({ schema, setDefaultKey, defaultKey }) {
   const handleChangeTab = () => {
     setDefaultKey('2');
   };
+
   return (
     <div>
       <div>
-        {(schema && schema.schema.length !== 0)
+        {(schema && schema.schema.length !== 0 && data && data.list.length > 0)
           ? <ActionBar actions={actions} /> : null }
       </div>
 
@@ -86,7 +87,7 @@ function ShowContent({ schema, setDefaultKey, defaultKey }) {
         />
       ) : null }
 
-      {schema.schema.length > 0
+      {schema.schema.length > 0 && data && data.list.length > 0
         ? (
           <ContentTable
             tableSchema={schema || []}
@@ -108,10 +109,38 @@ function ShowContent({ schema, setDefaultKey, defaultKey }) {
             transform: 'translate(100%,-50%)',
           }}
           >
-            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-            <Button type="primary" shape="round" onClick={handleChangeTab}>
-              Go to Structure
-            </Button>
+            {schema.schema.length <= 0 ? (
+              <Empty
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                description={(
+                  <span>
+                    Oops!! No Schema Found.
+                    <br />
+                    Add Schema in the structure tab
+                    <br />
+                    <br />
+                    <Button type="primary" shape="round" onClick={handleChangeTab}>
+                      Go to Structure
+                    </Button>
+                  </span>
+                  )}
+              />
+            ) : (
+              <Empty
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                description={(
+                  <span>
+                    Oops!! No Content Found.
+                    <br />
+                    <br />
+                    <Button type="primary" shape="round" onClick={addNewContent}>
+                      <PlusOutlined />
+                      Add new Content
+                    </Button>
+                  </span>
+                  )}
+              />
+            )}
           </div>
         )}
     </div>
