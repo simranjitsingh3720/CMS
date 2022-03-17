@@ -371,7 +371,7 @@ function PageBuilder() {
 
   return (
     <div>
-      <Draggable handle=".handle">
+      <Draggable handle=".handle" defaultPosition={{ x: 0, y: 40 }}>
         <div className="gjs-pn-panel gjs-pn-views-container gjs-one-bg gjs-two-color">
           <div className="top-panel">
             <div className="fa fa-bars panel-drag handle" />
