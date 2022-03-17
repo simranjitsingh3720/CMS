@@ -53,7 +53,9 @@ export default function ContentTable({
 
   const switchFieldsId = ((tableSchema && tableSchema.schema) || []).filter((field) => field.appearanceType === 'switch');
 
-  const dateFieldsId = ((tableSchema && tableSchema.schema) || []).filter((field) => field.appearanceType === 'Date and Time');
+  const dateAndTimeFieldsId = ((tableSchema && tableSchema.schema) || []).filter((field) => field.appearanceType === 'Date and Time');
+
+  const dateFieldsId = ((tableSchema && tableSchema.schema) || []).filter((field) => field.appearanceType === 'Date');
 
   if (data) {
     finalData = data.list.map((content) => {
@@ -70,10 +72,20 @@ export default function ContentTable({
         });
       }
 
+      if (dateAndTimeFieldsId.length > 0) {
+        dateAndTimeFieldsId.forEach((field) => {
+          if (updatedContent[field.id] !== null) {
+            const dateFormat = 'YYYY/MM/DD HH:mm:ss';
+            const testDateUtc = moment.utc(updatedContent[field.id]);
+            const localDate = testDateUtc.local();
+            updatedContent[field.id] = localDate.format(dateFormat);
+          }
+        });
+      }
       if (dateFieldsId.length > 0) {
         dateFieldsId.forEach((field) => {
           if (updatedContent[field.id] !== null) {
-            const dateFormat = 'YYYY/MM/DD HH:mm:ss';
+            const dateFormat = 'YYYY/MM/DD ';
             const testDateUtc = moment.utc(updatedContent[field.id]);
             const localDate = testDateUtc.local();
             updatedContent[field.id] = localDate.format(dateFormat);
