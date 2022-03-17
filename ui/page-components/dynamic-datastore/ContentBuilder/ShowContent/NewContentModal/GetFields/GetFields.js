@@ -146,7 +146,6 @@ function GetFields(appearenceType, field) {
             <Button icon={<UploadOutlined />}>Click to Upload</Button>
           </Upload>
         </Form.Item>
-
       );
 
     default:

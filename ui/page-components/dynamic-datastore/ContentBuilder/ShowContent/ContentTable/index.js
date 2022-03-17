@@ -90,21 +90,11 @@ export default function ContentTable({
 
   return (
     <div>
-      {columns.length >= 2 ? (
-        <Table
-          columns={columns}
-          dataSource={finalData}
-          scroll={{ x: 1300 }}
-        />
-      ) : (
-        <div className={styles.add_button_container}>
-          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-          <Button type="primary" shape="round">
-            <PlusOutlined />
-            Go to Strsssssucture
-          </Button>
-        </div>
-      )}
+      <Table
+        columns={columns}
+        dataSource={finalData}
+        scroll={{ x: 1300 }}
+      />
     </div>
   );
 }
