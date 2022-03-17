@@ -54,7 +54,15 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
         message.info(err.response.data.message || err.response.data.messages[0]);
       });
   };
-  console.log(pageDetails);
+  // console.log(pageDetails);
+  const [slugName, setSlugName] = useState('');
+
+  const handleValuesChange = (changedValues) => {
+    if (changedValues.slug) {
+      const suggestedID = (changedValues.slug || '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+      setSlugName(suggestedID);
+    }
+  };
 
   return (
     <Modal
@@ -70,6 +78,7 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
         onFinish={handleCreatePage}
         initialValues={{ remember: true }}
         autoComplete="off"
+        onValuesChange={handleValuesChange}
       >
         <Form.Item
           label="Page Name"
@@ -96,6 +105,18 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
         >
           <Input disabled={checked} />
         </Form.Item>
+
+        { pageDetails.slug
+          ? (
+            <p style={{ fontWeight: 'bold' }}>
+              This page will be hosted on
+              {' '}
+              {process.env.NEXT_PUBLIC_APP_LIVE_URL}
+              /
+              {slugName}
+
+            </p>
+          ) : ''}
 
         <Form.Item
           name="index"
