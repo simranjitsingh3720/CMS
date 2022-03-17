@@ -28,8 +28,6 @@ export default function NewContentModal({
   );
 
   const handleAddContent = (contentData) => {
-    // console.log('CONTENT ', contentData);
-
     const x = { ...contentData };
     schemaDetails.schema.forEach((field) => {
       if (field.type === 'Date and Time') {
