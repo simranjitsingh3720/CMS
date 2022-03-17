@@ -34,7 +34,10 @@ function AssetCard({ data, refetch }) {
     confirm({
       title: 'Do you Want to delete these items?',
       icon: <ExclamationCircleOutlined />,
-      content: <div style={{ color: 'red' }}>It may contains some sensitive data.</div>,
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      content: <div>It may contains some sensitive data.</div>,
       async onOk() {
         await handleDelete();
         if (deleteError) {
