@@ -1,4 +1,3 @@
-import { loadCache } from 'axios-hooks';
 import { DuplicateError, MissingError, ValidityError } from '../helpers/error-helper';
 
 const { Op, Sequelize } = require('sequelize');
