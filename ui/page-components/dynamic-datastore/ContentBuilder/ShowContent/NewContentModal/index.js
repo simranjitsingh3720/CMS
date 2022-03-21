@@ -64,19 +64,20 @@ export default function NewContentModal({
             mimeType,
             type,
           },
-        });
-        // .then((result) => {
-
-        //   // executePut({
-        //   //   url: writeUrl,
-        //   //   data: x[field.id].file,
-        //   //   headers: { type: x[field.id].file.type },
-        //   // }).catch((err) => {
-        //   //   console.log('res error', err);
-        //   // });
-        // }).catch((err) => {
-
-        // });
+        })
+          .then((res) => {
+            const { writeUrl } = res.data;
+            console.log(x[field.id].file);
+            executePut({
+              url: writeUrl,
+              data: x[field.id].file,
+              headers: { type: x[field.id].file.type },
+            }).catch((err) => {
+              console.log('andar error', err);
+            });
+          }).catch((err) => {
+            console.log('bahar error', err);
+          });
       }
     });
 

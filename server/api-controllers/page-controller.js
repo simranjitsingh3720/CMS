@@ -1,3 +1,4 @@
+import { loadCache } from 'axios-hooks';
 import { DuplicateError, MissingError, ValidityError } from '../helpers/error-helper';
 
 const { Op, Sequelize } = require('sequelize');
@@ -5,8 +6,19 @@ const db = require('../../db/models');
 
 export const createPage = async (req, res) => {
   const { body } = req;
+  console.log('body', body);
 
-  const { name } = body;
+  const { name, slug } = body;
+
+  const findPage = await db.Page.findOne({
+    where: {
+      slug,
+    },
+  });
+
+  if (findPage) {
+    throw new ValidityError('Slug name already taken. Try with another slug name');
+  }
 
   if (!name) {
     let message = '';
@@ -163,8 +175,16 @@ export const updateHome = async (req, res) => {
 
 export const deletePage = async (req, res) => {
   const { pageSlug } = req.query;
+
   const deletedPage = await db.Page.destroy({ where: { slug: pageSlug } });
-  if (deletedPage) {
+  const result = await db.Page.update(
+    { slug: '' },
+    {
+      where: { slug: pageSlug },
+      paranoid: false,
+    },
+  );
+  if (deletedPage && result) {
     return res.status(200).json({ slug: pageSlug });
   }
   throw new MissingError('Page Not Found');
