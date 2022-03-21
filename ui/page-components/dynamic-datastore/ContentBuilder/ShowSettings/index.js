@@ -2,6 +2,7 @@ import { Button, Form, Input, message, Space } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import _ from 'lodash';
 import { useRequest } from '../../../../helpers/request-helper';
 import styles from './style.module.scss';
 
@@ -11,6 +12,7 @@ function ShowSettings({ schema }) {
   form.setFieldsValue({
     title: schema.title,
     slug: schema.slug,
+    description: schema.description,
   });
   const [error, setError] = useState('');
   const { push } = useRouter();
@@ -117,9 +119,6 @@ function ShowSettings({ schema }) {
         <Form.Item style={{ marginBottom: '0px' }}>
           <div className={styles.actionButton}>
             <Space wrap>
-              <Button htmlType="cancel">
-                Cancel
-              </Button>
               <Button type="primary" htmlType="submit">
                 Submit
               </Button>
