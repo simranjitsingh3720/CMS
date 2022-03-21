@@ -27,72 +27,13 @@ export default function NewContentModal({
     { manual: true },
   );
 
-  // eslint-disable-next-line no-empty-pattern
-  const [{ data: assetData, error: assetError }, executePost] = useRequest(
-    {
-      url: '/asset/',
-      method: 'POST',
-    },
-    { manual: true },
-  );
-  // eslint-disable-next-line no-empty-pattern
-  const [{}, executePut] = useRequest(
-    {
-      method: 'PUT',
-    },
-    { manual: true },
-  );
-
   const handleAddContent = (contentData) => {
     const x = { ...contentData };
-    console.log('contentData', contentData);
     schemaDetails.schema.forEach((field) => {
       if (field.type === 'Date and Time') {
         x[field.id] = moment(x[field.id]).toISOString(true);
       }
-
-      if (field.type === 'Assets') {
-        const name = x[field.id] && x[field.id].file.name;
-        const mimeType = x[field.id] && x[field.id].file.type;
-        const type = x[field.id] && x[field.id].file.type.split('/')[0];
-        console.log('name', x[field.id].file.name);
-        console.log('mimetype', x[field.id].file.type);
-        console.log('type', x[field.id].file.type.split('/')[0]);
-        executePost({
-          data: {
-            name,
-            mimeType,
-            type,
-          },
-        })
-          .then((res) => {
-            const { writeUrl } = res.data;
-            console.log(x[field.id].file);
-            executePut({
-              url: writeUrl,
-              data: x[field.id].file,
-              headers: { type: x[field.id].file.type },
-            }).catch((err) => {
-              console.log('andar error', err);
-            });
-          }).catch((err) => {
-            console.log('bahar error', err);
-          });
-      }
     });
-
-    if (assetData) {
-      console.log('success');
-      const { writeUrl } = assetData.data;
-      console.log('writeURL ', writeUrl);
-      console.log('assets data ', assetData);
-    }
-
-    if (assetError) {
-      console.log('assets data ', assetError);
-      console.log('error', assetError);
-      message.error('err');
-    }
 
     if (schemaSlug) {
       addContent({

@@ -67,28 +67,19 @@ const createAsset = async (req, res) => {
     throw new ValidityError('name, type and mimeType, all are required.');
   }
 
-  try {
-    const asset = await db.Asset.create({ ...body, createdBy: req.session.user.id });
-
-    const params = ({
-      Bucket: bucketName,
-      Key: `asset/${asset.id}`,
-      Expires: 3600,
-    });
-
-    const uploadURL = await s3.getSignedUrlPromise('putObject', params);
-    console.log(('body', uploadURL));
-
-    const readUrl = uploadURL.split('?')[0];
-    console.log('readurl', readUrl);
-    await db.Asset.update(
-      { url: readUrl, updatedBy: req.session.user.id },
-      { where: { id: asset.id } },
-    );
-    return res.status(201).json({ id: asset.id, writeUrl: uploadURL, readUrl });
-  } catch (error) {
-    throw new ValidityError(error);
-  }
+  const asset = await db.Asset.create({ ...body, createdBy: req.session.user.id });
+  const params = ({
+    Bucket: bucketName,
+    Key: `asset/${asset.id}`,
+    Expires: 3600,
+  });
+  const uploadURL = await s3.getSignedUrlPromise('putObject', params);
+  const readUrl = uploadURL.split('?')[0];
+  await db.Asset.update(
+    { url: readUrl, updatedBy: req.session.user.id },
+    { where: { id: asset.id } },
+  );
+  return res.status(201).json({ id: asset.id, writeUrl: uploadURL, readUrl });
 };
 
 const updateAsset = async (req, res) => {

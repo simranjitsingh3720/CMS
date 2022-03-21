@@ -6,7 +6,6 @@ const db = require('../../db/models');
 
 export const createPage = async (req, res) => {
   const { body } = req;
-  console.log('body', body);
 
   const { name, slug } = body;
 
@@ -137,8 +136,6 @@ export const updateHome = async (req, res) => {
     },
     paranoid: false,
   });
-
-  // console.log('FIND HIOME', findOldHome);
 
   if (findOldHome.dataValues.slug) {
     const arr = findOldHome.dataValues.slug.split('oldHome');
