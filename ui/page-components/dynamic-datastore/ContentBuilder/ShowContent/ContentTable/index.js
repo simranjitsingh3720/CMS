@@ -51,7 +51,7 @@ export default function ContentTable({
   const columns = getColumns(tableSchema, handleEditContent, handleDeleteContent);
   let finalData = [];
 
-  const switchFieldsId = ((tableSchema && tableSchema.schema) || []).filter((field) => field.appearanceType === 'switch');
+  const switchFieldsId = ((tableSchema && tableSchema.schema) || []).filter((field) => field.appearanceType === 'Switch');
 
   const dateAndTimeFieldsId = ((tableSchema && tableSchema.schema) || []).filter((field) => field.appearanceType === 'Date and Time');
 
