@@ -16,17 +16,28 @@ import moment from 'moment';
 const { TextArea } = Input;
 export const getInitialValues = (fields, editableData, isEditable) => {
   const values = {};
+
   if (isEditable) {
     fields.forEach((data) => {
-      if (editableData[data.id]) {
+      if (data.id in editableData) {
         if (data.type === 'Date and Time') {
-          if (editableData[data.id] !== 'Invalid date') {
+          if (editableData[data.id] !== null) {
             values[[data.id]] = moment(editableData[data.id], 'YYYY/MM/DD HH:mm:ss') || '';
           } else {
             values[[data.id]] = '';
           }
         } else {
           values[[data.id]] = editableData[data.id] || '';
+        }
+
+        if (data.appearanceType === 'Boolean radio') {
+          if (editableData[data.id] === true) {
+            values[[data.id]] = data.Truelabel;
+          } else if (editableData[data.id] === false) {
+            values[[data.id]] = data.Falselabel;
+          } else {
+            values[[data.id]] = '';
+          }
         }
       } else {
         values[[data.id]] = data.defaultValue || '';
@@ -37,7 +48,6 @@ export const getInitialValues = (fields, editableData, isEditable) => {
       values[field.id] = field.defaultValue || '';
     });
   }
-
   return values;
 };
 
