@@ -4,6 +4,7 @@ import { useRequest } from '../../../helpers/request-helper';
 
 function AssetEditForm({ refetch, data, onDrawerClose }) {
   const [form] = Form.useForm();
+
   const formItemLayout = {
     labelCol: {
       span: 8,
