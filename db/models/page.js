@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       slug: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
+        // unique: true,
       },
       isHome: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: 0 },
       data: { type: DataTypes.JSON },

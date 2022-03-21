@@ -6,7 +6,17 @@ const db = require('../../db/models');
 export const createPage = async (req, res) => {
   const { body } = req;
 
-  const { name } = body;
+  const { name, slug } = body;
+
+  const findPage = await db.Page.findOne({
+    where: {
+      slug,
+    },
+  });
+
+  if (findPage) {
+    throw new ValidityError('Slug name already taken. Try with another slug name');
+  }
 
   if (!name) {
     let message = '';
@@ -127,7 +137,7 @@ export const updateHome = async (req, res) => {
   });
 
   if (findOldHome.dataValues.slug) {
-    const arr = findOldHome.dataValues.slug.split('-');
+    const arr = findOldHome.dataValues.slug.split('oldHome');
     const countOldHome = ~~arr[arr.length - 1] + 1;
     const result = await db.Page.update(
       {
@@ -163,8 +173,16 @@ export const updateHome = async (req, res) => {
 
 export const deletePage = async (req, res) => {
   const { pageSlug } = req.query;
+
   const deletedPage = await db.Page.destroy({ where: { slug: pageSlug } });
-  if (deletedPage) {
+  const result = await db.Page.update(
+    { slug: '' },
+    {
+      where: { slug: pageSlug },
+      paranoid: false,
+    },
+  );
+  if (deletedPage && result) {
     return res.status(200).json({ slug: pageSlug });
   }
   throw new MissingError('Page Not Found');
