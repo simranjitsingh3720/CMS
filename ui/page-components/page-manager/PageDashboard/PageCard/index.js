@@ -110,8 +110,13 @@ function PageCard({ searchValue }) {
                 />
               </div>
 
-              <div className={styles.page_action}>
-                <div>
+              <div
+                className={styles.page_action}
+              >
+                <div
+                  onClick={() => { handleEdit(page.slug); }}
+                  role="button"
+                >
                   <Text style={{ margin: '0 ' }}>
                     Title:
                     {' '}
@@ -131,7 +136,6 @@ function PageCard({ searchValue }) {
                     <MoreOutlined />
                   </button>
                 </Popover>
-
               </div>
             </CardWrapper>
 
