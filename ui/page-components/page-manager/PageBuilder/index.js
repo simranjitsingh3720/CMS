@@ -10,7 +10,6 @@ function PageBuilder() {
   const router = useRouter();
   const [imgFile, setImgFile] = useState('');
   const [url, setUrl] = useState('');
-  const [yes, setYes] = useState(false);
 
   const [{ data: getData }, refetchPageData] = useRequest(
     {
@@ -127,15 +126,15 @@ function PageBuilder() {
                 },
               })
                 .then((result) => {
-                  const { writeUrl } = result.data;
-                  console.log(file[0]);
+                  const { writeUrl, readUrl } = result.data;
                   setUrl(result.data);
                   executePut({
                     url: writeUrl,
                     data: file[0],
                     headers: { type: file[0].type },
+                  }).then(() => {
+                    e.AssetManager.add({ src: readUrl, name: file[0].name });
                   });
-                  setYes(true);
                 });
             },
           },
@@ -147,6 +146,7 @@ function PageBuilder() {
         const selectorsContainer = document.getElementById('selectors-container');
         const blocksContainer = document.getElementById('blocks');
         const traitsContainer = document.getElementById('traits-container');
+        const draggablePanel = document.getElementById('draggable-panel');
 
         const pn = e.Panels;
         const swv = 'sw-visibility';
@@ -197,7 +197,6 @@ function PageBuilder() {
           ],
         },
         ]);
-
         e.Panels.addPanel({
           id: 'devices-b',
           visible: true,
@@ -330,30 +329,25 @@ function PageBuilder() {
           fontProperty.set('list', list);
           list.push(fontProperty.addOption({ value: 'Montserrat, sans-serif', name: 'Montserrat' }));
           list.push(fontProperty.addOption({ value: 'Open Sans, sans-serif', name: 'Open Sans' }));
-          fontProperty.set('defaults', 'Montserrat, sans-serif');
           fontProperty.set('list', list);
 
           styleManager.render();
         });
+
+        e.on('run:preview', () => {
+          draggablePanel.style.display = 'none';
+        });
+
+        e.on('stop:preview', () => {
+          draggablePanel.style.display = 'block';
+        });
+
         setEditor(e);
       }
     });
   };
   if (editor) {
-    const assetManager = editor.AssetManager;
-    console.log(imgData);
-    ((imgData && imgData.list) || []).map((page) => (
-      assetManager.add({
-        src: page.url,
-        name: page.name,
-      })
-    ));
-    if (yes) {
-      assetManager.add({ src: url.readUrl, name: imgFile[0].name });
-    }
-    assetManager.getAll();
-    assetManager.render();
-    const bm = editor.Blocks; // `Blocks` is an alias of `BlockManager`
+    const bm = editor.Blocks;
     const svgText = `<svg style="width:48px;height:48px" viewBox="0 0 24 24">
     <path fill="currentColor" d="M18.5,4L19.66,8.35L18.7,8.61C18.25,7.74 17.79,6.87 17.26,6.43C16.73,6 16.11,6 15.5,6H13V16.5C13,17 13,17.5 13.33,17.75C13.67,18 14.33,18 15,18V19H9V18C9.67,18 10.33,18 10.67,17.75C11,17.5 11,17 11,16.5V6H8.5C7.89,6 7.27,6 6.74,6.43C6.21,6.87 5.75,7.74 5.3,8.61L4.34,8.35L5.5,4H18.5Z" />
     </svg>`;
@@ -605,14 +599,26 @@ function PageBuilder() {
     });
   }
   useEffect(() => {
-    refetch();
+    if (editor) {
+      const assetManager = editor.AssetManager;
+      refetch().then((res) => {
+        ((res.data && res.data.list) || []).map((page) => {
+          if (page.url !== url.readUrl && page.name !== imgFile.name) {
+            assetManager.add({
+              src: page.url,
+              name: page.name,
+            });
+          }
+        });
+      });
+    }
     getApiM();
-  }, [router.query.pageSlug]);
+  }, [router.query.pageSlug, editor]);
 
   return (
     <div>
       <Draggable handle=".handle" defaultPosition={{ x: 0, y: 40 }}>
-        <div className="gjs-pn-panel gjs-pn-views-container gjs-one-bg gjs-two-color">
+        <div className="gjs-pn-panel gjs-pn-views-container gjs-one-bg gjs-two-color" id="draggable-panel">
           <div className="top-panel">
             <div className="fa fa-bars panel-drag handle" />
             <div className="panel__basic-actions top" />

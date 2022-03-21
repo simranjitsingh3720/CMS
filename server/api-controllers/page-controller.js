@@ -138,8 +138,10 @@ export const updateHome = async (req, res) => {
     paranoid: false,
   });
 
+  // console.log('FIND HIOME', findOldHome);
+
   if (findOldHome.dataValues.slug) {
-    const arr = findOldHome.dataValues.slug.split('-');
+    const arr = findOldHome.dataValues.slug.split('oldHome');
     const countOldHome = ~~arr[arr.length - 1] + 1;
     const result = await db.Page.update(
       {
