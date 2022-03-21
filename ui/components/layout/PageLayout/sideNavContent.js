@@ -3,8 +3,8 @@ import {
 } from '@ant-design/icons';
 
 const navData = [{
-  name: 'Home Page',
-  path: '/',
+  name: 'Home',
+  path: '/admin',
   icon: <HomeOutlined />,
 },
 {
