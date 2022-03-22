@@ -8,7 +8,7 @@ function PageTitle({
 }) {
   const router = useRouter();
   const { pathname } = router;
-  const blockRoute = ['/admin/page-manager', '/admin/datastore', '/admin/assets', '/admin/users'];
+  const blockRoute = ['/admin/page-manager', '/admin/datastore', '/admin/assets', '/admin/users', '/form/[formId]'];
 
   return (
     <div>

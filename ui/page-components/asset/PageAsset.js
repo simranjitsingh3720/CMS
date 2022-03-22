@@ -46,6 +46,7 @@ function PageAsset() {
       <AssetTutorial />
       <div style={{ padding: '16px' }}>
         <ActionBar actions={actions} />
+
         <AssetModal
           flag
           isModalVisible={isModalVisible}
