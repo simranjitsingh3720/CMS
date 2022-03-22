@@ -9,7 +9,7 @@ function PageLayout({
 }) {
   const router = useRouter();
 
-  const blockRoute = ['/', '/admin/signin', '/admin/signup', '/admin/forgot-password', '/admin/password-change/[link]', '/[pageView]'];
+  const blockRoute = ['/', '/admin/signin', '/admin/signup', '/admin/forgot-password', '/admin/password-change/[link]', '/[pageView]', '/form/[formId]'];
   const { pathname } = router;
   return (
     <Layout className={styles.layout} hasSider>
