@@ -8,9 +8,11 @@ import GetFields, { getInitialValues } from '../dynamic-datastore/ContentBuilder
 
 export default function EmbedableForm() {
   const [formDetails, setFormDetails] = useState([]);
+  const [formError, setFormError] = useState('');
+  const [formSubmitSuccess, setFormSubmitSuccess] = useState(false);
 
   const router = useRouter();
-  const { formId } = router.query;
+  const { formId, embed } = router.query;
 
   const initialValues = getInitialValues(formDetails.schema);
 
@@ -31,10 +33,13 @@ export default function EmbedableForm() {
     if (formId) {
       fetchFormData({
         url: `/form/${formId}`,
+        params: {
+          embed: !!embed,
+        },
       }).then((res) => {
         setFormDetails(res.data);
       }).catch((err) => {
-        console.log('error ', err);
+        setFormError(err.response.data.message || err.response.data.messages[0]);
       });
     }
   }, [formId]);
@@ -63,15 +68,12 @@ export default function EmbedableForm() {
       }
     });
 
-    if (formDetails.slug) {
+    if (formDetails && formDetails.slug) {
       addContent({
-        url: `/content/${formDetails.slug}`,
+        url: `/form/content/${formDetails.slug}`,
         data: { data: x },
       }).then(() => {
-        message.success('Added Successfully');
-      }).then(() => {
-        // getContent();
-        // will show them message of successfully submitted- submit another response
+        setFormSubmitSuccess(true);
       }).catch((err) => {
         message.error(err.response.data.message || err.response.data.messages[0]);
       });
@@ -99,28 +101,47 @@ export default function EmbedableForm() {
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
-          {formDetails.schema && formDetails.schema.map((field) => (
-            GetFields(field.appearanceType, field)
-          ))}
-          <div>
-            {formDetails.schema && formDetails.schema.length >= 1 ? (
-              <Form.Item
-                style={{ marginBottom: '0px' }}
-              >
-                <div className={styles.actionButton}>
-                  <Space wrap>
-                    <Button type="primary" htmlType="submit">
-                      Submit
-                    </Button>
-                  </Space>
+
+          {formSubmitSuccess ? (
+            <div className={styles.formError}>
+              Form Submitted successfully
+            </div>
+          ) : (
+            <div>
+              {formError !== '' ? (
+                <div className={styles.formError}>
+                  <h2>{formError}</h2>
                 </div>
-              </Form.Item>
-            ) : (
-              <div>
-                Please add some fields in the form
-              </div>
-            )}
-          </div>
+              ) : (
+                <>
+                  {formDetails.schema && formDetails.schema.map((field) => (
+                    GetFields(field.appearanceType, field)
+                  ))}
+                  <div>
+                    {formDetails.schema && formDetails.schema.length >= 1 ? (
+                      <Form.Item
+                        style={{ marginBottom: '0px' }}
+                      >
+                        <div className={styles.actionButton}>
+                          <Space wrap>
+                            <Button type="primary" htmlType="submit">
+                              Submit
+                            </Button>
+                          </Space>
+                        </div>
+                      </Form.Item>
+                    ) : (
+                      <div>
+                        No fields Found in the form.
+                        Please add some fields in the form
+                      </div>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+
         </Form>
       </div>
     </div>

@@ -4,18 +4,43 @@ const { MissingError } = require('../helpers/error-helper');
 
 const getFormById = async (req, res) => {
   const { query } = req;
-  const { formId } = query;
+  const { formId, embed } = query;
 
   if (!formId) {
-    throw new MissingError('form id invalid');
+    throw new MissingError('Invalid form id');
   }
-  const schema = await db.Schema.findOne({ where: { id: formId } });
+  try {
+    const schema = await db.Schema.findOne({ where: { id: formId } });
+    if (schema) {
+      return res.status(200).json(schema);
+    }
+    throw new MissingError('No Form Found');
+  } catch (error) {
+    throw new MissingError('No Form Found');
+  }
+};
+
+const addFormContent = async (req, res) => {
+  const { body, query } = req;
+  const { schemaSlug } = query;
+
+  const schema = await db.Schema.findOne({
+    where: {
+      slug: schemaSlug,
+    },
+  });
+
   if (schema) {
-    return res.status(200).json(schema);
+    const content = await db.Content.create({
+      ...body,
+      schemaId: schema.toJSON().id,
+    });
+    return res.status(201).json({ id: content.id });
   }
-  throw new MissingError('Form not found');
+  throw new MissingError('Schema Not Found');
 };
 
 module.exports = {
   getFormById,
+  addFormContent,
 };
