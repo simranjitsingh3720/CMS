@@ -28,23 +28,6 @@ export default function NewContentModal({
     { manual: true },
   );
 
-  // eslint-disable-next-line no-empty-pattern
-  const [{ data: assetData, error: assetError }, executePost] = useRequest(
-    {
-      url: '/asset',
-      method: 'POST',
-    },
-    { manual: true },
-  );
-  // eslint-disable-next-line no-empty-pattern
-  const [{ }, executePut] = useRequest(
-    {
-      method: 'PUT',
-    },
-    { manual: true },
-
-  );
-
   const handleAddContent = (contentData) => {
     const x = { ...contentData };
     schemaDetails.schema.forEach((field) => {
@@ -55,43 +38,29 @@ export default function NewContentModal({
         const name = x[field.id] && x[field.id].file.name;
         const mimeType = x[field.id] && x[field.id].file.type;
         const type = x[field.id] && x[field.id].file.type.split('/')[0];
-        // executePost({
-        //   data: {
-        //     name,
-        //     type,
-        //     mimeType,
-        //   },
-        // })
+
         axios.post('/api/v1/asset', {
           name,
           type,
           mimeType,
         })
           .then((res) => {
-            console.log(res);
             const { writeUrl } = res.data;
             const FileData = x.student.file.originFileObj;
-            const theHeader = x.student.file.originFileObj.type;
-            console.log(x.student);
-
-            // executePut({
-            //   url: writeUrl,
-            //   data: FileData,
-            //   headers: { type: theHeader, 'Content-Type': `${theHeader}` },
-            // })
+            const headerType = x.student.file.originFileObj.type;
             axios.put(
               writeUrl,
               FileData,
               {
-                headers: { type: theHeader, 'Content-Type': `${theHeader}` },
+                headers: { type: headerType, 'Content-Type': `${headerType}` },
               },
             )
-              .then((resp) => {
-                console.log('success: ', resp);
+              .then(() => {
+                console.log('success');
               })
-              .catch((err) => console.log('inside error: ', err));
+              .catch((err) => console.log(err));
           })
-          .catch((err) => console.log('outside error: ', err));
+          .catch((err) => console.log(err));
       }
     });
 
