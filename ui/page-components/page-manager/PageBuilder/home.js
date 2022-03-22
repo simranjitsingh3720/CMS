@@ -349,16 +349,29 @@ function Home() {
   };
 
   if (editor) {
-    const bm = editor.Blocks; // `Blocks` is an alias of `BlockManager`
+    const bm = editor.Blocks;
+
+    bm.remove('map');
+
+    bm.add('map', {
+      label: 'Map',
+      category: 'Basic',
+      attributes: { class: 'fa fa-map-o' },
+      content: {
+        type: 'map',
+        style: { height: '550px', width: '100%' },
+      },
+    });
+
     const svgText = `<svg style="width:48px;height:48px" viewBox="0 0 24 24">
     <path fill="currentColor" d="M18.5,4L19.66,8.35L18.7,8.61C18.25,7.74 17.79,6.87 17.26,6.43C16.73,6 16.11,6 15.5,6H13V16.5C13,17 13,17.5 13.33,17.75C13.67,18 14.33,18 15,18V19H9V18C9.67,18 10.33,18 10.67,17.75C11,17.5 11,17 11,16.5V6H8.5C7.89,6 7.27,6 6.74,6.43C6.21,6.87 5.75,7.74 5.3,8.61L4.34,8.35L5.5,4H18.5Z" />
     </svg>`;
 
-    const scgiframe = '<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="mdi-iframe-outline" width="24" height="24" viewBox="0 0 24 24"><path d="M9.5,8.5L11,10L8,13L11,16L9.5,17.5L5,13L9.5,8.5M14.5,17.5L13,16L16,13L13,10L14.5,8.5L19,13L14.5,17.5M21,2H3A2,2 0 0,0 1,4V20A2,2 0 0,0 3,22H21A2,2 0 0,0 23,20V4A2,2 0 0,0 21,2M21,20H3V6H21V20Z" /></svg>';
+    const svgiframe = '<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="mdi-iframe-outline" width="24" height="24" viewBox="0 0 24 24"><path d="M9.5,8.5L11,10L8,13L11,16L9.5,17.5L5,13L9.5,8.5M14.5,17.5L13,16L16,13L13,10L14.5,8.5L19,13L14.5,17.5M21,2H3A2,2 0 0,0 1,4V20A2,2 0 0,0 3,22H21A2,2 0 0,0 23,20V4A2,2 0 0,0 21,2M21,20H3V6H21V20Z" /></svg>';
 
     bm.add('My Block 1', {
       label: 'iFrame',
-      media: scgiframe,
+      media: svgiframe,
       category: 'Basic',
       content: `
       <iframe src="" title="iFrame" height="500px" width="500px" style="box-shadow: 5px 5px 0 rgba(5, 5, 5, .2)">
