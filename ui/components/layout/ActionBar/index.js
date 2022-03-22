@@ -7,7 +7,7 @@ function ActionBar({ children = null, actions = {} }) {
   let search = null;
   if (actions.buttons) {
     buttons = actions.buttons.map((button) => (
-      <Button type="primary" shape="round" key={button.name} onClick={button.onClick}>
+      <Button type="primary" shape="round" key={button.name} onClick={button.onClick} className={styles.actionButtons}>
         {button.icon}
         {button.name}
       </Button>
