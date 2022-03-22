@@ -30,7 +30,8 @@ export default function NewContentModal({
 
   const handleAddContent = (contentData) => {
     const x = { ...contentData };
-    schemaDetails.schema.forEach((field) => {
+
+    schemaDetails.schema.forEach((field, index) => {
       if (field.type === 'Date and Time') {
         x[field.id] = moment(x[field.id]).toISOString(true);
       }
@@ -62,6 +63,21 @@ export default function NewContentModal({
           })
           .catch((err) => console.log(err));
       }
+      if (field.type === 'Boolean' && field.appearanceType === 'Boolean radio') {
+        if (x[field.id] === field.Truelabel) {
+          x[field.id] = true;
+        } else if (x[field.id] === field.Falselabel) {
+          x[field.id] = false;
+        } else {
+          x[field.id] = '';
+        }
+      }
+
+      if (field.type === 'Boolean' && field.appearanceType === 'Switch') {
+        if (x[field.id] !== true && x[field.id] !== false) {
+          x[field.id] = false;
+        }
+      }
     });
 
     if (schemaSlug) {
@@ -85,6 +101,16 @@ export default function NewContentModal({
     schemaDetails.schema.forEach((field) => {
       if (field.type === 'Date and Time') {
         x[field.id] = moment(x[field.id]).toISOString(true);
+      }
+
+      if (field.type === 'Boolean' && field.appearanceType === 'Boolean radio') {
+        if (x[field.id] === field.Truelabel) {
+          x[field.id] = true;
+        } else if (x[field.id] === field.Falselabel) {
+          x[field.id] = false;
+        } else {
+          x[field.id] = '';
+        }
       }
     });
     if (schemaSlug) {

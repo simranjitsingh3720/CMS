@@ -17,7 +17,7 @@ module.exports = {
           validate: {
             notEmpty: true,
           },
-          unique: true,
+          // unique: true,
         },
         isHome: { type: Sequelize.BOOLEAN, allowNull: false },
         data: { type: Sequelize.JSON },
