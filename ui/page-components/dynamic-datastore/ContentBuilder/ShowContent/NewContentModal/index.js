@@ -1,4 +1,5 @@
 import { Button, Form, message, Modal, Space } from 'antd';
+import axios from 'axios';
 import { React } from 'react';
 import moment from 'moment';
 import { useRequest } from '../../../../../helpers/request-helper';
@@ -33,6 +34,34 @@ export default function NewContentModal({
     schemaDetails.schema.forEach((field, index) => {
       if (field.type === 'Date and Time') {
         x[field.id] = moment(x[field.id]).toISOString(true);
+      }
+      if (field.type === 'Assets') {
+        const name = x[field.id] && x[field.id].file.name;
+        const mimeType = x[field.id] && x[field.id].file.type;
+        const type = x[field.id] && x[field.id].file.type.split('/')[0];
+
+        axios.post('/api/v1/asset', {
+          name,
+          type,
+          mimeType,
+        })
+          .then((res) => {
+            const { writeUrl } = res.data;
+            const FileData = x.student.file.originFileObj;
+            const headerType = x.student.file.originFileObj.type;
+            axios.put(
+              writeUrl,
+              FileData,
+              {
+                headers: { type: headerType, 'Content-Type': `${headerType}` },
+              },
+            )
+              .then(() => {
+                console.log('success');
+              })
+              .catch((err) => console.log(err));
+          })
+          .catch((err) => console.log(err));
       }
       if (field.type === 'Boolean' && field.appearanceType === 'Boolean radio') {
         if (x[field.id] === field.Truelabel) {
