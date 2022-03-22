@@ -15,7 +15,7 @@ export default function ShareFormModal({
     navigator.clipboard.writeText(value);
   };
 
-  const formLink = `http://localhost:8000/form/${formId}`;
+  const formLink = `${process.env.NEXT_PUBLIC_APP_LIVE_URL}/form/${formId}`;
   const formIframe = `<iframe src="${formLink}" title=${title} ></iframe>`;
   return (
     <Modal
