@@ -9,16 +9,15 @@ function PageLayout({
 }) {
   const router = useRouter();
 
-  const blockRoute = ['/', '/admin/signin', '/admin/signup'];
-
+  const blockRoute = ['/', '/admin/signin', '/admin/signup', '/admin/forgot-password', '/admin/password-change/[link]', '/[pageView]'];
   const { pathname } = router;
-
   return (
     <Layout className={styles.layout} hasSider>
-
-      {!blockRoute.includes(pathname) ? <PageSider /> : null}
+      {(!blockRoute.includes(pathname)) ? <PageSider /> : null}
       <Layout className="site-layout">
-        <PageContent>{children}</PageContent>
+        <PageContent>
+          {children}
+        </PageContent>
       </Layout>
     </Layout>
   );

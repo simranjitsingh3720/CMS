@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       schemaId: { type: DataTypes.UUID },
       data: { type: DataTypes.JSON },
       status: { type: DataTypes.ENUM('draft', 'published') },
-      createdBy: { type: DataTypes.UUID },
+      createdBy: { type: DataTypes.UUID, allowNull: false },
       createdAt: { type: DataTypes.DATE },
       updatedBy: { type: DataTypes.UUID },
       updatedAt: { type: DataTypes.DATE },
@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
       paranoid: true,
       modelName: 'Content',
-      tableName: 'datastore_contents',
+      tableName: 'Datastore_Contents',
     },
   );
 

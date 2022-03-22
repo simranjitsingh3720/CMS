@@ -5,28 +5,25 @@ import {
   Button,
   Upload,
   message,
+  Space,
 } from 'antd';
 import { useState } from 'react';
 import { useRequest } from '../../../helpers/request-helper';
+import styles from '../AssetModal/style.module.scss';
 
-function AssetCreateForm({ CloseDrawer, refetch }) {
+const { TextArea } = Input;
+
+function AssetCreateForm({ closeModal, refetch }) {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-
-  const formItemLayout = {
-    labelCol: {
-      span: 8,
-    },
-    wrapperCol: {
-      span: 17,
-    },
-  };
+  const [assetTitle, setAssetTitle] = useState('');
 
   const normFile = (e) => {
     if (Array.isArray(e)) {
       return e;
     }
-
+    setAssetTitle(e.file.name);
+    form.setFieldsValue({ name: assetTitle });
     return e && e.fileList;
   };
 
@@ -62,20 +59,20 @@ function AssetCreateForm({ CloseDrawer, refetch }) {
         executePut({
           url: writeUrl,
           data: file,
-          headers: { type: values.upload[0].originFileObj.type },
+          headers: { type: values.upload[0].originFileObj.type, 'Content-Type': `${values.upload[0].originFileObj.type}` },
         })
           .then(() => {
             setLoading(false);
             form.resetFields();
-            CloseDrawer();
-            message.success('Asset Added');
+            closeModal();
+            message.success('Asset Added Successfully !!!');
             refetch();
           })
-          .catch(() => {
+          .catch((err) => {
             setLoading(false);
-            CloseDrawer();
+            closeModal();
             refetch();
-            message.error('Asset Not Added');
+            message.error(err.response.data.message || err.response.data.messages[0]);
           });
       });
   };
@@ -83,24 +80,10 @@ function AssetCreateForm({ CloseDrawer, refetch }) {
   return (
     <Form
       form={form}
+      layout="vertical"
       name="validate_other"
-      {...formItemLayout}
       onFinish={SubmitDetails}
-      initialValues={{ 'input-number': 3 }}
     >
-      <Form.Item
-        name="name"
-        label="Name"
-        rules={[{ required: true, message: 'Please enter name!!' }]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        name="description"
-        label="Description"
-      >
-        <Input />
-      </Form.Item>
       <Form.Item
         name="upload"
         label="Upload"
@@ -108,20 +91,43 @@ function AssetCreateForm({ CloseDrawer, refetch }) {
         rules={[{ required: true }]}
         getValueFromEvent={normFile}
       >
-        <Upload name="logo" action="/upload.do" listType="picture">
+        <Upload name="logo" action="/upload.do" listType="picture" maxCount={1}>
           <Button icon={<UploadOutlined />}>Click to upload</Button>
         </Upload>
+      </Form.Item>
+      <Form.Item
+        name="name"
+        label="Name"
+        rules={[{ required: true, message: 'Please enter name!!' }]}
+      >
+        <Input value={assetTitle} onChange={(e) => setAssetTitle(e.target.value)} />
+      </Form.Item>
+      <Form.Item
+        name="description"
+        label="Description"
+      >
+        <TextArea rows={2} />
       </Form.Item>
 
       <Form.Item
         wrapperCol={{
-          span: 12,
-          offset: 6,
+          span: 20,
+          offset: loading ? 14 : 15,
         }}
+        style={{ marginBottom: '0px' }}
       >
-        <Button type="primary" loading={loading} htmlType="submit">
-          Submit
-        </Button>
+        <div className={styles.actionButton}>
+          <Space wrap>
+            <Button key="back" onClick={closeModal}>
+              Cancel
+            </Button>
+            <Button type="primary" loading={loading} htmlType="submit">
+              Submit
+            </Button>
+
+          </Space>
+        </div>
+
       </Form.Item>
     </Form>
   );

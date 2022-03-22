@@ -1,5 +1,6 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Space } from 'antd';
+import { Button, Space, Tooltip } from 'antd';
+import styles from './style.module.scss';
 
 export default function getColumns(tableSchema, handleEditContent, handleDeleteContent) {
   let columns = [];
@@ -15,16 +16,21 @@ export default function getColumns(tableSchema, handleEditContent, handleDeleteC
     dataIndex: 'Actions',
     key: 'actions',
     render: (actions) => (
-      <div>
-        <Button onClick={() => handleEditContent(actions)}>
-          <EditOutlined />
-        </Button>
-        <Space wrap>
-          <Button danger onClick={() => handleDeleteContent(actions)}>
+      <Space>
+        <Tooltip title="edit content">
+          <Button id="edit-content" className={styles.actionContentButton} onClick={() => handleEditContent(actions)}>
+            <EditOutlined />
+          </Button>
+        </Tooltip>
+        <Tooltip title="delete content">
+
+          <Button id="delete-content" className={styles.actionContentButton} danger onClick={() => handleDeleteContent(actions)}>
             <DeleteOutlined />
           </Button>
-        </Space>
-      </div>
+        </Tooltip>
+
+      </Space>
+
     ),
   }];
 

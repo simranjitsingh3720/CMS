@@ -9,7 +9,6 @@ module.exports = (sequelize, DataTypes) => {
       models.Page.belongsTo(models.User, { foreignKey: 'deletedBy' });
     }
   }
-
   Page.init(
     {
       id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
@@ -25,10 +24,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
       },
-      isHome: { type: DataTypes.BOOLEAN, allowNull: false },
+      isHome: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: 0 },
       data: { type: DataTypes.JSON },
       status: { type: DataTypes.ENUM('draft', 'published'), allowNull: false, defaultValue: 'draft' },
-      createdBy: { type: DataTypes.UUID },
+      createdBy: { type: DataTypes.UUID, allowNull: false },
       createdAt: { type: DataTypes.DATE },
       updatedBy: { type: DataTypes.UUID },
       updatedAt: { type: DataTypes.DATE },
@@ -42,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
       paranoid: true,
       modelName: 'Page',
-      tableName: 'pages',
+      tableName: 'Pages',
     },
   );
 

@@ -1,10 +1,10 @@
 import {
-  Card, Form, Input, Button, message, Upload, Avatar,
+  Card, Form, Input, Button, message, Upload, Avatar, Switch,
 } from 'antd';
 import { LoadingOutlined, UserAddOutlined } from '@ant-design/icons';
 import { useState, useEffect, useContext } from 'react';
 import { useRequest } from '../../helpers/request-helper';
-import styles from './styles.module.scss';
+import styles from './style.module.scss';
 import SessionContext from '../../context/SessionContext';
 
 function Profile() {
@@ -15,17 +15,9 @@ function Profile() {
   const [data, setData] = useState({});
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(false);
+  const [buttonFlag, setButtonFlag] = useState(true);
 
-  const formItemLayout = {
-    labelCol: {
-      span: 8,
-    },
-    wrapperCol: {
-      span: 17,
-    },
-  };
-
-  const [{ data: getdata }, handleGet, refetch] = useRequest({
+  const [{ }, handleGet, refetch] = useRequest({
     METHOD: 'GET',
     url: '/user/me',
   });
@@ -43,7 +35,7 @@ function Profile() {
         if (res.data.user.ProfilePicture) { setUrl(res.data.user.ProfilePicture.url); }
       })
       .catch((err) => {
-        console.log(err);
+        message.error(err.response.data.message || err.response.data.messages[0]);
       });
   }, []);
 
@@ -55,6 +47,7 @@ function Profile() {
     },
     { manual: true },
   );
+
   const [{ loading: passwordLoading },
     passwordPatch,
   ] = useRequest(
@@ -65,23 +58,42 @@ function Profile() {
   );
 
   const SubmitDetails = (values) => {
-    detailPatch({
-      url: `/user/${data.id}`,
-      data: {
+    let submitData = {};
+    if (values.switch) {
+      submitData = {
         firstName: values.firstName,
         lastName: values.lastName,
         phone: values.phone,
+        flag: {
+          asset: true,
+          page_manager: true,
+          datastore: true,
+          datastore_contents: true,
+          datastore_structure: true,
+        },
+      };
+    } else {
+      submitData = {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        phone: values.phone,
+      };
+    }
 
-      },
+    detailPatch({
+      url: `/user/${data.id}`,
+      data: submitData,
     })
       .then(() => {
         message.success('User Updated');
         refetch();
         sessionRefetch();
       })
-      .catch(() => {
-        message.error('User Not Updated');
+      .catch((err) => {
+        message.error(err.response.data.message || err.response.data.messages[0]);
       });
+
+    setButtonFlag(true);
   };
 
   const changePassword = (values) => {
@@ -94,12 +106,12 @@ function Profile() {
     })
       .then(() => {
         form.resetFields();
-        message.success('successfully updated');
+        message.success('updated successfully');
         sessionRefetch();
       })
-      .catch(() => {
+      .catch((err) => {
         form.resetFields();
-        message.error('Password is not updated');
+        message.error(err.response.data.message || err.response.data.messages[0]);
       });
   };
 
@@ -159,14 +171,15 @@ function Profile() {
                   sessionRefetch();
                   refetch();
                 })
-                .catch(() => {
+                .catch((err) => {
                   setLoading(false);
-                  message.error('Profile Not Updated');
+                  message.error(err.response.data.message || err.response.data.messages[0]);
                 });
             })
-            .catch(() => {
+            .catch((err) => {
               setLoading(false);
               setLoad(false);
+              message.error(err.response.data.message || err.response.data.messages[0]);
             });
         });
     }
@@ -185,12 +198,18 @@ function Profile() {
             width: '130px',
             height: '130px',
             backgroundSize: 'cover',
+            backgroundPosition: 'center',
             borderRadius: '50%',
           }}
           />
         )}
     </div>
   );
+
+  const check = () => {
+    setButtonFlag(false);
+  };
+
   return (
     <div className="site-card-border-less-wrapper">
       <Card
@@ -203,7 +222,8 @@ function Profile() {
           listType="picture-card"
           className={styles.profile}
           showUploadList={false}
-          action="http://localhost:8000/admin/profile"
+          accept="image/*"
+          action="/admin/profile"
           onChange={handleChange}
         >
           {url
@@ -212,7 +232,8 @@ function Profile() {
         <Form
           form={dataForm}
           name="validate"
-          {...formItemLayout}
+          layout="vertical"
+          style={{ margin: '10px' }}
           onFinish={SubmitDetails}
         >
           <Form.Item
@@ -220,14 +241,14 @@ function Profile() {
             label="First Name"
             rules={[{ required: true, message: 'Please enter first name!!' }]}
           >
-            <Input />
+            <Input onChange={check} />
           </Form.Item>
           <Form.Item
             name="lastName"
             label="Last Name"
             rules={[{ required: true, message: 'Please enter Last name!!' }]}
           >
-            <Input />
+            <Input onChange={check} />
           </Form.Item>
           <Form.Item
             name="email"
@@ -239,17 +260,22 @@ function Profile() {
             name="phone"
             label="Mobile Number"
           >
-            <Input />
+            <Input onChange={check} />
+          </Form.Item>
+          <Form.Item name="switch" label="Enable Tutorial" valuePropName="checked">
+            <Switch onChange={check} />
           </Form.Item>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <Button
               type="primary"
               htmlType="submit"
               loading={detailsLoading}
+              disabled={buttonFlag}
             >
               Update
             </Button>
           </div>
+
         </Form>
       </Card>
 
@@ -258,8 +284,9 @@ function Profile() {
         <Form
           form={form}
           name="validate_other"
-          {...formItemLayout}
+          layout="vertical"
           onFinish={changePassword}
+          style={{ margin: '10px' }}
         >
           <Form.Item
             name="currentPassword"
@@ -271,18 +298,20 @@ function Profile() {
           <Form.Item
             name="newPassword"
             label="New Password"
-            rules={[{ required: true, message: 'Please enter New Password!!' }, ({ getFieldValue }) => ({
-              validator(_, value) {
-                const paswd = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,12}$/;
-                if (!value.match(paswd)) {
-                  return Promise.reject(new Error('password between 6 to 12 characters which contain at least one letter, one numeric digit, and one special character'));
-                }
-                if (getFieldValue('currentPassword') === value) {
-                  return Promise.reject(new Error('Password should be different from current passowrd'));
-                }
-                return Promise.resolve();
+            rules={[
+              { required: true, message: 'Please enter New Password!!' },
+              {
+                pattern: /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,12}$/,
+                message: 'password between 6 to 12 characters which contain at least one letter, one numeric digit, and one special character',
               },
-            })]}
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (getFieldValue('currentPassword') === value) {
+                    return Promise.reject(new Error('Password should be different from current password'));
+                  }
+                  return Promise.resolve();
+                },
+              })]}
           >
             <Input.Password />
           </Form.Item>
@@ -300,15 +329,17 @@ function Profile() {
           >
             <Input.Password />
           </Form.Item>
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button
-              type="primary"
-              htmlType="submit"
-              loading={passwordLoading}
-            >
-              Change
-            </Button>
-          </div>
+          <Form.Item>
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                loading={passwordLoading}
+              >
+                Change
+              </Button>
+            </div>
+          </Form.Item>
         </Form>
       </Card>
     </div>

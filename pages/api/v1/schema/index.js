@@ -1,16 +1,9 @@
+const route = require('../../../../server/helpers/route-helper');
+
 const { listSchemas, addSchema } = require('../../../../server/api-controllers/schema-controller');
 
-const schemaHandler = async (req, res) => {
-  switch (req.method) {
-    case 'GET':
-      return listSchemas(req, res);
+module.exports = route({
+  GET: listSchemas,
+  POST: addSchema,
 
-    case 'POST':
-      return addSchema(req, res);
-
-    default:
-      return '';
-  }
-};
-
-export default schemaHandler;
+});

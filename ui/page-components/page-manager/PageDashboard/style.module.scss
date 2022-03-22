@@ -1,0 +1,18 @@
+.card_container {
+  display: flex;
+  flex-wrap: wrap;
+}
+.action_searchBar{
+  width: 30em;
+  border-radius: 15px;
+}
+
+.page_dashboard_wrapper {
+  padding: 20px;
+}
+
+.actionButton{
+   display: flex;
+   justify-content: flex-end;
+   align-items: flex-end
+}

@@ -4,7 +4,7 @@ import {
 import {
   LogoutOutlined, UserOutlined,
 } from '@ant-design/icons';
-import { useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import navData from './sideNavContent';
@@ -87,7 +87,7 @@ function PageSider() {
       <Menu theme="dark" mode="inline" selectedKeys={Router.pathname}>
         <Header className="site-layout-background" style={{ color: 'white', paddingLeft: '20px' }}>
           <strong>
-            <Link href="/"> CMS</Link>
+            <Link href="/admin"> CMS</Link>
           </strong>
         </Header>
 

@@ -1,22 +1,26 @@
 import {
-  Card, Button, message, Modal, Tooltip,
+  Button, message, Modal, Popover,
+  Typography,
 } from 'antd';
+import React, { useState } from 'react';
 import {
-  DeleteOutlined,
-  EditOutlined,
   ExclamationCircleOutlined,
+  MoreOutlined,
 } from '@ant-design/icons';
-import { useState } from 'react';
-import Asset from './Asset';
-import AssetDrawer from '../AssetDrawer';
-import styles from './styles.module.scss';
+import Text from 'antd/lib/typography/Text';
+import AssetModal from '../AssetModal';
+import styles from './style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
+import CardWrapper from '../../../components/CardWrapper';
+import { CardPreview, CardTitle, Preview } from './Asset/Preview';
 
-const { Meta } = Card;
+const { Title } = Typography;
+
 const { confirm } = Modal;
 
 function AssetCard({ data, refetch }) {
-  const [visibleDrawer, setVisibleDrawer] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isPreviewModalVisible, setIsPreviewModalVisible] = useState(false);
 
   const [{ deleteError }, handleDelete] = useRequest(
     {
@@ -30,55 +34,106 @@ function AssetCard({ data, refetch }) {
     confirm({
       title: 'Do you Want to delete these items?',
       icon: <ExclamationCircleOutlined />,
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      content: <div>It may contains some sensitive data.</div>,
       async onOk() {
         await handleDelete();
         if (deleteError) {
-          message.error('Item not deleted');
+          message.error(deleteError.response.data.messages[0]
+             || deleteError.response.data.messages);
         } else {
-          message.success('Item Deleted');
+          message.success('Asset Deleted');
           await refetch();
         }
       },
     });
   };
 
-  const showModal = () => {
-    setVisibleDrawer(true);
+  const showEditModal = () => {
+    setIsModalVisible(true);
   };
+
+  const showAssetPreviewModal = () => {
+    setIsPreviewModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsPreviewModalVisible(false);
+  };
+
+  const handleCancelEdit = () => {
+    setIsModalVisible(false);
+  };
+
+  const content = (
+    <div>
+      <Button
+        type="text"
+        onClick={showEditModal}
+        key="edit"
+        className="third-step"
+      >
+        Rename Asset
+      </Button>
+      <br />
+      <Button
+        type="text"
+        onClick={showConfirm}
+        key="delete"
+        className="fourth-step"
+      >
+        Delete Asset
+
+      </Button>
+    </div>
+  );
 
   return (
     <>
-      <Card
-        style={{ width: 280, height: 330, padding: '0px 15px', paddingTop: '15px', borderRadius: '8px' }}
-        cover={(
-          <Asset
-            data={data}
-          />
-    )}
-        className={styles.asset_card}
-        actions={[
-          <Tooltip title="Edit Asset">
-            <EditOutlined key="edit" onClick={showModal} style={{ border: '0px' }} />
+      <CardWrapper>
+        <CardPreview data={data} showAssetPreviewModal={showAssetPreviewModal} />
 
-          </Tooltip>,
-          <Tooltip title="Delete Asset">
-            <DeleteOutlined key="delete" onClick={showConfirm} style={{ border: '0px' }} />
+        <div className={styles.asset_action}>
+          <div className="flex-container">
+            <CardTitle data={data} />
+            {' '}
+            <Text>{data.name}</Text>
+          </div>
+          <Popover content={content} placement="bottomLeft">
+            <button
+              type="button"
+              className={styles.card_button}
+            >
+              <MoreOutlined />
+            </button>
+          </Popover>
 
-          </Tooltip>,
-        ]}
-      >
-        <Meta
-          title={data.name}
-          description={data.description}
-        />
-      </Card>
-      <AssetDrawer
+        </div>
+      </CardWrapper>
+      <AssetModal
         flag={false}
-        visible={visibleDrawer}
-        setVisible={setVisibleDrawer}
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
         refetch={refetch}
+        // handleOk={handleOkEdit}
+        handleCancel={handleCancelEdit}
         data={data}
       />
+
+      {isPreviewModalVisible ? (
+        <Modal
+          visible={isPreviewModalVisible}
+          // onOk={handleOk}
+          onCancel={handleCancel}
+          footer={null}
+          width={1200}
+          style={{ marginTop: '-40px' }}
+        >
+          <Preview data={data} />
+        </Modal>
+      ) : null}
     </>
   );
 }

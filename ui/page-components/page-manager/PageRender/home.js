@@ -1,30 +1,18 @@
-import { useRouter } from 'next/router';
 import { useEffect, useState, createRef } from 'react';
 import ReactHtmlParser from 'react-html-parser';
-import { Spin } from 'antd';
+import { Alert } from 'antd';
 import { useScreenshot } from 'use-react-screenshot';
-import { useRequest } from '../../../helpers/request-helper';
 
-function PageRender() {
+function PageRender({ data }) {
   const ref = createRef(null);
   const [image, takeScreenshot] = useScreenshot();
   const getImage = () => takeScreenshot(ref.current);
+  console.log(data);
 
   const [html, setHtml] = useState(null);
   const [css, setCss] = useState(null);
-
   const [isData, setIsData] = useState(false);
-  const router = useRouter();
-
-  const [{ data: getData, loading: getLoading, error: getError }] = useRequest(
-    {
-      url: '/page/',
-      method: 'GET',
-      params: {
-        isHome: 1,
-      },
-    },
-  );
+  const getData = data;
 
   useEffect(() => {
     getImage();
@@ -32,7 +20,6 @@ function PageRender() {
   }, [image]);
 
   useEffect(() => {
-    console.log(getData);
     if (getData) {
       setIsData(true);
       const code = JSON.parse(getData.data.data);
@@ -51,12 +38,33 @@ function PageRender() {
         <style>{css}</style>
         {isData ? (
           <div>
+            <div style={{
+              textAlign: 'center',
+              margin: '10px',
+              padding: '5px',
+            }}
+            >
+              <a href="/admin">Go To Dashboard</a>
+            </div>
             {ReactHtmlParser(html)}
-
           </div>
         ) : (
-          <div>
-            <Spin size="large" />
+          <div style={{
+            width: '80%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+            margin: '12% auto',
+          }}
+          >
+            <Alert
+              message="Message"
+              description="You don't have home page, first create home page."
+              type="info"
+              showIcon
+            />
+            <a href="/admin">Go To Dashboard</a>
           </div>
         )}
       </div>

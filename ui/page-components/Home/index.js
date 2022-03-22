@@ -6,8 +6,7 @@ function Home() {
   const { session } = useContext(SessionContext);
   return (
     <div className={Styles.title}>
-      Hello!
-      {' '}
+      Hello! Mr.
       {' '}
       {session ? (
         <span>
@@ -15,7 +14,7 @@ function Home() {
           {' '}
           {session.user.lastName}
         </span>
-      ) : null}
+      ) : <span>Please Login or Signup to continue</span>}
     </div>
   );
 }

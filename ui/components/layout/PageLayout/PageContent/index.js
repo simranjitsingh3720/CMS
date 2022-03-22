@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import PageTitle from './PageTitle';
 import styles from '../style.module.scss';
 
-const blockRoute = ['/', '/admin/signin', '/admin/signup'];
+const blockRoute = ['/', '/admin/signin', '/admin/signup', '/[pageView]'];
 
 function PageContent({ children = null }) {
   const { title } = children?.props || {};
@@ -13,13 +13,14 @@ function PageContent({ children = null }) {
   const { pathname } = router;
   return (
     <Content className={styles.content}>
+
       <div
         className={styles.site}
       >
         {!notDisplay && !blockRoute.includes(pathname) ? <PageTitle title={title} /> : null}
-
         {children}
       </div>
+
     </Content>
   );
 }

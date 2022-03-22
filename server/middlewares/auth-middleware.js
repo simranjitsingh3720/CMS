@@ -1,12 +1,19 @@
-/* eslint-disable arrow-body-style */
 const authMiddleware = (req, res, next) => {
-  // if (
-  //   req.path.includes('/api')
-  //   && !req.path.includes('/api/auth')
-  //   && !req.session.user
-  // ) {
-  //   return res.status(401).json({ message: 'You are not logged in' });
-  // }
+  const { path } = req;
+  if (!path.startsWith('/admin')) {
+    return next();
+  }
+
+  if (req.session.user) {
+    if (path === '/admin/signin' || path === '/admin/signup' || path === '/admin/forgot-password' || path.startsWith('/admin/password-change')) {
+      return res.redirect('/admin');
+    }
+  }
+  if (!req.session.user) {
+    if (path !== '/admin/signin' && path !== '/admin/signup' && path !== '/admin/forgot-password' && !path.startsWith('/admin/password-change')) {
+      return res.redirect('/admin/signin');
+    }
+  }
   return next();
 };
 

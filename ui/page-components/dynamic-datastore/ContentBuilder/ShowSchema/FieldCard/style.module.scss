@@ -1,5 +1,4 @@
 .site_card_border_less_wrapper {
-  padding: 30px;
   background: #ececec;
 }
 
@@ -10,6 +9,19 @@
 }
 
 .button{
-  margin: 5px 5px 0 5px;
   border: none;
 }
+
+.Fields {
+  display:flex;
+}
+
+.Fields > div {
+  margin-right: 10px;
+}
+
+
+.card_wrapper{
+  border: 0 !important;
+}
+

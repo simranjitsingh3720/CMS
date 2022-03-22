@@ -5,8 +5,8 @@ export default ContentBuilder;
 export async function getServerSideProps() {
   return {
     props: {
-      title: 'Datastore',
-      breadcrumb: { crumbs: [{ title: 'datastore' }] },
+      title: 'Data Table',
+      breadcrumb: { crumbs: [{ title: 'Data table' }] },
     },
   };
 }

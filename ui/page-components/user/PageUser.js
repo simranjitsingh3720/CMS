@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Table } from 'antd';
+import { message, Table } from 'antd';
 import ActionBar from '../../components/layout/ActionBar';
 import { useRequest } from '../../helpers/request-helper';
 
@@ -10,12 +10,14 @@ function PageUser() {
   const [{}, refetch] = useRequest({
     url: '/user',
     params: {
-      q: searchValue,
+      q: searchValue.toLowerCase(),
     },
   });
   useEffect(() => {
     refetch().then((res) => {
       setData(res.data.list);
+    }).catch((err) => {
+      message.error(err.response.data.message || err.response.data.messages[0]);
     });
   }, [searchValue]);
 
@@ -23,8 +25,11 @@ function PageUser() {
     searchBar: {
       searchValue,
       setSearchValue,
+      placeholder: 'Enter user name',
+
     },
   };
+
   const columns = [
     {
       title: 'First Name',
@@ -43,14 +48,13 @@ function PageUser() {
       dataIndex: 'email',
       key: 'email',
     },
-
   ];
 
   return (
-    <>
+    <div style={{ padding: '16px' }}>
       <ActionBar actions={actions} />
-      <Table columns={columns} dataSource={data} style={{ margin: '16px 32px' }} />
-    </>
+      <Table columns={columns} dataSource={data} style={{ marginTop: '16px', marginBottom: '16px' }} />
+    </div>
   );
 }
 export default PageUser;

@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { PlusOutlined } from '@ant-design/icons';
-import NewContentDrawer from './NewContentDrawer';
+import { Button, Empty, message, Spin } from 'antd';
+import NewContentModal from './NewContentModal';
 import ActionBar from '../../../../components/layout/ActionBar';
 import ContentTable from './ContentTable';
 import { useRequest } from '../../../../helpers/request-helper';
 
-function ShowContent({ schema }) {
+function ShowContent({ schema, setDefaultKey }) {
   const router = useRouter();
-  const [isContentDrawer, setIsContentDrawer] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
+  const [isContentModal, setIsContentModal] = useState(false);
+  // const [searchValue, setSearchValue] = useState('');
   const [isEditable, setIsEditable] = useState(false);
   const [editableData, setEditableData] = useState([]);
   const { schemaSlug } = router.query;
@@ -21,7 +22,11 @@ function ShowContent({ schema }) {
     },
   );
 
-  const [{ data: deletedData }, deleteContent] = useRequest(
+  if (error) {
+    message.error(error.response.data.message || error.response.data.messages[0]);
+  }
+
+  const [{}, deleteContent] = useRequest(
     {
       method: 'DELETE',
     },
@@ -32,24 +37,20 @@ function ShowContent({ schema }) {
     setEditableData(content);
   };
 
-  const showContentDrawer = () => {
-    setIsContentDrawer(true);
+  const showContentModal = () => {
+    setIsContentModal(true);
   };
 
-  const closeContentDrawer = () => {
-    setIsContentDrawer(false);
+  const closeContentModal = () => {
+    setIsContentModal(false);
   };
 
   const addNewContent = () => {
     setIsEditable(false);
-    showContentDrawer();
+    showContentModal();
   };
 
   const actions = {
-    searchBar: {
-      searchValue,
-      setSearchValue,
-    },
     buttons: [
       {
         name: 'Add new content',
@@ -59,35 +60,89 @@ function ShowContent({ schema }) {
     ],
   };
 
+  const handleChangeTab = () => {
+    setDefaultKey('2');
+  };
+
   return (
     <div>
       <div>
-        <ActionBar actions={actions} />
+        {(schema && schema.schema.length !== 0 && data && data.list.length > 0)
+          ? <ActionBar actions={actions} /> : null }
       </div>
 
-      {loading ? <h1>LOADING</h1> : null}
-      {error ? <h1>{error}</h1> : null}
-      {isContentDrawer ? (
-        <NewContentDrawer
-          closeContentDrawer={closeContentDrawer}
+      {loading ? (
+        <div style={{ textAlign: 'center' }}>
+          <Spin size="large" />
+        </div>
+      ) : null}
+      {isContentModal ? (
+        <NewContentModal
+          closeContentModal={closeContentModal}
           schemaDetails={schema || []}
           getContent={getContent}
           isEditable={isEditable}
           editableData={editableData}
+          showContentModal={showContentModal}
         />
       ) : null }
 
-      <ContentTable
-        tableSchema={schema || []}
-        data={data}
-        showContentDrawer={showContentDrawer}
-        closeContentDrawer={closeContentDrawer}
-        setIsEditable={setIsEditable}
-        getEditableData={getEditableData}
-        deleteContent={deleteContent}
-        getContent={getContent}
-
-      />
+      {schema.schema.length > 0 && data && data.list.length > 0
+        ? (
+          <ContentTable
+            tableSchema={schema || []}
+            data={data}
+            setDefaultKey={setDefaultKey}
+            showContentModal={showContentModal}
+            closeContentModal={closeContentModal}
+            setIsEditable={setIsEditable}
+            getEditableData={getEditableData}
+            deleteContent={deleteContent}
+            getContent={getContent}
+          />
+        )
+        : (
+          <div style={{
+            position: 'absolute',
+            top: '50%',
+            right: '50%',
+            transform: 'translate(100%,-50%)',
+          }}
+          >
+            {schema.schema.length <= 0 ? (
+              <Empty
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                description={(
+                  <span>
+                    Oops!! No Schema Found.
+                    <br />
+                    Add Schema in the structure tab
+                    <br />
+                    <br />
+                    <Button type="primary" shape="round" onClick={handleChangeTab}>
+                      Go to Structure
+                    </Button>
+                  </span>
+                  )}
+              />
+            ) : (
+              <Empty
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                description={(
+                  <span>
+                    Oops!! No Content Found.
+                    <br />
+                    <br />
+                    <Button type="primary" shape="round" onClick={addNewContent}>
+                      <PlusOutlined />
+                      Add new Content
+                    </Button>
+                  </span>
+                  )}
+              />
+            )}
+          </div>
+        )}
     </div>
   );
 }

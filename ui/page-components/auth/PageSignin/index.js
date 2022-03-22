@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
 import {
-  message, Form, Input, Button, Row, Col, Typography,
+  message, Form, Input, Button, Row, Col, Typography, Checkbox,
 } from 'antd';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import styles from '../style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
@@ -13,7 +14,6 @@ const { Title, Paragraph } = Typography;
 function PageSignin() {
   const router = useRouter();
   const { refetch } = useContext(SessionContext);
-
   const [{ loading }, executePost] = useRequest(
     {
       url: '/auth/signin',
@@ -24,20 +24,20 @@ function PageSignin() {
 
   const SubmitDetails = (values) => {
     executePost({
-      data: {
-        email: values.email,
-        password: values.password,
-      },
+      data: values,
     }).then(() => {
       router.push('/admin');
-      message.success('Welcome to CMS Page');
       refetch();
+      message.success('Welcome to Cogoport CMS 🎉');
     })
-      .catch(() => message.error('Invalid Signin, Please try again'));
+      .catch((error) => {
+        message.error(error.response.data.messages[0]);
+      });
   };
   const onSignUpClick = async () => {
     await router.push('/admin/signup');
   };
+
   return (
     <Row>
       <Col className={styles.overlay} span={12} style={{ backgroundColor: 'red', height: '100vh' }}>
@@ -51,7 +51,6 @@ function PageSignin() {
             style={{ width: 160 }}
           >
             SIGN UP
-
           </Button>
         </Typography>
       </Col>
@@ -66,21 +65,37 @@ function PageSignin() {
           <Form.Item
             className={styles.form_item}
             name="email"
-            rules={[{ required: true, message: 'Please input your Email!' }]}
+            rules={[
+              { required: true, message: 'Please input your Email!' },
+              {
+                type: 'email',
+                message: 'Invalid email',
+              },
+            ]}
           >
             <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Email" />
           </Form.Item>
           <Form.Item
             className={styles.form_item}
             name="password"
-            rules={[{ required: true, message: 'Please input your Password!' }]}
+            rules={[{ required: true, message: 'Password cannot be empty.' }]}
           >
-            <Input
+            <Input.Password
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
               placeholder="Password"
             />
           </Form.Item>
+          <div className={styles.form_extra_item}>
+            <Form.Item name="remember" valuePropName="checked">
+              <Checkbox>
+                Remember me for a month
+              </Checkbox>
+            </Form.Item>
+            <Link href="/admin/forgot-password">
+              Forgot password?
+            </Link>
+          </div>
           <Form.Item>
             <Button
               loading={loading}
@@ -88,7 +103,7 @@ function PageSignin() {
               shape="round"
               size="large"
               htmlType="submit"
-              style={{ width: 200 }}
+              style={{ width: 200, marginTop: '20px' }}
             >
               SIGN IN
             </Button>
