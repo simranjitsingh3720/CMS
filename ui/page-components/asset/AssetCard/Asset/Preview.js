@@ -24,11 +24,13 @@ export function CardPreview({ data, showAssetPreviewModal }) {
   if (data && data.type === 'image') {
     return (
       <div
-        style={{ height: '200px', backgroundColor: '#000', textAlign: 'center' }}
+        style={{
+          height: '200px', backgroundColor: '#000', textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center',
+        }}
         onClick={showAssetPreviewModal}
         role="button"
       >
-        <img src={data.url} alt="asset" style={{ width: 'auto', height: '100%' }} />
+        <img src={data.url} alt="asset" style={{ maxWidth: '100%', height: '100%' }} />
       </div>
     );
   }
@@ -63,7 +65,7 @@ export function Preview({ data }) {
       <div
         style={{ height: '80vh', backgroundColor: '#000', textAlign: 'center' }}
       >
-        <img src={data.url} alt="asset" style={{ width: '100%', height: '100%' }} />
+        <img src={data.url} alt="asset" style={{ maxWidth: '100%', height: '100%' }} />
       </div>
     );
   } if (data && data.type === 'video') {
