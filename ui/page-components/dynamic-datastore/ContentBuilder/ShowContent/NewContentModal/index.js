@@ -24,6 +24,7 @@ export default function NewContentModal({
   const [{}, updateContent] = useRequest(
     {
       method: 'PATCH',
+
     },
     { manual: true },
   );

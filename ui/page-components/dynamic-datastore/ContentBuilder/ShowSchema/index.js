@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { PlusOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { PlusOutlined, ExclamationCircleOutlined, ShareAltOutlined } from '@ant-design/icons';
 import { message, Modal, Empty, Button } from 'antd';
 import { arrayMoveImmutable } from 'array-move';
 import ActionBar from '../../../../components/layout/ActionBar';
@@ -133,6 +133,7 @@ function ShowSchema() {
       onClick: showSchemaModal,
     }, {
       name: 'Share',
+      icon: <ShareAltOutlined />,
       onClick: shareFormModal,
     }],
   };

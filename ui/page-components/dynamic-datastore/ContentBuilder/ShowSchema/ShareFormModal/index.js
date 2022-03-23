@@ -1,4 +1,5 @@
-import { Button, Modal, Tabs } from 'antd';
+import { LinkOutlined } from '@ant-design/icons';
+import { Button, message, Modal, Tabs } from 'antd';
 import React from 'react';
 import styles from './style.module.scss';
 
@@ -7,7 +8,6 @@ const { TabPane } = Tabs;
 export default function ShareFormModal({
   showShareFormModal,
   closeShareFormModal,
-  // loading,
   formId,
   title,
 }) {
@@ -28,7 +28,15 @@ export default function ShareFormModal({
 
       <div className={styles.content_builder_wrapper}>
         <Tabs size="large">
-          <TabPane tab="Link" key="1">
+          <TabPane
+            tab={(
+              <span>
+                <LinkOutlined />
+                Link
+              </span>
+)}
+            key="1"
+          >
             <a href={formLink} target="_blank" rel="noreferrer">
               <div className={styles.linkBorder}>
                 {formLink}
@@ -38,13 +46,16 @@ export default function ShareFormModal({
               <Button
                 className={styles.copyButton}
                 type="button"
-                onClick={() => { copytext(formLink); }}
+                onClick={() => {
+                  message.info('copied to clipboard');
+                  copytext(formLink);
+                }}
               >
                 Copy
               </Button>
             </div>
           </TabPane>
-          <TabPane tab="iframe" key="2">
+          <TabPane tab="<> Embed" key="2">
             <div className={styles.linkBorder}>
               {formIframe }
             </div>
@@ -52,7 +63,10 @@ export default function ShareFormModal({
               <Button
                 className={styles.copyButton}
                 type="copy"
-                onClick={() => { copytext(formIframe); }}
+                onClick={() => {
+                  message.info('copied to clipboard');
+                  copytext(formIframe);
+                }}
               >
                 Copy
 
