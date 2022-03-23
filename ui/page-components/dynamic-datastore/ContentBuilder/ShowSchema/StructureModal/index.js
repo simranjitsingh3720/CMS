@@ -26,7 +26,6 @@ function StructureModal({
   const handleOnApperanceTypeChange = (value) => {
     setAppearanceType(value);
   };
-  console.log('demo');
 
   const onFinishFailed = () => {
     console.log('fields required');
@@ -261,11 +260,6 @@ function StructureModal({
           }
               </Select>
             </Form.Item>
-
-            {/* <Form.Item>
-              {appearanceTypes[fieldData.type] === 'Checkbox' ? null : <ValueNames />}
-            </Form.Item> */}
-
             {(() => {
               switch (appearanceType) {
                 case 'Checkbox':
