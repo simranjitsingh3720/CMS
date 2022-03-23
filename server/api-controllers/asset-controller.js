@@ -2,7 +2,7 @@ const dotenv = require('dotenv');
 const aws = require('aws-sdk');
 const { Sequelize } = require('sequelize');
 const db = require('../../db/models');
-const { UploadError, DuplicateError, ValidityError, AuthorizationError, ServerError } = require('../helpers/error-helper');
+const { ValidityError, ServerError } = require('../helpers/error-helper');
 
 dotenv.config();
 const region = process.env.AWS_REGION;
