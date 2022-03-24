@@ -55,35 +55,50 @@ export default function NewContentModal({
       }
       if (field.type === 'Assets') {
         if (x[field.id]) {
-          const name = x[field.id] && x[field.id].file.name;
-          const mimeType = x[field.id] && x[field.id].file.type;
-          const type = x[field.id] && x[field.id].file.type.split('/')[0];
+          // console.log('array: ', x[field.id].fileList);
+          x[field.id].fileList.forEach((xy) => {
+            // const name = xy[field.id] && xy[field.id].file.name;
+            console.log('full :', xy);
+            const { name } = xy;
+            console.log('name: ', name);
+            const mimeType = xy.type;
+            console.log('mimeType:', mimeType);
 
-          axios.post('/api/v1/asset', {
-            name,
-            type,
-            mimeType,
-          })
-            .then((res) => {
-              const { writeUrl, readUrl } = res.data;
-              const FileData = x[field.id].file.originFileObj;
-              const headerType = x[field.id].file.originFileObj.type;
-              x[field.id] = readUrl;
-              axios.put(
-                writeUrl,
-                FileData,
-                {
-                  headers: { type: headerType, 'Content-Type': `${headerType}` },
-                },
-              )
-                .then(() => {
-                  setLoading(false);
-                  setStoreData(x);
-                  closeContentModal();
-                })
-                .catch((err) => console.log(err));
+            // const type = xy[field.id] && xy[field.id].file.type.split('/')[0];
+            const type = xy.type.split('/')[0];
+            console.log('type:', type);
+
+            console.log('field data: ', xy[field.id]);
+
+            axios.post('/api/v1/asset', {
+              name,
+              type,
+              mimeType,
             })
-            .catch((err) => console.log(err));
+              .then((res) => {
+                console.log('response : ', res);
+                const { writeUrl, readUrl } = res.data;
+                const FileData = xy.originFileObj;
+                const headerType = xy.originFileObj.type;
+                // xy[field.id] = readUrl;
+                axios.put(
+                  writeUrl,
+                  FileData,
+                  {
+                    headers: { type: headerType, 'Content-Type': `${headerType}` },
+                  },
+                )
+                  .then(() => {
+                    setLoading(false);
+                    setStoreData(x);
+                    closeContentModal();
+                  })
+                  .catch((err) => console.log(err));
+              })
+              .catch((err) => console.log(err));
+
+          // ======
+          });
         }
       }
       if (field.type === 'Boolean' && field.appearanceType === 'Boolean radio') {
