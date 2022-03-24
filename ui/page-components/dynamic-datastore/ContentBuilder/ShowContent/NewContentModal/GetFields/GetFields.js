@@ -51,7 +51,7 @@ export const getInitialValues = (fields, editableData, isEditable) => {
   return values;
 };
 
-function GetFields(appearenceType, field) {
+function GetFields(appearenceType, field, isEditable) {
   const {
     name, required, options, Truelabel, Falselabel, id,
   } = field;
@@ -160,10 +160,19 @@ function GetFields(appearenceType, field) {
 
     case 'FileUpload':
       return (
-        <Form.Item name={id} label={name} rules={[{ required }]}>
-          <Upload>
-            <Button icon={<UploadOutlined />}>Click to Upload</Button>
-          </Upload>
+        <Form.Item name={id} label={name} rules={[{ required: isEditable ? false : required }]}>
+          {isEditable ? (
+            <div>
+              <Upload disabled={!!isEditable}>
+                <Button icon={<UploadOutlined />}>Click to Upload</Button>
+              </Upload>
+              <span style={{ color: 'red' }}>Asset cannot be updated.</span>
+            </div>
+          ) : (
+            <Upload>
+              <Button icon={<UploadOutlined />}>Click to Upload</Button>
+            </Upload>
+          )}
         </Form.Item>
       );
 
