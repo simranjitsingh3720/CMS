@@ -124,6 +124,7 @@ function ListSchema() {
         </div>
         { data && data.list.length <= 0 ? (
           <div>
+
             <Empty
               style={{ marginTop: '83px' }}
               image={Empty.PRESENTED_IMAGE_SIMPLE}
