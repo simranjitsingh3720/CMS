@@ -17,6 +17,8 @@ export default function NewContentModal({
   const [loading, setLoading] = useState(false);
   const [storeData, setStoreData] = useState(null);
 
+  let isAsset = false;
+
   // eslint-disable-next-line no-empty-pattern
   const [{}, addContent] = useRequest(
     {
@@ -40,8 +42,10 @@ export default function NewContentModal({
         data: { data: storeData },
       }).then((res) => {
         message.success('Added Successfully');
-        setLoading(false);
-        closeContentModal();
+        if (!isAsset) {
+          setLoading(false);
+          closeContentModal();
+        }
         getContent();
       }).catch((err) => {
         getContent();
@@ -52,12 +56,12 @@ export default function NewContentModal({
   const handleAddContent = (contentData) => {
     const x = { ...contentData };
     const multiplePlaceholder = '';
-
     schemaDetails.schema.forEach((field, index) => {
       if (field.type === 'Date and Time') {
         x[field.id] = moment(x[field.id]).toISOString(true);
       }
       if (field.type === 'Assets') {
+        isAsset = true;
         if (x[field.id]) {
           // console.log('array: ', x[field.id].fileList);
 
@@ -126,7 +130,9 @@ export default function NewContentModal({
         }
       }
     });
-    setStoreData(x);
+    if (!isAsset) {
+      setStoreData(x);
+    }
   };
 
   const handleUpdateContent = (contentData) => {

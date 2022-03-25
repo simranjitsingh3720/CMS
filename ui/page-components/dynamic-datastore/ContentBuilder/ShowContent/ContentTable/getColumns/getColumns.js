@@ -6,8 +6,6 @@ export default function getColumns(tableSchema, handleEditContent, handleDeleteC
   let columns = [];
 
   columns = ((tableSchema && tableSchema.schema) || []).map((field, index) => {
-    console.log('TABLE SCHEMA', tableSchema.schema[index]);
-
     if (tableSchema.schema[index].type === 'Assets') {
       return {
         title: field.name,
