@@ -105,7 +105,9 @@ export default function EmbedableForm() {
           {formSubmitSuccess ? (
             <div className={styles.formError}>
               <div>
-                Form Submitted successfully
+                <h2>
+                  Form Submitted successfully
+                </h2>
                 <div>
                   <a
                     href={window.location.href}

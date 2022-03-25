@@ -30,9 +30,12 @@ function ActionBar({ children = null, actions = {} }) {
       <div className="first-step">
         {buttons}
       </div>
-      <div>{children}</div>
       <div className="second-step">
-        {search}
+        <div>{children}</div>
+
+        <div>
+          {search}
+        </div>
       </div>
     </div>
   );
