@@ -1,6 +1,6 @@
 import { Button, Form, message, Modal, Space } from 'antd';
 import axios from 'axios';
-import { React } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { useRequest } from '../../../../../helpers/request-helper';
 import GetFields, { getInitialValues } from './GetFields/GetFields';
@@ -9,11 +9,15 @@ import styles from './style.module.scss';
 export default function NewContentModal({
   closeContentModal,
   schemaDetails, getContent, isEditable, editableData,
-  showContentModal,
+  isContentModal,
 }) {
   const fields = schemaDetails.schema || [];
   const initialValues = getInitialValues(schemaDetails.schema, editableData, isEditable);
   const schemaSlug = schemaDetails.slug;
+  const [loading, setLoading] = useState(false);
+  const [storeData, setStoreData] = useState(null);
+
+  // eslint-disable-next-line no-empty-pattern
   const [{}, addContent] = useRequest(
     {
       method: 'POST',
@@ -29,6 +33,20 @@ export default function NewContentModal({
     { manual: true },
   );
 
+  useEffect(() => {
+    if (storeData !== null) {
+      addContent({
+        url: `/content/${schemaSlug}`,
+        data: { data: storeData },
+      }).then((res) => {
+        message.success('Added Successfully');
+        getContent();
+      }).catch((err) => {
+        getContent();
+      });
+    }
+  }, [storeData]);
+
   const handleAddContent = (contentData) => {
     const x = { ...contentData };
 
@@ -37,32 +55,37 @@ export default function NewContentModal({
         x[field.id] = moment(x[field.id]).toISOString(true);
       }
       if (field.type === 'Assets') {
-        const name = x[field.id] && x[field.id].file.name;
-        const mimeType = x[field.id] && x[field.id].file.type;
-        const type = x[field.id] && x[field.id].file.type.split('/')[0];
+        if (x[field.id]) {
+          const name = x[field.id] && x[field.id].file.name;
+          const mimeType = x[field.id] && x[field.id].file.type;
+          const type = x[field.id] && x[field.id].file.type.split('/')[0];
 
-        axios.post('/api/v1/asset', {
-          name,
-          type,
-          mimeType,
-        })
-          .then((res) => {
-            const { writeUrl } = res.data;
-            const FileData = x.student.file.originFileObj;
-            const headerType = x.student.file.originFileObj.type;
-            axios.put(
-              writeUrl,
-              FileData,
-              {
-                headers: { type: headerType, 'Content-Type': `${headerType}` },
-              },
-            )
-              .then(() => {
-                console.log('success');
-              })
-              .catch((err) => console.log(err));
+          axios.post('/api/v1/asset', {
+            name,
+            type,
+            mimeType,
           })
-          .catch((err) => console.log(err));
+            .then((res) => {
+              const { writeUrl, readUrl } = res.data;
+              const FileData = x[field.id].file.originFileObj;
+              const headerType = x[field.id].file.originFileObj.type;
+              x[field.id] = readUrl;
+              axios.put(
+                writeUrl,
+                FileData,
+                {
+                  headers: { type: headerType, 'Content-Type': `${headerType}` },
+                },
+              )
+                .then(() => {
+                  setLoading(false);
+                  setStoreData(x);
+                  closeContentModal();
+                })
+                .catch((err) => console.log(err));
+            })
+            .catch((err) => console.log(err));
+        }
       }
       if (field.type === 'Boolean' && field.appearanceType === 'Boolean radio') {
         if (x[field.id] === field.Truelabel) {
@@ -80,20 +103,6 @@ export default function NewContentModal({
         }
       }
     });
-
-    if (schemaSlug) {
-      addContent({
-        url: `/content/${schemaSlug}`,
-        data: { data: x },
-      }).then(() => {
-        closeContentModal();
-        message.success('Added Successfully');
-      }).then(() => {
-        getContent();
-      }).catch((err) => {
-        message.error(err.response.data.message || err.response.data.messages[0]);
-      });
-    }
   };
 
   const handleUpdateContent = (contentData) => {
@@ -144,7 +153,7 @@ export default function NewContentModal({
   return (
     <Modal
       title={isEditable ? 'Edit content' : 'Add new content'}
-      visible={showContentModal}
+      visible={isContentModal}
       onCancel={closeContentModal}
       width={700}
       footer={null}
@@ -158,7 +167,7 @@ export default function NewContentModal({
         autoComplete="off"
       >
         {fields && fields.map((field) => (
-          GetFields(field.appearanceType, field)
+          GetFields(field.appearanceType, field, isEditable)
         ))}
         {isEditable ? (
           <Form.Item
@@ -188,7 +197,7 @@ export default function NewContentModal({
                     <Button key="back" onClick={closeContentModal}>
                       Cancel
                     </Button>
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" loading={loading} onClick={() => setLoading(true)}>
                       Submit
                     </Button>
 

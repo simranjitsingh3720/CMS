@@ -25,7 +25,7 @@ function FieldCard({
             {/* <div>{fields.appearanceType}</div> */}
           </div>
           <div>
-            <Tooltip title="edit field">
+            <Tooltip title="Edit field">
               <Button
                 id="edit_structure"
                 className={style.button}
@@ -35,7 +35,7 @@ function FieldCard({
               </Button>
             </Tooltip>
             <Space wrap>
-              <Tooltip title="delete field">
+              <Tooltip title="Delete field">
 
                 <Button
                   danger

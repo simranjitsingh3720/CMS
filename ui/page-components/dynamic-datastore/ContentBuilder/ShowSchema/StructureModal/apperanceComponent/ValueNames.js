@@ -16,6 +16,7 @@ function ValueNames() {
           },
         ]}
       >
+
         {(fields, { add, remove }, { errors }) => (
           <>
             {fields.map((field, index) => (
@@ -25,7 +26,6 @@ function ValueNames() {
                 key={field.key}
               >
                 <Form.Item
-
                   {...field}
                   validateTrigger={['onChange', 'onBlur']}
                   rules={[

@@ -83,7 +83,7 @@ function ShowContent({ schema, setDefaultKey }) {
           getContent={getContent}
           isEditable={isEditable}
           editableData={editableData}
-          showContentModal={showContentModal}
+          isContentModal={isContentModal}
         />
       ) : null }
 
