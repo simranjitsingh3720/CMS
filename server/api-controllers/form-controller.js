@@ -24,6 +24,15 @@ const addFormContent = async (req, res) => {
   const { body, query } = req;
   const { schemaSlug } = query;
 
+  let data = {};
+  try {
+    data = JSON.parse(body);
+  } catch (e) {
+    data = body;
+  }
+  console.log('data ', data);
+  console.log('slug', schemaSlug);
+
   const schema = await db.Schema.findOne({
     where: {
       slug: schemaSlug,
@@ -32,7 +41,7 @@ const addFormContent = async (req, res) => {
 
   if (schema) {
     const content = await db.Content.create({
-      ...body,
+      ...data,
       schemaId: schema.toJSON().id,
     });
     return res.status(201).json({ id: content.id });
