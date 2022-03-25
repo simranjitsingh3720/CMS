@@ -102,6 +102,10 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
               pattern: new RegExp('^[A-Za-z0-9]*$'),
               message: 'Only Letters and Numbers are accepted',
             },
+            {
+              pattern: new RegExp('^(?!.*admin).*$'),
+              message: 'Cannot use admin as slug',
+            },
           ]}
         >
           <Input disabled={checked} />

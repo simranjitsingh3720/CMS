@@ -650,9 +650,9 @@ function Home() {
           </div>
           <span id="layers-container" className="handle" />
           <span id="blocks" />
-          <span id="selectors-container" className="handle" style={{ display: 'none' }} />
-          <span id="style-manager-container" className="handle" style={{ display: 'none' }} />
-          <span id="traits-container" className="handle" />
+          <span id="selectors-container" style={{ display: 'none' }} />
+          <span id="style-manager-container" style={{ display: 'none' }} />
+          <span id="traits-container" />
         </div>
       </Draggable>
       <div id="editor" />
