@@ -104,7 +104,19 @@ export default function EmbedableForm() {
 
           {formSubmitSuccess ? (
             <div className={styles.formError}>
-              Form Submitted successfully
+              <div>
+                <h2>
+                  Form Submitted successfully
+                </h2>
+                <div>
+                  <a
+                    href={window.location.href}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    Submit another response
+                  </a>
+                </div>
+              </div>
             </div>
           ) : (
             <div>

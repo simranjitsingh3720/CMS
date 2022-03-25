@@ -2,27 +2,6 @@ import { Form, Input, Button } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
 function ValueNames() {
-  const formItemLayout = {
-    labelCol: {
-      xs: { span: 24 },
-      sm: { span: 4 },
-    },
-    wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 20 },
-    },
-  };
-  const formItemLayoutWithOutLabel = {
-    wrapperCol: {
-      xs: { span: 24, offset: 0 },
-      sm: { span: 20, offset: 4 },
-    },
-  };
-
-  const onFinish = (values) => {
-    console.log('Received values of form:', values);
-  };
-
   return (
     <div>
       <Form.List
@@ -37,6 +16,7 @@ function ValueNames() {
           },
         ]}
       >
+
         {(fields, { add, remove }, { errors }) => (
           <>
             {fields.map((field, index) => (
@@ -46,7 +26,6 @@ function ValueNames() {
                 key={field.key}
               >
                 <Form.Item
-
                   {...field}
                   validateTrigger={['onChange', 'onBlur']}
                   rules={[

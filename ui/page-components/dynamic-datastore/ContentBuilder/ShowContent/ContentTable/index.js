@@ -46,8 +46,8 @@ export default function ContentTable({
   };
 
   const columns = getColumns(tableSchema, handleEditContent, handleDeleteContent);
+
   let finalData = [];
-  // console.log(tableSchema);
   const switchFieldsId = ((tableSchema && tableSchema.schema) || []).filter((field) => field.appearanceType === 'Switch');
 
   const dateAndTimeFieldsId = ((tableSchema && tableSchema.schema) || []).filter((field) => field.appearanceType === 'Date and Time');
