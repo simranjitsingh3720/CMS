@@ -131,17 +131,26 @@ function ShowSchema() {
       name: 'Add new Field',
       icon: <PlusOutlined />,
       onClick: showSchemaModal,
-    }, {
-      name: 'Share',
-      icon: <ShareAltOutlined />,
-      onClick: shareFormModal,
-    }],
+    },
+    //  {
+    //   name: 'Share',
+    //   icon: <ShareAltOutlined />,
+    //   onClick: shareFormModal,
+    // }
+    ],
   };
 
   return (
     <div>
       {fields.length !== 0
-        ? <ActionBar actions={actions} />
+        ? (
+          <ActionBar actions={actions}>
+            <Button type="primary" shape="round" key="share" onClick={shareFormModal}>
+              <ShareAltOutlined />
+              Share
+            </Button>
+          </ActionBar>
+        )
         : null }
       <div>
         {showShareFormModal ? (

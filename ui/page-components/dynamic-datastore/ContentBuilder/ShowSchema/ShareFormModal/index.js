@@ -16,7 +16,7 @@ export default function ShareFormModal({
   };
 
   const formLink = `${process.env.NEXT_PUBLIC_APP_LIVE_URL}/form/${formId}`;
-  const formIframe = `<iframe src="${formLink}" title=${title} ></iframe>`;
+  const formIframe = `<iframe src="${formLink}?embed=true" title=${title} style="margin:0;padding:0" frameBorder="0" width="80%" height="490vh" ></iframe>`;
   return (
     <Modal
       title="Share form"
