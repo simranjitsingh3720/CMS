@@ -34,6 +34,7 @@ const route = (methodControllers) => async (req, res) => {
     }
 
     const controller = methodControllers[req.method];
+
     if (!controller) {
       throw new MissingError('Route not found');
     }

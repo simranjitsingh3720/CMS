@@ -260,14 +260,14 @@ function StructureModal({
           }
               </Select>
             </Form.Item>
-
             {(() => {
               switch (appearanceType) {
                 case 'Checkbox':
-                  return <ValueNames />;
+                  return (
+                    <ValueNames />
+                  );
                 case 'FileUpload':
                   return (
-
                     <Form.Item
                       name="isMultiple"
                       valuePropName="checked"

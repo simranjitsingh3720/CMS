@@ -43,6 +43,7 @@ const listContents = async (req, res) => {
 
 const addContent = async (req, res) => {
   const { body, query } = req;
+
   const { schemaSlug } = query;
   // to get schema id from schema table
   const schema = await db.Schema.findOne({
@@ -58,7 +59,6 @@ const addContent = async (req, res) => {
       createdBy: req.session.user.id,
       updatedBy: req.session.user.id,
     });
-
     return res.status(201).json({ id: content.id });
   }
   throw new MissingError('Schema Not Found');

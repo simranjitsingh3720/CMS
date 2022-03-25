@@ -42,6 +42,7 @@
     "react-joyride": "^2.3.2",
     "react-pdf": "^5.7.1",
     "react-sortable-hoc": "^2.0.0",
+    "s3-batch-upload": "^1.5.0",
     "sass": "^1.49.7",
     "sequelize": "^6.15.0",
     "use-react-screenshot": "^3.0.0"

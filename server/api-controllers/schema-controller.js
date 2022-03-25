@@ -10,7 +10,7 @@ const getSchema = async (req, res) => {
   if (schema) {
     return res.status(200).json(schema);
   }
-  return res.status(404).json({ message: 'Schema not found' });
+  throw new MissingError('Schema not found');
 };
 
 const listSchemas = async (req, res) => {

@@ -5,11 +5,30 @@ import styles from './style.module.scss';
 export default function getColumns(tableSchema, handleEditContent, handleDeleteContent) {
   let columns = [];
 
-  columns = ((tableSchema && tableSchema.schema) || []).map((field) => ({
-    title: field.name,
-    dataIndex: field.id,
-    key: field.id,
-  }));
+  columns = ((tableSchema && tableSchema.schema) || []).map((field, index) => {
+    console.log('TABLE SCHEMA', tableSchema.schema[index]);
+
+    if (tableSchema.schema[index].type === 'Assets') {
+      return {
+        title: field.name,
+        dataIndex: field.id,
+        key: field.id,
+        render: (actions) => (
+          <div>
+            {actions ? <a href={actions.readUrl} target="_blank" rel="noreferrer">{actions.name}</a> : 'No asset content'}
+          </div>
+        ),
+      };
+    }
+
+    return {
+      title: field.name,
+      dataIndex: field.id,
+      key: field.id,
+      render: '',
+    };
+  });
+
   columns = [...columns, {
     title: 'Actions',
     dataIndex: 'Actions',

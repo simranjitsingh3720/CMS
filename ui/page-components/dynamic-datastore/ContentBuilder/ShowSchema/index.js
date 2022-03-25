@@ -7,6 +7,7 @@ import ActionBar from '../../../../components/layout/ActionBar';
 import StructureModal from './StructureModal';
 import { useRequest } from '../../../../helpers/request-helper';
 import DragableList from './DragDrop/DragableList';
+import ShareFormModal from './ShareFormModal';
 
 const { confirm } = Modal;
 
@@ -21,10 +22,18 @@ function ShowSchema() {
   const [fields, setFields] = useState([]);
   const [reFetchSchema, setReFetchSchema] = useState(false);
   const [isFieldReordering, setIsFieldReordering] = useState(false);
+  const [showShareFormModal, setshowShareFormModal] = useState(false);
 
   const showSchemaModal = () => {
     setIsEditable(false);
     setIsSchemaModal(true);
+  };
+
+  const shareFormModal = () => {
+    setshowShareFormModal(true);
+  };
+  const closeShareFormModal = () => {
+    setshowShareFormModal(false);
   };
 
   const showEditSchemaModal = () => {
@@ -122,6 +131,9 @@ function ShowSchema() {
       name: 'Add new Field',
       icon: <PlusOutlined />,
       onClick: showSchemaModal,
+    }, {
+      name: 'Share',
+      onClick: shareFormModal,
     }],
   };
 
@@ -131,6 +143,17 @@ function ShowSchema() {
         ? <ActionBar actions={actions} />
         : null }
       <div>
+        {showShareFormModal ? (
+          <div>
+            <ShareFormModal
+              showShareFormModal={shareFormModal}
+              closeShareFormModal={closeShareFormModal}
+              loading
+              formId={data.id}
+              title={data.title}
+            />
+          </div>
+        ) : null}
         {isSchemaModal
           ? (
             <div>
