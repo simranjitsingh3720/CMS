@@ -18,6 +18,12 @@ function ShowContent({ schema, setDefaultKey }) {
   const [showFields, setShowFields] = useState(schema);
   const { schemaSlug } = router.query;
 
+  useEffect(() => {
+    const data = [...schema.schema];
+
+    setShowFields((prev) => ({ ...prev, schema: data }));
+  }, []);
+
   const [{ data, loading, error }, getContent] = useRequest(
     {
       method: 'GET',
@@ -53,8 +59,6 @@ function ShowContent({ schema, setDefaultKey }) {
   };
 
   const handleShowFields = (e, field, index) => {
-    console.log('INDEX ', index);
-
     const newFieldss = [...showFields.schema];
 
     newFieldss.splice(index, 0, field);
