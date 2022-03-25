@@ -10,7 +10,6 @@ export default function getColumns(tableSchema, handleEditContent, handleDeleteC
     dataIndex: field.id,
     key: field.id,
   }));
-
   columns = [...columns, {
     title: 'Actions',
     dataIndex: 'Actions',
