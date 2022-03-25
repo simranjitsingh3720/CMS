@@ -15,7 +15,11 @@ export default function getColumns(tableSchema, handleEditContent, handleDeleteC
         key: field.id,
         render: (actions) => (
           <div>
-            {actions ? <a href={actions.readUrl} target="_blank" rel="noreferrer">{actions.name}</a> : 'No asset content'}
+            {actions ? (
+              <div>
+                {JSON.stringify(actions)}
+              </div>
+            ) : 'No asset content'}
           </div>
         ),
       };

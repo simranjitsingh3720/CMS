@@ -34,6 +34,7 @@ export default function NewContentModal({
 
   useEffect(() => {
     if (storeData !== null) {
+      console.log('DATAATATAAT ', storeData);
       addContent({
         url: `/content/${schemaSlug}`,
         data: { data: storeData },
@@ -48,8 +49,6 @@ export default function NewContentModal({
 
   const handleAddContent = (contentData) => {
     const x = { ...contentData };
-    const multiplePlaceholder = '';
-
     schemaDetails.schema.forEach((field, index) => {
       if (field.type === 'Date and Time') {
         x[field.id] = moment(x[field.id]).toISOString(true);
@@ -59,6 +58,9 @@ export default function NewContentModal({
           // console.log('array: ', x[field.id].fileList);
 
           // console.log(x[field.id].fileList.length);
+          let count = 0;
+          let uploadData = [];
+
           x[field.id].fileList.forEach((xy) => {
             // const name = xy[field.id] && xy[field.id].file.name;
             console.log('full :', xy);
@@ -79,7 +81,6 @@ export default function NewContentModal({
               mimeType,
             })
               .then((res) => {
-                console.log('response : ', res);
                 const { writeUrl, readUrl } = res.data;
                 const FileData = xy.originFileObj;
                 const headerType = xy.originFileObj.type;
@@ -92,15 +93,22 @@ export default function NewContentModal({
                   },
                 )
                   .then(() => {
+                    count += 1;
                     setLoading(false);
-                    setStoreData(x);
-                    closeContentModal();
+                    uploadData = [...uploadData, {
+                      name,
+                      readUrl,
+                    }];
+
+                    console.log('x[field.id] ', x[field.id]);
+
+                    if (x[field.id].fileList.length === count) {
+                      x[field.id] = uploadData;
+                      closeContentModal();
+                    }
                   })
                   .catch((err) => console.log(err));
-                x[field.id] = {
-                  name,
-                  readUrl,
-                };
+                setStoreData(x);
               })
               .catch((err) => console.log(err));
             // ======
