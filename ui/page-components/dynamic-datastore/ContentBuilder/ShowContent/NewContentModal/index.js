@@ -48,6 +48,7 @@ export default function NewContentModal({
 
   const handleAddContent = (contentData) => {
     const x = { ...contentData };
+    const multiplePlaceholder = '';
 
     schemaDetails.schema.forEach((field, index) => {
       if (field.type === 'Date and Time') {
@@ -56,6 +57,8 @@ export default function NewContentModal({
       if (field.type === 'Assets') {
         if (x[field.id]) {
           // console.log('array: ', x[field.id].fileList);
+
+          // console.log(x[field.id].fileList.length);
           x[field.id].fileList.forEach((xy) => {
             // const name = xy[field.id] && xy[field.id].file.name;
             console.log('full :', xy);
@@ -80,7 +83,7 @@ export default function NewContentModal({
                 const { writeUrl, readUrl } = res.data;
                 const FileData = xy.originFileObj;
                 const headerType = xy.originFileObj.type;
-                // xy[field.id] = readUrl;
+
                 axios.put(
                   writeUrl,
                   FileData,
@@ -94,10 +97,13 @@ export default function NewContentModal({
                     closeContentModal();
                   })
                   .catch((err) => console.log(err));
+                x[field.id] = {
+                  name,
+                  readUrl,
+                };
               })
               .catch((err) => console.log(err));
-
-          // ======
+            // ======
           });
         }
       }
