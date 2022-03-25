@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Empty, message, Spin } from 'antd';
+import { PlusOutlined, DownOutlined } from '@ant-design/icons';
+import {
+  Button, Empty, message, Spin, Popover, List,
+} from 'antd';
 import NewContentModal from './NewContentModal';
 import ActionBar from '../../../../components/layout/ActionBar';
 import ContentTable from './ContentTable';
@@ -13,6 +15,7 @@ function ShowContent({ schema, setDefaultKey }) {
   // const [searchValue, setSearchValue] = useState('');
   const [isEditable, setIsEditable] = useState(false);
   const [editableData, setEditableData] = useState([]);
+  const [showFields, setShowFields] = useState(schema);
   const { schemaSlug } = router.query;
 
   const [{ data, loading, error }, getContent] = useRequest(
@@ -21,7 +24,6 @@ function ShowContent({ schema, setDefaultKey }) {
       url: `/content/${schemaSlug}`,
     },
   );
-
   if (error) {
     message.error(error.response.data.message || error.response.data.messages[0]);
   }
@@ -50,6 +52,25 @@ function ShowContent({ schema, setDefaultKey }) {
     showContentModal();
   };
 
+  const handleShowFields = (e, field, index) => {
+    console.log('INDEX ', index);
+
+    const newFieldss = [...showFields.schema];
+
+    newFieldss.splice(index, 0, field);
+
+    if (e.target.checked) {
+      setShowFields((prev) => ({
+        ...prev, schema: [...newFieldss],
+      }));
+    } else {
+      const newFields = showFields.schema.filter((ele) => ele.id !== field.id);
+      setShowFields((prev) => ({
+        ...prev, schema: [...newFields],
+      }));
+    }
+  };
+
   const actions = {
     buttons: [
       {
@@ -68,7 +89,34 @@ function ShowContent({ schema, setDefaultKey }) {
     <div>
       <div>
         {(schema && schema.schema.length !== 0 && data && data.list.length > 0)
-          ? <ActionBar actions={actions} /> : null }
+          ? (
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div>
+                <ActionBar actions={actions} />
+              </div>
+              <div>
+                <Popover
+                  content={
+            schema.schema.map((field, index) => (
+              <List value={field.name} key={field.id}>
+                <input type="checkbox" onClick={(e) => { handleShowFields(e, field, index); }} id={field.id} defaultChecked />
+                {' '}
+                <span style={{ marginLeft: '10px' }}>{field.name}</span>
+              </List>
+            ))
+          }
+                  title="Select Column to Show"
+                  trigger="click"
+                >
+                  <Button>
+                    Select Columns
+                    {' '}
+                    <DownOutlined />
+                  </Button>
+                </Popover>
+              </div>
+            </div>
+          ) : null }
       </div>
 
       {loading ? (
@@ -90,7 +138,7 @@ function ShowContent({ schema, setDefaultKey }) {
       {schema.schema.length > 0 && data && data.list.length > 0
         ? (
           <ContentTable
-            tableSchema={schema || []}
+            tableSchema={showFields || []}
             data={data}
             setDefaultKey={setDefaultKey}
             showContentModal={showContentModal}

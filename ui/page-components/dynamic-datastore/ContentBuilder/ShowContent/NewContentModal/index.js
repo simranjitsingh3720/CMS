@@ -28,6 +28,7 @@ export default function NewContentModal({
   const [{}, updateContent] = useRequest(
     {
       method: 'PATCH',
+
     },
     { manual: true },
   );
@@ -40,6 +41,8 @@ export default function NewContentModal({
         data: { data: storeData },
       }).then((res) => {
         message.success('Added Successfully');
+        setLoading(false);
+        closeContentModal();
         getContent();
       }).catch((err) => {
         getContent();
@@ -131,6 +134,7 @@ export default function NewContentModal({
         }
       }
     });
+    setStoreData(x);
   };
 
   const handleUpdateContent = (contentData) => {
