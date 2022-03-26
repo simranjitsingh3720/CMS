@@ -1,20 +1,20 @@
 require('../helpers/init-env')();
 
 const {
-  MYSQL_USERNAME,
-  MYSQL_PASSWORD,
-  MYSQL_DB_NAME,
-  MYSQL_HOST,
-  MYSQL_PORT,
-  MYSQL_DIALECT,
+  POSTGRES_USERNAME,
+  POSTGRES_PASSWORD,
+  POSTGRES_DB_NAME,
+  POSTGRES_HOST,
+  POSTGRES_PORT,
+  POSTGRES_DIALECT,
 } = process.env;
 
 module.exports = {
-  username: MYSQL_USERNAME,
-  password: MYSQL_PASSWORD,
-  database: MYSQL_DB_NAME,
-  host: MYSQL_HOST,
-  port: MYSQL_PORT,
-  dialect: MYSQL_DIALECT,
+  username: POSTGRES_USERNAME,
+  password: POSTGRES_PASSWORD,
+  database: POSTGRES_DB_NAME,
+  host: POSTGRES_HOST,
+  port: POSTGRES_PORT,
+  dialect: POSTGRES_DIALECT,
   dialectOptions: { bigNumberStrings: true },
 };
