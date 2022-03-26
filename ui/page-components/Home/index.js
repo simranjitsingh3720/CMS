@@ -4,6 +4,13 @@ import Styles from './styles.module.scss';
 
 function Home() {
   const { session } = useContext(SessionContext);
+
+  // get all pages
+  // get all schema
+  // get all data
+  // get all assets
+  //
+
   return (
     <div className={Styles.title}>
       Hello! Mr.
