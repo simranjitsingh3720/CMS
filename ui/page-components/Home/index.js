@@ -20,7 +20,7 @@ function Home() {
   return (
     <div className={styles.home_container}>
       <div className={styles.title}>
-        Hello! Mr.
+        Hello!
         {' '}
         {session ? (
           <span>
