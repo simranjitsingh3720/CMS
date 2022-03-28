@@ -7,7 +7,6 @@ function PageRender({ data }) {
   const ref = createRef(null);
   const [image, takeScreenshot] = useScreenshot();
   const getImage = () => takeScreenshot(ref.current);
-  console.log(data);
 
   const [html, setHtml] = useState(null);
   const [css, setCss] = useState(null);
