@@ -4,7 +4,6 @@ import { PlusOutlined, DownOutlined } from '@ant-design/icons';
 import {
   Button, Empty, message, Spin, Popover, List,
 } from 'antd';
-import Checkbox from 'antd/lib/checkbox/Checkbox';
 import NewContentModal from './NewContentModal';
 import ActionBar from '../../../../components/layout/ActionBar';
 import ContentTable from './ContentTable';
@@ -13,6 +12,7 @@ import { useRequest } from '../../../../helpers/request-helper';
 function ShowContent({ schema, setDefaultKey }) {
   const router = useRouter();
   const [isContentModal, setIsContentModal] = useState(false);
+  // const [searchValue, setSearchValue] = useState('');
   const [isEditable, setIsEditable] = useState(false);
   const [editableData, setEditableData] = useState([]);
   const [showFields, setShowFields] = useState(schema);
@@ -25,7 +25,7 @@ function ShowContent({ schema, setDefaultKey }) {
     setShowFields((prev) => ({ ...prev, schema: data }));
     setChecked(true);
     setDefaultChecked(false);
-  }, [schema, checked]);
+  }, [schema]);
 
   const [{ data, loading, error }, getContent] = useRequest(
     {
@@ -108,8 +108,8 @@ function ShowContent({ schema, setDefaultKey }) {
             schema.schema.map((field, index) => (
               <List value={field.name} key={field.id}>
                 {(checked && defaultChecked)
-                  ? <Checkbox onClick={(e) => { handleShowFields(e, field, index); }} id={field.id} defaultChecked disabled={index === 0} />
-                  : <Checkbox onClick={(e) => { handleShowFields(e, field, index); }} id={field.id} checked disabled={index === 0} />}
+                  ? <input type="checkbox" onClick={(e) => { handleShowFields(e, field, index); }} id={field.id} defaultChecked disabled={index === 0} />
+                  : <input type="checkbox" onClick={(e) => { handleShowFields(e, field, index); }} id={field.id} checked disabled={index === 0} />}
                 {' '}
                 <span style={{ marginLeft: '10px' }}>{field.name}</span>
               </List>
