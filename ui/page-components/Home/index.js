@@ -1,3 +1,4 @@
+import { FileTextOutlined, PictureOutlined, TableOutlined, UserOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import CardWrapper from '../../components/CardWrapper';
@@ -9,11 +10,6 @@ function Home() {
   const { session } = useContext(SessionContext);
 
   const router = useRouter();
-  // get all pages
-  // get all schema
-  // get all data
-  // get all assets
-  //
 
   const [{ data: getData }] = useRequest({
     method: 'GET',
@@ -45,12 +41,18 @@ function Home() {
                 Pages
               </h2>
             </div>
-            <p className={styles.card_para}>
+            <p className={styles.card_colorGray}>
               <span>Number of Pages :</span>
               {getData?.data?.pages?.length}
             </p>
-            <ul>
-              {getData?.data?.pages?.map((item) => <li>{item.name}</li>)}
+
+            <ul className={styles.list}>
+              {getData?.data?.pages?.map((item) => (
+                <li>
+                  <FileTextOutlined style={{ marginRight: '10px' }} />
+                  <a href={`admin/page-manager/builder/${item.slug}`}>{item.name}</a>
+                </li>
+              ))}
             </ul>
           </div>
         </CardWrapper>
@@ -63,13 +65,14 @@ function Home() {
                 Data Table
               </h2>
             </div>
-            <p className={styles.card_para}>
+            <p className={styles.card_colorGray}>
               <span>Number of tables :</span>
               {getData?.data?.schemas?.length}
             </p>
-            <ul>
+            <ul className={styles.list}>
               {getData?.data?.schemas?.map((item) => (
                 <li>
+                  <TableOutlined style={{ marginRight: '10px' }} />
                   <a href={`admin/datastore/content-builder/${item.slug}`}>{item.title}</a>
                   {/* {item.title} */}
                   {' '}
@@ -96,12 +99,18 @@ function Home() {
                 Assets
               </h2>
             </div>
-            <p className={styles.card_para}>
+            <p className={styles.card_colorGray}>
               <span>Number of Assets :</span>
               {getData?.data?.assets?.length}
             </p>
-            <ul>
-              {getData?.data?.assets?.map((item) => <li style={{ wordBreak: 'break-word' }}>{item.name}</li>)}
+            <ul className={styles.list}>
+
+              {getData?.data?.assets?.map((item) => (
+                <li style={{ wordBreak: 'break-word' }}>
+                  <PictureOutlined style={{ marginRight: '10px' }} />
+                  {item.name}
+                </li>
+              ))}
             </ul>
           </div>
         </CardWrapper>
@@ -114,12 +123,17 @@ function Home() {
                 Users
               </h2>
             </div>
-            <p className={styles.card_para}>
+            <p className={styles.card_colorGray}>
               <span>Number of Users :</span>
               {getData?.data?.users?.length}
             </p>
-            <ul>
-              {getData?.data?.users?.map((item) => <li>{item.firstName}</li>)}
+            <ul className={styles.list}>
+              {getData?.data?.users?.map((item) => (
+                <li>
+                  <UserOutlined style={{ marginRight: '10px' }} />
+                  {item.firstName}
+                </li>
+              ))}
             </ul>
           </div>
         </CardWrapper>
