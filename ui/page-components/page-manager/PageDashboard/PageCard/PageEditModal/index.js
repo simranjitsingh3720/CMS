@@ -42,9 +42,7 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
       .then(() => {
         setVisible(false);
         message.success('Page Updated Successfully');
-        // setTimeout(() => {
         fetch();
-        // }, 1000);
       })
       .catch((err) => {
         message.info(err.response.data.message || err.response.data.messages[0]);
