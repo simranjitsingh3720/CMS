@@ -115,7 +115,8 @@ export default function NewContentModal({
                       x[field.id] = uploadData;
                       // console.log('x[field.id]-updated ', x[field.id]);
 
-                      setStoreData(x);
+                      setStoreData(x)
+                        .then(() => console.log('storeData set to: ', storeData));
                       closeContentModal();
                     }
                   })
