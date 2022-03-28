@@ -17,6 +17,8 @@ export default function NewContentModal({
   const [loading, setLoading] = useState(false);
   const [storeData, setStoreData] = useState(null);
 
+  let isAsset = false;
+
   // eslint-disable-next-line no-empty-pattern
   const [{}, addContent] = useRequest(
     {
@@ -41,8 +43,10 @@ export default function NewContentModal({
         data: { data: storeData },
       }).then((res) => {
         message.success('Added Successfully');
-        setLoading(false);
-        closeContentModal();
+        if (!isAsset) {
+          setLoading(false);
+          closeContentModal();
+        }
         getContent();
       }).catch((err) => {
         getContent();
@@ -57,6 +61,7 @@ export default function NewContentModal({
         x[field.id] = moment(x[field.id]).toISOString(true);
       }
       if (field.type === 'Assets') {
+        isAsset = true;
         if (x[field.id]) {
           // console.log('array: ', x[field.id].fileList);
 
@@ -66,17 +71,17 @@ export default function NewContentModal({
 
           x[field.id].fileList.forEach((xy) => {
             // const name = xy[field.id] && xy[field.id].file.name;
-            console.log('full :', xy);
+            // console.log('full :', xy);
             const { name } = xy;
-            console.log('name: ', name);
+            // console.log('name: ', name);
             const mimeType = xy.type;
-            console.log('mimeType:', mimeType);
+            // console.log('mimeType:', mimeType);
 
             // const type = xy[field.id] && xy[field.id].file.type.split('/')[0];
             const type = xy.type.split('/')[0];
-            console.log('type:', type);
+            // console.log('type:', type);
 
-            console.log('field data: ', xy[field.id]);
+            // console.log('field data: ', xy[field.id]);
 
             axios.post('/api/v1/asset', {
               name,
@@ -102,16 +107,19 @@ export default function NewContentModal({
                       name,
                       readUrl,
                     }];
-
-                    console.log('x[field.id] ', x[field.id]);
+                    // console.log('field: ', field);
+                    // console.log('x[field.id] ', x[field.id]);
+                    // console.log('uploadData: ', uploadData);
 
                     if (x[field.id].fileList.length === count) {
                       x[field.id] = uploadData;
+                      // console.log('x[field.id]-updated ', x[field.id]);
+
+                      setStoreData(x);
                       closeContentModal();
                     }
                   })
                   .catch((err) => console.log(err));
-                setStoreData(x);
               })
               .catch((err) => console.log(err));
             // ======
@@ -134,7 +142,9 @@ export default function NewContentModal({
         }
       }
     });
-    setStoreData(x);
+    if (!isAsset) {
+      setStoreData(x);
+    }
   };
 
   const handleUpdateContent = (contentData) => {

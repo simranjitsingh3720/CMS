@@ -6,22 +6,37 @@ export default function getColumns(tableSchema, handleEditContent, handleDeleteC
   let columns = [];
 
   columns = ((tableSchema && tableSchema.schema) || []).map((field, index) => {
-    console.log('TABLE SCHEMA', tableSchema.schema[index]);
-
+    // console.log('tableSchema');
     if (tableSchema.schema[index].type === 'Assets') {
       return {
         title: field.name,
         dataIndex: field.id,
         key: field.id,
-        render: (actions) => (
-          <div>
-            {actions ? (
-              <div>
-                {JSON.stringify(actions)}
-              </div>
-            ) : 'No asset content'}
-          </div>
-        ),
+        render: (actions) =>
+          // console.log('actions: ===', actions);
+          (
+            <div>
+              {/* lu */}
+              {actions ? (
+                actions.fileList ? (
+                  actions.fileList.map((action) => (
+                    <div>
+                      <a href={action.readUrl} target="_blank" rel="noreferrer">{action.name}</a>
+                    </div>
+                  ))
+                )
+                  : (
+                    actions.map((action) => (
+                      <div>
+                        <a href={action.readUrl} target="_blank" rel="noreferrer">{action.name}</a>
+                      </div>
+                    ))
+                  )
+
+              ) : 'No asset content'}
+            </div>
+          )
+        ,
       };
     }
 

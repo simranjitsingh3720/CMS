@@ -43,6 +43,8 @@ const listContents = async (req, res) => {
 
 const addContent = async (req, res) => {
   const { body, query } = req;
+  console.log('\nreq.body => ', body);
+  console.log('\nreq.body.data => ', body.data);
 
   const { schemaSlug } = query;
   // to get schema id from schema table
