@@ -14,8 +14,6 @@ import { useRequest } from '../../../helpers/request-helper';
 import CardWrapper from '../../../components/CardWrapper';
 import { CardPreview, CardTitle, Preview } from './Asset/Preview';
 
-const { Title } = Typography;
-
 const { confirm } = Modal;
 
 function AssetCard({ data, refetch }) {
@@ -99,7 +97,7 @@ function AssetCard({ data, refetch }) {
           <div className="flex-container">
             <CardTitle data={data} />
             {' '}
-            <Text>{data.name}</Text>
+            <Text style={{ wordBreak: 'break-word' }}>{data.name}</Text>
           </div>
           <Popover content={content} placement="bottomLeft">
             <button
