@@ -1,7 +1,6 @@
 // .sequelizerc
 
 const path = require('path');
-console.log('hi')
 module.exports = {
   'config': path.resolve('db', 'config.js'),
   'models-path': path.resolve('db', 'models'),

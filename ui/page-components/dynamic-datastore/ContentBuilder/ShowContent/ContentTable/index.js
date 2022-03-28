@@ -15,8 +15,6 @@ export default function ContentTable({
   showContentModal, setIsEditable, getEditableData,
   deleteContent, getContent,
 }) {
-  console.log('TABLE SCHEMA ', tableSchema);
-
   const handleEditContent = (content) => {
     getEditableData(content);
     showContentModal(true);
