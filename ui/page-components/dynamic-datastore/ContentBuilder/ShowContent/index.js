@@ -12,11 +12,16 @@ import { useRequest } from '../../../../helpers/request-helper';
 function ShowContent({ schema, setDefaultKey }) {
   const router = useRouter();
   const [isContentModal, setIsContentModal] = useState(false);
-  // const [searchValue, setSearchValue] = useState('');
   const [isEditable, setIsEditable] = useState(false);
   const [editableData, setEditableData] = useState([]);
   const [showFields, setShowFields] = useState(schema);
   const { schemaSlug } = router.query;
+
+  useEffect(() => {
+    const data = [...schema.schema];
+
+    setShowFields((prev) => ({ ...prev, schema: data }));
+  }, []);
 
   const [{ data, loading, error }, getContent] = useRequest(
     {
@@ -53,8 +58,6 @@ function ShowContent({ schema, setDefaultKey }) {
   };
 
   const handleShowFields = (e, field, index) => {
-    console.log('INDEX ', index);
-
     const newFieldss = [...showFields.schema];
 
     newFieldss.splice(index, 0, field);

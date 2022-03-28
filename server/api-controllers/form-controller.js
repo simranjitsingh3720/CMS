@@ -30,8 +30,6 @@ const addFormContent = async (req, res) => {
   } catch (e) {
     data = body;
   }
-  console.log('data ', data);
-  console.log('slug', schemaSlug);
 
   const schema = await db.Schema.findOne({
     where: {

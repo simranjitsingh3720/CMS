@@ -30,7 +30,6 @@ function PageBuilder() {
       manual: true,
     },
   );
-  console.log('data', imgData);
   // eslint-disable-next-line no-empty-pattern
   const [{ }, executePost] = useRequest(
     {
