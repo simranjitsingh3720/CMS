@@ -4,7 +4,6 @@ import styles from './style.module.scss';
 
 export default function getColumns(tableSchema, handleEditContent, handleDeleteContent) {
   let columns = [];
-  // console.log('HELLO WORLD');
 
   columns = ((tableSchema && tableSchema.schema) || []).map((field, index) => {
     if (tableSchema.schema[index].type === 'Assets') {
