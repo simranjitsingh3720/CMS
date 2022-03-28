@@ -4,6 +4,7 @@ import { PlusOutlined, DownOutlined } from '@ant-design/icons';
 import {
   Button, Empty, message, Spin, Popover, List,
 } from 'antd';
+import Checkbox from 'antd/lib/checkbox/Checkbox';
 import NewContentModal from './NewContentModal';
 import ActionBar from '../../../../components/layout/ActionBar';
 import ContentTable from './ContentTable';
@@ -16,13 +17,16 @@ function ShowContent({ schema, setDefaultKey }) {
   const [isEditable, setIsEditable] = useState(false);
   const [editableData, setEditableData] = useState([]);
   const [showFields, setShowFields] = useState(schema);
+  const [checked, setChecked] = useState(false);
+  const [defaultChecked, setDefaultChecked] = useState(false);
   const { schemaSlug } = router.query;
 
   useEffect(() => {
     const data = [...schema.schema];
-
     setShowFields((prev) => ({ ...prev, schema: data }));
-  }, []);
+    setChecked(true);
+    setDefaultChecked(false);
+  }, [schema, checked]);
 
   const [{ data, loading, error }, getContent] = useRequest(
     {
@@ -59,19 +63,20 @@ function ShowContent({ schema, setDefaultKey }) {
   };
 
   const handleShowFields = (e, field, index) => {
-    const newFieldss = [...showFields.schema];
-
-    newFieldss.splice(index, 0, field);
-
-    if (e.target.checked) {
-      setShowFields((prev) => ({
-        ...prev, schema: [...newFieldss],
-      }));
-    } else {
-      const newFields = showFields.schema.filter((ele) => ele.id !== field.id);
-      setShowFields((prev) => ({
-        ...prev, schema: [...newFields],
-      }));
+    if (index !== 0) {
+      setDefaultChecked(true);
+      const newFieldss = [...showFields.schema];
+      newFieldss.splice(index, 0, field);
+      if (e.target.checked) {
+        setShowFields((prev) => ({
+          ...prev, schema: [...newFieldss],
+        }));
+      } else {
+        const newFields = showFields.schema.filter((ele) => ele.id !== field.id);
+        setShowFields((prev) => ({
+          ...prev, schema: [...newFields],
+        }));
+      }
     }
   };
 
@@ -103,7 +108,9 @@ function ShowContent({ schema, setDefaultKey }) {
                   content={
             schema.schema.map((field, index) => (
               <List value={field.name} key={field.id}>
-                <input type="checkbox" onClick={(e) => { handleShowFields(e, field, index); }} id={field.id} defaultChecked />
+                {(checked && defaultChecked)
+                  ? <Checkbox onClick={(e) => { handleShowFields(e, field, index); }} id={field.id} defaultChecked disabled={index === 0} />
+                  : <Checkbox onClick={(e) => { handleShowFields(e, field, index); }} id={field.id} checked disabled={index === 0} />}
                 {' '}
                 <span style={{ marginLeft: '10px' }}>{field.name}</span>
               </List>
