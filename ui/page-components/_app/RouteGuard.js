@@ -12,7 +12,6 @@ function RouteGuard({ children, session }) {
       }
     } else if (!router.pathname.includes('/admin/signup') && !router.pathname.includes('/admin/signin')) {
       router.push('/admin/signin', '/admin/signin', { shallow: true });
-      console.log('***********');
       // NextResponse.redirect('/admin/signin');
     }
   }, [router, session.user]);

@@ -60,7 +60,7 @@ export default function NewContentModal({
       if (field.type === 'Date and Time') {
         x[field.id] = moment(x[field.id]).toISOString(true);
       }
-      if (field.type === 'Assets') {
+      if (field.type === 'Assets' && x[field.id]) {
         isAsset = true;
         if (x[field.id]) {
           // console.log('array: ', x[field.id].fileList);
