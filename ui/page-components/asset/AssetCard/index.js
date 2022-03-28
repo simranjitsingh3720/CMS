@@ -99,7 +99,7 @@ function AssetCard({ data, refetch }) {
           <div className="flex-container">
             <CardTitle data={data} />
             {' '}
-            <Text>{data.name}</Text>
+            <Text style={{ wordBreak: 'break-word' }}>{data.name}</Text>
           </div>
           <Popover content={content} placement="bottomLeft">
             <button
