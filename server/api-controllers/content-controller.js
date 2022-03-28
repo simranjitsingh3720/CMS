@@ -61,6 +61,7 @@ const addContent = async (req, res) => {
       createdBy: req.session.user.id,
       updatedBy: req.session.user.id,
     });
+    console.log('body is: ', body);
     return res.status(201).json({ id: content.id });
   }
   throw new MissingError('Schema Not Found');
