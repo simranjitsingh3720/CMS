@@ -14,8 +14,6 @@ import { useRequest } from '../../../helpers/request-helper';
 import CardWrapper from '../../../components/CardWrapper';
 import { CardPreview, CardTitle, Preview } from './Asset/Preview';
 
-const { Title } = Typography;
-
 const { confirm } = Modal;
 
 function AssetCard({ data, refetch }) {
