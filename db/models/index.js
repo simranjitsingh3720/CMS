@@ -7,6 +7,7 @@ const assetModel = require('./asset');
 const forgotPasswordModel = require('./forgotPassword');
 const schemaModel = require('./schema');
 const contentModel = require('./content');
+const logModel = require('./log');
 
 const db = {};
 
@@ -23,6 +24,9 @@ requireModel(pageModel);
 requireModel(forgotPasswordModel);
 requireModel(schemaModel);
 requireModel(contentModel);
+requireModel(logModel);
+
+console.log('DB ', db);
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
