@@ -61,7 +61,6 @@ const updateSchema = async (req, res) => {
   const { body, query } = req;
   const { slug } = body;
   const { schemaSlug } = query;
-  console.log(slug);
   if (slug) {
     const isSchemaSlug = await db.Schema.findOne({ where: { slug } });
     if (isSchemaSlug) {
