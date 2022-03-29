@@ -10,16 +10,18 @@ module.exports = (sequelize, DataTypes) => {
 
   Log.init(
     {
-      id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
+      id: { type: DataTypes.UUIDV4, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
       actionName: { type: DataTypes.STRING },
-      performedBy: { type: DataTypes.STRING },
-      objectId: { type: DataTypes.STRING },
+      performedBy: { type: DataTypes.UUID },
+      objectId: { type: DataTypes.UUID },
+      objectType: { type: DataTypes.STRING },
       createdAt: { type: DataTypes.DATE },
+      updatedAt: { type: DataTypes.DATE },
     },
     {
       sequelize,
       timestamps: true,
-      paranoid: true,
+      // paranoid: true,
       modelName: 'Log',
       tableName: 'Logs',
     },

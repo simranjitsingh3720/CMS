@@ -43,6 +43,16 @@ const listAssets = async (req, res) => {
   const { q } = query;
   let assets = [];
   try {
+    await db.Log.create({
+      actionName: 'actionName',
+      performedBy: req.session.user.id,
+      objectId: req.session.user.id,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+
+  try {
     if (q) {
       assets = await db.Asset.findAll({
         where: {
