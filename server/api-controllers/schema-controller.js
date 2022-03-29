@@ -59,14 +59,22 @@ const addSchema = async (req, res) => {
 
 const updateSchema = async (req, res) => {
   const { body, query } = req;
+  const { slug } = body;
   const { schemaSlug } = query;
-  const updatedSchema = await db.Schema.update({
-    ...body,
-    updatedBy: req.session.user.id,
-  }, { where: { slug: schemaSlug } });
+  console.log(slug);
+  if (slug) {
+    const isSchemaSlug = await db.Schema.findOne({ where: { slug } });
+    if (isSchemaSlug) {
+      throw new DuplicateError('This table slug already taken');
+    }
+    const updatedSchema = await db.Schema.update({
+      ...body,
+      updatedBy: req.session.user.id,
+    }, { where: { slug: schemaSlug } });
 
-  if (updatedSchema[0]) {
-    return res.status(200).json({ id: schemaSlug });
+    if (updatedSchema[0]) {
+      return res.status(200).json({ id: slug });
+    }
   }
   throw new MissingError('Schema not found');
 };
