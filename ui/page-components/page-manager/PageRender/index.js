@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState, createRef } from 'react';
 import ReactHtmlParser from 'react-html-parser';
-import { Spin } from 'antd';
 import { useScreenshot } from 'use-react-screenshot';
 import { useRequest } from '../../../helpers/request-helper';
 
@@ -31,10 +30,9 @@ function PageRender() {
   useEffect(() => {
     if (getData) {
       setIsData(true);
-      const code = JSON.parse(getData.data.data);
-      if (code) {
-        setHtml(code['CMS-html']);
-        setCss(code['CMS-css']);
+      if (getData.data) {
+        setHtml(getData.data.html);
+        setCss(getData.data.css);
       } else {
         setHtml('');
       }

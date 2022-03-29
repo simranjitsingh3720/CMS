@@ -51,15 +51,12 @@ function Home() {
 
   const getApiM = () => {
     refetchPageData().then((res) => {
-      let obj = null;
-
       let LandingPage = {};
-      obj = JSON.parse(res.data.data.data);
       LandingPage = {
-        html: obj && obj['CMS-html'],
-        css: obj && obj['CMS-css'],
-        components: obj && obj['CMS-components'],
-        style: obj && obj['CMS-styles'],
+        html: res.data && res.data.data.html,
+        css: res.data && res.data.data.css,
+        components: res.data && res.data.data.components,
+        style: res.data && res.data.data.styles,
       };
 
       if (!editor) {
