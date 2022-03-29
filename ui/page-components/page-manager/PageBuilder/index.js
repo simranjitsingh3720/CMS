@@ -183,6 +183,7 @@ function PageBuilder() {
                 title: 'View Components',
                 'data-tooltip-pos': 'bottom',
               },
+              active: true,
             }, {
               id: prv,
               context: prv,
@@ -347,6 +348,34 @@ function PageBuilder() {
   };
   if (editor) {
     const bm = editor.Blocks;
+
+    const modal = editor.Modal;
+
+    editor.Commands.add('my-asset-manager', {
+      run(editor, sender, opts) {
+        editor.Modal.open({
+          title: '...',
+          content: '...',
+        });
+        // Pseudo-code for your asset manager
+        yourAssetManager.on('image.selected', (imgPath) => {
+          const target = editor.getSelected();
+          target.set('src', imgPath);
+        });
+      },
+    });
+
+    editor.DomComponents.add('your-image', {
+      extend: 'image', // Extend the original image component
+      view: {
+        onActive(ev) {
+          // Prevent propagation when the activation is triggered by
+          // double-clicking on the component in the canvas
+          ev && ev.stopPropagation();
+          editor.runCommand('my-asset-manager');
+        },
+      },
+    });
 
     bm.remove('map');
 
@@ -619,6 +648,19 @@ function PageBuilder() {
       </body>
       </html>
       `,
+    });
+
+    bm.add('My Block 3', {
+      // Your block properties...
+      label: 'Template 2',
+      media: svgText,
+      category: 'Templates',
+      run(editor, sender, opts) {
+        editor.Modal.open({
+          title: '...',
+          content: '...',
+        });
+      },
     });
   }
   useEffect(() => {
