@@ -177,6 +177,7 @@ export default function NewContentModal({
   };
 
   const onFinishFailed = () => {
+    setLoading(false);
     message.error('Fields are required');
   };
 
