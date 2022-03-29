@@ -28,7 +28,6 @@ function ShowSettings({ schema }) {
   );
 
   const onFinish = (values) => {
-    console.log(values);
     executePatch({
       data: {
         title: values.title,
