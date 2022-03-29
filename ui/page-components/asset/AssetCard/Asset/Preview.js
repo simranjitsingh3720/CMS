@@ -107,7 +107,6 @@ export function Preview({ data }) {
       <audio
         controls
         style={{ height: '80vh', width: '100%', backgroundColor: 'black' }}
-        src={data.url}
         autoPlay
       >
         <source src={data.url} type="audio/ogg" />

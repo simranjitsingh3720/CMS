@@ -42,9 +42,7 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
       .then(() => {
         setVisible(false);
         message.success('Page Updated Successfully');
-        // setTimeout(() => {
         fetch();
-        // }, 1000);
       })
       .catch((err) => {
         message.info(err.response.data.message || err.response.data.messages[0]);
@@ -165,6 +163,10 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
             {
               pattern: new RegExp('^[A-Za-z0-9]*$'),
               message: 'Only Letters and Numbers are accepted',
+            },
+            {
+              pattern: new RegExp('^(?!.*admin).*$'),
+              message: 'Cannot use admin as slug',
             },
           ]}
         >
