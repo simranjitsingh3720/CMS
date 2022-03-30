@@ -1150,7 +1150,8 @@ span.CodeMirror-selectedtext {
 }
 
 .gjs-one-bg {
-	background-color: #444
+	background-color: #444;
+  
 }
 
 .gjs-one-color {
@@ -1163,6 +1164,10 @@ span.CodeMirror-selectedtext {
 
 .gjs-two-bg {
 	background-color: #ddd
+}
+
+.gjs-pn-devices-b{
+  position: fixed !important;
 }
 
 .gjs-two-color {
@@ -2076,14 +2081,16 @@ div.gjs-com-hover-move {
 
 .gjs-pn-commands {
 	width: 85%;
-	left: 0;
+	/* left: 0; */
 	top: 0;
-	box-shadow: 0 0 5px rgba(0, 0, 0, .2)
+	box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+  position: fixed;
 }
 
 .gjs-pn-options {
 	right: 0;
-	top: 0
+	top: 0;
+  position:fixed;
 }
 
 .gjs-pn-views {

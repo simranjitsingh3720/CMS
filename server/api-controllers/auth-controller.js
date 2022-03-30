@@ -3,6 +3,7 @@ const { addMinutes } = require('date-fns');
 
 const validator = require('validator');
 const bcrypt = require('bcrypt');
+const { request } = require('express');
 const db = require('../../db/models/index');
 const { ValidityError } = require('../helpers/error-helper');
 
@@ -39,6 +40,44 @@ const { ValidityError } = require('../helpers/error-helper');
 //     });
 // }
 
+// const signup = async (req, res) => {
+//   const { body } = req;
+//   const { firstName, lastName, email, password } = body;
+//   if (!firstName || !lastName || !email || !password) {
+//     let message = '';
+//     if (!firstName) {
+//       message += 'firstName is required';
+//     } else if (!lastName) {
+//       message += 'lastName is required';
+//     } else if (!email) {
+//       message += 'email is required';
+//     } else if (!password) {
+//       message += 'password  is required';
+//     }
+
+//     throw new ValidityError(message);
+//   }
+//   const isValidEmail = (/\S+@\S+\.\S+/).test(email);
+
+//   if (!isValidEmail) {
+//     throw new ValidityError('Invalid Email ID');
+//   }
+
+//   try {
+//     const salt = await bcrypt.genSalt();
+//     const hashedPassword = await bcrypt.hash(password, salt);
+//     const userDetails = { ...body, password: hashedPassword };
+
+//     const user = await db.User.create(userDetails);
+//     req.session.user = user;
+//     return res.status(200).json({ id: user.id, sessionId: req.session.id });
+//   } catch (error) {
+//     if (error.errors && error.errors[0].validatorKey === 'not_unique') {
+//       throw new ValidityError('User email Exists');
+//     }
+//   }
+// };
+
 const signup = async (req, res) => {
   const { body } = req;
   const { firstName, lastName, email, password } = body;
@@ -68,6 +107,17 @@ const signup = async (req, res) => {
     const userDetails = { ...body, password: hashedPassword };
 
     const user = await db.User.create(userDetails);
+
+    const demoData = {
+      userId: user.id,
+    };
+    let demo;
+    try {
+      demo = await db.UserDemoPreference.create(demoData);
+    } catch (err) {
+      console.log(err);
+    }
+    req.session.demoPreference = demo;
     req.session.user = user;
     return res.status(200).json({ id: user.id, sessionId: req.session.id });
   } catch (error) {
@@ -101,6 +151,18 @@ const signin = async (req, res) => {
     throw new ValidityError('Email or password is incorrect');
   }
 
+  let demo;
+  try {
+    demo = await db.UserDemoPreference.findOne({
+      where: {
+        userId: user.id,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+  }
+
+  req.session.demoPreference = demo;
   req.session.user = user;
   if (remember) {
     req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000;

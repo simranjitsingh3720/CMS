@@ -30,7 +30,7 @@ function AssetTutorial() {
 
   return (
     <div>
-      {session && session.user.flag.asset
+      {session && session.demo.asset
       && <Tutorial steps={steps} tutorialKey="asset" />}
     </div>
   );

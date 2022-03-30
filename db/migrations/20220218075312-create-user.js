@@ -10,7 +10,6 @@ module.exports = {
       firstName: { type: Sequelize.STRING, allowNull: false },
       lastName: { type: Sequelize.STRING, allowNull: false },
       profilePicture: { type: Sequelize.UUID },
-      flag: { type: Sequelize.JSON },
       createdAt: { type: Sequelize.DATE },
       updatedBy: { type: Sequelize.UUID },
       updatedAt: { type: Sequelize.DATE },
