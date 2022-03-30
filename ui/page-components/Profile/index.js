@@ -30,7 +30,8 @@ function Profile() {
           firstName: res.data.user.firstName,
           lastName: res.data.user.lastName,
           email: res.data.user.email,
-          phone: res.data.user.phone,
+          countryCode: res.data.user.countryCode,
+          mobileNumber: res.data.user.mobileNumber,
         });
         if (res.data.user.ProfilePicture) { setUrl(res.data.user.ProfilePicture.url); }
       })
@@ -71,8 +72,8 @@ function Profile() {
       submitData = {
         firstName: values.firstName,
         lastName: values.lastName,
-        phone: values.phone,
-
+        countryCode: values.countryCode,
+        mobileNumber: values.mobileNumber,
       };
       submitDemoData = {
         asset: true,
@@ -85,7 +86,8 @@ function Profile() {
       submitData = {
         firstName: values.firstName,
         lastName: values.lastName,
-        phone: values.phone,
+        countryCode: values.countryCode,
+        mobileNumber: values.mobileNumber,
       };
     }
 
@@ -270,12 +272,24 @@ function Profile() {
           >
             <Input disabled />
           </Form.Item>
-          <Form.Item
-            name="phone"
-            label="Mobile Number"
-          >
-            <Input onChange={check} />
-          </Form.Item>
+          <div style={{ display: 'flex' }}>
+            <Form.Item
+              name="countryCode"
+              label="Country Code"
+
+            >
+              <Input onChange={check} style={{ width: '100px' }} />
+            </Form.Item>
+            <Form.Item
+              name="mobileNumber"
+              label="Mobile Number"
+             // wrapperCol={{ offset: 4, span: 12 }}
+             // labelCol={{ span: 10 }}
+              style={{ marginLeft: '20px' }}
+            >
+              <Input onChange={check} style={{ width: '450px' }} />
+            </Form.Item>
+          </div>
           <Form.Item name="switch" label="Enable Tutorial" valuePropName="checked">
             <Switch onChange={check} />
           </Form.Item>
