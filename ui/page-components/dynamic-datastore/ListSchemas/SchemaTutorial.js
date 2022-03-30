@@ -33,7 +33,7 @@ function SchemaTutorial() {
   return (
     <div>
       {session
-        ? session.user.flag.datastore && <Tutorial steps={steps} tutorialKey="datastore" /> : null}
+        ? session.demo.datastore && <Tutorial steps={steps} tutorialKey="datastore" /> : null}
     </div>
   );
 }
