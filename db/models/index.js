@@ -4,7 +4,6 @@ const config = require('../config');
 const pageModel = require('./page');
 const userModel = require('./user');
 const assetModel = require('./asset');
-const forgotPasswordModel = require('./forgotPassword');
 const schemaModel = require('./schema');
 const contentModel = require('./content');
 const userDemoPreferenceModel = require('./userDemoPreference');
@@ -21,7 +20,6 @@ const requireModel = (schema) => {
 requireModel(userModel);
 requireModel(assetModel);
 requireModel(pageModel);
-requireModel(forgotPasswordModel);
 requireModel(schemaModel);
 requireModel(contentModel);
 requireModel(userDemoPreferenceModel);

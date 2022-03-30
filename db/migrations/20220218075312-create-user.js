@@ -10,6 +10,8 @@ module.exports = {
       firstName: { type: Sequelize.STRING, allowNull: false },
       lastName: { type: Sequelize.STRING, allowNull: false },
       profilePicture: { type: Sequelize.UUID },
+      lastEmailSent: { type: Sequelize.DATE },
+      emailToken: { type: Sequelize.STRING },
       createdAt: { type: Sequelize.DATE },
       updatedBy: { type: Sequelize.UUID },
       updatedAt: { type: Sequelize.DATE },
