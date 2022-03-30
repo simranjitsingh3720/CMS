@@ -16,7 +16,7 @@ export default function NewContentModal({
   const schemaSlug = schemaDetails.slug;
   const [loading, setLoading] = useState(false);
   const [storeData, setStoreData] = useState(null);
-
+  const [disable, setDisable] = useState(false);
   let isAsset = false;
 
   // eslint-disable-next-line no-empty-pattern
@@ -178,6 +178,7 @@ export default function NewContentModal({
 
   const onFinishFailed = () => {
     setLoading(false);
+    setDisable(false);
     message.error('Fields are required');
   };
 
@@ -196,6 +197,7 @@ export default function NewContentModal({
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
+
       >
         {fields && fields.map((field) => (
           GetFields(field.appearanceType, field, isEditable)
@@ -225,10 +227,10 @@ export default function NewContentModal({
               >
                 <div className={styles.actionButton}>
                   <Space wrap>
-                    <Button key="back" onClick={closeContentModal}>
+                    <Button key="back" onClick={closeContentModal} disabled={disable}>
                       Cancel
                     </Button>
-                    <Button type="primary" htmlType="submit" loading={loading} onClick={() => setLoading(true)}>
+                    <Button type="primary" htmlType="submit" loading={loading} onClick={() => { setDisable(true); setLoading(true); }}>
                       Submit
                     </Button>
 
