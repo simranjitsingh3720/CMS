@@ -84,8 +84,16 @@ const createAsset = async (req, res) => {
 
 const createAssetsInBulk = async (req, res) => {
   const { body } = req;
-  const { uploadData } = body;
-  console.log('body ', uploadData);
+  const { formData } = body;
+
+  console.log('formData : ', formData.get('single'));
+  // let uploadData = [];
+
+  // await formData.forEach((singleFile) => {
+  //   uploadData = [...uploadData, { name: singleFile.name, mimeType: singleFile.type, type: singleFile.type.split('/')[0], createdBy: req.session.user.id }];
+  // });
+  // const assets = await db.Asset.bulkCreate(uploadData);
+
   // if (!body.name || !body.type || !body.mimeType) {
   //   throw new ValidityError('name, type and mimeType, all are required.');
   // }
@@ -96,30 +104,8 @@ const createAssetsInBulk = async (req, res) => {
   // });
 
   // const assets = await db.Asset.bulkCreate(multipleAssets);
-  // await assets.forEach(async (singleAsset, index) => {
-  //   const params = ({
-  //     Bucket: bucketName,
-  //     Key: `asset/${singleAsset.id}`,
-  //     Expires: 360000,
-  //   });
-  //   const uploadURL = await s3.getSignedUrlPromise('putObject', params);
-  //   const readUrl = uploadURL.split('?')[0];
 
-  //   await singleAsset.update(
-  //     { url: readUrl, updatedBy: req.session.user.id },
-  //   );
-
-  //   // console.log(multipleFileData[index].FileData, 'adfsgfdhg file data');
-
-  //   await axios.put(
-  //     uploadURL,
-  //     multipleFileData[index].FileData,
-  //     {
-  //       headers: { type: multipleHeaderType[index], 'Content-Type': `${multipleHeaderType[index]}` },
-  //     },
-  //   );
-  // });
-  return res.status(201).json({ assets });
+  return res.status(201).json({ response: res });
 
   // const params = ({
   //   Bucket: bucketName,

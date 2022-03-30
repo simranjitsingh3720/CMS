@@ -159,7 +159,6 @@ function GetFields(appearenceType, field, isEditable) {
       );
 
     case 'FileUpload':
-      console.log('IS MULTIPLE ', field);
       return (
         <Form.Item name={id} label={name} rules={[{ required: isEditable ? false : required }]}>
           {isEditable ? (

@@ -2,6 +2,7 @@ import { Button, Form, message, Modal, Space } from 'antd';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
+import FormData from 'form-data';
 import { useRequest } from '../../../../../helpers/request-helper';
 import GetFields, { getInitialValues } from './GetFields/GetFields';
 import styles from './style.module.scss';
@@ -16,6 +17,8 @@ export default function NewContentModal({
   const schemaSlug = schemaDetails.slug;
   const [loading, setLoading] = useState(false);
   const [storeData, setStoreData] = useState(null);
+
+  const formData = new FormData();
 
   // eslint-disable-next-line no-empty-pattern
   const [{}, addContent] = useRequest(
@@ -49,12 +52,9 @@ export default function NewContentModal({
 
   const handleAddContent = (contentData) => {
     const x = { ...contentData };
-    const multipleAssets = [];
-    const multipleFileData = [];
-    const multipleHeaderType = [];
     let uploadData = [];
 
-    schemaDetails.schema.forEach((field, index) => {
+    schemaDetails.schema.forEach((field) => {
       if (field.type === 'Date and Time') {
         x[field.id] = moment(x[field.id]).toISOString(true);
       }
@@ -62,10 +62,11 @@ export default function NewContentModal({
         if (x[field.id]) {
           const count = 0;
 
-          x[field.id].fileList.forEach((xy) => {
-            xy = { ...xy.originFileObj };
-            console.log('originFileObj: ', xy);
-            uploadData = [...uploadData, xy.originFileObj];
+          x[field.id].fileList.forEach((singleFile) => {
+            console.log('singleFile: ', singleFile.originFileObj);
+            formData.append('file', singleFile.originFileObj);
+
+            uploadData = [...uploadData, singleFile];
 
             // const { name } = xy;
             // const mimeType = xy.type;
@@ -138,7 +139,9 @@ export default function NewContentModal({
     if (uploadData.length > 0) {
       console.log('file Dataaaa: ', uploadData);
       axios.post('/api/v1/asset/bulkUpload', {
-        uploadData,
+        // uploadData,
+        // fileObj,
+        formData,
       });
     }
   };

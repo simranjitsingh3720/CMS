@@ -23,6 +23,7 @@
     "dotenv-expand": "^8.0.1",
     "express": "^4.17.2",
     "express-session": "^1.17.2",
+    "form-data": "^4.0.0",
     "formik": "^2.2.9",
     "fs": "^0.0.1-security",
     "grapesjs": "^0.18.2",
