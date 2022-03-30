@@ -1,8 +1,10 @@
 // eslint-disable-next-line import/no-import-module-exports
-const { addMinutes } = require('date-fns');
+// const { addMinutes } = require('date-fns');
 
-const validator = require('validator');
+// const validator = require('validator');
 const bcrypt = require('bcrypt');
+// const { request } = require('express');
+const randtoken = require('rand-token');
 const db = require('../../db/models/index');
 const { ValidityError } = require('../helpers/error-helper');
 
@@ -39,6 +41,44 @@ const { ValidityError } = require('../helpers/error-helper');
 //     });
 // }
 
+// const signup = async (req, res) => {
+//   const { body } = req;
+//   const { firstName, lastName, email, password } = body;
+//   if (!firstName || !lastName || !email || !password) {
+//     let message = '';
+//     if (!firstName) {
+//       message += 'firstName is required';
+//     } else if (!lastName) {
+//       message += 'lastName is required';
+//     } else if (!email) {
+//       message += 'email is required';
+//     } else if (!password) {
+//       message += 'password  is required';
+//     }
+
+//     throw new ValidityError(message);
+//   }
+//   const isValidEmail = (/\S+@\S+\.\S+/).test(email);
+
+//   if (!isValidEmail) {
+//     throw new ValidityError('Invalid Email ID');
+//   }
+
+//   try {
+//     const salt = await bcrypt.genSalt();
+//     const hashedPassword = await bcrypt.hash(password, salt);
+//     const userDetails = { ...body, password: hashedPassword };
+
+//     const user = await db.User.create(userDetails);
+//     req.session.user = user;
+//     return res.status(200).json({ id: user.id, sessionId: req.session.id });
+//   } catch (error) {
+//     if (error.errors && error.errors[0].validatorKey === 'not_unique') {
+//       throw new ValidityError('User email Exists');
+//     }
+//   }
+// };
+
 const signup = async (req, res) => {
   const { body } = req;
   const { firstName, lastName, email, password } = body;
@@ -68,6 +108,17 @@ const signup = async (req, res) => {
     const userDetails = { ...body, password: hashedPassword };
 
     const user = await db.User.create(userDetails);
+
+    const demoData = {
+      userId: user.id,
+    };
+    let demo;
+    try {
+      demo = await db.UserDemoPreference.create(demoData);
+    } catch (err) {
+      console.log(err);
+    }
+    req.session.demoPreference = demo;
     req.session.user = user;
     return res.status(200).json({ id: user.id, sessionId: req.session.id });
   } catch (error) {
@@ -101,6 +152,18 @@ const signin = async (req, res) => {
     throw new ValidityError('Email or password is incorrect');
   }
 
+  let demo;
+  try {
+    demo = await db.UserDemoPreference.findOne({
+      where: {
+        userId: user.id,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+  }
+
+  req.session.demoPreference = demo;
   req.session.user = user;
   if (remember) {
     req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000;
@@ -118,7 +181,6 @@ const signout = async (req, res) => {
 
 const recoverPassword = async (req, res) => {
   const { email } = req.body;
-
   if (!email) {
     throw new ValidityError('Email required for recovery');
   }
@@ -126,17 +188,12 @@ const recoverPassword = async (req, res) => {
   try {
     const user = await db.User.findOne({ where: { email } });
     if (user) {
-      const fp = await db.ForgotPassword.findOne({ where: { user: user.id, isValid: true } });
-      if (fp) {
-        fp.isValid = false;
-        await fp.save();
-      }
+      const token = randtoken.generate(40);
       const values = {
-        user: user.id,
-        expiresAt: addMinutes(new Date(), 100),
-        isValid: true,
+        lastEmailSent: new Date(),
+        emailToken: token,
       };
-      await db.ForgotPassword.create(values);
+      await db.User.update(values, { where: { email } });
       // const name = `${user.firstName} ${user.lastName}`;
       // sendEmail(email, name, link);
       return res.status(200).json({ message: 'Password recovered successfully' });
@@ -159,9 +216,9 @@ const changePassword = async (req, res) => {
   }
 
   try {
-    const user = await db.ForgotPassword.findOne({ where: { id: token } });
-    if (user && user.isValid && user.expiresAt > addMinutes(new Date(), 0)) {
-      const userReq = await db.User.findOne({ where: { id: user.user } });
+    const user = await db.User.findOne({ where: { emailToken: token } });
+    if (user && user.emailToken) {
+      const userReq = await db.User.findOne({ where: { id: user.id } });
       const salt = await bcrypt.genSalt();
       const hashedPassword = await bcrypt.hash(password, salt);
       userReq.password = hashedPassword;
@@ -183,18 +240,21 @@ const checkChangePasswordToken = async (req, res) => {
     return res.status(400).json({ code: 'ValidationError', message: 'Invalid Link' });
   }
 
-  if (!validator.isUUID(token)) {
-    return res.status(400).json({ code: 'ValidationError', message: 'This password recovery link is invalid.' });
-  }
-
   try {
-    const user = await db.ForgotPassword.findOne({ where: { id: token } });
-    if (!user || !user.isValid) {
-      return res.status(400).json({ message: 'This password recovery link is invalid.' });
+    const user = await db.User.findOne({ where: { emailToken: token } });
+    const emailSentDate = user.dataValues.lastEmailSent;
+    const currentDate = new Date();
+    let diff = (currentDate.getTime() - emailSentDate.getTime()) / 1000;
+    diff /= 60;
+    const tokenTime = Math.abs(Math.round(diff));
+
+    const fixedTokenValidity = 5;
+    if (tokenTime < fixedTokenValidity) {
+      return res.status(200).json({ message: 'Show the form to change the password.' });
     }
-    return res.status(200).json({ message: 'Show the form to change the password.' });
+    return res.status(500).json({ message: 'This password recovery link is expired' });
   } catch (error) {
-    return res.status(500).json({ code: 'ServerError', message: 'Server error.' });
+    return res.status(500).json({ code: 'ServerError', message: 'This password recovery link is invalid' });
   }
 };
 

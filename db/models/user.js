@@ -23,16 +23,8 @@ module.exports = (sequelize, DataTypes) => {
       firstName: { type: DataTypes.STRING, require: true, allowNull: false },
       lastName: { type: DataTypes.STRING, require: true, allowNull: false },
       profilePicture: { type: DataTypes.UUID },
-      flag: {
-        type: DataTypes.JSON,
-        defaultValue: {
-          asset: true,
-          page_manager: true,
-          datastore: true,
-          datastore_contents: true,
-          datastore_structure: true,
-        },
-      },
+      lastEmailSent: { type: DataTypes.DATE },
+      emailToken: { type: DataTypes.STRING },
       createdAt: { type: DataTypes.DATE },
       updatedBy: { type: DataTypes.UUID },
       updatedAt: { type: DataTypes.DATE },

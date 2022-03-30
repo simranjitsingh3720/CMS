@@ -19,8 +19,8 @@ function FieldTutorial() {
   return (
     <div>
       {session
-        && session.user.flag.datastore_structure
-        && <Tutorial steps={steps} tutorialKey="datastore_structure" />}
+        && session.demo.datastoreStructure
+        && <Tutorial steps={steps} tutorialKey="datastoreStructure" />}
     </div>
   );
 }
