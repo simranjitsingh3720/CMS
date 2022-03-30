@@ -40,7 +40,7 @@ function ShowSettings({ schema }) {
       push('/admin/datastore/content-builder/[schemaId]', `/admin/datastore/content-builder/${slug}`);
     })
       .catch((err) => {
-        setError(err.response.data.message || err.response.data.messages[0]);
+        message.error(err.response.data.message || err.response.data.messages[0]);
       });
   };
 
@@ -79,7 +79,7 @@ function ShowSettings({ schema }) {
           rules={[
             {
               required: true,
-              message: 'Please input your Schema Name!',
+              message: 'Please input your Schema Names!',
             },
           ]}
         >
