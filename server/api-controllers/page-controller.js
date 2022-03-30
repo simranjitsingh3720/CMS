@@ -88,18 +88,32 @@ export const renderSingleData = async (req, res) => {
 export const updateData = async (req, res) => {
   const { pageSlug } = req.query;
   const code = req.body;
-  const stringyfiedCode = JSON.stringify(code);
-  const result = await db.Page.update(
-    {
-      data: stringyfiedCode,
-      updatedBy: req.session.user.id,
-    },
-    { where: { slug: pageSlug } },
-  );
-  if (result) {
-    return res.status(201).json({ data: result });
+
+  const assets = code['CMS-assets'];
+  const css = code['CMS-css'];
+  const components = code['CMS-components'];
+  const styles = code['CMS-styles'];
+  const html = code['CMS-html'];
+
+  try {
+    const result = await db.Page.update(
+      {
+        assets,
+        components,
+        css,
+        html,
+        styles,
+        updatedBy: req.session.user.id,
+      },
+      { where: { slug: pageSlug } },
+    );
+    if (result) {
+      return res.status(201).json({ data: result });
+    }
+    throw new MissingError('Page Not Found');
+  } catch (err) {
+    throw new MissingError('Page Not Found');
   }
-  throw new MissingError('Page Not Found');
 };
 
 export const updateHomeData = async (req, res) => {
