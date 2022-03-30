@@ -1,6 +1,6 @@
 const { Op, Sequelize } = require('sequelize');
 const bcrypt = require('bcrypt');
-const db = require('../../db/models/index');
+const db = require('../../db/models');
 const { AuthorizationError, MissingError, ValidityError } = require('../helpers/error-helper');
 
 const listUser = async (req, res) => {
@@ -30,7 +30,17 @@ const getMe = async (req, res) => {
     throw new AuthorizationError('No session exists');
   }
   // return res.status(200).json({ sessionId: sessionID, user: session.user });
-  return res.status(200).json({ sessionId: sessionID, user: session.user, demo: session.demoPreference });
+  const demo = await db.UserDemoPreference.findOne({
+    where: {
+      userId: req.session.user.id,
+    },
+  });
+  req.session.demoPreference = demo;
+  return res.status(200).json({
+    sessionId: sessionID,
+    user: session.user,
+    demo: session.demoPreference,
+  });
 };
 
 const updateUser = async (req, res) => {

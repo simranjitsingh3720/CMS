@@ -20,7 +20,7 @@ function FieldTutorial() {
     <div>
       {session
         && session.demo.datastoreStructure
-        && <Tutorial steps={steps} tutorialKey="datastore_structure" />}
+        && <Tutorial steps={steps} tutorialKey="datastoreStructure" />}
     </div>
   );
 }

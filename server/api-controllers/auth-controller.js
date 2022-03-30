@@ -110,15 +110,10 @@ const signup = async (req, res) => {
 
     const demoData = {
       userId: user.id,
-      asset: true,
-      pageManager: true,
-      datastore: true,
-      datastoreContents: true,
-      datastoreStructure: true,
     };
-
+    let demo;
     try {
-      await db.UserDemoPreference.create(demoData);
+      demo = await db.UserDemoPreference.create(demoData);
     } catch (err) {
       console.log(err);
     }
@@ -127,13 +122,8 @@ const signup = async (req, res) => {
     // const demo = await db.UserDemoPreference.create(demoData);
     // console.log('DEMO ', demo);
 
-    req.session.demoPreference = {
-      asset: true,
-      pageManager: true,
-      datastore: true,
-      datastoreContents: true,
-      datastoreStructure: true,
-    };
+    console.log('req:::::', req.session);
+    req.session.demoPreference = demo;
     req.session.user = user;
     console.log('REQUEST ', request.session);
     return res.status(200).json({ id: user.id, sessionId: req.session.id });
@@ -170,6 +160,18 @@ const signin = async (req, res) => {
     throw new ValidityError('Email or password is incorrect');
   }
 
+  let demo;
+  try {
+    demo = await db.UserDemoPreference.findOne({
+      where: {
+        userId: user.id,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+  }
+
+  req.session.demoPreference = demo;
   req.session.user = user;
   if (remember) {
     req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000;
