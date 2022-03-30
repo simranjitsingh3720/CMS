@@ -8,6 +8,7 @@ import styles from './style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
 import ContentTutorial from './ContentTutorial';
 import Error from '../../../components/Error/Error';
+import FieldTutorial from './FieldTutorial';
 
 const { TabPane } = Tabs;
 
@@ -45,6 +46,7 @@ export default function ContentBuilder() {
           setDefaultKey('1');
         } else {
           setDefaultKey('2');
+            <FieldTutorial />;
         }
       }).catch((err) => {
         if (err.response.data.code === 'MissingError') {
@@ -60,7 +62,7 @@ export default function ContentBuilder() {
     <div>
       {notFound ? <Error message="Page Not Found" code={404} /> : (
         <>
-          <ContentTutorial />
+          {/* <ContentTutorial /> */}
           {defaultKey ? (
             <div className={styles.content_builder_wrapper}>
               <Tabs defaultActiveKey={defaultKey} onChange={callback} size="large" activeKey={defaultKey}>

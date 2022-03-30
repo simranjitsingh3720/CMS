@@ -1,4 +1,5 @@
 const dotenv = require('dotenv');
+const axios = require('axios');
 const aws = require('aws-sdk');
 const { Sequelize } = require('sequelize');
 const db = require('../../db/models');
@@ -66,12 +67,11 @@ const createAsset = async (req, res) => {
   if (!body.name || !body.type || !body.mimeType) {
     throw new ValidityError('name, type and mimeType, all are required.');
   }
-
   const asset = await db.Asset.create({ ...body, createdBy: req.session.user.id });
   const params = ({
     Bucket: bucketName,
     Key: `asset/${asset.id}`,
-    Expires: 3600,
+    Expires: 400000,
   });
   const uploadURL = await s3.getSignedUrlPromise('putObject', params);
   const readUrl = uploadURL.split('?')[0];
@@ -80,6 +80,59 @@ const createAsset = async (req, res) => {
     { where: { id: asset.id } },
   );
   return res.status(201).json({ id: asset.id, writeUrl: uploadURL, readUrl });
+};
+
+const createAssetsInBulk = async (req, res) => {
+  const { body } = req;
+  const { uploadData } = body;
+  console.log('body ', uploadData);
+  // if (!body.name || !body.type || !body.mimeType) {
+  //   throw new ValidityError('name, type and mimeType, all are required.');
+  // }
+  // console.log('body of createAssetInBulk: ', body);
+
+  // multipleAssets.forEach((assetData, index) => {
+  //   multipleAssets[index].createdBy = req.session.user.id;
+  // });
+
+  // const assets = await db.Asset.bulkCreate(multipleAssets);
+  // await assets.forEach(async (singleAsset, index) => {
+  //   const params = ({
+  //     Bucket: bucketName,
+  //     Key: `asset/${singleAsset.id}`,
+  //     Expires: 360000,
+  //   });
+  //   const uploadURL = await s3.getSignedUrlPromise('putObject', params);
+  //   const readUrl = uploadURL.split('?')[0];
+
+  //   await singleAsset.update(
+  //     { url: readUrl, updatedBy: req.session.user.id },
+  //   );
+
+  //   // console.log(multipleFileData[index].FileData, 'adfsgfdhg file data');
+
+  //   await axios.put(
+  //     uploadURL,
+  //     multipleFileData[index].FileData,
+  //     {
+  //       headers: { type: multipleHeaderType[index], 'Content-Type': `${multipleHeaderType[index]}` },
+  //     },
+  //   );
+  // });
+  return res.status(201).json({ assets });
+
+  // const params = ({
+  //   Bucket: bucketName,
+  //   Key: `asset/${asset.id}`,
+  //   Expires: 3600,
+  // });
+  // const uploadURL = await s3.getSignedUrlPromise('putObject', params);
+  // const readUrl = uploadURL.split('?')[0];
+  // await db.Asset.update(
+  //   { url: readUrl, updatedBy: req.session.user.id },
+  //   { where: { id: asset.id } },
+  // );
+  // return res.status(201).json({ id: asset.id, writeUrl: uploadURL, readUrl });
 };
 
 const updateAsset = async (req, res) => {
@@ -128,4 +181,5 @@ module.exports = {
   findAsset,
   deleteAsset,
   updateAsset,
+  createAssetsInBulk,
 };

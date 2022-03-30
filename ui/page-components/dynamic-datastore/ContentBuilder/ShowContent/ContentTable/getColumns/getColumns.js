@@ -12,30 +12,29 @@ export default function getColumns(tableSchema, handleEditContent, handleDeleteC
         title: field.name,
         dataIndex: field.id,
         key: field.id,
-        render: (actions) =>
-          // console.log('actions: ===', actions);
-          (
-            <div>
-              {/* lu */}
-              {actions ? (
-                actions.fileList ? (
-                  actions.fileList.map((action) => (
+        render: (actions) => (
+          <div>
+
+            {/* {JSON.stringify(actions)} */}
+            {actions ? (
+              actions.fileList ? (
+                actions.fileList.map((action) => (
+                  <div>
+                    <a href={action.readUrl} target="_blank" rel="noreferrer">{action.name}</a>
+                  </div>
+                ))
+              )
+                : (
+                  actions.map((action) => (
                     <div>
                       <a href={action.readUrl} target="_blank" rel="noreferrer">{action.name}</a>
                     </div>
                   ))
                 )
-                  : (
-                    actions.map((action) => (
-                      <div>
-                        <a href={action.readUrl} target="_blank" rel="noreferrer">{action.name}</a>
-                      </div>
-                    ))
-                  )
 
-              ) : 'No asset content'}
-            </div>
-          )
+            ) : 'No asset content'}
+          </div>
+        )
         ,
       };
     }

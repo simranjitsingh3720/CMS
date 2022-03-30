@@ -159,17 +159,18 @@ function GetFields(appearenceType, field, isEditable) {
       );
 
     case 'FileUpload':
+      console.log('IS MULTIPLE ', field);
       return (
         <Form.Item name={id} label={name} rules={[{ required: isEditable ? false : required }]}>
           {isEditable ? (
             <div>
-              <Upload disabled={!!isEditable}>
+              <Upload disabled={!!isEditable} maxCount={options ? 10 : 1}>
                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
               </Upload>
               <span style={{ color: 'red' }}>Asset cannot be updated.</span>
             </div>
           ) : (
-            <Upload>
+            <Upload maxCount={options ? 10 : 1}>
               <Button icon={<UploadOutlined />}>Click to Upload</Button>
             </Upload>
           )}
