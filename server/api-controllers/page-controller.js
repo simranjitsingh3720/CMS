@@ -207,6 +207,11 @@ export const updatePageData = async (req, res) => {
   const pageData = req.body;
   try {
     if (pageSlug) {
+      const isSlug = await db.Page.findOne({ where: { slug: pageData.slug } });
+
+      if (isSlug) {
+        throw new DuplicateError('Slug name already taken. Try with another slug name');
+      }
       const result = await db.Page.update(
         {
           name: pageData.name,

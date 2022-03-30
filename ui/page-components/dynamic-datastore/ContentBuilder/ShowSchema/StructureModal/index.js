@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Form, Input, Button, Checkbox, Select, Card, Space, message, Modal,
 } from 'antd';
@@ -18,6 +18,19 @@ function StructureModal({
   const [dataType, setDataType] = useState('');
   const [appearanceType, setAppearanceType] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (isEditable) {
+      setAppearanceType((fieldData && fieldData.appearanceType) || '');
+      if (dataType) {
+        setAppearanceType(appearanceTypes[dataType][0]);
+        form.setFieldsValue({ appearanceType: appearanceTypes[dataType][0] });
+      }
+    } else if (dataType) {
+      setAppearanceType(appearanceTypes[dataType][0]);
+      form.setFieldsValue({ appearanceType: appearanceTypes[dataType][0] });
+    }
+  }, [fieldData, dataType]);
 
   const handleOnDataTypeChange = (value) => {
     setDataType(value);
@@ -151,7 +164,10 @@ function StructureModal({
           defaultValue: (fieldData && fieldData.defaultValue),
           required: (fieldData && fieldData.required),
           description: (fieldData && fieldData.description),
-
+          values: ((fieldData && fieldData.options && fieldData.options.values) || ''),
+          Truelabel: (fieldData && fieldData.Truelabel),
+          Falselabel: (fieldData && fieldData.Falselabel),
+          isMultiple: ((fieldData && fieldData.options && fieldData.options.isMultiple) || ''),
         }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
@@ -235,9 +251,9 @@ function StructureModal({
                 allowClear
               >
                 {
-              dataTypes.map((dataType) => (
-                <Option value={dataType} key={dataType}>
-                  {dataType}
+              dataTypes.map((type) => (
+                <Option value={type} key={type}>
+                  {type}
                 </Option>
               ))
               }
@@ -246,15 +262,14 @@ function StructureModal({
             <Form.Item name="appearanceType" label="Appearance Type" rules={[{ required: true }]}>
               <Select
                 size="medium"
-                defaultValue={(fieldData && fieldData.appearanceType) || appearanceTypes[dataType]}
                 placeholder="Select type of  appearance field..."
                 onChange={handleOnApperanceTypeChange}
               >
                 {
             ((appearanceTypes && appearanceTypes[dataType])
-            || (fieldData && appearanceTypes[fieldData.type]) || []).map((appearanceType) => (
-              <Option key={appearanceType} value={appearanceType}>
-                {appearanceType}
+            || (fieldData && appearanceTypes[fieldData.type]) || []).map((appType) => (
+              <Option key={appType} value={appType}>
+                {appType}
               </Option>
             ))
           }
@@ -264,7 +279,7 @@ function StructureModal({
               switch (appearanceType) {
                 case 'Checkbox':
                   return (
-                    <ValueNames />
+                    <ValueNames fieldData={fieldData} />
                   );
                 case 'FileUpload':
                   return (
