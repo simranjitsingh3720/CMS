@@ -51,7 +51,6 @@ function Home() {
 
   const getApiM = () => {
     refetchPageData().then((res) => {
-      console.log(res.data);
       let LandingPage = {};
       LandingPage = {
         html: res.data && res.data.data.html,
