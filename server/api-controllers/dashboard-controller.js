@@ -1,4 +1,3 @@
-// const { Sequelize } = require('sequelize');
 const db = require('../../db/models');
 const { ServerError } = require('../helpers/error-helper');
 

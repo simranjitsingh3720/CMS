@@ -3,10 +3,9 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Log extends Model {
     static associate(models) {
-      models.Content.belongsTo(models.User, { foreignKey: 'performedBy' });
+      models.Log.belongsTo(models.User, { foreignKey: 'performedBy' });
     }
   }
-  // ["CREATE","UPDATE","READ","DELETE", "SENTEMAIL","FORGOTPASSWORD","LOGIN","SIGNUP","SIGNUPFAIL","LOGINFAIL"]
 
   Log.init(
     {

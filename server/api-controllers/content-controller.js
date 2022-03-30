@@ -1,3 +1,4 @@
+const { createLog } = require('./createLog-controller');
 const db = require('../../db/models');
 const { MissingError } = require('../helpers/error-helper');
 
@@ -59,6 +60,7 @@ const addContent = async (req, res) => {
       createdBy: req.session.user.id,
       updatedBy: req.session.user.id,
     });
+    createLog('CREATE', req.session.user.id, content.id, 'CONTENT');
     return res.status(201).json({ id: content.id });
   }
   throw new MissingError('Schema Not Found');
@@ -83,6 +85,7 @@ const updateContent = async (req, res) => {
     });
 
     if (updatedContent[0]) {
+      createLog('UPDATE', req.session.user.id, contentId, 'CONTENT');
       return res.status(201).json({ id: contentId });
     }
     throw new MissingError('No Data exists');
@@ -111,6 +114,7 @@ const deleteContent = async (req, res) => {
     });
 
     if (deletedContent) {
+      createLog('DELETE', req.session.user.id, contentId, 'CONTENT');
       return res.status(201).json({ id: contentId });
     }
     return res.status(400).json({ message: 'No Data exists' });

@@ -1,10 +1,10 @@
 // eslint-disable-next-line import/no-import-module-exports
 const { addMinutes } = require('date-fns');
-
 const validator = require('validator');
 const bcrypt = require('bcrypt');
+const { createLog } = require('./createLog-controller');
 const db = require('../../db/models/index');
-const { ValidityError } = require('../helpers/error-helper');
+const { ValidityError, ServerError } = require('../helpers/error-helper');
 
 // const mailjet = require('node-mailjet')
 //   .connect(process.env.MAILJET_PUBLIC_KEY, process.env.MAILJET_PRIVATE_KEY);
@@ -56,8 +56,8 @@ const signup = async (req, res) => {
 
     throw new ValidityError(message);
   }
-  const isValidEmail = (/\S+@\S+\.\S+/).test(email);
 
+  const isValidEmail = (/\S+@\S+\.\S+/).test(email);
   if (!isValidEmail) {
     throw new ValidityError('Invalid Email ID');
   }
@@ -69,12 +69,14 @@ const signup = async (req, res) => {
 
     const user = await db.User.create(userDetails);
     req.session.user = user;
+    createLog('SIGNUP', req.session.user.id, user.id, 'AUTH');
     return res.status(200).json({ id: user.id, sessionId: req.session.id });
   } catch (error) {
     if (error.errors && error.errors[0].validatorKey === 'not_unique') {
       throw new ValidityError('User email Exists');
     }
   }
+  throw new ServerError('Server Error');
 };
 
 const signin = async (req, res) => {
@@ -107,11 +109,12 @@ const signin = async (req, res) => {
   } else {
     req.session.cookie.maxAge = 24 * 60 * 60 * 1000;
   }
-
+  createLog('SIGNIN', req.session.user.id, user.id, 'AUTH');
   return res.status(200).json({ sessionId: req.session.id });
 };
 
 const signout = async (req, res) => {
+  createLog('SIGNOUT', req.session.user.id, req.session.user.id, 'AUTH');
   await req.session.destroy();
   res.status(200).json({ message: 'Logged Out Successfully' });
 };

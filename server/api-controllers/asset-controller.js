@@ -2,6 +2,8 @@ const dotenv = require('dotenv');
 const aws = require('aws-sdk');
 const { Sequelize } = require('sequelize');
 const db = require('../../db/models');
+
+const { createLog } = require('./createLog-controller');
 const { ValidityError, ServerError } = require('../helpers/error-helper');
 
 dotenv.config();
@@ -42,15 +44,6 @@ const listAssets = async (req, res) => {
   const { query } = req;
   const { q } = query;
   let assets = [];
-  try {
-    await db.Log.create({
-      actionName: 'actionName',
-      performedBy: req.session.user.id,
-      objectId: req.session.user.id,
-    });
-  } catch (err) {
-    console.log(err);
-  }
 
   try {
     if (q) {
@@ -78,6 +71,7 @@ const createAsset = async (req, res) => {
   }
 
   const asset = await db.Asset.create({ ...body, createdBy: req.session.user.id });
+  createLog('CREATE', req.session.user.id, asset.id, 'ASSET');
   const params = ({
     Bucket: bucketName,
     Key: `asset/${asset.id}`,
@@ -89,6 +83,7 @@ const createAsset = async (req, res) => {
     { url: readUrl, updatedBy: req.session.user.id },
     { where: { id: asset.id } },
   );
+  createLog('UPDATE', req.session.user.id, asset.id, 'ASSET');
   return res.status(201).json({ id: asset.id, writeUrl: uploadURL, readUrl });
 };
 
@@ -106,6 +101,7 @@ const updateAsset = async (req, res) => {
 
   try {
     await db.Asset.update({ ...data }, { where: { id: assetId } });
+    createLog('CREATE', req.session.user.id, assetId, 'ASSET');
     res.status(200).json({ id: assetId });
   } catch (error) {
     throw new ServerError('Not able to connect with server');
@@ -120,6 +116,7 @@ const deleteAsset = async (req, res) => {
 
   try {
     await db.Asset.destroy({ where: { id: assetId } });
+    createLog('CREATE', req.session.user.id, assetId, 'ASSET');
     return res.status(200).json({ id: assetId });
   } catch (err) {
     if (err?.parent?.code === '22P02') {

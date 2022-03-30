@@ -1,6 +1,6 @@
-import { DuplicateError, MissingError, ValidityError } from '../helpers/error-helper';
-
 const { Op, Sequelize } = require('sequelize');
+const { DuplicateError, MissingError, ValidityError } = require('../helpers/error-helper');
+const { createLog } = require('./createLog-controller');
 const db = require('../../db/models');
 
 export const createPage = async (req, res) => {
@@ -26,19 +26,20 @@ export const createPage = async (req, res) => {
     throw new ValidityError(message);
   }
 
+  let result = null;
   try {
-    const result = await db.Page.create({
+    result = await db.Page.create({
       ...body,
       createdBy: req.session.user.id,
       updatedBy: req.session.user.id,
     });
-
-    if (result) {
-      return res.status(201).json({ data: result });
-    }
   } catch (error) {
     throw new ValidityError('Slug name already taken. try with another slug name');
   }
+
+  createLog('CREATE', req.session.user.id, result.id, 'PAGE');
+
+  return res.status(201).json({ data: result });
 };
 
 export const listPagesBySlug = async (req, res) => {
@@ -48,7 +49,7 @@ export const listPagesBySlug = async (req, res) => {
   if (q) {
     if (!isHome) {
       const data = await db.Page.findAll({
-        attributes: ['slug', 'name'],
+        attributes: ['slug', 'name', 'id'],
         where: {
           name: Sequelize.where(
             Sequelize.fn('LOWER', Sequelize.col('name')),
@@ -61,8 +62,9 @@ export const listPagesBySlug = async (req, res) => {
     }
   } else if (!isHome) {
     const data = await db.Page.findAll({
-      attributes: ['slug', 'name'],
+      attributes: ['slug', 'name', 'id'],
     });
+
     return res.status(200).json({ list: data });
   }
 
@@ -89,6 +91,17 @@ export const updateData = async (req, res) => {
   const { pageSlug } = req.query;
   const code = req.body;
   const stringyfiedCode = JSON.stringify(code);
+
+  const page = await db.Page.findOne({
+    where: {
+      slug: pageSlug,
+    },
+  });
+
+  if (page) {
+    createLog('UPDATE', req.session.user.id, page.id, 'PAGE');
+  }
+
   const result = await db.Page.update(
     {
       data: stringyfiedCode,
@@ -109,6 +122,16 @@ export const updateHomeData = async (req, res) => {
     throw new ValidityError('Data required');
   }
 
+  const page = await db.Page.findOne({
+    where: {
+      slug: '',
+    },
+  });
+
+  if (page) {
+    createLog('UPDATE', req.session.user.id, page.id, 'HOMEPAGE');
+  }
+
   const stringyfiedCode = JSON.stringify(code);
   const result = await db.Page.update(
     {
@@ -124,7 +147,7 @@ export const updateHomeData = async (req, res) => {
 };
 
 export const updateHome = async (req, res) => {
-  const { pageSlug } = req.query;
+  const { pageSlug, pageId } = req.query;
 
   const findOldHome = await db.Page.findOne({
     attributes: [[Sequelize.fn('MAX', Sequelize.col('slug')), 'slug']],
@@ -153,6 +176,7 @@ export const updateHome = async (req, res) => {
       { where: { slug: pageSlug } },
     );
     if (result && result2) {
+      createLog('UPDATE', req.session.user.id, pageId, 'PAGE');
       return res.status(201).json({ data: result2 });
     }
   }
@@ -165,14 +189,14 @@ export const updateHome = async (req, res) => {
     { where: { slug: pageSlug } },
   );
   if (result && result2) {
+    createLog('UPDATE', req.session.user.id, pageId, 'PAGE');
     return res.status(201).json({ data: result2 });
   }
-
   throw new MissingError('Page Not Found');
 };
 
 export const deletePage = async (req, res) => {
-  const { pageSlug } = req.query;
+  const { pageSlug, pageId } = req.query;
 
   const deletedPage = await db.Page.destroy({ where: { slug: pageSlug } });
   const result = await db.Page.update(
@@ -183,14 +207,16 @@ export const deletePage = async (req, res) => {
     },
   );
   if (deletedPage && result) {
+    createLog('UPDATE', req.session.user.id, pageId, 'PAGE');
     return res.status(200).json({ slug: pageSlug });
   }
   throw new MissingError('Page Not Found');
 };
 
 export const updatePageData = async (req, res) => {
-  const { pageSlug } = req.query || '';
+  const { pageSlug, pageId } = req.query || '';
   const pageData = req.body;
+
   try {
     if (pageSlug) {
       const isSlug = await db.Page.findOne({ where: { slug: pageData.slug } });
@@ -206,6 +232,7 @@ export const updatePageData = async (req, res) => {
         { where: { slug: pageSlug } },
       );
       if (result) {
+        createLog('UPDATE', req.session.user.id, pageId, 'PAGE');
         return res.status(201).json({ data: result });
       }
     }
@@ -214,6 +241,7 @@ export const updatePageData = async (req, res) => {
       { where: { slug: '' } },
     );
     if (result) {
+      createLog('UPDATE', req.session.user.id, pageId, 'PAGE');
       return res.status(201).json({ data: result });
     }
     throw new MissingError('Page Not Found');

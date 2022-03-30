@@ -34,6 +34,9 @@ function ShowSettings({ schema }) {
         slug: values.slug,
         description: values.description,
       },
+      params: {
+        schemaId: schema.id,
+      },
     }).then((res) => {
       const { slug } = JSON.parse(res.config.data);
       message.success('Table updated successfully !!!');

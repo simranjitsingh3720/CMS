@@ -1,6 +1,7 @@
 const { Sequelize } = require('sequelize');
 const db = require('../../db/models');
 const { MissingError, ValidityError, DuplicateError, ForbiddenError } = require('../helpers/error-helper');
+const { createLog } = require('./createLog-controller');
 
 const getSchema = async (req, res) => {
   const { query } = req;
@@ -51,6 +52,7 @@ const addSchema = async (req, res) => {
       createdBy: req.session.user.id,
       updatedBy: req.session.user.id,
     });
+    createLog('CREATE', req.session.user.id, schema.id, 'SCHEMA');
     return res.status(201).json({ id: schema.id, slug: schema.slug });
   } catch (error) {
     throw new DuplicateError(`Table with slug name ${slug} already exists`);
@@ -60,7 +62,7 @@ const addSchema = async (req, res) => {
 const updateSchema = async (req, res) => {
   const { body, query } = req;
   const { slug } = body;
-  const { schemaSlug } = query;
+  const { schemaSlug, schemaId } = query;
   if (slug) {
     const isSchemaSlug = await db.Schema.findOne({ where: { slug } });
     if (isSchemaSlug) {
@@ -72,6 +74,8 @@ const updateSchema = async (req, res) => {
     }, { where: { slug: schemaSlug } });
 
     if (updatedSchema[0]) {
+      createLog('UPDATE', req.session.user.id, schemaId, 'SCHEMA');
+
       return res.status(200).json({ id: slug });
     }
   }
@@ -84,6 +88,7 @@ const deleteSchema = async (req, res) => {
     { where: { id: schemaId } },
   );
   if (deletedSchema) {
+    createLog('DELETE', req.session.user.id, schemaId, 'SCHEMA');
     return res.status(200).json({ id: schemaId });
   }
   throw new MissingError('Schema not found');
@@ -99,7 +104,7 @@ const getSchemaBySlug = async (req, res) => {
 };
 
 const deleteSchemaBySlug = async (req, res) => {
-  const { schemaSlug } = req.query;
+  const { schemaSlug, schemaId } = req.query;
 
   // check if data exits
   if (schemaSlug) {
@@ -118,6 +123,7 @@ const deleteSchemaBySlug = async (req, res) => {
         { where: { slug: schemaSlug } },
       );
       if (deletedSchema) {
+        createLog('DELETE', req.session.user.id, schemaId, 'SCHEMA');
         return res.status(200).json({ slug: schemaSlug });
       }
       throw new MissingError('Schema not found');
