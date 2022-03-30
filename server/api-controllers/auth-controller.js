@@ -117,23 +117,14 @@ const signup = async (req, res) => {
     } catch (err) {
       console.log(err);
     }
-
-    // console.log('USER ID ', db.UserDemoPreference);
-    // const demo = await db.UserDemoPreference.create(demoData);
-    // console.log('DEMO ', demo);
-
-    console.log('req:::::', req.session);
     req.session.demoPreference = demo;
     req.session.user = user;
-    console.log('REQUEST ', request.session);
     return res.status(200).json({ id: user.id, sessionId: req.session.id });
   } catch (error) {
     if (error.errors && error.errors[0].validatorKey === 'not_unique') {
       throw new ValidityError('User email Exists');
     }
   }
-
-  console.log('ERORORORRORORROROROROROROOROROR');
 };
 
 const signin = async (req, res) => {

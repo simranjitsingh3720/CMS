@@ -3,16 +3,6 @@ import { DuplicateError, MissingError, ValidityError } from '../helpers/error-he
 const { Op, Sequelize } = require('sequelize');
 const db = require('../../db/models');
 
-export const findUser = async (req, res) => {
-  const { userId } = req.query;
-
-  const user = await db.User.findOne({ where: { id: userId } });
-  if (!user) {
-    throw new MissingError('no user found');
-  }
-  return res.status(200).json({ user });
-};
-
 export const updateUser = async (req, res) => {
   const { userId } = req.query;
   console.log('userid', req.body);
