@@ -29,7 +29,8 @@ const getMe = async (req, res) => {
   if (!session.user) {
     throw new AuthorizationError('No session exists');
   }
-  return res.status(200).json({ sessionId: sessionID, user: session.user });
+  // return res.status(200).json({ sessionId: sessionID, user: session.user });
+  return res.status(200).json({ sessionId: sessionID, user: session.user, demo: session.demoPreference });
 };
 
 const updateUser = async (req, res) => {

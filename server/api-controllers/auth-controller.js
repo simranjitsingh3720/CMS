@@ -117,19 +117,23 @@ const signup = async (req, res) => {
       datastoreStructure: true,
     };
 
-    const demo = await db.UserDemoPreference.create(demoData);
+    try {
+      await db.UserDemoPreference.create(demoData);
+    } catch (err) {
+      console.log(err);
+    }
 
     // console.log('USER ID ', db.UserDemoPreference);
     // const demo = await db.UserDemoPreference.create(demoData);
     // console.log('DEMO ', demo);
 
-    // req.session.demoPreference = {
-    //   asset: true,
-    //   pageManager: true,
-    //   datastore: true,
-    //   datastoreContents: true,
-    //   datastoreStructure: true,
-    // };
+    req.session.demoPreference = {
+      asset: true,
+      pageManager: true,
+      datastore: true,
+      datastoreContents: true,
+      datastoreStructure: true,
+    };
     req.session.user = user;
     console.log('REQUEST ', request.session);
     return res.status(200).json({ id: user.id, sessionId: req.session.id });

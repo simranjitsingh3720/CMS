@@ -21,6 +21,9 @@ module.exports = {
       datastoreStructure: {
         type: Sequelize.BOOLEAN,
       },
+      // Timestamps
+      createdAt: Sequelize.DATE,
+      updatedAt: Sequelize.DATE,
     });
   },
   async down(queryInterface) {

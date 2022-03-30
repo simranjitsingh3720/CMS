@@ -14,6 +14,9 @@ module.exports = (sequelize, DataTypes) => {
     datastore: { type: DataTypes.BOOLEAN, defaultValue: true },
     datastoreContents: { type: DataTypes.BOOLEAN, defaultValue: true },
     datastoreStructure: { type: DataTypes.BOOLEAN, defaultValue: true },
+    // Timestamps
+    createdAt: { type: DataTypes.DATE },
+    updatedAt: { type: DataTypes.DATE },
   }, {
     sequelize,
     modelName: 'UserDemoPreference',

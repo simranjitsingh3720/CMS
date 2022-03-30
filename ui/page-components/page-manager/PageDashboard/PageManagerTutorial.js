@@ -45,7 +45,7 @@ function PageManagerTutorial() {
   return (
     <div>
       {console.log('session', session)}
-      {session && session.user.flag.page_manager && <Tutorial steps={steps} tutorialKey="page_manager" />}
+      {session && session.demo.pageManager && <Tutorial steps={steps} tutorialKey="page_manager" />}
     </div>
   );
 }
