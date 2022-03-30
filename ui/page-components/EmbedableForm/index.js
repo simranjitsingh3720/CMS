@@ -93,68 +93,71 @@ export default function EmbedableForm() {
       <div
         className={styles.formFields}
       >
-        <Form
-          name="Add new Content form"
-          layout="vertical"
-          initialValues={initialValues}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
-        >
+        {Object.keys(initialValues).length > 0
+          ? (
+            <Form
+              name="Add new Content form"
+              layout="vertical"
+              initialValues={initialValues}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
+            >
 
-          {formSubmitSuccess ? (
-            <div className={styles.formError}>
-              <div>
-                <h2>
-                  Form Submitted successfully
-                </h2>
-                <div>
-                  <a
-                    href={window.location.href}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    Submit another response
-                  </a>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div>
-              {formError !== '' ? (
+              {formSubmitSuccess ? (
                 <div className={styles.formError}>
-                  <h2>{formError}</h2>
+                  <div>
+                    <h2>
+                      Form Submitted successfully
+                    </h2>
+                    <div>
+                      <a
+                        href={window.location.href}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        Submit another response
+                      </a>
+                    </div>
+                  </div>
                 </div>
               ) : (
-                <>
-                  {formDetails.schema && formDetails.schema.map((field) => (
-                    GetFields(field.appearanceType, field)
-                  ))}
-                  <div>
-                    {formDetails.schema && formDetails.schema.length >= 1 ? (
-                      <Form.Item
-                        style={{ marginBottom: '0px' }}
-                      >
-                        <div className={styles.actionButton}>
-                          <Space wrap>
-                            <Button type="primary" htmlType="submit">
-                              Submit
-                            </Button>
-                          </Space>
-                        </div>
-                      </Form.Item>
-                    ) : (
+                <div>
+                  {formError !== '' ? (
+                    <div className={styles.formError}>
+                      <h2>{formError}</h2>
+                    </div>
+                  ) : (
+                    <>
+                      {formDetails.schema && formDetails.schema.map((field) => (
+                        GetFields(field.appearanceType, field)
+                      ))}
                       <div>
-                        No fields Found in the form.
-                        Please add some fields in the form
+                        {formDetails.schema && formDetails.schema.length >= 1 ? (
+                          <Form.Item
+                            style={{ marginBottom: '0px' }}
+                          >
+                            <div className={styles.actionButton}>
+                              <Space wrap>
+                                <Button type="primary" htmlType="submit">
+                                  Submit
+                                </Button>
+                              </Space>
+                            </div>
+                          </Form.Item>
+                        ) : (
+                          <div>
+                            No fields Found in the form.
+                            Please add some fields in the form
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
-                </>
+                    </>
+                  )}
+                </div>
               )}
-            </div>
-          )}
 
-        </Form>
+            </Form>
+          ) : ''}
       </div>
     </div>
   );
