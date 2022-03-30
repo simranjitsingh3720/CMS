@@ -8,7 +8,7 @@ import styles from './style.module.scss';
 
 function ShowSettings({ schema }) {
   const [form] = Form.useForm();
-
+  const [disable, setDisable] = useState(true);
   form.setFieldsValue({
     title: schema.title,
     slug: schema.slug,
@@ -50,7 +50,7 @@ function ShowSettings({ schema }) {
 
   const handleValuesChange = (changedValues) => {
     setError('');
-
+    setDisable(false);
     if (changedValues.title !== '' && changedValues.title !== undefined) {
       form.setFieldsValue({ slug: _.snakeCase(changedValues.title) });
     }
@@ -59,6 +59,7 @@ function ShowSettings({ schema }) {
       form.setFieldsValue({ slug: '' });
     }
   };
+  console.log(disable);
   return (
     <div>
       <Form
@@ -119,7 +120,7 @@ function ShowSettings({ schema }) {
         <Form.Item style={{ marginBottom: '0px' }}>
           <div className={styles.actionButton}>
             <Space wrap>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" disabled={disable}>
                 Submit
               </Button>
             </Space>
