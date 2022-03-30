@@ -16,7 +16,7 @@ function PageRender({ data }) {
   useEffect(() => {
     getImage();
     localStorage.setItem('image', image);
-  }, [image,getImage]);
+  }, [image, getImage]);
 
   useEffect(() => {
     if (getData) {
