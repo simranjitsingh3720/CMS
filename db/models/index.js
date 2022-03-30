@@ -4,10 +4,13 @@ const config = require('../config');
 const pageModel = require('./page');
 const userModel = require('./user');
 const assetModel = require('./asset');
-const forgotPasswordModel = require('./forgotPassword');
 const schemaModel = require('./schema');
 const contentModel = require('./content');
+<<<<<<< HEAD
 const logModel = require('./log');
+=======
+const userDemoPreferenceModel = require('./userDemoPreference');
+>>>>>>> e9542dc0e8347efbfe149024f997c16c5fae28a8
 
 const db = {};
 
@@ -21,12 +24,15 @@ const requireModel = (schema) => {
 requireModel(userModel);
 requireModel(assetModel);
 requireModel(pageModel);
-requireModel(forgotPasswordModel);
 requireModel(schemaModel);
 requireModel(contentModel);
+<<<<<<< HEAD
 requireModel(logModel);
 
 console.log('DB ', db);
+=======
+requireModel(userDemoPreferenceModel);
+>>>>>>> e9542dc0e8347efbfe149024f997c16c5fae28a8
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {

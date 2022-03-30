@@ -63,23 +63,32 @@ const updateSchema = async (req, res) => {
   const { body, query } = req;
   const { slug } = body;
   const { schemaSlug, schemaId } = query;
-  if (slug) {
-    const isSchemaSlug = await db.Schema.findOne({ where: { slug } });
-    if (isSchemaSlug) {
-      throw new DuplicateError('This table slug already taken');
-    }
-    const updatedSchema = await db.Schema.update({
-      ...body,
-      updatedBy: req.session.user.id,
-    }, { where: { slug: schemaSlug } });
+  try {
+    if (slug) {
+      const isSchemaSlug = await db.Schema.findOne({ where: { slug } });
 
-    if (updatedSchema[0]) {
-      createLog('UPDATE', req.session.user.id, schemaId, 'SCHEMA');
+      if (isSchemaSlug) {
+        if (isSchemaSlug.slug === body.slug
+          && isSchemaSlug.title === body.title
+          && isSchemaSlug.description === body.description) {
+          throw new DuplicateError('This table slug already taken');
+        }
+      }
+      const updatedSchema = await db.Schema.update({
+        ...body,
+        updatedBy: req.session.user.id,
+      }, { where: { slug: schemaSlug } });
 
-      return res.status(200).json({ id: slug });
+      if (updatedSchema[0]) {
+        createLog('UPDATE', req.session.user.id, schemaId, 'SCHEMA');
+
+        return res.status(200).json({ id: slug });
+      }
     }
+    throw new MissingError('Schema not found');
+  } catch (error) {
+    throw new DuplicateError('This table slug already taken');
   }
-  throw new MissingError('Schema not found');
 };
 
 const deleteSchema = async (req, res) => {

@@ -48,6 +48,13 @@ function Profile() {
     { manual: true },
   );
 
+  const [{ data: demoData }, handlePatch] = useRequest(
+    {
+      method: 'PATCH',
+    },
+    { manual: true },
+  );
+
   const [{ loading: passwordLoading },
     passwordPatch,
   ] = useRequest(
@@ -59,18 +66,20 @@ function Profile() {
 
   const SubmitDetails = (values) => {
     let submitData = {};
+    let submitDemoData = {};
     if (values.switch) {
       submitData = {
         firstName: values.firstName,
         lastName: values.lastName,
         phone: values.phone,
-        flag: {
-          asset: true,
-          page_manager: true,
-          datastore: true,
-          datastore_contents: true,
-          datastore_structure: true,
-        },
+
+      };
+      submitDemoData = {
+        asset: true,
+        pageManager: true,
+        datastore: true,
+        datastoreContents: true,
+        datastoreStructure: true,
       };
     } else {
       submitData = {
@@ -83,6 +92,11 @@ function Profile() {
     detailPatch({
       url: `/user/${data.id}`,
       data: submitData,
+    }).then(() => {
+      handlePatch({
+        url: `/demo/${data.id}`,
+        data: submitDemoData,
+      });
     })
       .then(() => {
         message.success('User Updated');

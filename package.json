@@ -8,7 +8,9 @@
     "build": "NODE_ENV=production next build",
     "start": "NODE_ENV=production pm2 start index.js --name cogo-cms",
     "deploy": "yarn build && yarn start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "drop": "yarn sequelize-cli db:drop",
+    "reboot": "yarn drop && yarn migrate && yarn && yarn dev"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
@@ -34,6 +36,7 @@
     "next": "^12.0.9",
     "pg": "^8.7.3",
     "pg-hstore": "^2.3.4",
+    "rand-token": "^1.0.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-draggable": "^4.4.4",

@@ -16,15 +16,14 @@ function PageRender({ data }) {
   useEffect(() => {
     getImage();
     localStorage.setItem('image', image);
-  }, [image]);
+  }, [image, getImage]);
 
   useEffect(() => {
     if (getData) {
       setIsData(true);
-      const code = JSON.parse(getData.data.data);
-      if (code) {
-        setHtml(code['CMS-html']);
-        setCss(code['CMS-css']);
+      if (getData.data) {
+        setHtml(getData.data.html);
+        setCss(getData.data.css);
       } else {
         setHtml('');
       }
