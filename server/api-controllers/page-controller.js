@@ -119,14 +119,23 @@ export const updateData = async (req, res) => {
 export const updateHomeData = async (req, res) => {
   const code = req.body;
 
+  const assets = code['CMS-assets'];
+  const css = code['CMS-css'];
+  const components = code['CMS-components'];
+  const styles = code['CMS-styles'];
+  const html = code['CMS-html'];
+
   if (!code) {
     throw new ValidityError('Data required');
   }
 
-  const stringyfiedCode = JSON.stringify(code);
   const result = await db.Page.update(
     {
-      data: stringyfiedCode,
+      assets,
+      components,
+      css,
+      html,
+      styles,
       updatedBy: req.session.user.id,
     },
     { where: { slug: '' } },

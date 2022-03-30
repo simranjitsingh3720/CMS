@@ -55,15 +55,14 @@ function Tutorial({ steps, tutorialKey }) {
     const { status, action } = tutData;
     if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status) || action === 'close') {
       setRun(false);
+      console.log('tutorial key ', tutorialKey);
+      console.log('session.demo ', session.demo);
 
       handlePatch({
-        url: `/user/${session.user.id}`,
+        url: `/demo/${session.user.id}`,
         data: {
-          flag: {
-            ...session.user.flag,
-            [tutorialKey]: false,
-          },
-
+          // ...session.demo,
+          [tutorialKey]: false,
         }
         ,
       })
