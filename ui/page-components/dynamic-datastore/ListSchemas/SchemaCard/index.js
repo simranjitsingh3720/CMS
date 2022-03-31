@@ -1,4 +1,4 @@
-import { EllipsisOutlined, MoreOutlined, TableOutlined } from '@ant-design/icons';
+import { MoreOutlined } from '@ant-design/icons';
 import {
   Button, Popover,
 } from 'antd';
@@ -6,10 +6,10 @@ import styles from './style.module.scss';
 import CardWrapper from '../../../../components/CardWrapper';
 
 function SchemaCard({
-  schemaName, schemaDesc, deleteSchema, showSchema, schemaSlug, totatlFields,
+  schemaName, schemaDesc, deleteSchema, showSchema, schemaSlug, totatlFields, schemaId,
 }) {
   const handleClick = () => {
-    deleteSchema(schemaSlug);
+    deleteSchema(schemaSlug, schemaId);
   };
 
   const content = (
