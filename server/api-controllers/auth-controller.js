@@ -194,6 +194,8 @@ const recoverPassword = async (req, res) => {
         emailToken: token,
       };
       await db.User.update(values, { where: { email } });
+      console.log('Click Below to reset Password----');
+      console.log(`http://localhost:8000/admin/password-change/${token}`);
       // const name = `${user.firstName} ${user.lastName}`;
       // sendEmail(email, name, link);
       return res.status(200).json({ message: 'Password recovered successfully' });
