@@ -9,7 +9,6 @@ const contentModel = require('./content');
 const userDemoPreferenceModel = require('./userDemoPreference');
 const fieldModel = require('./field');
 
-
 const db = {};
 
 const sequelize = new Sequelize(config);
@@ -24,11 +23,8 @@ requireModel(assetModel);
 requireModel(pageModel);
 requireModel(schemaModel);
 requireModel(contentModel);
-<<<<<<< HEAD
-requireModel(fieldModel);
-=======
 requireModel(userDemoPreferenceModel);
->>>>>>> e9542dc0e8347efbfe149024f997c16c5fae28a8
+requireModel(fieldModel);
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
