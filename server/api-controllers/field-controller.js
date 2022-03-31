@@ -132,8 +132,6 @@ const updateField = async (req, res) => {
   const { body, query } = req;
   const { schemaSlug, fieldId } = query;
 
-  console.log('BODY UPDATE ', body, query);
-
   if (!body) {
     throw ValidityError('Data for update required');
   }

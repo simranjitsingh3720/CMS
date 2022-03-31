@@ -247,7 +247,7 @@ function StructureModal({
           type: (fieldData && fieldData.type),
           appearanceType: (fieldData && fieldData.appearanceType),
           defaultValue: (fieldData && fieldData.defaultValue),
-          required: (fieldData && fieldData.required),
+          isRequired: (fieldData && fieldData.isRequired),
           description: (fieldData && fieldData.description),
           values: ((fieldData && fieldData.options && fieldData.options.values) || ''),
           Truelabel: (fieldData && fieldData.Truelabel),
