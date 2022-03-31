@@ -11,7 +11,7 @@ function Home() {
   const [imgFile, setImgFile] = useState('');
   const [url, setUrl] = useState('');
 
-  const [{ data: getData }, refetchPageData] = useRequest(
+  const [{ }, refetchPageData] = useRequest(
     {
       url: '/page',
       method: 'GET',
@@ -22,7 +22,7 @@ function Home() {
     },
   );
 
-  const [{ data: imgData }, refetch] = useRequest(
+  const [{ }, refetch] = useRequest(
     {
       url: '/asset',
       method: 'GET',

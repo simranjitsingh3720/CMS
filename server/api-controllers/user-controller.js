@@ -2,6 +2,7 @@ const { Op, Sequelize } = require('sequelize');
 const bcrypt = require('bcrypt');
 const db = require('../../db/models');
 const { AuthorizationError, MissingError, ValidityError } = require('../helpers/error-helper');
+const { createLog } = require('./createLog-controller');
 
 const listUser = async (req, res) => {
   const { query } = req;
@@ -20,6 +21,7 @@ const listUser = async (req, res) => {
   } else {
     users = await db.User.findAll();
   }
+
   return res.status(200).json({ list: users });
 };
 
@@ -51,6 +53,7 @@ const updateUser = async (req, res) => {
       const updatedUser = await db.User.findOne({ where: { id: userId }, include: { model: db.Asset, as: 'ProfilePicture' } });
       req.session.user = updatedUser.toJSON();
     }
+    createLog('UPDATE', req.session.user.id, userId, 'USER');
     return res.status(200).json({ id: userId });
   } catch (err) {
     return res.status(400).json({ message: 'There was an error updating the user' });
@@ -81,6 +84,7 @@ const changePassword = async (req, res) => {
     await db.User.update({ password: hashedPassword2 }, { where: { id } });
     const updatedUser = await db.User.findOne({ where: { id }, include: { model: db.Asset, as: 'ProfilePicture' } });
     req.session.user = updatedUser.toJSON();
+    createLog('UPDATE', req.session.user.id, id, 'USER');
     return res.status(200).json({ id });
   } catch (err) {
     return res.status(400).json({ code: 'InValid Error', message: 'There was an error updaing the password' });
