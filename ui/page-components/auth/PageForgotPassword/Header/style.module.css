@@ -1,0 +1,25 @@
+.container {
+  padding-top: 16px;
+  padding-left: 32px;
+  padding-right: 32px;
+  margin-bottom: 16px;
+}
+
+.back_link {
+  color: #333;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.header_icon {
+  margin-right: 8px;
+}
+
+.header_title {
+  margin: 0;
+}
+/*# sourceMappingURL=style.module.css.map */

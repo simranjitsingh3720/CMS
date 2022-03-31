@@ -6,20 +6,20 @@ import _ from 'lodash';
 import { useRequest } from '../../../../helpers/request-helper';
 import styles from './style.module.scss';
 
-function ShowSettings({ schema }) {
+function ShowSettings({ schemaDetails }) {
   const [form] = Form.useForm();
   const [disable, setDisable] = useState(true);
   form.setFieldsValue({
-    title: schema.title,
-    slug: schema.slug,
-    description: schema.description,
+    title: schemaDetails.title,
+    slug: schemaDetails.slug,
+    description: schemaDetails.description,
   });
   const [error, setError] = useState('');
   const { push } = useRouter();
 
   const [{}, executePatch] = useRequest(
     {
-      url: `/schema/${schema.slug}`,
+      url: `/schema/${schemaDetails.slug}`,
       method: 'PATCH',
     },
     {
@@ -35,7 +35,7 @@ function ShowSettings({ schema }) {
         description: values.description,
       },
       params: {
-        schemaId: schema.id,
+        schemaId: schemaDetails.id,
       },
     }).then((res) => {
       const { slug } = JSON.parse(res.config.data);
@@ -62,7 +62,6 @@ function ShowSettings({ schema }) {
       form.setFieldsValue({ slug: '' });
     }
   };
-  console.log(disable);
   return (
     <div>
       <Form
@@ -83,7 +82,7 @@ function ShowSettings({ schema }) {
           rules={[
             {
               required: true,
-              message: 'Please input your Schema Names!',
+              message: 'Please input your Schema Name!',
             },
           ]}
         >
