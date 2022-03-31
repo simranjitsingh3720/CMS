@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
+import { Empty } from 'antd';
 import AssetCard from './AssetCard';
 import AssetModal from './AssetModal';
 import ActionBar from '../../components/layout/ActionBar';
@@ -55,10 +56,23 @@ function PageAsset() {
           handleCancel={handleCancel}
           data={[]}
         />
+
         <div className="card_component_container">
-          {((data && data.list) || []).map((item) => (
-            <AssetCard key={item.id} data={item} refetch={refetch} />
-          ))}
+          { data && data.list.length <= 0 ? (
+            <div style={{ width: '100%' }}>
+              <Empty
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                description={(
+                  <span>
+                    No Asset Found
+                  </span>
+    )}
+              />
+            </div>
+          )
+            : ((data && data.list) || []).map((item) => (
+              <AssetCard key={item.id} data={item} refetch={refetch} />
+            )) }
         </div>
       </div>
     </div>
