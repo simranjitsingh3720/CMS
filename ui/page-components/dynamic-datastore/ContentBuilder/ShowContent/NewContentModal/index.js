@@ -11,9 +11,10 @@ export default function NewContentModal({
   schemaDetails, getContent, isEditable, editableData,
   isContentModal,
 }) {
-  const fields = schemaDetails.schema || [];
-  const initialValues = getInitialValues(schemaDetails.schema, editableData, isEditable);
-  const schemaSlug = schemaDetails.slug;
+  const fields = schemaDetails.list || [];
+  const initialValues = getInitialValues(schemaDetails.list, editableData, isEditable);
+  const schemaSlug = schemaDetails
+  && schemaDetails.list && schemaDetails.list[0].schemaSlug; // need schema slug
   const [loading, setLoading] = useState(false);
   const [storeData, setStoreData] = useState(null);
   const [disable, setDisable] = useState(false);
@@ -56,7 +57,7 @@ export default function NewContentModal({
   const handleAddContent = (contentData) => {
     const x = { ...contentData };
     const multiplePlaceholder = '';
-    schemaDetails.schema.forEach((field, index) => {
+    schemaDetails.list.forEach((field, index) => {
       if (field.type === 'Date and Time') {
         x[field.id] = moment(x[field.id]).toISOString(true);
       }
@@ -115,7 +116,7 @@ export default function NewContentModal({
         }
       }
       if (field.type === 'Boolean' && field.appearanceType === 'Boolean radio') {
-        if (x[field.id] === field.Truelabel) {
+        if (x[field.id] === field.Truelabel) { // trueLabel
           x[field.id] = true;
         } else if (x[field.id] === field.Falselabel) {
           x[field.id] = false;
@@ -138,13 +139,13 @@ export default function NewContentModal({
   const handleUpdateContent = (contentData) => {
     const x = { ...contentData };
 
-    schemaDetails.schema.forEach((field) => {
+    schemaDetails.list.forEach((field) => {
       if (field.type === 'Date and Time') {
         x[field.id] = moment(x[field.id]).toISOString(true);
       }
 
       if (field.type === 'Boolean' && field.appearanceType === 'Boolean radio') {
-        if (x[field.id] === field.Truelabel) {
+        if (x[field.id] === field.Truelabel) { // trueLabel
           x[field.id] = true;
         } else if (x[field.id] === field.Falselabel) {
           x[field.id] = false;
@@ -221,7 +222,7 @@ export default function NewContentModal({
           </Form.Item>
         ) : (
           <div>
-            {schemaDetails.schema && schemaDetails.schema.length >= 1 ? (
+            {schemaDetails.list && schemaDetails.list.length >= 1 ? (
               <Form.Item
                 style={{ marginBottom: '0px' }}
               >

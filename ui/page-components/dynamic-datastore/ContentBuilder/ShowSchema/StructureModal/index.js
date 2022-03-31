@@ -12,7 +12,8 @@ import styles from './style.module.scss';
 const { TextArea } = Input;
 
 function StructureModal({
-  showSchemaModal, fieldsId, closeSchemaModal, data = {}, fieldData, isEditable, setReFetchSchema,
+  showSchemaModal, fieldsId, closeSchemaModal, data = {},
+  fieldData, isEditable, setReFetchSchema, schemaSlug,
 }) {
   const [form] = Form.useForm();
   const [dataType, setDataType] = useState('');
@@ -48,23 +49,106 @@ function StructureModal({
     executeFieldCreate,
   ] = useRequest(
     {
-      url: `/schema/${data.slug}/field`,
+      url: `/schema/${schemaSlug}/field`,
       method: 'POST',
 
     },
     { manual: true },
   );
 
+  // const [{ },
+  //   executeFieldCreate,
+  // ] = useRequest(
+  //   {
+  //     url: `/schema/${data.slug}`,
+  //     method: 'POST',
+
+  //   },
+  //   { manual: true },
+  // );
+
   const [{ },
     executeFieldUpdate,
   ] = useRequest(
     {
-      url: `/schema/${data.slug}/field/${fieldsId}`,
+      url: `/schema/${schemaSlug}/field/${fieldsId}`,
       method: 'PATCH',
-
     },
     { manual: true },
   );
+
+  // const [{ },
+  //   executeFieldUpdate,
+  // ] = useRequest(
+  //   {
+  //     url: `/schema/${data.slug}/field/${fieldsId}`,
+  //     method: 'PATCH',
+
+  //   },
+  //   { manual: true },
+  // );
+
+  // const onFinish = async (values) => {
+  //   const updatedValues = values;
+
+  //   if (updatedValues.values) {
+  //     if (updatedValues.options) {
+  //       updatedValues.options.values = values.values;
+  //     } else {
+  //       updatedValues.options = {
+  //         values: values.values,
+  //       };
+  //     }
+  //   }
+
+  //   if (updatedValues.isMultiple) {
+  //     if (updatedValues.options) {
+  //       updatedValues.options.isMultiple = values.isMultiple;
+  //     } else {
+  //       updatedValues.options = {
+  //         isMultiple: values.isMultiple,
+  //       };
+  //     }
+  //   }
+  //   updatedValues.values = undefined;
+  //   updatedValues.isMultiple = undefined;
+
+  //   setLoading(true);
+  //   if (!isEditable) {
+  //     await executeFieldCreate({
+  //       data: {
+  //         schema: values,
+  //         fieldId: values.id,
+  //       },
+  //     }).then(() => {
+  //       message.success('Field Added Successfully');
+  //       setLoading(false);
+  //       form.resetFields();
+  //       closeSchemaModal();
+  //       setReFetchSchema(true);
+  //     }).catch((err) => {
+  //       message.error(err.response.data.message || err.response.data.messages[0]);
+  //     });
+  //   } else {
+  //     await executeFieldUpdate({
+  //       data: {
+  //         schema: values,
+  //       },
+  //     }).then(() => {
+  //       setReFetchSchema(true);
+  //     }).catch((err) => {
+  //       message.error(err.response.data.message || err.response.data.messages[0]);
+  //     });
+
+  //     if (!error) {
+  //       setLoading(false);
+
+  //       form.resetFields();
+  //       closeSchemaModal();
+  //       message.success('Field Updated Successfully');
+  //     }
+  //   }
+  // };
 
   const onFinish = async (values) => {
     const updatedValues = values;
@@ -88,7 +172,6 @@ function StructureModal({
         };
       }
     }
-
     updatedValues.values = undefined;
     updatedValues.isMultiple = undefined;
 
@@ -96,8 +179,10 @@ function StructureModal({
     if (!isEditable) {
       await executeFieldCreate({
         data: {
-          schema: values,
-          fieldId: values.id,
+          ...values,
+        },
+        params: {
+          schemaId: data.id,
         },
       }).then(() => {
         message.success('Field Added Successfully');
@@ -111,7 +196,7 @@ function StructureModal({
     } else {
       await executeFieldUpdate({
         data: {
-          schema: values,
+          ...values,
         },
       }).then(() => {
         setReFetchSchema(true);
@@ -132,11 +217,11 @@ function StructureModal({
   if (!isEditable) {
     const handleValuesChange = (changedValues) => {
       if (changedValues.name !== '' && changedValues.name !== undefined) {
-        form.setFieldsValue({ id: _.snakeCase(changedValues.name) });
+        form.setFieldsValue({ fieldId: _.snakeCase(changedValues.name) });
       }
 
       if (changedValues.name === '') {
-        form.setFieldsValue({ id: '' });
+        form.setFieldsValue({ fieldId: '' });
       }
     };
   }
@@ -158,15 +243,17 @@ function StructureModal({
         layout="vertical"
         initialValues={{
           name: (fieldData && fieldData.name),
-          id: (fieldData && fieldData.id),
+          fieldId: (fieldData && fieldData.fieldId),
           type: (fieldData && fieldData.type),
           appearanceType: (fieldData && fieldData.appearanceType),
           defaultValue: (fieldData && fieldData.defaultValue),
-          required: (fieldData && fieldData.required),
+          isRequired: (fieldData && fieldData.isRequired),
           description: (fieldData && fieldData.description),
           values: ((fieldData && fieldData.options && fieldData.options.values) || ''),
           Truelabel: (fieldData && fieldData.Truelabel),
           Falselabel: (fieldData && fieldData.Falselabel),
+          // trueLabel: (fieldData && fieldData.trueLabel),
+          // falseLabel: (fieldData && fieldData.falseLabel),
           isMultiple: ((fieldData && fieldData.options && fieldData.options.isMultiple) || ''),
         }}
         onFinish={onFinish}
@@ -194,7 +281,7 @@ function StructureModal({
 
               <Form.Item
                 label="Field ID"
-                name="id"
+                name="fieldId"
                 style={{ display: 'inline-block', width: 'calc(50% - 8px)', margin: '0 8px' }}
                 rules={[{ required: true, message: 'Please input your field ID!' }]}
               >
@@ -227,7 +314,7 @@ function StructureModal({
               <Input defaultValue={(fieldData && fieldData.defaultValue) || ''} />
             </Form.Item>
             <Form.Item
-              name="required"
+              name="isRequired"
               valuePropName="checked"
             >
               <Checkbox
