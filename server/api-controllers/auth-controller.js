@@ -1,17 +1,12 @@
 // eslint-disable-next-line import/no-import-module-exports
-<<<<<<< HEAD
-const { addMinutes } = require('date-fns');
-const validator = require('validator');
-const bcrypt = require('bcrypt');
-const { createLog } = require('./createLog-controller');
-=======
 // const { addMinutes } = require('date-fns');
 
 // const validator = require('validator');
 const bcrypt = require('bcrypt');
 // const { request } = require('express');
 const randtoken = require('rand-token');
->>>>>>> e9542dc0e8347efbfe149024f997c16c5fae28a8
+const { createLog } = require('./createLog-controller');
+
 const db = require('../../db/models/index');
 const { ValidityError, ServerError } = require('../helpers/error-helper');
 
