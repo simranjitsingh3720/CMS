@@ -33,6 +33,7 @@ export const getInitialValues = (fields, editableData, isEditable) => {
         if (data.appearanceType === 'Boolean radio') {
           if (editableData[data.id] === true) {
             values[[data.id]] = data.Truelabel;
+            // values[[data.id]] = data.trueLabel;
           } else if (editableData[data.id] === false) {
             values[[data.id]] = data.Falselabel;
           } else {
@@ -54,7 +55,7 @@ export const getInitialValues = (fields, editableData, isEditable) => {
 function GetFields(appearenceType, field, isEditable) {
   const {
     name, required, options, Truelabel, Falselabel, id,
-  } = field;
+  } = field; // trueLabel
 
   let values = [];
   if (options) {
@@ -142,7 +143,9 @@ function GetFields(appearenceType, field, isEditable) {
         <Form.Item name={id} label={name} rules={[{ required }]} valuePropName="checked">
           <Switch
             checkedChildren={Truelabel}
+            // checkedChildren={trueLabel}
             unCheckedChildren={Falselabel}
+            // checkedChildren={falseLabel}
             defaultChecked={false}
           />
         </Form.Item>
@@ -154,6 +157,8 @@ function GetFields(appearenceType, field, isEditable) {
           <Radio.Group>
             <Radio value={Truelabel}>{Truelabel}</Radio>
             <Radio value={Falselabel}>{Falselabel}</Radio>
+            {/* <Radio value={trueLabel}>{trueLabel}</Radio>
+            <Radio value={falseLabel}>{falseLabel}</Radio> */}
           </Radio.Group>
         </Form.Item>
       );

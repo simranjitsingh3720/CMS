@@ -29,7 +29,7 @@ function FieldCard({
               <Button
                 id="edit_structure"
                 className={style.button}
-                onClick={() => handleEditSchemaFieldsModal(fields.id)}
+                onClick={() => handleEditSchemaFieldsModal(fields.fieldId)}
               >
                 <EditOutlined />
               </Button>

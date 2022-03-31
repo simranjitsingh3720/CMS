@@ -1,0 +1,11 @@
+.card_wrapper {
+  margin: 8px 8px;
+  -webkit-box-flex: calc(33% - 16px);
+      -ms-flex: calc(33% - 16px);
+          flex: calc(33% - 16px);
+  -webkit-box-flex: inherit;
+      -ms-flex-positive: inherit;
+          flex-grow: inherit;
+  cursor: pointer;
+}
+/*# sourceMappingURL=style.module.css.map */

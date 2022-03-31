@@ -65,8 +65,10 @@ export default function ContentTable({
           if (updatedContent[field.id] !== undefined) {
             if (updatedContent[field.id]) {
               updatedContent[field.id] = field.Truelabel;
+              // updatedContent[field.id] = field.trueLabel;
             } else {
               updatedContent[field.id] = field.Falselabel;
+              // updatedContent[field.id] = field.falseLabel;
             }
           }
         });
@@ -78,8 +80,10 @@ export default function ContentTable({
             if (updatedContent[field.id] !== '') {
               if (updatedContent[field.id]) {
                 updatedContent[field.id] = field.Truelabel;
+                // updatedContent[field.id] = field.trueLabel;
               } else {
                 updatedContent[field.id] = field.Falselabel;
+                // updatedContent[field.id] = field.falseLabel;
               }
             }
           }

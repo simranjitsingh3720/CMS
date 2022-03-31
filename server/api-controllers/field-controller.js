@@ -1,5 +1,5 @@
 const db = require('../../db/models');
-const { ValidityError, MissingError, DuplicateError, ServerError, ForbiddenError } = require('../helpers/error-helper');
+const { ValidityError, MissingError, ServerError } = require('../helpers/error-helper');
 
 // const createField = async (req, res) => {
 //   const { body, query } = req;
@@ -50,8 +50,7 @@ const { ValidityError, MissingError, DuplicateError, ServerError, ForbiddenError
 const createField = async (req, res) => {
   const { body, query } = req;
 
-  console.log('BODY ', body);
-  const { schemaId, schemaSlug, fieldId } = query;
+  const { schemaId, schemaSlug } = query;
 
   // if (!fieldId || !schema) {
   //   let message = '';
@@ -73,7 +72,7 @@ const createField = async (req, res) => {
 
   const isFieldIdExist = await db.Field.findOne({
     where: {
-      schemaSlug: body.schemaSlug,
+      schemaSlug,
       fieldId: body.fieldId,
     },
   });
@@ -84,8 +83,13 @@ const createField = async (req, res) => {
 
   const field = await db.Field.create({
     ...body,
+    schemaId,
+    schemaSlug,
   });
-  return res.status(201).json({ id: field.id });
+
+  if (field) {
+    return res.status(201).json({ id: field.id });
+  }
 
   throw new MissingError('Schema not found');
 };
@@ -126,7 +130,9 @@ const createField = async (req, res) => {
 
 const updateField = async (req, res) => {
   const { body, query } = req;
-  const { schemaId, schemaSlug, fieldId } = query;
+  const { schemaSlug, fieldId } = query;
+
+  console.log('BODY UPDATE ', body, query);
 
   if (!body) {
     throw ValidityError('Data for update required');
@@ -137,16 +143,7 @@ const updateField = async (req, res) => {
   if (!data) {
     throw new MissingError('Table Not Found');
   }
-  // const isFieldIdExist = await db.Field.findOne({
-  //   where: {
-  //     schemaSlug: body.schemaSlug,
-  //     fieldId: body.fieldId,
-  //   },
-  // });
 
-  // if (isFieldIdExist) {
-  //   throw new MissingError('Field Id already exists.');
-  // }
   const updatedField = await db.Field.update({ ...body }, { where: { schemaSlug, fieldId } });
 
   if (updatedField) {
@@ -235,69 +232,8 @@ const deleteField = async (req, res) => {
 
   if (deletedField) {
     return res.status(200).json({ id: fieldId });
-
-    // const contents = await db.Content.findAll({
-    //   include: {
-    //     model: db.Schema,
-    //     attributes: ['id', 'schema'],
-    //     where: {
-    //       slug: schemaSlug,
-    //     },
-    //   },
-    // });
-
-    // if (contents && contents.length > 0) {
-    //   let isData = false;
-    //   contents.forEach((content) => {
-    //     const { data } = content.dataValues;
-    //     if (data[fieldId]) {
-    //       isData = true;
-    //     }
-    //   });
-
-    //   if (isData) {
-    //     throw new ForbiddenError('Some contents exists for the respective field. Please delete the contents first to delete this field.');
-    //   }
-
-    //   const data = await db.Schema.findOne({ where: { slug: schemaSlug } });
-    //   const newSchema = data.toJSON().schema;
-    //   let i = 0;
-    //   for (i = 0; i < newSchema.length; i += 1) {
-    //     if (newSchema[i].id === fieldId) {
-    //       newSchema.splice(i, 1);
-    //       break;
-    //     }
-    //   }
-    //   const updatedSchema = await db.Schema.update(
-    //     { schema: newSchema },
-    //     { where: { slug: schemaSlug } },
-    //   );
-
-    //   if (updatedSchema) {
-    //     return res.status(200).json({ id: fieldId });
-    //   }
-    //   throw new ServerError('Not able to connect with Server');
-    // }
-    // const data = await db.Schema.findOne({ where: { slug: schemaSlug } });
-    // const newSchema = data.toJSON().schema;
-    // let i = 0;
-    // for (i = 0; i < newSchema.length; i += 1) {
-    //   if (newSchema[i].id === fieldId) {
-    //     newSchema.splice(i, 1);
-    //     break;
-    //   }
-    // }
-    // const updatedSchema = await db.Schema.update(
-    //   { schema: newSchema },
-    //   { where: { slug: schemaSlug } },
-    // );
-
-    // if (updatedSchema) {
-    //   return res.status(200).json({ id: fieldId });
-    // }
-
-    throw new ServerError('Not able to connect with Server');
   }
+  throw new ServerError('Not able to connect with Server');
 };
 
 const reOrderFields = async (req, res) => {
