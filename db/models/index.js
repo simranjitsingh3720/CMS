@@ -8,6 +8,7 @@ const contentModel = require('./content');
 const userDemoPreferenceModel = require('./userDemoPreference');
 const fieldModel = require('./field');
 const logModel = require('./log');
+const contentDataModel = require('./contentData');
 
 const db = {};
 
@@ -26,7 +27,7 @@ requireModel(contentModel);
 requireModel(userDemoPreferenceModel);
 requireModel(fieldModel);
 requireModel(logModel);
-
+requireModel(contentDataModel);
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);

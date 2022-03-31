@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   class Content extends Model {
     static associate(models) {
       models.Content.belongsTo(models.Schema, { foreignKey: 'schemaId' });
+      models.Content.belongsTo(models.Schema, { foreignKey: 'schemaSlug' });
       models.Content.belongsTo(models.User, { foreignKey: 'createdBy' });
       models.Content.belongsTo(models.User, { foreignKey: 'updatedBy' });
       models.Content.belongsTo(models.User, { foreignKey: 'deletedBy' });
@@ -15,8 +16,10 @@ module.exports = (sequelize, DataTypes) => {
     {
       id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
       schemaId: { type: DataTypes.UUID },
+      schemaSlug: { type: DataTypes.STRING },
       data: { type: DataTypes.JSON },
       status: { type: DataTypes.ENUM('draft', 'published') },
+      order: { type: DataTypes.NUMBER },
       createdBy: { type: DataTypes.UUID },
       createdAt: { type: DataTypes.DATE },
       updatedBy: { type: DataTypes.UUID },
