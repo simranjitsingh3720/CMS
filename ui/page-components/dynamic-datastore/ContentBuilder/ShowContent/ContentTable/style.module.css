@@ -1,0 +1,13 @@
+.noField {
+  width: 100vw;
+  font-size: 30px;
+}
+
+.add_button_container {
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  -webkit-transform: translate(100%, -50%);
+          transform: translate(100%, -50%);
+}
+/*# sourceMappingURL=style.module.css.map */

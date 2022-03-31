@@ -52,7 +52,7 @@ export default function EmbedableForm() {
         x[field.id] = moment(x[field.id]).toISOString(true);
       }
       if (field.type === 'Boolean' && field.appearanceType === 'Boolean radio') {
-        if (x[field.id] === field.Truelabel) {
+        if (x[field.id] === field.Truelabel) { // trueLabel
           x[field.id] = true;
         } else if (x[field.id] === field.Falselabel) {
           x[field.id] = false;

@@ -1,0 +1,20 @@
+.submitButton {
+  margin-left: 14px;
+}
+
+.error {
+  color: red;
+}
+
+.actionButton {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+}
+/*# sourceMappingURL=style.module.css.map */
