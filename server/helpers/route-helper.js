@@ -28,7 +28,6 @@ const errorHandler = (err, res) => {
 };
 
 const route = (methodControllers) => async (req, res) => {
-  console.log('REQUEST ', req.body);
   try {
     if (methodControllers.authRequired && !req.session.user) {
       throw new AuthorizationError('You are not authorized.');

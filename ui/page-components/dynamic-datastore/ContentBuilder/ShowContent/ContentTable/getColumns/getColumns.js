@@ -1,5 +1,6 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Space, Tooltip } from 'antd';
+import { useRequest } from '../../../../../../helpers/request-helper';
 import styles from './style.module.scss';
 
 export default function getColumns(tableSchema, handleEditContent, handleDeleteContent) {
@@ -12,29 +13,32 @@ export default function getColumns(tableSchema, handleEditContent, handleDeleteC
         title: field.name,
         dataIndex: field.id,
         key: field.id,
-        render: (actions) => (
-          <div>
-
-            {/* {JSON.stringify(actions)} */}
-            {actions ? (
-              actions.fileList ? (
-                actions.fileList.map((action) => (
-                  <div>
-                    <a href={action.readUrl} target="_blank" rel="noreferrer">{action.name}</a>
-                  </div>
-                ))
-              )
-                : (
-                  actions.map((action) => (
+        render: (actions) =>
+          // console.log('actions: ===', actions);
+          (
+            <div>
+              {JSON.stringify(actions)}
+              {/* lu */}
+              {actions ? (
+                actions.fileList ? (
+                  actions.fileList.map((action) => (
                     <div>
                       <a href={action.readUrl} target="_blank" rel="noreferrer">{action.name}</a>
                     </div>
                   ))
                 )
+                  : (
+                    actions.map((action) => (
+                      <div>
+                        <a href={action.readUrl} target="_blank" rel="noreferrer">{action.name}</a>
+                      </div>
+                    ))
+                  )
 
-            ) : 'No asset content'}
-          </div>
-        )
+              ) : 'No asset content'}
+            </div>
+          )
+
         ,
       };
     }

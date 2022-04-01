@@ -58,6 +58,7 @@ export default function ContentTable({
 
   if (data) {
     finalData = data.list.map((content) => {
+      console.log(content);
       const updatedContent = { ...content.data };
 
       if (switchFieldsId.length > 0) {

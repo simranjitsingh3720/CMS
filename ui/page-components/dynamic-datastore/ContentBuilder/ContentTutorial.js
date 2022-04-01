@@ -38,7 +38,7 @@ function ContentTutorial() {
   ];
   return (
     <div>
-      {session && session.user.flag.datastore_contents && <Tutorial steps={steps} tutorialKey="datastore_contents" />}
+      {session && session.demo.datastoreContents && <Tutorial steps={steps} tutorialKey="datastoreContents" />}
     </div>
   );
 }

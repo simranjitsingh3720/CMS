@@ -2,7 +2,6 @@ import { Button, Form, message, Modal, Space } from 'antd';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
-import FormData from 'form-data';
 import { useRequest } from '../../../../../helpers/request-helper';
 import GetFields, { getInitialValues } from './GetFields/GetFields';
 import styles from './style.module.scss';
@@ -17,8 +16,9 @@ export default function NewContentModal({
   const schemaSlug = schemaDetails.slug;
   const [loading, setLoading] = useState(false);
   const [storeData, setStoreData] = useState(null);
+  const multipleAssets = [];
 
-  const formData = new FormData();
+  const [{ }, executePost] = useRequest({ method: 'POST' }, { manual: true });
 
   // eslint-disable-next-line no-empty-pattern
   const [{}, addContent] = useRequest(
@@ -36,8 +36,8 @@ export default function NewContentModal({
   );
 
   useEffect(() => {
+    console.log(storeData);
     if (storeData !== null) {
-      // console.log('DATAATATAAT ', storeData);
       addContent({
         url: `/content/${schemaSlug}`,
         data: { data: storeData },
@@ -53,6 +53,7 @@ export default function NewContentModal({
   const handleAddContent = (contentData) => {
     const x = { ...contentData };
     let uploadData = [];
+    let count = 0;
 
     schemaDetails.schema.forEach((field) => {
       if (field.type === 'Date and Time') {
@@ -60,63 +61,13 @@ export default function NewContentModal({
       }
       if (field.type === 'Assets') {
         if (x[field.id]) {
-          const count = 0;
-
           x[field.id].fileList.forEach((singleFile) => {
-            console.log('singleFile: ', singleFile.originFileObj);
-            formData.append('file', singleFile.originFileObj);
-
             uploadData = [...uploadData, singleFile];
+            const { name } = singleFile;
+            const mimeType = singleFile.type;
+            const type = singleFile.type.split('/')[0];
 
-            // const { name } = xy;
-            // const mimeType = xy.type;
-
-            // const type = xy.type.split('/')[0];
-
-            // const FileData = xy.originFileObj;
-            // const headerType = xy.originFileObj.type;
-
-            // multipleAssets = [...multipleAssets, { name, type, mimeType }];
-            // multipleFileData = [...multipleFileData, { FileData }];
-            // multipleHeaderType = [...multipleHeaderType, { headerType }];
-
-            // axios.post('/api/v1/asset', {
-            //   name,
-            //   type,
-            //   mimeType,
-            // })
-            //   .then((res) => {
-            //     const { writeUrl, readUrl } = res.data;
-            //     const FileData = xy.originFileObj;
-            //     const headerType = xy.originFileObj.type;
-
-            //     axios.put(
-            //       writeUrl,
-            //       FileData,
-            //       {
-            //         headers: { type: headerType, 'Content-Type': `${headerType}` },
-            //       },
-            //     )
-            //       .then(() => {
-            //         count += 1;
-            //         setLoading(false);
-            //         uploadData = [...uploadData, {
-            //           name,
-            //           readUrl,
-            //         }];
-
-            //         console.log('x[field.id] ', x[field.id]);
-
-            //         if (x[field.id].fileList.length === count) {
-            //           x[field.id] = uploadData;
-            //           setStoreData(x);
-            //           console.log('x: ', x);
-            //           closeContentModal();
-            //         }
-            //       })
-            //       .catch((err) => console.log(err));
-            //   })
-            //   .catch((err) => console.log(err));
+            multipleAssets = [...multipleAssets, { name, type, mimeType }];
           });
         }
       }
@@ -137,12 +88,35 @@ export default function NewContentModal({
       }
     });
     if (uploadData.length > 0) {
-      console.log('file Dataaaa: ', uploadData);
-      axios.post('/api/v1/asset/bulkUpload', {
-        // uploadData,
-        // fileObj,
-        formData,
-      });
+      executePost({
+        url: '/asset/bulkUpload',
+        data: multipleAssets,
+      })
+        .then((res) => {
+          const { writeUrlList, assetIdList, readUrlArr } = res.data;
+          console.log('x-', x);
+          const n = x.single.fileList;
+          let a = n[0];
+          a = { ...a, test: 'test1' };
+          console.log(n[0]);
+          x = { ...x, a };
+          writeUrlList.forEach((writeUrl, index) => {
+            axios.put(
+              writeUrl,
+              uploadData[index].originFileObj,
+              {
+                headers: { type: uploadData[index].originFileObj.type, 'Content-Type': `${uploadData[index].originFileObj.type}` },
+              },
+            )
+              .then((result) => {
+                // console.log(result);
+                count += 1;
+                setLoading(false);
+                setStoreData(x);
+                closeContentModal();
+              });
+          });
+        });
     }
   };
 
@@ -188,6 +162,7 @@ export default function NewContentModal({
   };
 
   const onFinishFailed = () => {
+    setLoading(false);
     message.error('Fields are required');
   };
 

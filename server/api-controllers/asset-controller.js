@@ -1,5 +1,5 @@
 const dotenv = require('dotenv');
-const axios = require('axios');
+// const axios = require('axios');
 const aws = require('aws-sdk');
 const { Sequelize } = require('sequelize');
 const db = require('../../db/models');
@@ -83,42 +83,63 @@ const createAsset = async (req, res) => {
 };
 
 const createAssetsInBulk = async (req, res) => {
-  const { body } = req;
-  const { formData } = body;
+  // const { body } = req;
+  const multipleAssets = req.body;
+  // console.log(uploadData.uploadData[0].originFileObj, 'adsfg');
+  let assetIdList = [];
 
-  console.log('formData : ', formData.get('single'));
-  // let uploadData = [];
+  const generateReadUrl = async (id) => {
+    const params = ({
+      Bucket: bucketName,
+      Key: `asset/${id}`,
+      Expires: 3600,
+    });
 
-  // await formData.forEach((singleFile) => {
-  //   uploadData = [...uploadData, { name: singleFile.name, mimeType: singleFile.type, type: singleFile.type.split('/')[0], createdBy: req.session.user.id }];
+    const writeUrl = await s3.getSignedUrlPromise('putObject', params);
+
+    // const readUrl = writeUrl.split('?')[0];
+
+    return writeUrl;
+  };
+
+  multipleAssets.forEach((singleFile, index) => {
+    multipleAssets[index] = {
+      ...multipleAssets[index],
+      createdBy: req.session.user.id,
+    };
+  });
+
+  const assets = await db.Asset.bulkCreate(multipleAssets);
+
+  // await assets.forEach(async (singleAsset) => {
+  //   const readUrl = await generateReadUrl(singleAsset.id);
+  //   db.Asset.update(
+  //     { url: readUrl, updatedBy: req.session.user.id },
+  //     { where: { id: singleAsset.id } },
+  //   );
+  //   assetIdList = [...assetIdList, singleAsset.id];
   // });
-  // const assets = await db.Asset.bulkCreate(uploadData);
 
-  // if (!body.name || !body.type || !body.mimeType) {
-  //   throw new ValidityError('name, type and mimeType, all are required.');
-  // }
-  // console.log('body of createAssetInBulk: ', body);
+  const allPromises = [];
+  const readUrlArr = [];
 
-  // multipleAssets.forEach((assetData, index) => {
-  //   multipleAssets[index].createdBy = req.session.user.id;
-  // });
+  for (let i = 0; i < assets.length; i += 1) {
+    allPromises.push(generateReadUrl(assets[i].id));
+  }
 
-  // const assets = await db.Asset.bulkCreate(multipleAssets);
+  const writeUrlList = await Promise.all(allPromises);
 
-  return res.status(201).json({ response: res });
+  for (let i = 0; i < assets.length; i += 1) {
+    const readUrl = writeUrlList[i].split('?')[0];
+    readUrlArr.push(readUrl);
+    assetIdList = [...assetIdList, assets[i].id];
 
-  // const params = ({
-  //   Bucket: bucketName,
-  //   Key: `asset/${asset.id}`,
-  //   Expires: 3600,
-  // });
-  // const uploadURL = await s3.getSignedUrlPromise('putObject', params);
-  // const readUrl = uploadURL.split('?')[0];
-  // await db.Asset.update(
-  //   { url: readUrl, updatedBy: req.session.user.id },
-  //   { where: { id: asset.id } },
-  // );
-  // return res.status(201).json({ id: asset.id, writeUrl: uploadURL, readUrl });
+    db.Asset.update(
+      { url: readUrl, updatedBy: req.session.user.id },
+      { where: { id: assets[i].id } },
+    );
+  }
+  return res.status(201).json({ assetIdList, writeUrlList, readUrlArr });
 };
 
 const updateAsset = async (req, res) => {
