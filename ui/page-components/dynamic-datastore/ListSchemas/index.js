@@ -148,7 +148,7 @@ function ListSchema() {
               schemaDesc={schema.description}
               showSchema={showSchema}
               deleteSchema={deleteSchema}
-              totatlFields={schema.schema.length || 0}
+              totatlFields={(schema.schema && schema.schema.length) || 'NEED TO FIX'}
             />
           ))}
         </div>

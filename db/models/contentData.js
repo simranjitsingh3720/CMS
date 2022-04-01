@@ -21,8 +21,6 @@ module.exports = (sequelize, DataTypes) => {
       schemaSlug: { type: DataTypes.STRING },
       attributeKey: { type: DataTypes.STRING },
       attributeValue: { type: DataTypes.STRING },
-      attributeApperanceType: { type: DataTypes.STRING },
-      attributeType: { type: DataTypes.STRING },
       status: { type: DataTypes.ENUM('draft', 'published') },
       createdBy: { type: DataTypes.UUID },
       createdAt: { type: DataTypes.DATE },
