@@ -24,23 +24,18 @@ function PageManagerTutorial() {
       hideCloseButton: 'true',
     },
     {
-      target: '#fourth-step',
+      target: '#card',
       content: 'Work on your page here',
       disableBeacon: 'true',
       hideCloseButton: 'true',
     },
     {
-      target: '#fifth-step',
+      target: '#options',
       content: 'View your page here',
       disableBeacon: 'true',
       hideCloseButton: 'true',
     },
-    {
-      target: '#sixth-step',
-      content: 'Edit your page here',
-      disableBeacon: 'true',
-      hideCloseButton: 'true',
-    },
+
   ];
   return (
     <div>

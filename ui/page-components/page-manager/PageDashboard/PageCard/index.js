@@ -66,7 +66,6 @@ function PageCard({ searchValue }) {
         type="text"
         onClick={() => { showModal(page); }}
         key="edit"
-        className="third-step"
       >
         Edit Page
       </Button>
@@ -75,7 +74,6 @@ function PageCard({ searchValue }) {
         type="text"
         onClick={() => { handleView(page.slug); }}
         key="delete"
-        className="fourth-step"
       >
         View Page
       </Button>
@@ -132,6 +130,7 @@ function PageCard({ searchValue }) {
                   <button
                     type="button"
                     className={styles.page_button}
+                    id="options"
                   >
                     <MoreOutlined />
                   </button>

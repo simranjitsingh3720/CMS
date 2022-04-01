@@ -62,7 +62,7 @@ export default function ContentBuilder() {
     <div>
       {notFound ? <Error message="Page Not Found" code={404} /> : (
         <>
-          {/* <ContentTutorial /> */}
+          {' '}
           {defaultKey ? (
             <div className={styles.content_builder_wrapper}>
               <Tabs defaultActiveKey={defaultKey} onChange={callback} size="large" activeKey={defaultKey}>

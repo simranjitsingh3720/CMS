@@ -18,7 +18,7 @@ function SchemaTutorial() {
 
     },
     {
-      target: '#fourth-step',
+      target: '#card',
       content: 'This is format of schema you added and also onclick you will get details',
       disableBeacon: 'true',
 
