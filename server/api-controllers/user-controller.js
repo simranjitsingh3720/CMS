@@ -26,6 +26,7 @@ const listUser = async (req, res) => {
 const getMe = async (req, res) => {
   const { session, sessionID } = req;
   // console.log('sessions', session);
+  // console.log('sessions', session);
   if (!session.user) {
     throw new AuthorizationError('No session exists');
   }

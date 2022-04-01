@@ -72,8 +72,8 @@ function Profile() {
       submitData = {
         firstName: values.firstName,
         lastName: values.lastName,
-        countryCode: values.countryCode,
-        mobileNumber: values.mobileNumber,
+        phone: values.phone,
+
       };
       submitDemoData = {
         asset: true,

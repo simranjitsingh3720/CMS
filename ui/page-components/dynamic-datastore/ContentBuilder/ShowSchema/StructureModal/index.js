@@ -66,7 +66,14 @@ function StructureModal({
     { manual: true },
   );
 
+  function hasDuplicates(arr) {
+    return new Set(arr).size !== arr.length;
+  }
+
   const onFinish = async (values) => {
+    console.log(values);
+    const hasDuplicatesValues = hasDuplicates(values.values);
+    console.log('hasDuplicatesValues: ', hasDuplicatesValues);
     const updatedValues = values;
 
     if (updatedValues.values) {
@@ -92,45 +99,50 @@ function StructureModal({
     updatedValues.values = undefined;
     updatedValues.isMultiple = undefined;
 
-    setLoading(true);
-    if (!isEditable) {
-      await executeFieldCreate({
-        data: {
-          schema: values,
-          fieldId: values.id,
-        },
-      }).then(() => {
-        message.success('Field Added Successfully');
-        setLoading(false);
-        form.resetFields();
-        closeSchemaModal();
-        setReFetchSchema(true);
-      }).catch((err) => {
-        message.error(err.response.data.message || err.response.data.messages[0]);
-      });
-    } else {
-      await executeFieldUpdate({
-        data: {
-          schema: values,
-        },
-      }).then(() => {
-        setReFetchSchema(true);
-      }).catch((err) => {
-        message.error(err.response.data.message || err.response.data.messages[0]);
-      });
+    if (!hasDuplicatesValues) {
+      setLoading(true);
+      if (!isEditable) {
+        await executeFieldCreate({
+          data: {
+            schema: values,
+            fieldId: values.id,
+          },
+        }).then(() => {
+          message.success('Field Added Successfully');
+          setLoading(false);
+          form.resetFields();
+          closeSchemaModal();
+          setReFetchSchema(true);
+        }).catch((err) => {
+          message.error(err.response.data.message || err.response.data.messages[0]);
+        });
+      } else {
+        await executeFieldUpdate({
+          data: {
+            schema: values,
+          },
+        }).then(() => {
+          setReFetchSchema(true);
+        }).catch((err) => {
+          message.error(err.response.data.message || err.response.data.messages[0]);
+        });
 
-      if (!error) {
-        setLoading(false);
+        if (!error) {
+          setLoading(false);
 
-        form.resetFields();
-        closeSchemaModal();
-        message.success('Field Updated Successfully');
+          form.resetFields();
+          closeSchemaModal();
+          message.success('Field Updated Successfully');
+        }
       }
+    } else {
+      message.error(`Duplicate values in ${values.appearanceType} is not allowed`);
     }
   };
 
   if (!isEditable) {
     const handleValuesChange = (changedValues) => {
+      // console.log('-------');
       if (changedValues.name !== '' && changedValues.name !== undefined) {
         form.setFieldsValue({ id: _.snakeCase(changedValues.name) });
       }
