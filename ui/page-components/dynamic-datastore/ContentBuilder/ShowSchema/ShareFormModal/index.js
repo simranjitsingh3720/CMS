@@ -15,6 +15,10 @@ export default function ShareFormModal({
     navigator.clipboard.writeText(value);
   };
 
+  console.log(
+    formId,
+    title,
+  );
   const formLink = `${process.env.NEXT_PUBLIC_APP_LIVE_URL}/form/${formId}`;
   const formIframe = `<iframe src="${formLink}?embed=true" title=${title} style="margin:0;padding:0" frameBorder="0" width="80%" height="490vh" ></iframe>`;
   return (

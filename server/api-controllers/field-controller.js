@@ -37,7 +37,7 @@ const createField = async (req, res) => {
 
   const field = await db.Field.create({
     ...body,
-    schemaId,
+    schemaId: data.id,
     schemaSlug,
   });
 
