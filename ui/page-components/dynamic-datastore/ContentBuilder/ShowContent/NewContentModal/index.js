@@ -54,6 +54,7 @@ export default function NewContentModal({
     const x = { ...contentData };
     let uploadData = [];
     let count = 0;
+    const handleReadURLs = [];
 
     schemaDetails.schema.forEach((field) => {
       if (field.type === 'Date and Time') {
@@ -61,6 +62,7 @@ export default function NewContentModal({
       }
       if (field.type === 'Assets') {
         if (x[field.id]) {
+          handleReadURLs.push({ [field.id]: x[field.id].fileList.length });
           x[field.id].fileList.forEach((singleFile) => {
             uploadData = [...uploadData, singleFile];
             const { name } = singleFile;
@@ -94,12 +96,23 @@ export default function NewContentModal({
       })
         .then((res) => {
           const { writeUrlList, assetIdList, readUrlArr } = res.data;
-          console.log('x-', x);
-          const n = x.single.fileList;
-          let a = n[0];
-          a = { ...a, test: 'test1' };
-          console.log(n[0]);
-          x = { ...x, a };
+
+          let usedUrls = 0;
+          handleReadURLs.forEach((obj, index) => {
+            const id = Object.keys(obj)[0];
+            const totalUrls = handleReadURLs[index][id];
+            let urlList = [];
+            for (let i = 0; i < totalUrls; i += 1) {
+              urlList = [...urlList, {
+                url: readUrlArr[usedUrls],
+                name: multipleAssets[usedUrls].name,
+              }];
+              usedUrls += 1;
+            }
+            x[id] = urlList;
+            console.log('kwrfgewiufbewfbewuiofg ', x);
+          });
+
           writeUrlList.forEach((writeUrl, index) => {
             axios.put(
               writeUrl,

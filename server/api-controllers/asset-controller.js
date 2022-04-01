@@ -85,10 +85,11 @@ const createAsset = async (req, res) => {
 const createAssetsInBulk = async (req, res) => {
   // const { body } = req;
   const multipleAssets = req.body;
+  console.log('MULTIPL ASSER ', multipleAssets);
   // console.log(uploadData.uploadData[0].originFileObj, 'adsfg');
   let assetIdList = [];
 
-  const generateReadUrl = async (id) => {
+  const generateWriteUrl = async (id) => {
     const params = ({
       Bucket: bucketName,
       Key: `asset/${id}`,
@@ -111,23 +112,16 @@ const createAssetsInBulk = async (req, res) => {
 
   const assets = await db.Asset.bulkCreate(multipleAssets);
 
-  // await assets.forEach(async (singleAsset) => {
-  //   const readUrl = await generateReadUrl(singleAsset.id);
-  //   db.Asset.update(
-  //     { url: readUrl, updatedBy: req.session.user.id },
-  //     { where: { id: singleAsset.id } },
-  //   );
-  //   assetIdList = [...assetIdList, singleAsset.id];
-  // });
-
   const allPromises = [];
   const readUrlArr = [];
 
   for (let i = 0; i < assets.length; i += 1) {
-    allPromises.push(generateReadUrl(assets[i].id));
+    allPromises.push(generateWriteUrl(assets[i].id));
   }
 
   const writeUrlList = await Promise.all(allPromises);
+
+  console.log('ALL PROMISES ', writeUrlList);
 
   for (let i = 0; i < assets.length; i += 1) {
     const readUrl = writeUrlList[i].split('?')[0];
@@ -139,6 +133,7 @@ const createAssetsInBulk = async (req, res) => {
       { where: { id: assets[i].id } },
     );
   }
+  console.log('readUrlArr: ', readUrlArr);
   return res.status(201).json({ assetIdList, writeUrlList, readUrlArr });
 };
 
