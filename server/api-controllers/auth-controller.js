@@ -5,8 +5,11 @@
 const bcrypt = require('bcrypt');
 // const { request } = require('express');
 const randtoken = require('rand-token');
+<<<<<<< HEAD
 const { createLog } = require('./createLog-controller');
 
+=======
+>>>>>>> dataTable-asset-integration-v2
 const db = require('../../db/models/index');
 const { ValidityError, ServerError } = require('../helpers/error-helper');
 

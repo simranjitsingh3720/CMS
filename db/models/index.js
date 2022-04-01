@@ -6,9 +6,12 @@ const assetModel = require('./asset');
 const schemaModel = require('./schema');
 const contentModel = require('./content');
 const userDemoPreferenceModel = require('./userDemoPreference');
+<<<<<<< HEAD
 const fieldModel = require('./field');
 const logModel = require('./log');
 const contentDataModel = require('./contentData');
+=======
+>>>>>>> dataTable-asset-integration-v2
 
 const db = {};
 
@@ -25,9 +28,13 @@ requireModel(pageModel);
 requireModel(schemaModel);
 requireModel(contentModel);
 requireModel(userDemoPreferenceModel);
+<<<<<<< HEAD
 requireModel(fieldModel);
 requireModel(logModel);
 requireModel(contentDataModel);
+=======
+
+>>>>>>> dataTable-asset-integration-v2
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);

@@ -1,4 +1,5 @@
 const dotenv = require('dotenv');
+// const axios = require('axios');
 const aws = require('aws-sdk');
 const { Sequelize } = require('sequelize');
 const db = require('../../db/models');
@@ -69,13 +70,12 @@ const createAsset = async (req, res) => {
   if (!body.name || !body.type || !body.mimeType) {
     throw new ValidityError('name, type and mimeType, all are required.');
   }
-
   const asset = await db.Asset.create({ ...body, createdBy: req.session.user.id });
   createLog('CREATE', req.session.user.id, asset.id, 'ASSET');
   const params = ({
     Bucket: bucketName,
     Key: `asset/${asset.id}`,
-    Expires: 3600,
+    Expires: 400000,
   });
   const uploadURL = await s3.getSignedUrlPromise('putObject', params);
   const readUrl = uploadURL.split('?')[0];
@@ -85,6 +85,61 @@ const createAsset = async (req, res) => {
   );
   createLog('UPDATE', req.session.user.id, asset.id, 'ASSET');
   return res.status(201).json({ id: asset.id, writeUrl: uploadURL, readUrl });
+};
+
+const createAssetsInBulk = async (req, res) => {
+  // const { body } = req;
+  const multipleAssets = req.body;
+  console.log('MULTIPL ASSER ', multipleAssets);
+  // console.log(uploadData.uploadData[0].originFileObj, 'adsfg');
+  let assetIdList = [];
+
+  const generateWriteUrl = async (id) => {
+    const params = ({
+      Bucket: bucketName,
+      Key: `asset/${id}`,
+      Expires: 3600,
+    });
+
+    const writeUrl = await s3.getSignedUrlPromise('putObject', params);
+
+    // const readUrl = writeUrl.split('?')[0];
+
+    return writeUrl;
+  };
+
+  multipleAssets.forEach((singleFile, index) => {
+    multipleAssets[index] = {
+      ...multipleAssets[index],
+      createdBy: req.session.user.id,
+    };
+  });
+
+  const assets = await db.Asset.bulkCreate(multipleAssets);
+
+  const allPromises = [];
+  const readUrlArr = [];
+
+  for (let i = 0; i < assets.length; i += 1) {
+    allPromises.push(generateWriteUrl(assets[i].id));
+  }
+
+  const writeUrlList = await Promise.all(allPromises);
+
+  console.log('ALL PROMISES ', writeUrlList);
+
+  for (let i = 0; i < assets.length; i += 1) {
+    const readUrl = writeUrlList[i].split('?')[0];
+    readUrlArr.push(readUrl);
+    assetIdList = [...assetIdList, assets[i].id];
+
+    db.Asset.update(
+      { url: readUrl, updatedBy: req.session.user.id },
+      { where: { id: assets[i].id } },
+    );
+  }
+  console.log('readUrlArr: ', readUrlArr);
+  return res.status(201).json({ assetIdList, writeUrlList, readUrlArr });
 };
 
 const updateAsset = async (req, res) => {
@@ -135,4 +190,5 @@ module.exports = {
   findAsset,
   deleteAsset,
   updateAsset,
+  createAssetsInBulk,
 };
