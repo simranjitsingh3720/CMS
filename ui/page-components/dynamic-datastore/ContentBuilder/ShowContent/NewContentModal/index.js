@@ -38,7 +38,6 @@ export default function NewContentModal({
   );
 
   useEffect(() => {
-    console.log(storeData);
     if (storeData !== null) {
       addContent({
         url: `/content/${schemaSlug}`,
