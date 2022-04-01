@@ -13,8 +13,9 @@ export default function EmbedableForm() {
 
   const router = useRouter();
   const { formId, embed } = router.query;
+  const initialValues = getInitialValues(formDetails);
 
-  const initialValues = getInitialValues(formDetails.schema);
+  console.log('FORM DETAILS ', initialValues);
 
   const [{ }, fetchFormData] = useRequest({
     method: 'GET',
@@ -47,7 +48,7 @@ export default function EmbedableForm() {
   const handleAddContent = (contentData) => {
     const x = { ...contentData };
 
-    formDetails.schema.forEach((field) => {
+    formDetails.forEach((field) => {
       if (field.type === 'Date and Time') {
         x[field.id] = moment(x[field.id]).toISOString(true);
       }
@@ -68,9 +69,9 @@ export default function EmbedableForm() {
       }
     });
 
-    if (formDetails && formDetails.slug) {
+    if (formDetails && formDetails[0].schemaSlug) {
       addContent({
-        url: `/form/content/${formDetails.slug}`,
+        url: `/form/content/${formDetails[0].schemaSlug}`,
         data: { data: x },
       }).then(() => {
         setFormSubmitSuccess(true);
@@ -87,6 +88,8 @@ export default function EmbedableForm() {
   const onFinishFailed = () => {
     message.error('Fields are required');
   };
+
+  console.log(formDetails);
 
   return (
     <div className={styles.sharableForm}>
@@ -128,11 +131,11 @@ export default function EmbedableForm() {
                     </div>
                   ) : (
                     <>
-                      {formDetails.schema && formDetails.schema.map((field) => (
+                      { formDetails.map((field) => (
                         GetFields(field.appearanceType, field)
                       ))}
                       <div>
-                        {formDetails.schema && formDetails.schema.length >= 1 ? (
+                        {formDetails.length >= 1 ? (
                           <Form.Item
                             style={{ marginBottom: '0px' }}
                           >
