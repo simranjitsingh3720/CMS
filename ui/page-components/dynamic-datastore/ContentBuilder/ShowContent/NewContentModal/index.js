@@ -55,10 +55,12 @@ export default function NewContentModal({
     let uploadData = [];
     let count = 0;
     const handleReadURLs = [];
+    console.log('x is here: ', x);
 
     schemaDetails.schema.forEach((field) => {
       if (field.type === 'Date and Time') {
         x[field.id] = moment(x[field.id]).toISOString(true);
+        console.log('x[field.id]: ', x[field.id]);
       }
       if (field.type === 'Assets') {
         if (x[field.id]) {
@@ -89,6 +91,7 @@ export default function NewContentModal({
         }
       }
     });
+
     if (uploadData.length > 0) {
       executePost({
         url: '/asset/bulkUpload',
@@ -122,7 +125,6 @@ export default function NewContentModal({
               },
             )
               .then((result) => {
-                // console.log(result);
                 count += 1;
                 setLoading(false);
                 setStoreData(x);
