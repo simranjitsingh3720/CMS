@@ -11,10 +11,13 @@ export default function NewContentModal({
   schemaDetails, getContent, isEditable, editableData,
   isContentModal,
 }) {
+  console.log('SCHEMA DETAILS ', schemaDetails);
   const fields = schemaDetails.list || [];
   const initialValues = getInitialValues(schemaDetails.list, editableData, isEditable);
   const schemaSlug = schemaDetails
   && schemaDetails.list && schemaDetails.list[0].schemaSlug; // need schema slug
+  const schemaId = schemaDetails
+  && schemaDetails.list && schemaDetails.list[0].id;
   const [loading, setLoading] = useState(false);
   const [storeData, setStoreData] = useState(null);
   const [disable, setDisable] = useState(false);
@@ -40,7 +43,10 @@ export default function NewContentModal({
     if (storeData !== null) {
       addContent({
         url: `/content/${schemaSlug}`,
-        data: { data: storeData },
+        data: { ...storeData },
+        params: {
+          schemaId,
+        },
       }).then((res) => {
         message.success('Added Successfully');
         if (!isAsset) {
@@ -56,10 +62,12 @@ export default function NewContentModal({
 
   const handleAddContent = (contentData) => {
     const x = { ...contentData };
+    console.log('CONTENT DATA ', { ...contentData }, x);
+
     const multiplePlaceholder = '';
     schemaDetails.list.forEach((field, index) => {
       if (field.type === 'Date and Time') {
-        x[field.id] = moment(x[field.id]).toISOString(true);
+        x[field.fieldId] = moment(x[field.fieldId]).toISOString(true);
       }
       if (field.type === 'Assets' && x[field.id]) {
         isAsset = true;
@@ -116,18 +124,18 @@ export default function NewContentModal({
         }
       }
       if (field.type === 'Boolean' && field.appearanceType === 'Boolean radio') {
-        if (x[field.id] === field.Truelabel) { // trueLabel
-          x[field.id] = true;
-        } else if (x[field.id] === field.Falselabel) {
-          x[field.id] = false;
+        if (x[field.fieldId] === field.Truelabel) { // trueLabel
+          x[field.fieldId] = true;
+        } else if (x[field.fieldId] === field.Falselabel) {
+          x[field.fieldId] = false;
         } else {
-          x[field.id] = '';
+          x[field.fieldId] = '';
         }
       }
 
       if (field.type === 'Boolean' && field.appearanceType === 'Switch') {
-        if (x[field.id] !== true && x[field.id] !== false) {
-          x[field.id] = false;
+        if (x[field.fieldId] !== true && x[field.fieldId] !== false) {
+          x[field.fieldId] = false;
         }
       }
     });
@@ -141,23 +149,23 @@ export default function NewContentModal({
 
     schemaDetails.list.forEach((field) => {
       if (field.type === 'Date and Time') {
-        x[field.id] = moment(x[field.id]).toISOString(true);
+        x[field.fieldId] = moment(x[field.fieldId]).toISOString(true);
       }
 
       if (field.type === 'Boolean' && field.appearanceType === 'Boolean radio') {
-        if (x[field.id] === field.Truelabel) { // trueLabel
-          x[field.id] = true;
-        } else if (x[field.id] === field.Falselabel) {
-          x[field.id] = false;
+        if (x[field.fieldId] === field.Truelabel) { // trueLabel
+          x[field.fieldId] = true;
+        } else if (x[field.fieldId] === field.Falselabel) {
+          x[field.fieldId] = false;
         } else {
-          x[field.id] = '';
+          x[field.fieldId] = '';
         }
       }
     });
     if (schemaSlug) {
       updateContent({
-        url: `/content/${schemaSlug}/${editableData.id}`,
-        data: { data: x },
+        url: `/content/${schemaSlug}/${editableData.fieldId}`,
+        data: { ...x },
       }).then(() => {
         closeContentModal();
         message.success('Updated Successfully');

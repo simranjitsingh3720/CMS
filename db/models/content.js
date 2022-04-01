@@ -17,7 +17,6 @@ module.exports = (sequelize, DataTypes) => {
       id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
       schemaId: { type: DataTypes.UUID },
       schemaSlug: { type: DataTypes.STRING },
-      data: { type: DataTypes.JSON },
       status: { type: DataTypes.ENUM('draft', 'published') },
       order: { type: DataTypes.NUMBER },
       createdBy: { type: DataTypes.UUID },

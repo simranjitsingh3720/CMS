@@ -1,24 +1,10 @@
 const { createLog } = require('./createLog-controller');
 const db = require('../../db/models');
-const { MissingError } = require('../helpers/error-helper');
+const { MissingError, ServerError } = require('../helpers/error-helper');
 
 const getContent = async (req, res) => {
   const { schemaSlug, contentId } = req.query;
 
-  console.log('BACKEND ', req.query);
-
-  // let content = await db.Content.findOne({
-  //   where: {
-  //     id: contentId,
-  //   },
-  //   include: {
-  //     model: db.Schema,
-  //     attributes: ['id'],
-  //     where: {
-  //       slug: schemaSlug,
-  //     },
-  //   },
-  // });
   const contentData = await db.ContentData.findOne({ where: { id: contentId } });
   if (contentData) {
     return res.status(200).json(contentData);
@@ -28,26 +14,19 @@ const getContent = async (req, res) => {
 
 const listContents = async (req, res) => {
   const { schemaId, schemaSlug, contentId } = req.query;
-  // if (schemaSlug) {
-  //   const contents = await db.Content.findAll({
-  //     include: {
-  //       model: db.Schema,
-  //       attributes: ['id'],
-  //       where: {
-  //         slug: schemaSlug,
-  //       },
-  //     },
-  //   });
+
   const contentDatas = await db.ContentData.findAll({ where: { schemaSlug } });
-  return res.status(200).json({ list: contentDatas });
+  if (contentDatas) {
+    return res.status(200).json({ list: contentDatas });
+  }
 
   throw new MissingError('invalid slug');
 };
 
 const addContent = async (req, res) => {
   const { body, query } = req;
+  const { schemaSlug, schemaId } = query;
 
-  const { schemaSlug } = query;
   // to get schema id from schema table
   const schema = await db.Schema.findOne({
     where: {
@@ -56,14 +35,32 @@ const addContent = async (req, res) => {
   });
 
   if (schema) {
-    const content = await db.ContentData.create({
-      ...body,
-      // schemaId: schema.toJSON().id,
-      // createdBy: req.session.user.id,
-      // updatedBy: req.session.user.id,
-    });
-    // createLog('CREATE', req.session.user.id, content.id, 'CONTENT');
-    return res.status(201).json({ id: content.id });
+    try {
+      const content = await db.Content.create({
+        schemaId, schemaSlug,
+      });
+      const contentJSON = { ...content.toJSON() } || undefined;
+
+      if (contentJSON) {
+        let contentData = [];
+        Object.keys(body).map((key) => {
+          contentData = [...contentData, {
+            attributeValue: body[key],
+            attributeKey: key,
+            contentId: content.id,
+          }];
+          return null;
+        });
+
+        const contentDatas = await db.ContentData.bulkCreate(contentData);
+
+        if (contentDatas) {
+          return res.status(201).json({ id: content.id });
+        }
+      }
+    } catch (error) {
+      throw new ServerError('Server Error: Unable to add Content. Please try again');
+    }
   }
   throw new MissingError('Schema Not Found');
 };

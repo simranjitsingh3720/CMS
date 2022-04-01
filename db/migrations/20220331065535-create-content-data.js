@@ -7,8 +7,6 @@ module.exports = {
       schemaSlug: { type: Sequelize.STRING },
       attributeKey: { type: Sequelize.STRING },
       attributeValue: { type: Sequelize.STRING },
-      attributeApperanceType: { type: Sequelize.STRING },
-      attributeType: { type: Sequelize.STRING },
       status: { type: Sequelize.ENUM('draft', 'published') },
       createdBy: { type: Sequelize.UUID },
       createdAt: { type: Sequelize.DATE },
