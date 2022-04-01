@@ -21,7 +21,10 @@ export default function NewContentModal({
   const [loading, setLoading] = useState(false);
   const [storeData, setStoreData] = useState(null);
   const [disable, setDisable] = useState(false);
-  let isAsset = false;
+  const isAsset = false;
+  const multipleAssets = [];
+
+  const [{ }, executePost] = useRequest({ method: 'POST' }, { manual: true });
 
   // eslint-disable-next-line no-empty-pattern
   const [{}, addContent] = useRequest(
@@ -34,12 +37,12 @@ export default function NewContentModal({
   const [{}, updateContent] = useRequest(
     {
       method: 'PATCH',
-
     },
     { manual: true },
   );
 
   useEffect(() => {
+    console.log(storeData);
     if (storeData !== null) {
       addContent({
         url: `/content/${schemaSlug}`,
@@ -49,10 +52,6 @@ export default function NewContentModal({
         },
       }).then((res) => {
         message.success('Added Successfully');
-        if (!isAsset) {
-          setLoading(false);
-          closeContentModal();
-        }
         getContent();
       }).catch((err) => {
         getContent();
@@ -62,64 +61,24 @@ export default function NewContentModal({
 
   const handleAddContent = (contentData) => {
     const x = { ...contentData };
-    console.log('CONTENT DATA ', { ...contentData }, x);
+    let uploadData = [];
+    let count = 0;
+    const handleReadURLs = [];
 
-    const multiplePlaceholder = '';
-    schemaDetails.list.forEach((field, index) => {
+    schemaDetails.list.forEach((field) => {
       if (field.type === 'Date and Time') {
         x[field.fieldId] = moment(x[field.fieldId]).toISOString(true);
       }
-      if (field.type === 'Assets' && x[field.id]) {
-        isAsset = true;
+      if (field.type === 'Assets') {
         if (x[field.id]) {
-          // console.log('array: ', x[field.id].fileList);
+          handleReadURLs.push({ [field.id]: x[field.id].fileList.length });
+          x[field.id].fileList.forEach((singleFile) => {
+            uploadData = [...uploadData, singleFile];
+            const { name } = singleFile;
+            const mimeType = singleFile.type;
+            const type = singleFile.type.split('/')[0];
 
-          // console.log(x[field.id].fileList.length);
-          x[field.id].fileList.forEach((xy) => {
-            // const name = xy[field.id] && xy[field.id].file.name;
-            console.log('full :', xy);
-            const { name } = xy;
-            console.log('name: ', name);
-            const mimeType = xy.type;
-            console.log('mimeType:', mimeType);
-
-            // const type = xy[field.id] && xy[field.id].file.type.split('/')[0];
-            const type = xy.type.split('/')[0];
-            console.log('type:', type);
-
-            console.log('field data: ', xy[field.id]);
-
-            axios.post('/api/v1/asset', {
-              name,
-              type,
-              mimeType,
-            })
-              .then((res) => {
-                console.log('response : ', res);
-                const { writeUrl, readUrl } = res.data;
-                const FileData = xy.originFileObj;
-                const headerType = xy.originFileObj.type;
-
-                axios.put(
-                  writeUrl,
-                  FileData,
-                  {
-                    headers: { type: headerType, 'Content-Type': `${headerType}` },
-                  },
-                )
-                  .then(() => {
-                    setLoading(false);
-                    setStoreData(x);
-                    closeContentModal();
-                  })
-                  .catch((err) => console.log(err));
-                x[field.id] = {
-                  name,
-                  readUrl,
-                };
-              })
-              .catch((err) => console.log(err));
-            // ======
+            multipleAssets = [...multipleAssets, { name, type, mimeType }];
           });
         }
       }
@@ -139,8 +98,47 @@ export default function NewContentModal({
         }
       }
     });
-    if (!isAsset) {
-      setStoreData(x);
+    if (uploadData.length > 0) {
+      executePost({
+        url: '/asset/bulkUpload',
+        data: multipleAssets,
+      })
+        .then((res) => {
+          const { writeUrlList, assetIdList, readUrlArr } = res.data;
+
+          let usedUrls = 0;
+          handleReadURLs.forEach((obj, index) => {
+            const id = Object.keys(obj)[0];
+            const totalUrls = handleReadURLs[index][id];
+            let urlList = [];
+            for (let i = 0; i < totalUrls; i += 1) {
+              urlList = [...urlList, {
+                url: readUrlArr[usedUrls],
+                name: multipleAssets[usedUrls].name,
+              }];
+              usedUrls += 1;
+            }
+            x[id] = urlList;
+            console.log('kwrfgewiufbewfbewuiofg ', x);
+          });
+
+          writeUrlList.forEach((writeUrl, index) => {
+            axios.put(
+              writeUrl,
+              uploadData[index].originFileObj,
+              {
+                headers: { type: uploadData[index].originFileObj.type, 'Content-Type': `${uploadData[index].originFileObj.type}` },
+              },
+            )
+              .then((result) => {
+                // console.log(result);
+                count += 1;
+                setLoading(false);
+                setStoreData(x);
+                closeContentModal();
+              });
+          });
+        });
     }
   };
 

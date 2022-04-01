@@ -25,7 +25,7 @@ export default function ContentTable({
     confirm({
       title: 'Are you sure to delete the content? ',
       icon: <ExclamationCircleOutlined style={{ color: 'red' }} />,
-      content: <div>It may contains some sensitive information.</div>,
+      content: <div>It may contain some sensitive information.</div>,
       okText: 'Yes',
       okType: 'danger',
       cancelText: 'No',
@@ -124,7 +124,7 @@ export default function ContentTable({
       };
     });
   }
-
+  console.log('finalData: ', finalData);
   return (
     <div>
       <Table
