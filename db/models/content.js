@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       schemaId: { type: DataTypes.UUID },
       schemaSlug: { type: DataTypes.STRING },
       status: { type: DataTypes.ENUM('draft', 'published') },
-      order: { type: DataTypes.NUMBER },
+      order: { type: DataTypes.INTEGER },
       createdBy: { type: DataTypes.UUID },
       createdAt: { type: DataTypes.DATE },
       updatedBy: { type: DataTypes.UUID },

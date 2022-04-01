@@ -1,3 +1,4 @@
+const { QueryTypes } = require('sequelize');
 const { createLog } = require('./createLog-controller');
 const db = require('../../db/models');
 const { MissingError, ServerError } = require('../helpers/error-helper');
@@ -13,19 +14,31 @@ const getContent = async (req, res) => {
 };
 
 const listContents = async (req, res) => {
-  const { schemaId, schemaSlug, contentId } = req.query;
+  const { schemaSlug } = req.query;
 
-  const contentDatas = await db.ContentData.findAll({ where: { schemaSlug } });
-  if (contentDatas) {
-    return res.status(200).json({ list: contentDatas });
+  try {
+    const ddd = await db.sequelize.query(
+      'select "contentId", json_object_agg("attributeKey", "attributeValue") as data from (select "Datastore_ContentData"."contentId", "Datastore_ContentData"."attributeKey", "Datastore_ContentData"."attributeValue" from "Datastore_ContentData" join "Datastore_Contents" on "Datastore_ContentData"."contentId"="Datastore_Contents"."id" where "Datastore_Contents"."schemaSlug"=:schemaSlug) as json group by "contentId";',
+      {
+        replacements: { schemaSlug },
+        type: QueryTypes.SELECT,
+        model: db.ContentData,
+      },
+    );
+
+    if (ddd) {
+      return res.status(200).json({ list: ddd });
+    }
+    throw new MissingError('Invalid slug');
+  } catch (error) {
+    throw new ServerError(error);
   }
-
-  throw new MissingError('invalid slug');
 };
 
 const addContent = async (req, res) => {
   const { body, query } = req;
   const { schemaSlug, schemaId } = query;
+  console.log('SCHEMA JSON ', schemaSlug);
 
   // to get schema id from schema table
   const schema = await db.Schema.findOne({
@@ -35,12 +48,13 @@ const addContent = async (req, res) => {
   });
 
   if (schema) {
+    const schemaJSON = { ...schema.toJSON() || undefined };
     try {
       const content = await db.Content.create({
-        schemaId, schemaSlug,
+        schemaId: schemaJSON.id, schemaSlug,
       });
-      const contentJSON = { ...content.toJSON() } || undefined;
 
+      const contentJSON = { ...content.toJSON() } || undefined;
       if (contentJSON) {
         let contentData = [];
         Object.keys(body).map((key) => {
@@ -51,14 +65,18 @@ const addContent = async (req, res) => {
           }];
           return null;
         });
+        try {
+          const contentDatas = await db.ContentData.bulkCreate(contentData);
 
-        const contentDatas = await db.ContentData.bulkCreate(contentData);
-
-        if (contentDatas) {
-          return res.status(201).json({ id: content.id });
+          if (contentDatas) {
+            return res.status(201).json({ id: content.id });
+          }
+        } catch (error) {
+          console.log('EEEEEEEEE ', error);
         }
       }
     } catch (error) {
+      console.log(error);
       throw new ServerError('Server Error: Unable to add Content. Please try again');
     }
   }

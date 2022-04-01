@@ -18,7 +18,7 @@ export default function ContentBuilder() {
   const [defaultKey, setDefaultKey] = useState(null);
   const [schemaDetails, setSchemaDetails] = useState({});
 
-  const [{ data: schemaDetail }, getSchemaDetails] = useRequest(
+  const [{}, getSchemaDetails] = useRequest(
     {
       method: 'GET',
       url: `/schema/${schemaSlug}`,

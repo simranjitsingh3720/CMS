@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { PlusOutlined, DownOutlined } from '@ant-design/icons';
 import {
-  Button, Empty, message, Spin, Popover, List,
+  Button, Empty, Spin, Popover, List,
 } from 'antd';
 import NewContentModal from './NewContentModal';
 import ActionBar from '../../../../components/layout/ActionBar';
@@ -32,8 +32,9 @@ function ShowContent({ schema, setDefaultKey }) {
       url: `/content/${schemaSlug}`,
     },
   );
-  if (error) {
-    message.error(error.response.data.message || error.response.data.messages[0]);
+
+  if (data) {
+    console.log('DDDDDDFDFDFDDFDFDUFGUSUVCUSVCUVCVUSVCIH ', data.list);
   }
 
   const [{}, deleteContent] = useRequest(

@@ -2,12 +2,9 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Datastore_ContentData', {
       id: { type: Sequelize.UUID, primaryKey: true, defaultValue: Sequelize.UUIDV4 },
-      schemaId: { type: Sequelize.UUID },
       contentId: { type: Sequelize.UUID },
-      schemaSlug: { type: Sequelize.STRING },
       attributeKey: { type: Sequelize.STRING },
       attributeValue: { type: Sequelize.STRING },
-      status: { type: Sequelize.ENUM('draft', 'published') },
       createdBy: { type: Sequelize.UUID },
       createdAt: { type: Sequelize.DATE },
       updatedBy: { type: Sequelize.UUID },
