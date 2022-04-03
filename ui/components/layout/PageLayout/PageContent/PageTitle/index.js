@@ -14,7 +14,7 @@ function PageTitle({
     <div>
       <PageHeader
         onBack={!blockRoute.includes(pathname)
-          ? onBack || function goBack() { window.history.back(); } : null}
+          ? onBack || function goBack() { router.back(); } : null}
         title={title}
         subTitle={subTitle}
         extra={extra}
