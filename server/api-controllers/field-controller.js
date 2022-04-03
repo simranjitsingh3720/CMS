@@ -1,17 +1,40 @@
 const db = require('../../db/models');
 const { ValidityError, MissingError, ServerError } = require('../helpers/error-helper');
 
-const createField = async (req, res) => {
-  const { body, query } = req;
+const getSingleField = async (req, res) => {
+  const { query } = req;
+  const { schemaSlug, fieldId } = query;
+  const data = await db.Schema.findOne({ where: { slug: schemaSlug } });
+  if (!data) {
+    throw new MissingError('Table Not Found');
+  }
+  const singleField = await db.Field.findOne({ where: { fieldId, schemaSlug } });
+  return res.status(200).json({ field: singleField });
+};
 
-  const { schemaId, schemaSlug } = query;
-
+const listAllFields = async (req, res) => {
+  const { query } = req;
+  const { schemaSlug } = query;
   const data = await db.Schema.findOne({ where: { slug: schemaSlug } });
 
   if (!data) {
     throw new MissingError('Table Not Found');
   }
 
+  const allFields = await db.Field.findAll({ where: { schemaSlug } });
+  return res.status(200).json({ list: allFields });
+};
+
+const createField = async (req, res) => {
+  const { body, query } = req;
+
+  const { schemaSlug } = query;
+
+  const data = await db.Schema.findOne({ where: { slug: schemaSlug } });
+
+  if (!data) {
+    throw new MissingError('Table Not Found');
+  }
   const isFieldIdExist = await db.Field.findOne({
     where: {
       schemaSlug,
@@ -60,7 +83,7 @@ const updateField = async (req, res) => {
 
 const deleteField = async (req, res) => {
   const { query } = req;
-  const { schemaId, schemaSlug, fieldId } = query;
+  const { schemaSlug, fieldId } = query;
 
   const data = await db.Schema.findOne({ where: { slug: schemaSlug } });
 
@@ -89,30 +112,6 @@ const reOrderFields = async (req, res) => {
   return res.status(404).json({ message: 'Schema not found' });
 };
 
-const listAllFields = async (req, res) => {
-  const { body, query } = req;
-  const { schemaId, schemaSlug, fieldId } = query;
-
-  const data = await db.Schema.findOne({ where: { slug: schemaSlug } });
-
-  if (!data) {
-    throw new MissingError('Table Not Found');
-  }
-
-  const allFields = await db.Field.findAll({ where: { schemaSlug } });
-  return res.status(200).json({ list: allFields });
-};
-const getSingleField = async (req, res) => {
-  const { query } = req;
-  const { schemaSlug, fieldId } = query;
-  const data = await db.Schema.findOne({ where: { slug: schemaSlug } });
-  if (!data) {
-    throw new MissingError('Table Not Found');
-  }
-
-  const singleField = await db.Field.findOne({ where: { fieldId, schemaSlug } });
-  return res.status(200).json({ field: singleField });
-};
 module.exports = {
   updateField,
   deleteField,
