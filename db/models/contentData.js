@@ -15,8 +15,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
       contentId: { type: DataTypes.UUID },
-      attributeKey: { type: DataTypes.STRING },
-      attributeValue: { type: DataTypes.STRING },
+      attributeKey: { type: DataTypes.STRING(9999) },
+      attributeValue: { type: DataTypes.STRING(999999) },
       createdBy: { type: DataTypes.UUID },
       createdAt: { type: DataTypes.DATE },
       updatedBy: { type: DataTypes.UUID },

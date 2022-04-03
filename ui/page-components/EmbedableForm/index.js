@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button, Form, message, Space } from 'antd';
 import moment from 'moment';
+import axios from 'axios';
 import { useRequest } from '../../helpers/request-helper';
 import styles from './style.module.scss';
 import GetFields, { getInitialValues } from '../dynamic-datastore/ContentBuilder/ShowContent/NewContentModal/GetFields/GetFields';
@@ -10,18 +11,22 @@ export default function EmbedableForm() {
   const [formDetails, setFormDetails] = useState([]);
   const [formError, setFormError] = useState('');
   const [formSubmitSuccess, setFormSubmitSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [storeData, setStoreData] = useState(null);
+  const [disable, setDisable] = useState(false);
 
   const router = useRouter();
   const { formId, embed } = router.query;
   const initialValues = getInitialValues(formDetails);
-
-  console.log('FORM DETAILS ', initialValues);
+  let isAsset = false;
+  let multipleAssets = [];
 
   const [{ }, fetchFormData] = useRequest({
     method: 'GET',
   }, {
     manual: true,
   });
+  const [{ }, executePost] = useRequest({ method: 'POST' }, { manual: true });
 
   const [{}, addContent] = useRequest(
     {
@@ -45,39 +50,121 @@ export default function EmbedableForm() {
     }
   }, [formId]);
 
+  useEffect(() => {
+    if (storeData !== null) {
+      addContent({
+        url: `/form/content/${formDetails[0].schemaSlug}`,
+        data: { ...storeData },
+        params: {
+          formId,
+        },
+      }).then(() => {
+        if (!isAsset) {
+          setLoading(false);
+        }
+        setFormSubmitSuccess(true);
+        // getContent();
+      }).catch((err) => {
+        message.error(err.response.data.message || err.response.data.messages[0]);
+      });
+    }
+  }, [storeData]);
+
   const handleAddContent = (contentData) => {
     const x = { ...contentData };
+    let uploadData = [];
+    const handleReadURLs = [];
 
     formDetails.forEach((field) => {
       if (field.type === 'Date and Time') {
-        x[field.id] = moment(x[field.id]).toISOString(true);
+        x[field.fieldId] = moment(x[field.fieldId]).toISOString(true);
       }
       if (field.type === 'Boolean' && field.appearanceType === 'Boolean radio') {
-        if (x[field.id] === field.Truelabel) { // trueLabel
-          x[field.id] = true;
-        } else if (x[field.id] === field.Falselabel) {
-          x[field.id] = false;
+        if (x[field.fieldId] === field.Truelabel) { // trueLabel
+          x[field.fieldId] = true;
+        } else if (x[field.fieldId] === field.Falselabel) {
+          x[field.fieldId] = false;
         } else {
-          x[field.id] = '';
+          x[field.fieldId] = '';
         }
       }
 
       if (field.type === 'Boolean' && field.appearanceType === 'Switch') {
-        if (x[field.id] !== true && x[field.id] !== false) {
-          x[field.id] = false;
+        if (x[field.fieldId] !== true && x[field.fieldId] !== false) {
+          x[field.fieldId] = false;
+        }
+      }
+      if (field.type === 'Assets') {
+        if (x[field.fieldId]) {
+          isAsset = true;
+          handleReadURLs.push({ [field.fieldId]: x[field.fieldId].fileList.length });
+          x[field.fieldId].fileList.forEach((singleFile) => {
+            uploadData = [...uploadData, singleFile];
+            const { name } = singleFile;
+            const mimeType = singleFile.type;
+            const type = singleFile.type.split('/')[0];
+
+            multipleAssets = [...multipleAssets, { name, type, mimeType }];
+          });
         }
       }
     });
 
-    if (formDetails && formDetails[0].schemaSlug) {
-      addContent({
-        url: `/form/content/${formDetails[0].schemaSlug}`,
-        data: { data: x },
-      }).then(() => {
-        setFormSubmitSuccess(true);
-      }).catch((err) => {
-        message.error(err.response.data.message || err.response.data.messages[0]);
-      });
+    // if (formDetails && formDetails[0].schemaSlug) {
+    //   addContent({
+    //     url: `/form/content/${formDetails[0].schemaSlug}`,
+    //     data: { data: x },
+    //   }).then(() => {
+    //     setFormSubmitSuccess(true);
+    //   }).catch((err) => {
+    //     message.error(err.response.data.message || err.response.data.messages[0]);
+    //   });
+    // }
+
+    if (uploadData.length > 0) {
+      executePost({
+        url: '/asset/bulkUpload',
+        data: multipleAssets,
+      })
+        .then((res) => {
+          const { writeUrlList, assetIdList, readUrlArr } = res.data;
+
+          let usedUrls = 0;
+          handleReadURLs.forEach((obj, index) => {
+            const id = Object.keys(obj)[0];
+            const totalUrls = handleReadURLs[index][id];
+            let urlList = [];
+            for (let i = 0; i < totalUrls; i += 1) {
+              urlList = [...urlList, {
+                url: readUrlArr[usedUrls],
+                name: multipleAssets[usedUrls].name,
+              }];
+              usedUrls += 1;
+            }
+            x[id] = JSON.stringify(urlList);
+          });
+
+          writeUrlList.forEach((writeUrl, index) => {
+            axios.put(
+              writeUrl,
+              uploadData[index].originFileObj,
+              {
+                headers: { type: uploadData[index].originFileObj.type, 'Content-Type': `${uploadData[index].originFileObj.type}` },
+              },
+            )
+              .then((result) => {
+                // console.log(result);
+                console.log('kwrfgewiufbewfbewuiofg ', x);
+                setLoading(false);
+                setStoreData(x);
+                // closeContentModal();
+              });
+          });
+        });
+    }
+
+    if (!isAsset) {
+      setStoreData(x);
     }
   };
 
@@ -86,10 +173,10 @@ export default function EmbedableForm() {
   };
 
   const onFinishFailed = () => {
+    setLoading(false);
+    setDisable(false);
     message.error('Fields are required');
   };
-
-  console.log(formDetails);
 
   return (
     <div className={styles.sharableForm}>

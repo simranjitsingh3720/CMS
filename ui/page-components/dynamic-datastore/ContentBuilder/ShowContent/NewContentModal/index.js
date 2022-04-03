@@ -11,7 +11,6 @@ export default function NewContentModal({
   schemaDetails, getContent, isEditable, editableData,
   isContentModal,
 }) {
-  console.log('EDITABLE DATA ', editableData);
   const fields = schemaDetails.list || [];
   const initialValues = getInitialValues(schemaDetails.list, editableData, isEditable);
   const schemaSlug = schemaDetails
@@ -22,7 +21,7 @@ export default function NewContentModal({
   const [storeData, setStoreData] = useState(null);
   const [disable, setDisable] = useState(false);
   let isAsset = false;
-  const multipleAssets = [];
+  let multipleAssets = [];
 
   const [{ }, executePost] = useRequest({ method: 'POST' }, { manual: true });
 
@@ -43,6 +42,7 @@ export default function NewContentModal({
 
   useEffect(() => {
     if (storeData !== null) {
+      console.log('HELLLLLLLLLLLLL ', storeData);
       addContent({
         url: `/content/${schemaSlug}`,
         data: { ...storeData },

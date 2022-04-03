@@ -39,6 +39,8 @@ const addContent = async (req, res) => {
   const { body, query } = req;
   const { schemaSlug } = query;
 
+  console.log('HElllllllll l l  l l l l l l l l ', body);
+
   const schema = await db.Schema.findOne({
     where: {
       slug: schemaSlug,
@@ -63,6 +65,8 @@ const addContent = async (req, res) => {
           }];
           return null;
         });
+        console.log('HElllllllll l l  l l l l lcontentData l l l ', contentData);
+
         try {
           const contentDatas = await db.ContentData.bulkCreate(contentData);
 
@@ -71,7 +75,8 @@ const addContent = async (req, res) => {
             return res.status(201).json({ id: content.id });
           }
         } catch (error) {
-          throw new ServerError('Unable to Create Content. Please try again.');
+          console.log('ERROR ', error);
+          // throw new ServerError('Unable to Create Content. Please try again.');
         }
       }
     } catch (error) {
