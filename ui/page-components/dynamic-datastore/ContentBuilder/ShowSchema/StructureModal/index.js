@@ -66,14 +66,26 @@ function StructureModal({
     { manual: true },
   );
 
-  function hasDuplicates(arr) {
-    return new Set(arr).size !== arr.length;
-  }
+  // function hasDuplicates(arry) {
+  //   console.log('arr----', arr);
+  //   const toFindDuplicates = (arry) => arry.filter((item, index) => arr.indexOf(item) !== index);
+  //   const duplicateElementa = tofindDuplicates(arry);
+  //   // console.log(duplicateElements);
+  //   // return new Set(arr).size !== arr.length;
+  // }
+
+  const toFindDuplicates = (arr) => arr.filter((item, index) => arr.indexOf(item) !== index);
 
   const onFinish = async (values) => {
     console.log(values);
-    const hasDuplicatesValues = hasDuplicates(values.values);
-    console.log('hasDuplicatesValues: ', hasDuplicatesValues);
+    let hasDuplicateValues = false;
+    if (values.values) {
+      const lower = values.values.map((element) => element.toLowerCase());
+      const duplicatesValues = await toFindDuplicates(lower);
+      if (duplicatesValues.length > 0) {
+        hasDuplicateValues = true;
+      }
+    }
     const updatedValues = values;
 
     if (updatedValues.values) {
@@ -99,7 +111,13 @@ function StructureModal({
     updatedValues.values = undefined;
     updatedValues.isMultiple = undefined;
 
-    if (!hasDuplicatesValues) {
+    let hasLabel = false;
+    if (values.Falselabel && values.Truelabel) {
+      hasLabel = values.Falselabel.toLowerCase() === values.Truelabel.toLowerCase();
+    }
+    console.log('hasLabel', !hasLabel);
+    console.log('hasDuplicateValues ', !hasDuplicateValues);
+    if (!hasDuplicateValues && !hasLabel) {
       setLoading(true);
       if (!isEditable) {
         await executeFieldCreate({
@@ -135,14 +153,15 @@ function StructureModal({
           message.success('Field Updated Successfully');
         }
       }
-    } else {
+    } else if (hasDuplicateValues) {
       message.error(`Duplicate values in ${values.appearanceType} is not allowed`);
+    } else if (hasLabel) {
+      message.error('Duplicate values in boolena label is not allowed');
     }
   };
 
   if (!isEditable) {
     const handleValuesChange = (changedValues) => {
-      // console.log('-------');
       if (changedValues.name !== '' && changedValues.name !== undefined) {
         form.setFieldsValue({ id: _.snakeCase(changedValues.name) });
       }
@@ -337,7 +356,7 @@ function StructureModal({
               <div className={styles.actionButton}>
                 <Space wrap>
 
-                  <Button key="back" htmlType="cancel" onClick={closeSchemaModal}>
+                  <Button key="back" onClick={closeSchemaModal}>
                     Cancel
                   </Button>
                   <Button type="primary" htmlType="submit">
