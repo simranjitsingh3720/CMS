@@ -8,12 +8,12 @@ function SchemaTutorial() {
   const steps = [
     {
       target: '.first-step',
-      content: 'This button is used to add new schema',
+      content: 'Add your schemas from here',
       disableBeacon: 'true',
     },
     {
       target: '.second-step',
-      content: 'This is search bar which help us to get required schema',
+      content: 'Search your schemas here',
       disableBeacon: 'true',
 
     },
