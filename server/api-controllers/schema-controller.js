@@ -114,17 +114,14 @@ const getSchemaBySlug = async (req, res) => {
 
 const deleteSchemaBySlug = async (req, res) => {
   const { schemaSlug, schemaId } = req.query;
-
+  const schema = await db.Schema.findOne({ where: { slug: schemaSlug } });
   // check if data exits
-  if (schemaSlug) {
+  if (!schema) {
+    throw new MissingError('No Schema Found');
+  }
+  if (schema) {
     const contents = await db.Content.findAll({
-      include: {
-        model: db.Schema,
-        attributes: ['id'],
-        where: {
-          slug: schemaSlug,
-        },
-      },
+      where: { schemaSlug },
     });
 
     if (contents.length <= 0) {

@@ -6,18 +6,6 @@ const createField = async (req, res) => {
 
   const { schemaId, schemaSlug } = query;
 
-  // if (!fieldId || !schema) {
-  //   let message = '';
-
-  //   if (!fieldId) {
-  //     message += 'fieldID required';
-  //   } else if (!schema) {
-  //     message += 'fields details required';
-  //   }
-
-  //   throw new ValidityError(message);
-  // }
-
   const data = await db.Schema.findOne({ where: { slug: schemaSlug } });
 
   if (!data) {
