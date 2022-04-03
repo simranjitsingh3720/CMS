@@ -11,14 +11,20 @@ export default function NewContentModal({
   schemaDetails, getContent, isEditable, editableData,
   isContentModal,
 }) {
+  console.log('EDITABLE DATA ', editableData);
   const fields = schemaDetails.list || [];
   const initialValues = getInitialValues(schemaDetails.list, editableData, isEditable);
   const schemaSlug = schemaDetails
   && schemaDetails.list && schemaDetails.list[0].schemaSlug; // need schema slug
+  const schemaId = schemaDetails
+  && schemaDetails.list && schemaDetails.list[0].id;
   const [loading, setLoading] = useState(false);
   const [storeData, setStoreData] = useState(null);
   const [disable, setDisable] = useState(false);
   let isAsset = false;
+  const multipleAssets = [];
+
+  const [{ }, executePost] = useRequest({ method: 'POST' }, { manual: true });
 
   // eslint-disable-next-line no-empty-pattern
   const [{}, addContent] = useRequest(
@@ -31,7 +37,6 @@ export default function NewContentModal({
   const [{}, updateContent] = useRequest(
     {
       method: 'PATCH',
-
     },
     { manual: true },
   );
@@ -40,15 +45,18 @@ export default function NewContentModal({
     if (storeData !== null) {
       addContent({
         url: `/content/${schemaSlug}`,
-        data: { data: storeData },
-      }).then((res) => {
+        data: { ...storeData },
+        params: {
+          schemaId,
+        },
+      }).then(() => {
         message.success('Added Successfully');
         if (!isAsset) {
           setLoading(false);
           closeContentModal();
         }
         getContent();
-      }).catch((err) => {
+      }).catch(() => {
         getContent();
       });
     }
@@ -56,81 +64,87 @@ export default function NewContentModal({
 
   const handleAddContent = (contentData) => {
     const x = { ...contentData };
-    const multiplePlaceholder = '';
-    schemaDetails.list.forEach((field, index) => {
+    let uploadData = [];
+    let count = 0;
+    const handleReadURLs = [];
+
+    schemaDetails.list.forEach((field) => {
       if (field.type === 'Date and Time') {
-        x[field.id] = moment(x[field.id]).toISOString(true);
+        x[field.fieldId] = moment(x[field.fieldId]).toISOString(true);
       }
-      if (field.type === 'Assets' && x[field.id]) {
-        isAsset = true;
-        if (x[field.id]) {
-          // console.log('array: ', x[field.id].fileList);
+      if (field.type === 'Assets') {
+        if (x[field.fieldId]) {
+          isAsset = true;
+          handleReadURLs.push({ [field.fieldId]: x[field.fieldId].fileList.length });
+          x[field.fieldId].fileList.forEach((singleFile) => {
+            uploadData = [...uploadData, singleFile];
+            const { name } = singleFile;
+            const mimeType = singleFile.type;
+            const type = singleFile.type.split('/')[0];
 
-          // console.log(x[field.id].fileList.length);
-          x[field.id].fileList.forEach((xy) => {
-            // const name = xy[field.id] && xy[field.id].file.name;
-            console.log('full :', xy);
-            const { name } = xy;
-            console.log('name: ', name);
-            const mimeType = xy.type;
-            console.log('mimeType:', mimeType);
-
-            // const type = xy[field.id] && xy[field.id].file.type.split('/')[0];
-            const type = xy.type.split('/')[0];
-            console.log('type:', type);
-
-            console.log('field data: ', xy[field.id]);
-
-            axios.post('/api/v1/asset', {
-              name,
-              type,
-              mimeType,
-            })
-              .then((res) => {
-                console.log('response : ', res);
-                const { writeUrl, readUrl } = res.data;
-                const FileData = xy.originFileObj;
-                const headerType = xy.originFileObj.type;
-
-                axios.put(
-                  writeUrl,
-                  FileData,
-                  {
-                    headers: { type: headerType, 'Content-Type': `${headerType}` },
-                  },
-                )
-                  .then(() => {
-                    setLoading(false);
-                    setStoreData(x);
-                    closeContentModal();
-                  })
-                  .catch((err) => console.log(err));
-                x[field.id] = {
-                  name,
-                  readUrl,
-                };
-              })
-              .catch((err) => console.log(err));
-            // ======
+            multipleAssets = [...multipleAssets, { name, type, mimeType }];
           });
         }
       }
       if (field.type === 'Boolean' && field.appearanceType === 'Boolean radio') {
-        if (x[field.id] === field.Truelabel) { // trueLabel
-          x[field.id] = true;
-        } else if (x[field.id] === field.Falselabel) {
-          x[field.id] = false;
+        if (x[field.fieldId] === field.Truelabel) { // trueLabel
+          x[field.fieldId] = true;
+        } else if (x[field.fieldId] === field.Falselabel) {
+          x[field.fieldId] = false;
         } else {
-          x[field.id] = '';
+          x[field.fieldId] = '';
         }
       }
 
       if (field.type === 'Boolean' && field.appearanceType === 'Switch') {
-        if (x[field.id] !== true && x[field.id] !== false) {
-          x[field.id] = false;
+        if (x[field.fieldId] !== true && x[field.fieldId] !== false) {
+          x[field.fieldId] = false;
         }
       }
     });
+    if (uploadData.length > 0) {
+      executePost({
+        url: '/asset/bulkUpload',
+        data: multipleAssets,
+      })
+        .then((res) => {
+          const { writeUrlList, assetIdList, readUrlArr } = res.data;
+
+          let usedUrls = 0;
+          handleReadURLs.forEach((obj, index) => {
+            const id = Object.keys(obj)[0];
+            const totalUrls = handleReadURLs[index][id];
+            let urlList = [];
+            for (let i = 0; i < totalUrls; i += 1) {
+              urlList = [...urlList, {
+                url: readUrlArr[usedUrls],
+                name: multipleAssets[usedUrls].name,
+              }];
+              usedUrls += 1;
+            }
+            x[id] = JSON.stringify(urlList);
+          });
+
+          writeUrlList.forEach((writeUrl, index) => {
+            axios.put(
+              writeUrl,
+              uploadData[index].originFileObj,
+              {
+                headers: { type: uploadData[index].originFileObj.type, 'Content-Type': `${uploadData[index].originFileObj.type}` },
+              },
+            )
+              .then((result) => {
+                // console.log(result);
+                console.log('kwrfgewiufbewfbewuiofg ', x);
+                count += 1;
+                setLoading(false);
+                setStoreData(x);
+                closeContentModal();
+              });
+          });
+        });
+    }
+
     if (!isAsset) {
       setStoreData(x);
     }
@@ -141,23 +155,26 @@ export default function NewContentModal({
 
     schemaDetails.list.forEach((field) => {
       if (field.type === 'Date and Time') {
-        x[field.id] = moment(x[field.id]).toISOString(true);
+        x[field.fieldId] = moment(x[field.fieldId]).toISOString(true);
       }
 
       if (field.type === 'Boolean' && field.appearanceType === 'Boolean radio') {
-        if (x[field.id] === field.Truelabel) { // trueLabel
-          x[field.id] = true;
-        } else if (x[field.id] === field.Falselabel) {
-          x[field.id] = false;
+        if (x[field.fieldId] === field.Truelabel) { // trueLabel
+          x[field.fieldId] = true;
+        } else if (x[field.fieldId] === field.Falselabel) {
+          x[field.fieldId] = false;
         } else {
-          x[field.id] = '';
+          x[field.fieldId] = '';
         }
       }
     });
+
     if (schemaSlug) {
+      console.log('UPDATED DATA ', x);
+
       updateContent({
         url: `/content/${schemaSlug}/${editableData.id}`,
-        data: { data: x },
+        data: { ...x },
       }).then(() => {
         closeContentModal();
         message.success('Updated Successfully');

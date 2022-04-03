@@ -9,11 +9,12 @@ import styles from './style.module.scss';
 function ShowSettings({ schemaDetails }) {
   const [form] = Form.useForm();
   const [disable, setDisable] = useState(true);
-  form.setFieldsValue({
-    title: schemaDetails.title,
-    slug: schemaDetails.slug,
-    description: schemaDetails.description,
-  });
+  // form.setFieldsValue({
+  //   title: schemaDetails.title,
+  //   slug: schemaDetails.slug,
+  //   description: schemaDetails.description,
+  // });
+
   const [error, setError] = useState('');
   const { push } = useRouter();
 
@@ -52,8 +53,9 @@ function ShowSettings({ schemaDetails }) {
   };
 
   const handleValuesChange = (changedValues) => {
+    console.log('changesValues', changedValues);
     setError('');
-    setDisable(false);
+
     if (changedValues.title !== '' && changedValues.title !== undefined) {
       form.setFieldsValue({ slug: _.snakeCase(changedValues.title) });
     }
@@ -61,74 +63,81 @@ function ShowSettings({ schemaDetails }) {
     if (changedValues.title === '') {
       form.setFieldsValue({ slug: '' });
     }
+    setDisable(false);
   };
+
   return (
     <div>
-      <Form
-        name="basic"
-        layout="vertical"
-        form={form}
-        initialValues={{
-          remember: true,
-        }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
-        onValuesChange={handleValuesChange}
-      >
-        <Form.Item
-          label="Schema Name"
-          name="title"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your Schema Name!',
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
+      { Object.keys(schemaDetails).length > 0
+        ? (
+          <Form
+            name="basic"
+            layout="vertical"
+            form={form}
+            initialValues={{
+              title: schemaDetails.title,
+              slug: schemaDetails.slug,
+              description: schemaDetails.description,
+            }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+            onValuesChange={handleValuesChange}
+          >
+            <Form.Item
+              label="Schema Name"
+              name="title"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your Schema Name!',
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
 
-        <Form.Item
-          label="Slug"
-          name="slug"
-          rules={[{
-            required: true,
-            message: 'Please input your Slug!',
-          },
-          {
-            pattern: new RegExp('^[A-Za-z0-9_]*$'),
-            message: 'Only Letters and Numbers are accepted',
-          },
-          ]}
-        >
-          <Input />
+            <Form.Item
+              label="Slug"
+              name="slug"
+              rules={[{
+                required: true,
+                message: 'Please input your Slug!',
+              },
+              {
+                pattern: new RegExp('^[A-Za-z0-9_]*$'),
+                message: 'Only Letters and Numbers are accepted',
+              },
+              ]}
+            >
+              <Input />
 
-        </Form.Item>
+            </Form.Item>
 
-        <Form.Item
-          label="Description"
-          name="description"
-          rules={[
-            {
-              message: 'Please input your Description!',
-            },
-          ]}
-        >
-          <TextArea rows={2} />
+            <Form.Item
+              label="Description"
+              name="description"
+              rules={[
+                {
+                  message: 'Please input your Description!',
+                },
+              ]}
+            >
+              <TextArea rows={2} />
 
-        </Form.Item>
+            </Form.Item>
 
-        <Form.Item style={{ marginBottom: '0px' }}>
-          <div className={styles.actionButton}>
-            <Space wrap>
-              <Button type="primary" htmlType="submit" disabled={disable}>
-                Submit
-              </Button>
-            </Space>
-          </div>
-        </Form.Item>
-      </Form>
+            <Form.Item style={{ marginBottom: '0px' }}>
+              <div className={styles.actionButton}>
+                <Space wrap>
+                  <Button type="primary" htmlType="submit" disabled={disable}>
+                    Submit
+                  </Button>
+                </Space>
+              </div>
+            </Form.Item>
+          </Form>
+        ) : '' }
     </div>
   );
 }

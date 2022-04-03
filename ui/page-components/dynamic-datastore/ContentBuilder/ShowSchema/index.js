@@ -183,7 +183,7 @@ function ShowSchema() {
               showShareFormModal={shareFormModal}
               closeShareFormModal={closeShareFormModal}
               loading
-              formId={data.id}
+              formId={data.list && data.list[0].schemaId}
               title={data.title}
             />
           </div>

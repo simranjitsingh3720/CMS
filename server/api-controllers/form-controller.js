@@ -6,12 +6,11 @@ const { createLog } = require('./createLog-controller');
 const getFormById = async (req, res) => {
   const { query } = req;
   const { formId, embed } = query;
-
   if (!formId) {
     throw new MissingError('Invalid form id');
   }
   try {
-    const schema = await db.Schema.findOne({ where: { id: formId } });
+    const schema = await db.Field.findAll({ where: { schemaId: formId } });
     if (schema) {
       return res.status(200).json(schema);
     }
