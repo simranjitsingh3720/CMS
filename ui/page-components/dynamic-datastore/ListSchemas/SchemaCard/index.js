@@ -42,7 +42,7 @@ function SchemaCard({
           </h4>
         </div>
         <h4 className={`${styles.card_colorGray} ${styles.card_fields}`}>
-          {getField && getField.list && getField.list.length}
+          {(getField && getField.list && getField.list.length) || 0}
           {' Fields'}
         </h4>
         <p className={styles.card_para}>
