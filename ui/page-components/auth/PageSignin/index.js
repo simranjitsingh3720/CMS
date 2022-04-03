@@ -42,8 +42,8 @@ function PageSignin() {
     <Row>
       <Col className={styles.overlay} span={12} style={{ backgroundColor: 'red', height: '100vh' }}>
         <Typography style={{ textAlign: 'center' }}>
-          <Title style={{ color: 'white' }}>Hello Machas!!</Title>
-          <Paragraph style={{ color: 'white' }}>Enter Your Details and start Exploring</Paragraph>
+          <Title style={{ color: 'white' }}>Hello Friends!</Title>
+          <Paragraph style={{ color: 'white' }}>Everything you need to build a website without coding.</Paragraph>
           <Button
             ghost
             shape="round"

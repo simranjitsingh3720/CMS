@@ -15,6 +15,7 @@ export default function ContentTable({
   showContentModal, setIsEditable, getEditableData,
   deleteContent, getContent,
 }) {
+  console.log('DATATAATAATAAT ', data);
   const handleEditContent = (content) => {
     getEditableData(content);
     showContentModal(true);
@@ -25,13 +26,13 @@ export default function ContentTable({
     confirm({
       title: 'Are you sure to delete the content? ',
       icon: <ExclamationCircleOutlined style={{ color: 'red' }} />,
-      content: <div>It may contains some sensitive information.</div>,
+      content: <div>It may contain some sensitive information.</div>,
       okText: 'Yes',
       okType: 'danger',
       cancelText: 'No',
       onOk() {
         deleteContent({
-          url: `/content/${tableSchema.slug}/${content.id}`,
+          url: `/content/${tableSchema.list && tableSchema.list[0].schemaSlug}/${content.id}`,
         }).then(() => {
           message.success('Deleted Successfully !');
           getContent();
@@ -48,13 +49,13 @@ export default function ContentTable({
   const columns = getColumns(tableSchema, handleEditContent, handleDeleteContent);
 
   let finalData = [];
-  const switchFieldsId = ((tableSchema && tableSchema.schema) || []).filter((field) => field.appearanceType === 'Switch');
+  const switchFieldsId = ((tableSchema && tableSchema.list) || []).filter((field) => field.appearanceType === 'Switch');
 
-  const dateAndTimeFieldsId = ((tableSchema && tableSchema.schema) || []).filter((field) => field.appearanceType === 'Date and Time');
+  const dateAndTimeFieldsId = ((tableSchema && tableSchema.list) || []).filter((field) => field.appearanceType === 'Date and Time');
 
-  const dateFieldsId = ((tableSchema && tableSchema.schema) || []).filter((field) => field.appearanceType === 'Date');
+  const dateFieldsId = ((tableSchema && tableSchema.list) || []).filter((field) => field.appearanceType === 'Date');
 
-  const booleanRadioFieldsId = ((tableSchema && tableSchema.schema) || []).filter((field) => field.appearanceType === 'Boolean radio');
+  const booleanRadioFieldsId = ((tableSchema && tableSchema.list) || []).filter((field) => field.appearanceType === 'Boolean radio');
 
   if (data) {
     finalData = data.list.map((content) => {
@@ -62,11 +63,13 @@ export default function ContentTable({
 
       if (switchFieldsId.length > 0) {
         switchFieldsId.forEach((field) => {
-          if (updatedContent[field.id] !== undefined) {
-            if (updatedContent[field.id]) {
-              updatedContent[field.id] = field.Truelabel;
+          if (updatedContent[field.fieldId] !== undefined) {
+            if (updatedContent[field.fieldId]) {
+              updatedContent[field.fieldId] = field.Truelabel;
+              // updatedContent[field.fieldId] = field.trueLabel;
             } else {
-              updatedContent[field.id] = field.Falselabel;
+              updatedContent[field.fieldId] = field.Falselabel;
+              // updatedContent[field.fieldId] = field.falseLabel;
             }
           }
         });
@@ -74,12 +77,14 @@ export default function ContentTable({
 
       if (booleanRadioFieldsId.length > 0) {
         booleanRadioFieldsId.forEach((field) => {
-          if (updatedContent[field.id] !== undefined) {
-            if (updatedContent[field.id] !== '') {
-              if (updatedContent[field.id]) {
-                updatedContent[field.id] = field.Truelabel;
+          if (updatedContent[field.fieldId] !== undefined) {
+            if (updatedContent[field.fieldId] !== '') {
+              if (updatedContent[field.fieldId]) {
+                updatedContent[field.fieldId] = field.Truelabel;
+                // updatedContent[field.fieldId] = field.trueLabel;
               } else {
-                updatedContent[field.id] = field.Falselabel;
+                updatedContent[field.fieldId] = field.Falselabel;
+                // updatedContent[field.fieldId] = field.falseLabel;
               }
             }
           }
@@ -88,44 +93,46 @@ export default function ContentTable({
 
       if (dateAndTimeFieldsId.length > 0) {
         dateAndTimeFieldsId.forEach((field) => {
-          if (updatedContent[field.id] !== undefined && updatedContent[field.id] !== null) {
+          if (updatedContent[field.fieldId] !== undefined
+             && updatedContent[field.fieldId] !== null) {
             const dateFormat = 'YYYY/MM/DD HH:mm:ss';
-            const testDateUtc = moment.utc(updatedContent[field.id]);
+            const testDateUtc = moment.utc(updatedContent[field.fieldId]);
             const localDate = testDateUtc.local();
-            updatedContent[field.id] = localDate.format(dateFormat);
+            updatedContent[field.fieldId] = localDate.format(dateFormat);
           } else {
-            updatedContent[field.id] = '';
+            updatedContent[field.fieldId] = '';
           }
         });
       }
 
       if (dateFieldsId.length > 0) {
         dateFieldsId.forEach((field) => {
-          if (updatedContent[field.id] !== undefined && updatedContent[field.id] !== null) {
+          if (updatedContent[field.fieldId] !== undefined
+            && updatedContent[field.fieldId] !== null) {
             const dateFormat = 'YYYY/MM/DD ';
-            const testDateUtc = moment.utc(updatedContent[field.id]);
+            const testDateUtc = moment.utc(updatedContent[field.fieldId]);
             const localDate = testDateUtc.local();
-            updatedContent[field.id] = localDate.format(dateFormat);
+            updatedContent[field.fieldId] = localDate.format(dateFormat);
           } else {
-            updatedContent[field.id] = '';
+            updatedContent[field.fieldId] = '';
           }
         });
       }
 
       return {
         ...updatedContent,
-        Actions: { ...content.data, id: content.id },
+        Actions: { ...content.data, id: content.contentId },
       };
     });
   }
-
+  console.log('finalData: ', finalData);
   return (
     <div>
       <Table
         columns={columns}
         dataSource={finalData}
         pagination={finalData.length > 10 ? { pageSize: 10 } : false}
-        scroll={{ y: 480 }}
+        scroll={{ y: 700 }}
       />
 
     </div>

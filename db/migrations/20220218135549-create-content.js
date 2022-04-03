@@ -3,8 +3,9 @@ module.exports = {
     await queryInterface.createTable('Datastore_Contents', {
       id: { type: Sequelize.UUID, primaryKey: true, defaultValue: Sequelize.UUIDV4 },
       schemaId: { type: Sequelize.UUID },
-      data: { type: Sequelize.JSON },
+      schemaSlug: { type: Sequelize.STRING },
       status: { type: Sequelize.ENUM('draft', 'published') },
+      order: { type: Sequelize.INTEGER },
       createdBy: { type: Sequelize.UUID },
       createdAt: { type: Sequelize.DATE },
       updatedBy: { type: Sequelize.UUID },

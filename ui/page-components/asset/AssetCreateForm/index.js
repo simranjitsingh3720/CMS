@@ -17,6 +17,7 @@ function AssetCreateForm({ closeModal, refetch }) {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [assetTitle, setAssetTitle] = useState('');
+  const [disabled, setDisabled] = useState(false);
 
   const normFile = (e) => {
     if (Array.isArray(e)) {
@@ -44,6 +45,7 @@ function AssetCreateForm({ closeModal, refetch }) {
   );
 
   const SubmitDetails = (values) => {
+    setDisabled(true);
     setLoading(true);
     executePost({
       data: {
@@ -118,7 +120,7 @@ function AssetCreateForm({ closeModal, refetch }) {
       >
         <div className={styles.actionButton}>
           <Space wrap>
-            <Button key="back" onClick={closeModal}>
+            <Button key="back" onClick={closeModal} disabled={disabled}>
               Cancel
             </Button>
             <Button type="primary" loading={loading} htmlType="submit">

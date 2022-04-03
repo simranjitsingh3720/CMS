@@ -13,8 +13,9 @@ export default function EmbedableForm() {
 
   const router = useRouter();
   const { formId, embed } = router.query;
+  const initialValues = getInitialValues(formDetails);
 
-  const initialValues = getInitialValues(formDetails.schema);
+  console.log('FORM DETAILS ', initialValues);
 
   const [{ }, fetchFormData] = useRequest({
     method: 'GET',
@@ -47,12 +48,12 @@ export default function EmbedableForm() {
   const handleAddContent = (contentData) => {
     const x = { ...contentData };
 
-    formDetails.schema.forEach((field) => {
+    formDetails.forEach((field) => {
       if (field.type === 'Date and Time') {
         x[field.id] = moment(x[field.id]).toISOString(true);
       }
       if (field.type === 'Boolean' && field.appearanceType === 'Boolean radio') {
-        if (x[field.id] === field.Truelabel) {
+        if (x[field.id] === field.Truelabel) { // trueLabel
           x[field.id] = true;
         } else if (x[field.id] === field.Falselabel) {
           x[field.id] = false;
@@ -68,9 +69,9 @@ export default function EmbedableForm() {
       }
     });
 
-    if (formDetails && formDetails.slug) {
+    if (formDetails && formDetails[0].schemaSlug) {
       addContent({
-        url: `/form/content/${formDetails.slug}`,
+        url: `/form/content/${formDetails[0].schemaSlug}`,
         data: { data: x },
       }).then(() => {
         setFormSubmitSuccess(true);
@@ -88,73 +89,78 @@ export default function EmbedableForm() {
     message.error('Fields are required');
   };
 
+  console.log(formDetails);
+
   return (
     <div className={styles.sharableForm}>
       <div
         className={styles.formFields}
       >
-        <Form
-          name="Add new Content form"
-          layout="vertical"
-          initialValues={initialValues}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
-        >
+        {Object.keys(initialValues).length > 0
+          ? (
+            <Form
+              name="Add new Content form"
+              layout="vertical"
+              initialValues={initialValues}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
+            >
 
-          {formSubmitSuccess ? (
-            <div className={styles.formError}>
-              <div>
-                <h2>
-                  Form Submitted successfully
-                </h2>
-                <div>
-                  <a
-                    href={window.location.href}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    Submit another response
-                  </a>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div>
-              {formError !== '' ? (
+              {formSubmitSuccess ? (
                 <div className={styles.formError}>
-                  <h2>{formError}</h2>
+                  <div>
+                    <h2>
+                      Form Submitted successfully
+                    </h2>
+                    <div>
+                      <a
+                        href={window.location.href}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        Submit another response
+                      </a>
+                    </div>
+                  </div>
                 </div>
               ) : (
-                <>
-                  {formDetails.schema && formDetails.schema.map((field) => (
-                    GetFields(field.appearanceType, field)
-                  ))}
-                  <div>
-                    {formDetails.schema && formDetails.schema.length >= 1 ? (
-                      <Form.Item
-                        style={{ marginBottom: '0px' }}
-                      >
-                        <div className={styles.actionButton}>
-                          <Space wrap>
-                            <Button type="primary" htmlType="submit">
-                              Submit
-                            </Button>
-                          </Space>
-                        </div>
-                      </Form.Item>
-                    ) : (
+                <div>
+                  {formError !== '' ? (
+                    <div className={styles.formError}>
+                      <h2>{formError}</h2>
+                    </div>
+                  ) : (
+                    <>
+                      { formDetails.map((field) => (
+                        GetFields(field.appearanceType, field)
+                      ))}
                       <div>
-                        No fields Found in the form.
-                        Please add some fields in the form
+                        {formDetails.length >= 1 ? (
+                          <Form.Item
+                            style={{ marginBottom: '0px' }}
+                          >
+                            <div className={styles.actionButton}>
+                              <Space wrap>
+                                <Button type="primary" htmlType="submit">
+                                  Submit
+                                </Button>
+                              </Space>
+                            </div>
+                          </Form.Item>
+                        ) : (
+                          <div>
+                            No fields Found in the form.
+                            Please add some fields in the form
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
-                </>
+                    </>
+                  )}
+                </div>
               )}
-            </div>
-          )}
 
-        </Form>
+            </Form>
+          ) : ''}
       </div>
     </div>
   );

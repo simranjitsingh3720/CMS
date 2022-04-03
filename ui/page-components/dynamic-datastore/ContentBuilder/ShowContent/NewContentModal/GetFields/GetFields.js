@@ -16,36 +16,36 @@ import moment from 'moment';
 const { TextArea } = Input;
 export const getInitialValues = (fields, editableData, isEditable) => {
   const values = {};
-
   if (isEditable) {
     fields.forEach((data) => {
-      if (data.id in editableData) {
+      if (data.fieldId in editableData) {
         if (data.type === 'Date and Time') {
-          if (editableData[data.id] !== null) {
-            values[[data.id]] = moment(editableData[data.id], 'YYYY/MM/DD HH:mm:ss') || '';
+          if (editableData[data.fieldId] !== null) {
+            values[[data.fieldId]] = moment(editableData[data.fieldId], 'YYYY/MM/DD HH:mm:ss') || '';
           } else {
-            values[[data.id]] = '';
+            values[[data.fieldId]] = '';
           }
         } else {
-          values[[data.id]] = editableData[data.id] || '';
+          values[[data.fieldId]] = editableData[data.fieldId] || '';
         }
 
         if (data.appearanceType === 'Boolean radio') {
-          if (editableData[data.id] === true) {
-            values[[data.id]] = data.Truelabel;
-          } else if (editableData[data.id] === false) {
-            values[[data.id]] = data.Falselabel;
+          if (editableData[data.fieldId] === true) {
+            values[[data.fieldId]] = data.Truelabel;
+            // values[[data.fieldId]] = data.trueLabel;
+          } else if (editableData[data.fieldId] === false) {
+            values[[data.fieldId]] = data.Falselabel;
           } else {
-            values[[data.id]] = '';
+            values[[data.fieldId]] = '';
           }
         }
       } else {
-        values[[data.id]] = data.defaultValue || '';
+        values[[data.fieldId]] = data.defaultValue || '';
       }
     });
   } else if (fields) {
     fields.forEach((field) => {
-      values[field.id] = field.defaultValue || '';
+      values[field.fieldId] = field.defaultValue || '';
     });
   }
   return values;
@@ -53,8 +53,8 @@ export const getInitialValues = (fields, editableData, isEditable) => {
 
 function GetFields(appearenceType, field, isEditable) {
   const {
-    name, required, options, Truelabel, Falselabel, id,
-  } = field;
+    name, isRequired, options, Truelabel, Falselabel, fieldId,
+  } = field; // trueLabel
 
   let values = [];
   if (options) {
@@ -64,21 +64,21 @@ function GetFields(appearenceType, field, isEditable) {
   switch (appearenceType) {
     case 'Short':
       return (
-        <Form.Item name={id} label={name} rules={[{ required }]}>
+        <Form.Item name={fieldId} label={name} rules={[{ required: isRequired }]}>
           <Input />
         </Form.Item>
       );
 
     case 'Long':
       return (
-        <Form.Item name={id} label={name} rules={[{ required }]}>
+        <Form.Item name={fieldId} label={name} rules={[{ required: isRequired }]}>
           <TextArea rows={2} />
         </Form.Item>
       );
 
     case 'Number':
       return (
-        <Form.Item name={id} label={name} rules={[{ required }]}>
+        <Form.Item name={fieldId} label={name} rules={[{ required: isRequired }]}>
           <InputNumber style={{
             width: '100%',
           }}
@@ -88,14 +88,22 @@ function GetFields(appearenceType, field, isEditable) {
 
     case 'Checkbox':
       return (
-        <Form.Item name={id} label={name} rules={[{ required }]}>
+        <Form.Item
+          name={fieldId}
+          label={name}
+          rules={[{ required: isRequired }]}
+        >
           <Checkbox.Group options={values} />
         </Form.Item>
       );
 
     case 'Radio':
       return (
-        <Form.Item name={id} label={name} rules={[{ required }]}>
+        <Form.Item
+          name={fieldId}
+          label={name}
+          rules={[{ required: isRequired }]}
+        >
           <Radio.Group>
             {values.map((radioValue) => <Radio value={radioValue}>{radioValue}</Radio>)}
           </Radio.Group>
@@ -104,7 +112,11 @@ function GetFields(appearenceType, field, isEditable) {
 
     case 'Dropdown':
       return (
-        <Form.Item name={id} label={name} rules={[{ required }]}>
+        <Form.Item
+          name={fieldId}
+          label={name}
+          rules={[{ required: isRequired }]}
+        >
           <Select>
             {values.map((dropDownValue) => (
               <Select.Option
@@ -118,7 +130,11 @@ function GetFields(appearenceType, field, isEditable) {
       );
     case 'Date':
       return (
-        <Form.Item name={id} label={name} rules={[{ required }]}>
+        <Form.Item
+          name={fieldId}
+          label={name}
+          rules={[{ required: isRequired }]}
+        >
           <DatePicker
             name="Date"
             format="YYYY/MM/DD "
@@ -128,7 +144,11 @@ function GetFields(appearenceType, field, isEditable) {
 
     case 'Date and Time':
       return (
-        <Form.Item name={id} label={name} rules={[{ required }]}>
+        <Form.Item
+          name={fieldId}
+          label={name}
+          rules={[{ required: isRequired }]}
+        >
           <DatePicker
             name="Date and Time"
             format="YYYY/MM/DD HH:mm:ss"
@@ -139,10 +159,17 @@ function GetFields(appearenceType, field, isEditable) {
 
     case 'Switch':
       return (
-        <Form.Item name={id} label={name} rules={[{ required }]} valuePropName="checked">
+        <Form.Item
+          name={fieldId}
+          label={name}
+          rules={[{ required: isRequired }]}
+          valuePropName="checked"
+        >
           <Switch
             checkedChildren={Truelabel}
+            // checkedChildren={trueLabel}
             unCheckedChildren={Falselabel}
+            // checkedChildren={falseLabel}
             defaultChecked={false}
           />
         </Form.Item>
@@ -150,26 +177,36 @@ function GetFields(appearenceType, field, isEditable) {
 
     case 'Boolean radio':
       return (
-        <Form.Item name={id} label={name} rules={[{ required }]}>
+        <Form.Item
+          name={fieldId}
+          label={name}
+          rules={[{ required: isRequired }]}
+        >
           <Radio.Group>
             <Radio value={Truelabel}>{Truelabel}</Radio>
             <Radio value={Falselabel}>{Falselabel}</Radio>
+            {/* <Radio value={trueLabel}>{trueLabel}</Radio>
+            <Radio value={falseLabel}>{falseLabel}</Radio> */}
           </Radio.Group>
         </Form.Item>
       );
 
     case 'FileUpload':
       return (
-        <Form.Item name={id} label={name} rules={[{ required: isEditable ? false : required }]}>
+        <Form.Item
+          name={fieldId}
+          label={name}
+          rules={[{ required: isEditable ? false : isRequired }]}
+        >
           {isEditable ? (
             <div>
-              <Upload disabled={!!isEditable}>
+              <Upload disabled={!!isEditable} maxCount={options ? 10 : 1}>
                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
               </Upload>
               <span style={{ color: 'red' }}>Asset cannot be updated.</span>
             </div>
           ) : (
-            <Upload>
+            <Upload maxCount={options ? 10 : 1}>
               <Button icon={<UploadOutlined />}>Click to Upload</Button>
             </Upload>
           )}

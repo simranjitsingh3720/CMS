@@ -24,6 +24,14 @@ function ShowSchema() {
   const [isFieldReordering, setIsFieldReordering] = useState(false);
   const [showShareFormModal, setshowShareFormModal] = useState(false);
 
+  const [{}, getAllFields] = useRequest(
+    {
+      method: 'GET',
+
+    },
+    { manual: true },
+  );
+
   const showSchemaModal = () => {
     setIsEditable(false);
     setIsSchemaModal(true);
@@ -49,6 +57,22 @@ function ShowSchema() {
     setEditSchemaModal(false);
   };
 
+  // const [{}, fieldDelete] = useRequest(
+  //   {
+  //     method: 'DELETE',
+
+  //   },
+  //   { manual: true },
+  // );
+
+  // const [{ data }, getSchema] = useRequest(
+  //   {
+  //     method: 'GET',
+  //     url: `/schema/${schemaSlug}`,
+  //   },
+  //   { manual: true },
+  // );
+
   const [{}, fieldDelete] = useRequest(
     {
       method: 'DELETE',
@@ -60,13 +84,12 @@ function ShowSchema() {
   const [{ data }, getSchema] = useRequest(
     {
       method: 'GET',
-      url: `/schema/${schemaSlug}`,
+      url: `/schema/${schemaSlug}/field`,
     },
     { manual: true },
   );
 
-  const [{ },
-    executeFieldsReordering,
+  const [{ }, executeFieldsReordering,
   ] = useRequest(
     {
       url: `/schema/${schemaSlug}/field/`,
@@ -77,6 +100,7 @@ function ShowSchema() {
   );
 
   const deleteField = (id) => {
+    console.log('DELETE ID ', id);
     confirm({
       title: 'Do you Want to delete this Field',
       icon: <ExclamationCircleOutlined style={{ color: 'red' }} />,
@@ -109,7 +133,7 @@ function ShowSchema() {
     if (schemaSlug) {
       getSchema().then((res) => {
         setReFetchSchema(false);
-        setFields(res.data.schema);
+        setFields(res.data.list || []);
       });
     }
   }, [reFetchSchema]);
@@ -159,7 +183,7 @@ function ShowSchema() {
               showShareFormModal={shareFormModal}
               closeShareFormModal={closeShareFormModal}
               loading
-              formId={data.id}
+              formId={data.list && data.list[0].schemaId}
               title={data.title}
             />
           </div>
@@ -172,6 +196,7 @@ function ShowSchema() {
                 closeSchemaModal={closeSchemaModal}
                 getSchema={getSchema}
                 data={data}
+                schemaSlug={schemaSlug}
                 fieldsId={fieldsId}
                 setReFetchSchema={setReFetchSchema}
               />
@@ -190,14 +215,14 @@ function ShowSchema() {
               fieldsId={fieldsId}
               fieldData={fieldData}
               data={data}
+              schemaSlug={schemaSlug}
               setReFetchSchema={setReFetchSchema}
             />
           )
           : null}
-
       </div>
       <div>
-        { (data && data.schema.length <= 0) ? (
+        { (data && data.list.length <= 0) ? (
           <div style={{
             position: 'absolute',
             top: '50%',

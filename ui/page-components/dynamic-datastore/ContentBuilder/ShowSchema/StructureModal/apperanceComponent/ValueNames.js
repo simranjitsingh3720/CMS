@@ -1,9 +1,7 @@
 import { Form, Input, Button } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
-function ValueNames(fieldData) {
-  console.log('FIELD DATA ', fieldData.name);
-
+function ValueNames() {
   return (
 
     <Form.List
@@ -27,6 +25,7 @@ function ValueNames(fieldData) {
               required={false}
               key={field.key}
             >
+
               <Form.Item
                 {...field}
                 validateTrigger={['onChange', 'onBlur']}
@@ -49,6 +48,7 @@ function ValueNames(fieldData) {
                 <MinusCircleOutlined
                   className="dynamic-delete-button"
                   onClick={() => remove(field.name)}
+                  style={{ marginLeft: '5px', fontSize: '18px' }}
                 />
               ) : null}
             </Form.Item>
@@ -72,7 +72,9 @@ function ValueNames(fieldData) {
           </Form.Item>
         </>
       )}
+
     </Form.List>
+
   // </Form>
 
   );

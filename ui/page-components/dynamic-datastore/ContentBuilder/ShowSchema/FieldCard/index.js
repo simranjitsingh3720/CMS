@@ -16,7 +16,7 @@ function FieldCard({
 
   return (
     <>
-      <FieldTutorial />
+      {/* <FieldTutorial /> */}
       <Card className={style.card_wrapper} style={{ padding: '12px !important' }}>
         <div className={style.Field_card}>
           <div className={style.Fields}>
@@ -29,7 +29,7 @@ function FieldCard({
               <Button
                 id="edit_structure"
                 className={style.button}
-                onClick={() => handleEditSchemaFieldsModal(fields.id)}
+                onClick={() => handleEditSchemaFieldsModal(fields.fieldId)}
               >
                 <EditOutlined />
               </Button>
