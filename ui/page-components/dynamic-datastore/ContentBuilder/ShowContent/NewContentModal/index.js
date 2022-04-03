@@ -11,7 +11,7 @@ export default function NewContentModal({
   schemaDetails, getContent, isEditable, editableData,
   isContentModal,
 }) {
-  console.log('SCHEMA DETAILS ', schemaDetails);
+  console.log('EDITABLE DATA ', editableData);
   const fields = schemaDetails.list || [];
   const initialValues = getInitialValues(schemaDetails.list, editableData, isEditable);
   const schemaSlug = schemaDetails
@@ -21,7 +21,7 @@ export default function NewContentModal({
   const [loading, setLoading] = useState(false);
   const [storeData, setStoreData] = useState(null);
   const [disable, setDisable] = useState(false);
-  const isAsset = false;
+  let isAsset = false;
   const multipleAssets = [];
 
   const [{ }, executePost] = useRequest({ method: 'POST' }, { manual: true });
@@ -42,7 +42,6 @@ export default function NewContentModal({
   );
 
   useEffect(() => {
-    console.log(storeData);
     if (storeData !== null) {
       addContent({
         url: `/content/${schemaSlug}`,
@@ -50,10 +49,14 @@ export default function NewContentModal({
         params: {
           schemaId,
         },
-      }).then((res) => {
+      }).then(() => {
         message.success('Added Successfully');
+        if (!isAsset) {
+          setLoading(false);
+          closeContentModal();
+        }
         getContent();
-      }).catch((err) => {
+      }).catch(() => {
         getContent();
       });
     }
@@ -70,9 +73,10 @@ export default function NewContentModal({
         x[field.fieldId] = moment(x[field.fieldId]).toISOString(true);
       }
       if (field.type === 'Assets') {
-        if (x[field.id]) {
-          handleReadURLs.push({ [field.id]: x[field.id].fileList.length });
-          x[field.id].fileList.forEach((singleFile) => {
+        if (x[field.fieldId]) {
+          isAsset = true;
+          handleReadURLs.push({ [field.fieldId]: x[field.fieldId].fileList.length });
+          x[field.fieldId].fileList.forEach((singleFile) => {
             uploadData = [...uploadData, singleFile];
             const { name } = singleFile;
             const mimeType = singleFile.type;
@@ -118,8 +122,7 @@ export default function NewContentModal({
               }];
               usedUrls += 1;
             }
-            x[id] = urlList;
-            console.log('kwrfgewiufbewfbewuiofg ', x);
+            x[id] = JSON.stringify(urlList);
           });
 
           writeUrlList.forEach((writeUrl, index) => {
@@ -132,6 +135,7 @@ export default function NewContentModal({
             )
               .then((result) => {
                 // console.log(result);
+                console.log('kwrfgewiufbewfbewuiofg ', x);
                 count += 1;
                 setLoading(false);
                 setStoreData(x);
@@ -139,6 +143,10 @@ export default function NewContentModal({
               });
           });
         });
+    }
+
+    if (!isAsset) {
+      setStoreData(x);
     }
   };
 
@@ -160,9 +168,12 @@ export default function NewContentModal({
         }
       }
     });
+
     if (schemaSlug) {
+      console.log('UPDATED DATA ', x);
+
       updateContent({
-        url: `/content/${schemaSlug}/${editableData.fieldId}`,
+        url: `/content/${schemaSlug}/${editableData.id}`,
         data: { ...x },
       }).then(() => {
         closeContentModal();

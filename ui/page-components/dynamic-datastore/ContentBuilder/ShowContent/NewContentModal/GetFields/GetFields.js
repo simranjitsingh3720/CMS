@@ -16,7 +16,6 @@ import moment from 'moment';
 const { TextArea } = Input;
 export const getInitialValues = (fields, editableData, isEditable) => {
   const values = {};
-  console.log('FIELDS ', fields);
   if (isEditable) {
     fields.forEach((data) => {
       if (data.fieldId in editableData) {

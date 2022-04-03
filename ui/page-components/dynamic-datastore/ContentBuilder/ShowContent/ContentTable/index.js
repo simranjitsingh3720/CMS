@@ -15,6 +15,7 @@ export default function ContentTable({
   showContentModal, setIsEditable, getEditableData,
   deleteContent, getContent,
 }) {
+  console.log('DATATAATAATAAT ', data);
   const handleEditContent = (content) => {
     getEditableData(content);
     showContentModal(true);
@@ -31,7 +32,7 @@ export default function ContentTable({
       cancelText: 'No',
       onOk() {
         deleteContent({
-          url: `/content/${tableSchema.slug}/${content.id}`,
+          url: `/content/${tableSchema.list && tableSchema.list[0].schemaSlug}/${content.id}`,
         }).then(() => {
           message.success('Deleted Successfully !');
           getContent();

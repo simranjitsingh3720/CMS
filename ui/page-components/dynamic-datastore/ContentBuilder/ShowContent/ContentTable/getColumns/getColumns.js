@@ -5,8 +5,6 @@ import styles from './style.module.scss';
 export default function getColumns(tableSchema, handleEditContent, handleDeleteContent) {
   let columns = [];
 
-  console.log('TABLE SCHEMA  ', tableSchema);
-
   columns = ((tableSchema && tableSchema.list) || []).map((field, index) => {
     if (tableSchema.list[index].type === 'Assets') {
       return {
@@ -18,9 +16,9 @@ export default function getColumns(tableSchema, handleEditContent, handleDeleteC
 
             {actions ? (
               <div>
-                {actions.map((item) => (
+                {JSON.parse(actions).map((item) => (
                   <div>
-                    <a href={item.url}>
+                    <a href={item.url} target="_blank" rel="noreferrer">
                       {item.name}
                     </a>
                   </div>

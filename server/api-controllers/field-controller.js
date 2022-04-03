@@ -117,7 +117,6 @@ const listAllFields = async (req, res) => {
 const getSingleField = async (req, res) => {
   const { body, query } = req;
   const { schemaId, schemaSlug, fieldId } = query;
-  console.log(schemaId);
   const data = await db.Schema.findOne({ where: { slug: schemaSlug } });
   if (!data) {
     throw new MissingError('Table Not Found');

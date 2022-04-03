@@ -18,9 +18,9 @@ const listContents = async (req, res) => {
 
   try {
     const ddd = await db.sequelize.query(
-      'select "contentId", json_object_agg("attributeKey", "attributeValue") as data from (select "Datastore_ContentData"."contentId", "Datastore_ContentData"."attributeKey", "Datastore_ContentData"."attributeValue" from "Datastore_ContentData" join "Datastore_Contents" on "Datastore_ContentData"."contentId"="Datastore_Contents"."id" where "Datastore_Contents"."schemaSlug"=:schemaSlug) as json group by "contentId";',
+      'select "contentId", json_object_agg("attributeKey", "attributeValue") as data from (select "Datastore_ContentData"."contentId", "Datastore_ContentData"."attributeKey", "Datastore_ContentData"."attributeValue" from "Datastore_ContentData" join "Datastore_Contents" on "Datastore_ContentData"."contentId"="Datastore_Contents"."id" where "Datastore_Contents"."schemaSlug"=:schemaSlug and "Datastore_ContentData"."deletedAt" is :deletedAt) as json group by "contentId";',
       {
-        replacements: { schemaSlug },
+        replacements: { schemaSlug, deletedAt: null },
         type: QueryTypes.SELECT,
         model: db.ContentData,
       },
@@ -31,16 +31,14 @@ const listContents = async (req, res) => {
     }
     throw new MissingError('Invalid slug');
   } catch (error) {
-    throw new ServerError(error);
+    throw new ServerError('SomeThing Went Wrong, Pleae try again');
   }
 };
 
 const addContent = async (req, res) => {
   const { body, query } = req;
-  const { schemaSlug, schemaId } = query;
-  console.log('SCHEMA JSON ', schemaSlug);
+  const { schemaSlug } = query;
 
-  // to get schema id from schema table
   const schema = await db.Schema.findOne({
     where: {
       slug: schemaSlug,
@@ -69,14 +67,14 @@ const addContent = async (req, res) => {
           const contentDatas = await db.ContentData.bulkCreate(contentData);
 
           if (contentDatas) {
+            createLog('UPDATE', req.session.user.id, content.id, 'CONTENT');
             return res.status(201).json({ id: content.id });
           }
         } catch (error) {
-          console.log('EEEEEEEEE ', error);
+          throw new ServerError('Unable to Create Content. Please try again.');
         }
       }
     } catch (error) {
-      console.log(error);
       throw new ServerError('Server Error: Unable to add Content. Please try again');
     }
   }
@@ -87,8 +85,6 @@ const updateContent = async (req, res) => {
   const { body, query } = req;
   const { schemaSlug, contentId } = query;
 
-  console.log('UPDAE ', query);
-
   const schema = await db.Schema.findOne({
     where: {
       slug: schemaSlug,
@@ -96,30 +92,54 @@ const updateContent = async (req, res) => {
   });
 
   if (schema) {
-    const updatedContent = await db.ContentData.update({
-      ...body,
-      updatedBy: req.session.user.id,
-    }, {
-      where: {
-        schemaSlug,
+    const schemaJSON = { ...(schema && schema.toJSON()) } || undefined;
+    try {
+      const content = await db.Content.findOne({
+        where: {
+          schemaId: schemaJSON.id, schemaSlug,
+        },
+      });
 
-      },
-    });
+      const contentJSON = { ...(content && content.toJSON()) } || undefined;
+      if (contentJSON) {
+        let contentData = [];
+        Object.keys(body).map((key) => {
+          contentData = [...contentData, {
+            attributeValue: body[key],
+            attributeKey: key,
+            contentId,
+          }];
+          return null;
+        });
 
-    if (updatedContent[0]) {
-      createLog('UPDATE', req.session.user.id, contentId, 'CONTENT');
-      return res.status(201).json({ id: contentId });
+        try {
+          await db.ContentData.destroy({
+            where: {
+              contentId,
+            },
+          });
+
+          const contentDatas = await db.ContentData.bulkCreate(
+            contentData,
+          );
+
+          if (contentDatas) {
+            createLog('UPDATE', req.session.user.id, contentId, 'CONTENT');
+            return res.status(201).json({ id: content.id });
+          }
+        } catch (error) {
+          throw new ServerError('Unable to Delete Content. Please try again.');
+        }
+      }
+    } catch (error) {
+      throw new ServerError('Server Error: Unable to add Content. Please try again');
     }
-    throw new MissingError('No Data exists');
   }
-
   throw new MissingError('Schema Not Found');
 };
 
 const deleteContent = async (req, res) => {
   const { schemaSlug, contentId } = req.query;
-
-  console.log('DELETE ', req.query);
 
   const schema = await db.Schema.findOne(
     {
@@ -129,22 +149,34 @@ const deleteContent = async (req, res) => {
     },
   );
 
-  if (schema) {
-    const deletedContent = await db.ContentData.destroy({
-      where: {
-        schemaSlug,
-
-      },
-    });
-
-    if (deletedContent) {
-      createLog('DELETE', req.session.user.id, contentId, 'CONTENT');
-      return res.status(201).json({ id: contentId });
-    }
-    return res.status(400).json({ message: 'No Data exists' });
+  if (!schema) {
+    throw new MissingError('Table not');
   }
 
-  return res.status(400).json({ message: 'Schema not found' });
+  try {
+    if (schema) {
+      const deletedContent = await db.ContentData.destroy({
+        where: {
+          contentId,
+        },
+      });
+
+      const deletedRow = await db.Content.destroy({
+        where: {
+          id: contentId,
+        },
+      });
+
+      if (deletedContent && deletedRow) {
+        createLog('DELETE', req.session.user.id, contentId, 'CONTENT');
+        return res.status(201).json({ id: contentId });
+      }
+      return res.status(400).json({ message: 'No Data exists' });
+    }
+  } catch (error) {
+    throw new ServerError('Unable to delete. Please try again');
+  }
+  throw new MissingError('Schema not found');
 };
 
 module.exports = {
