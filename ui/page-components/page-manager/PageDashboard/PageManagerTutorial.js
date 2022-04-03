@@ -13,7 +13,7 @@ function PageManagerTutorial() {
     },
     {
       target: '.second-step',
-      content: 'Search your page here',
+      content: 'Search your pages here',
       disableBeacon: 'true',
       hideCloseButton: 'true',
     },
@@ -44,7 +44,6 @@ function PageManagerTutorial() {
   ];
   return (
     <div>
-      {console.log('session', session)}
       {session && session.demo.pageManager && <Tutorial steps={steps} tutorialKey="pageManager" />}
     </div>
   );
