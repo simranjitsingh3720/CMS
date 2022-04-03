@@ -58,7 +58,7 @@ export default function NewContentModal({
         getContent();
         // listContent();
       }).catch(() => {
-        message.success('Added Successfully in error');
+        message.success('Added Successfully');
 
         getContent();
         // listContent();

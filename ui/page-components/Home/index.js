@@ -15,22 +15,16 @@ function Home() {
     method: 'GET',
     url: '/dashboard',
   });
-  console.log(getData?.data);
 
   return (
     <div className={styles.home_container}>
       <div className={styles.title}>
-        Hello!
-        {' '}
         {session ? (
-          <span>
-            {session.user.firstName}
-            {' '}
-            {session.user.lastName}
+          <span className={styles.title}>
+            WELCOME TO COGO-CMS
           </span>
         ) : <span>Please Login or Signup to continue</span>}
       </div>
-
       <div className="card_component_container">
         <CardWrapper>
           <div
