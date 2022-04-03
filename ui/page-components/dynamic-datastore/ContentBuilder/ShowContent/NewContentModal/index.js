@@ -11,14 +11,17 @@ export default function NewContentModal({
   schemaDetails, getContent, isEditable, editableData,
   isContentModal,
 }) {
+  console.log('EDITABLE DATA ', editableData);
   const fields = schemaDetails.list || [];
   const initialValues = getInitialValues(schemaDetails.list, editableData, isEditable);
   const schemaSlug = schemaDetails
   && schemaDetails.list && schemaDetails.list[0].schemaSlug; // need schema slug
+  const schemaId = schemaDetails
+  && schemaDetails.list && schemaDetails.list[0].id;
   const [loading, setLoading] = useState(false);
   const [storeData, setStoreData] = useState(null);
   const [disable, setDisable] = useState(false);
-  const isAsset = false;
+  let isAsset = false;
   const multipleAssets = [];
 
   const [{ }, executePost] = useRequest({ method: 'POST' }, { manual: true });
@@ -42,11 +45,18 @@ export default function NewContentModal({
     if (storeData !== null) {
       addContent({
         url: `/content/${schemaSlug}`,
-        data: { data: storeData },
-      }).then((res) => {
+        data: { ...storeData },
+        params: {
+          schemaId,
+        },
+      }).then(() => {
         message.success('Added Successfully');
+        if (!isAsset) {
+          setLoading(false);
+          closeContentModal();
+        }
         getContent();
-      }).catch((err) => {
+      }).catch(() => {
         getContent();
       });
     }
@@ -56,14 +66,17 @@ export default function NewContentModal({
     const x = { ...contentData };
     let uploadData = [];
     let count = 0;
-    const multiplePlaceholder = '';
-    schemaDetails.list.forEach((field, index) => {
+    const handleReadURLs = [];
+
+    schemaDetails.list.forEach((field) => {
       if (field.type === 'Date and Time') {
-        x[field.id] = moment(x[field.id]).toISOString(true);
+        x[field.fieldId] = moment(x[field.fieldId]).toISOString(true);
       }
       if (field.type === 'Assets') {
-        if (x[field.id]) {
-          x[field.id].fileList.forEach((singleFile) => {
+        if (x[field.fieldId]) {
+          isAsset = true;
+          handleReadURLs.push({ [field.fieldId]: x[field.fieldId].fileList.length });
+          x[field.fieldId].fileList.forEach((singleFile) => {
             uploadData = [...uploadData, singleFile];
             const { name } = singleFile;
             const mimeType = singleFile.type;
@@ -74,18 +87,18 @@ export default function NewContentModal({
         }
       }
       if (field.type === 'Boolean' && field.appearanceType === 'Boolean radio') {
-        if (x[field.id] === field.Truelabel) { // trueLabel
-          x[field.id] = true;
-        } else if (x[field.id] === field.Falselabel) {
-          x[field.id] = false;
+        if (x[field.fieldId] === field.Truelabel) { // trueLabel
+          x[field.fieldId] = true;
+        } else if (x[field.fieldId] === field.Falselabel) {
+          x[field.fieldId] = false;
         } else {
-          x[field.id] = '';
+          x[field.fieldId] = '';
         }
       }
 
       if (field.type === 'Boolean' && field.appearanceType === 'Switch') {
-        if (x[field.id] !== true && x[field.id] !== false) {
-          x[field.id] = false;
+        if (x[field.fieldId] !== true && x[field.fieldId] !== false) {
+          x[field.fieldId] = false;
         }
       }
     });
@@ -96,12 +109,22 @@ export default function NewContentModal({
       })
         .then((res) => {
           const { writeUrlList, assetIdList, readUrlArr } = res.data;
-          console.log('x-', x);
-          const n = x.single.fileList;
-          let a = n[0];
-          a = { ...a, test: 'test1' };
-          console.log(n[0]);
-          x = { ...x, a };
+
+          let usedUrls = 0;
+          handleReadURLs.forEach((obj, index) => {
+            const id = Object.keys(obj)[0];
+            const totalUrls = handleReadURLs[index][id];
+            let urlList = [];
+            for (let i = 0; i < totalUrls; i += 1) {
+              urlList = [...urlList, {
+                url: readUrlArr[usedUrls],
+                name: multipleAssets[usedUrls].name,
+              }];
+              usedUrls += 1;
+            }
+            x[id] = JSON.stringify(urlList);
+          });
+
           writeUrlList.forEach((writeUrl, index) => {
             axios.put(
               writeUrl,
@@ -112,6 +135,7 @@ export default function NewContentModal({
             )
               .then((result) => {
                 // console.log(result);
+                console.log('kwrfgewiufbewfbewuiofg ', x);
                 count += 1;
                 setLoading(false);
                 setStoreData(x);
@@ -120,6 +144,10 @@ export default function NewContentModal({
           });
         });
     }
+
+    if (!isAsset) {
+      setStoreData(x);
+    }
   };
 
   const handleUpdateContent = (contentData) => {
@@ -127,23 +155,26 @@ export default function NewContentModal({
 
     schemaDetails.list.forEach((field) => {
       if (field.type === 'Date and Time') {
-        x[field.id] = moment(x[field.id]).toISOString(true);
+        x[field.fieldId] = moment(x[field.fieldId]).toISOString(true);
       }
 
       if (field.type === 'Boolean' && field.appearanceType === 'Boolean radio') {
-        if (x[field.id] === field.Truelabel) { // trueLabel
-          x[field.id] = true;
-        } else if (x[field.id] === field.Falselabel) {
-          x[field.id] = false;
+        if (x[field.fieldId] === field.Truelabel) { // trueLabel
+          x[field.fieldId] = true;
+        } else if (x[field.fieldId] === field.Falselabel) {
+          x[field.fieldId] = false;
         } else {
-          x[field.id] = '';
+          x[field.fieldId] = '';
         }
       }
     });
+
     if (schemaSlug) {
+      console.log('UPDATED DATA ', x);
+
       updateContent({
         url: `/content/${schemaSlug}/${editableData.id}`,
-        data: { data: x },
+        data: { ...x },
       }).then(() => {
         closeContentModal();
         message.success('Updated Successfully');

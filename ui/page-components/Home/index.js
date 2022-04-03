@@ -85,17 +85,6 @@ function Home() {
                 <li>
                   <TableOutlined style={{ marginRight: '10px' }} />
                   <a href={`admin/datastore/content-builder/${item.slug}`}>{item.title}</a>
-                  {/* {item.title} */}
-                  {' '}
-                  {' '}
-                  -
-
-                  <span title="Number of fields" style={{ color: 'gray' }}>
-                    {' '}
-                    [
-                    {item.schema.length}
-                    ]
-                  </span>
                 </li>
               ))}
             </ul>

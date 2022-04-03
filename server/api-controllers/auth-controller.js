@@ -35,7 +35,6 @@ const { ValidityError, ServerError } = require('../helpers/error-helper');
 //     })
 //     .then((result) => {
 //       // do something with the send result or ignore
-//       console.log('success ', result);
 //     })
 //     .catch((err) => {
 //       // handle an error
@@ -118,7 +117,7 @@ const signup = async (req, res) => {
     try {
       demo = await db.UserDemoPreference.create(demoData);
     } catch (err) {
-      console.log(err);
+      throw new ServerError('Server Error. Please try again');
     }
     req.session.demoPreference = demo;
     req.session.user = user;
@@ -129,7 +128,7 @@ const signup = async (req, res) => {
       throw new ValidityError('User email Exists');
     }
   }
-  throw new ServerError('Server Error');
+  throw new ServerError('Server Error. Please try again');
 };
 
 const signin = async (req, res) => {
@@ -199,8 +198,6 @@ const recoverPassword = async (req, res) => {
         emailToken: token,
       };
       await db.User.update(values, { where: { email } });
-      console.log('Click Below to reset Password----');
-      console.log(`http://localhost:8000/admin/password-change/${token}`);
       // const name = `${user.firstName} ${user.lastName}`;
       // sendEmail(email, name, link);
       return res.status(200).json({ message: 'Password recovered successfully' });

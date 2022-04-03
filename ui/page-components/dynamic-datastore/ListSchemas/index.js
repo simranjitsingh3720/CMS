@@ -148,7 +148,6 @@ function ListSchema() {
               schemaDesc={schema.description}
               showSchema={showSchema}
               deleteSchema={deleteSchema}
-              totatlFields={schema.schema.length || 0}
             />
           ))}
         </div>

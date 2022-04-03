@@ -1,6 +1,6 @@
 const route = require('../../../../../server/helpers/route-helper');
 
-const { getContent, updateContent, deleteContent } = require('../../../../../server/api-controllers/content-controller');
+const { getContent, updateContent, deleteContent } = require('../../../../../server/api-controllers/contentData-controller');
 
 module.exports = route({
   GET: getContent,

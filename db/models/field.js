@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       schemaId: { type: DataTypes.UUID },
       schemaSlug: { type: DataTypes.STRING },
       name: { type: DataTypes.STRING, allowNull: false },
-      fieldId: { type: DataTypes.STRING, unique: true, allowNull: false },
+      fieldId: { type: DataTypes.STRING, allowNull: false },
       description: { type: DataTypes.STRING },
       defaultValue: { type: DataTypes.STRING },
       isRequired: { type: DataTypes.BOOLEAN },

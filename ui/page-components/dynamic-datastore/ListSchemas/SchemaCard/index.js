@@ -4,13 +4,19 @@ import {
 } from 'antd';
 import styles from './style.module.scss';
 import CardWrapper from '../../../../components/CardWrapper';
+import { useRequest } from '../../../../helpers/request-helper';
 
 function SchemaCard({
-  schemaName, schemaDesc, deleteSchema, showSchema, schemaSlug, totatlFields, schemaId,
+  schemaName, schemaDesc, deleteSchema, showSchema, schemaSlug, schemaId,
 }) {
   const handleClick = () => {
     deleteSchema(schemaSlug, schemaId);
   };
+
+  const [{ data: getField }] = useRequest({
+    url: `/schema/${schemaSlug}/field`,
+    method: 'GET',
+  });
 
   const content = (
     <div>
@@ -36,7 +42,7 @@ function SchemaCard({
           </h4>
         </div>
         <h4 className={`${styles.card_colorGray} ${styles.card_fields}`}>
-          {totatlFields}
+          {getField && getField.list && getField.list.length}
           {' Fields'}
         </h4>
         <p className={styles.card_para}>
