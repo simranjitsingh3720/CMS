@@ -65,7 +65,6 @@ const addContent = async (req, res) => {
           }];
           return null;
         });
-        console.log('HElllllllll l l  l l l l lcontentData l l l ', contentData);
 
         try {
           const contentDatas = await db.ContentData.bulkCreate(contentData);
@@ -75,8 +74,7 @@ const addContent = async (req, res) => {
             return res.status(201).json({ id: content.id });
           }
         } catch (error) {
-          console.log('ERROR ', error);
-          // throw new ServerError('Unable to Create Content. Please try again.');
+          throw new ServerError('Unable to Create Content. Please try again.');
         }
       }
     } catch (error) {
