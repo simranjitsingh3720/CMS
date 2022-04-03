@@ -9,7 +9,7 @@ import styles from './style.module.scss';
 export default function NewContentModal({
   closeContentModal,
   schemaDetails, getContent, isEditable, editableData,
-  isContentModal,
+  isContentModal, listContent,
 }) {
   const fields = schemaDetails.list || [];
   const initialValues = getInitialValues(schemaDetails.list, editableData, isEditable);
@@ -55,8 +55,12 @@ export default function NewContentModal({
           closeContentModal();
         }
         getContent();
+        // listContent();
       }).catch(() => {
+        message.success('Added Successfully');
+
         getContent();
+        // listContent();
       });
     }
   }, [storeData]);

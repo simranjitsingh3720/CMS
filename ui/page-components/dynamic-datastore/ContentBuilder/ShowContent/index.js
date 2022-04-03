@@ -33,6 +33,17 @@ function ShowContent({ schema, setDefaultKey }) {
     },
   );
 
+  const [{ }, listContent] = useRequest(
+    {
+      method: 'GET',
+      url: '/content',
+    },
+  );
+
+  if (data) {
+    console.log('DDDDDDFDFDFDDFDFDUFGUSUVCUSVCUVCVUSVCIH ', data.list);
+  }
+
   const [{}, deleteContent] = useRequest(
     {
       method: 'DELETE',
@@ -135,6 +146,7 @@ function ShowContent({ schema, setDefaultKey }) {
           closeContentModal={closeContentModal}
           schemaDetails={schema || []}
           getContent={getContent}
+          listContent={listContent}
           isEditable={isEditable}
           editableData={editableData}
           isContentModal={isContentModal}
