@@ -42,7 +42,6 @@ export default function NewContentModal({
 
   useEffect(() => {
     if (storeData !== null) {
-      console.log('HELLLLLLLLLLLLL ', storeData);
       addContent({
         url: `/content/${schemaSlug}`,
         data: { ...storeData },
@@ -63,6 +62,8 @@ export default function NewContentModal({
   }, [storeData]);
 
   const handleAddContent = (contentData) => {
+    console.log('CONTENTD ATATATAATAAT ', contentData);
+
     const x = { ...contentData };
     let uploadData = [];
     let count = 0;

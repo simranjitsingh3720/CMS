@@ -15,7 +15,6 @@ export default function ContentTable({
   showContentModal, setIsEditable, getEditableData,
   deleteContent, getContent,
 }) {
-  console.log('DATATAATAATAAT ', data);
   const handleEditContent = (content) => {
     getEditableData(content);
     showContentModal(true);
@@ -64,7 +63,7 @@ export default function ContentTable({
       if (switchFieldsId.length > 0) {
         switchFieldsId.forEach((field) => {
           if (updatedContent[field.fieldId] !== undefined) {
-            if (updatedContent[field.fieldId]) {
+            if (updatedContent[field.fieldId] === 'true') {
               updatedContent[field.fieldId] = field.Truelabel;
               // updatedContent[field.fieldId] = field.trueLabel;
             } else {
@@ -79,7 +78,7 @@ export default function ContentTable({
         booleanRadioFieldsId.forEach((field) => {
           if (updatedContent[field.fieldId] !== undefined) {
             if (updatedContent[field.fieldId] !== '') {
-              if (updatedContent[field.fieldId]) {
+              if (updatedContent[field.fieldId] === 'true') {
                 updatedContent[field.fieldId] = field.Truelabel;
                 // updatedContent[field.fieldId] = field.trueLabel;
               } else {
@@ -125,7 +124,6 @@ export default function ContentTable({
       };
     });
   }
-  console.log('finalData: ', finalData);
   return (
     <div>
       <Table

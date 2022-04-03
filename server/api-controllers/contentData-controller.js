@@ -39,8 +39,6 @@ const addContent = async (req, res) => {
   const { body, query } = req;
   const { schemaSlug } = query;
 
-  console.log('HElllllllll l l  l l l l l l l l ', body);
-
   const schema = await db.Schema.findOne({
     where: {
       slug: schemaSlug,

@@ -33,10 +33,6 @@ function ShowContent({ schema, setDefaultKey }) {
     },
   );
 
-  if (data) {
-    console.log('DDDDDDFDFDFDDFDFDUFGUSUVCUSVCUVCVUSVCIH ', data.list);
-  }
-
   const [{}, deleteContent] = useRequest(
     {
       method: 'DELETE',
