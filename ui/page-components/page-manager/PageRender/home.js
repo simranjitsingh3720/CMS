@@ -34,19 +34,23 @@ function PageRender({ data }) {
     <div>
       <div ref={ref}>
         <style>{css}</style>
-        {isData ? (
-          <div>
-            <div style={{
-              textAlign: 'center',
-              margin: '10px',
-              padding: '5px',
-            }}
-            >
-              <a href="/admin">Go To Dashboard</a>
-            </div>
-            {ReactHtmlParser(html)}
-          </div>
-        ) : (
+        {/* {isData ? ( */}
+        <div>
+          {!getData.data.html
+            ? (
+              <div style={{
+                textAlign: 'center',
+                margin: '10px',
+                padding: '5px',
+              }}
+              >
+                <a href="/admin">Go To Dashboard</a>
+                <p>Start exploring and editing your Home Page</p>
+              </div>
+            )
+            : <div>{ReactHtmlParser(html)}</div>}
+        </div>
+        {/* ) : (
           <div style={{
             width: '80%',
             display: 'flex',
@@ -64,7 +68,7 @@ function PageRender({ data }) {
             />
             <a href="/admin">Go To Dashboard</a>
           </div>
-        )}
+        )} */}
       </div>
     </div>
 

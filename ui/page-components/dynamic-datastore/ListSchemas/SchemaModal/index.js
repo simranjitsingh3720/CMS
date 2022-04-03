@@ -69,7 +69,7 @@ function SchemaModal({
   };
   return (
     <Modal
-      title="Create new data table"
+      title="Add new data table"
       visible={isModalVisible}
       onCancel={handleCancel}
       footer={null}
@@ -137,7 +137,7 @@ function SchemaModal({
           <Form.Item style={{ marginBottom: '0px' }}>
             <div className={styles.actionButton}>
               <Space wrap>
-                <Button onClick={handleCancel} htmlType="cancel">
+                <Button key="back" onClick={handleCancel}>
                   Cancel
                 </Button>
                 <Button type="primary" htmlType="submit">

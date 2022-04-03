@@ -29,7 +29,7 @@ function ListSchema() {
       placeholder: 'Search data table by name',
     },
     buttons: [{
-      name: 'Create New Data Table',
+      name: 'Add New Data Table',
       icon: <PlusOutlined />,
       onClick: showModal,
     }],
@@ -148,7 +148,6 @@ function ListSchema() {
               schemaDesc={schema.description}
               showSchema={showSchema}
               deleteSchema={deleteSchema}
-              totatlFields={(schema.schema && schema.schema.length) || 'NEED TO FIX'}
             />
           ))}
         </div>
