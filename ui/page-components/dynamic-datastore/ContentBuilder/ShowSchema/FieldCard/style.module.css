@@ -1,0 +1,34 @@
+.site_card_border_less_wrapper {
+  background: #ececec;
+}
+
+.Field_card {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.button {
+  border: none;
+}
+
+.Fields {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.Fields > div {
+  margin-right: 10px;
+}
+
+.card_wrapper {
+  border: 0 !important;
+}
+/*# sourceMappingURL=style.module.css.map */

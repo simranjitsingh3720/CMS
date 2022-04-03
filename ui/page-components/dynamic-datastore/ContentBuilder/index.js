@@ -17,11 +17,20 @@ export default function ContentBuilder() {
   const { schemaSlug } = router.query;
   const [notFound, setNotFound] = useState(false);
   const [defaultKey, setDefaultKey] = useState(null);
+  const [schemaDetails, setSchemaDetails] = useState({});
+
+  const [{ data: schemaDetail }, getSchemaDetails] = useRequest(
+    {
+      method: 'GET',
+      url: `/schema/${schemaSlug}`,
+    },
+    { manual: true },
+  );
 
   const [{ data: schema }, getSchema] = useRequest(
     {
       method: 'GET',
-      url: `/schema/${schemaSlug}`,
+      url: `/schema/${schemaSlug}/field`,
     },
     { manual: true },
   );
@@ -34,15 +43,24 @@ export default function ContentBuilder() {
           message.error(err.response.data.message || err.response.data.messages[0]);
         }
       });
+    } else if (key === '3') {
+      getSchemaDetails().then((res) => {
+        setSchemaDetails(res.data);
+      }).catch((err) => {
+        if (err.response.data.code === 'MissingError') {
+          setNotFound(true);
+        } else {
+          message.error(err.response.data.message || err.response.data.messages[0]);
+        }
+      });
     }
-
     setDefaultKey(key);
   };
 
   useEffect(() => {
     if (schemaSlug) {
       getSchema().then((res) => {
-        if (res.data.schema.length > 0) {
+        if (res.data.list.length > 0) {
           setDefaultKey('1');
         } else {
           setDefaultKey('2');
@@ -77,7 +95,11 @@ export default function ContentBuilder() {
                   {schema ? <ShowSchema schema={schema} /> : <>NO SCHEMA FOUND</>}
                 </TabPane>
                 <TabPane tab="Settings" key="3">
-                  {schema ? <ShowSettings schema={schema} /> : <h1>Settings</h1> }
+                  {schemaDetails ? (
+                    <ShowSettings
+                      schemaDetails={schemaDetails}
+                    />
+                  ) : <h1>Settings</h1> }
                 </TabPane>
               </Tabs>
             </div>

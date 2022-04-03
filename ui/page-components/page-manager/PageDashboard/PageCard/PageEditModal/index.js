@@ -38,6 +38,9 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
         name: values.name,
         slug: values.slug,
       },
+      params: {
+        pageId: pageData.id,
+      },
     })
       .then(() => {
         setVisible(false);
@@ -65,6 +68,9 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
       onOk() {
         executeHandleHome({
           url: `updateHome/${slug}`,
+          params: {
+            pageId: pageData.id,
+          },
         }).then(() => {
           message.success('Home Page Updated Successfully!');
           setVisible(false);

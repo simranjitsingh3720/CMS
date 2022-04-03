@@ -12,7 +12,6 @@ import { useRequest } from '../../../../helpers/request-helper';
 function ShowContent({ schema, setDefaultKey }) {
   const router = useRouter();
   const [isContentModal, setIsContentModal] = useState(false);
-  // const [searchValue, setSearchValue] = useState('');
   const [isEditable, setIsEditable] = useState(false);
   const [editableData, setEditableData] = useState([]);
   const [showFields, setShowFields] = useState(schema);
@@ -21,8 +20,8 @@ function ShowContent({ schema, setDefaultKey }) {
   const { schemaSlug } = router.query;
 
   useEffect(() => {
-    const data = [...schema.schema];
-    setShowFields((prev) => ({ ...prev, schema: data }));
+    const data = [...schema.list];
+    setShowFields((prev) => ({ ...prev, list: data }));
     setChecked(true);
     setDefaultChecked(false);
   }, [schema]);
@@ -64,16 +63,16 @@ function ShowContent({ schema, setDefaultKey }) {
   const handleShowFields = (e, field, index) => {
     if (index !== 0) {
       setDefaultChecked(true);
-      const newFieldss = [...showFields.schema];
+      const newFieldss = [...showFields.list];
       newFieldss.splice(index, 0, field);
       if (e.target.checked) {
         setShowFields((prev) => ({
-          ...prev, schema: [...newFieldss],
+          ...prev, list: [...newFieldss], // schema to list done need check once
         }));
       } else {
-        const newFields = showFields.schema.filter((ele) => ele.id !== field.id);
+        const newFields = showFields.list.filter((ele) => ele.id !== field.id);
         setShowFields((prev) => ({
-          ...prev, schema: [...newFields],
+          ...prev, list: [...newFields], // schema to list done need check once
         }));
       }
     }
@@ -96,7 +95,7 @@ function ShowContent({ schema, setDefaultKey }) {
   return (
     <div>
       <div>
-        {(schema && schema.schema.length !== 0 && data && data.list.length > 0)
+        {(schema && schema.list.length !== 0 && data && data.list.length > 0)
           ? (
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <div>
@@ -105,7 +104,7 @@ function ShowContent({ schema, setDefaultKey }) {
               <div>
                 <Popover
                   content={
-            schema.schema.map((field, index) => (
+            schema.list.map((field, index) => (
               <List value={field.name} key={field.id}>
                 {(checked && defaultChecked)
                   ? <input type="checkbox" onClick={(e) => { handleShowFields(e, field, index); }} id={field.id} defaultChecked disabled={index === 0} />
@@ -145,7 +144,7 @@ function ShowContent({ schema, setDefaultKey }) {
         />
       ) : null }
 
-      {schema.schema.length > 0 && data && data.list.length > 0
+      {schema.list.length > 0 && data && data.list.length > 0
         ? (
           <ContentTable
             tableSchema={showFields || []}
@@ -167,7 +166,7 @@ function ShowContent({ schema, setDefaultKey }) {
             transform: 'translate(100%,-50%)',
           }}
           >
-            {schema.schema.length <= 0 ? (
+            {schema.list.length <= 0 ? (
               <Empty
                 image={Empty.PRESENTED_IMAGE_SIMPLE}
                 description={(

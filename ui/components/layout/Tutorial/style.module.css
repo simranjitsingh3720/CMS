@@ -1,0 +1,38 @@
+.tooltip {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.textButton {
+  color: #7D4CCD;
+}
+
+.card {
+  border-radius: 16px;
+  width: 320px !important;
+}
+
+.card :global(.ant-card-body) {
+  padding: 8px;
+}
+
+.header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+.content {
+  text-align: center;
+  color: #666;
+  margin-bottom: 16px;
+}
+/*# sourceMappingURL=style.module.css.map */

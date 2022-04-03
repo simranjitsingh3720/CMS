@@ -1,0 +1,12 @@
+.actionContentButton {
+  border: none;
+  outline: none;
+}
+
+.actionContentButton:focus {
+  outline: none;
+  border: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+/*# sourceMappingURL=style.module.css.map */

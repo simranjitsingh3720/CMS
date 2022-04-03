@@ -5,7 +5,6 @@ import confirm from 'antd/lib/modal/confirm';
 import { Spin, Empty, message } from 'antd';
 import SchemaCard from './SchemaCard';
 import ActionBar from '../../../components/layout/ActionBar';
-import styles from './style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
 import SchemaModal from './SchemaModal';
 import SchemaTutorial from './SchemaTutorial';
@@ -59,7 +58,7 @@ function ListSchema() {
     push('/admin/datastore/content-builder/[schemaId]', `/admin/datastore/content-builder/${schemaSlug}`);
   };
 
-  const deleteSchema = (schemaSlug) => {
+  const deleteSchema = (schemaSlug, schemaId) => {
     confirm({
       title: 'Are you sure to delete this table? ',
       icon: <ExclamationCircleOutlined style={{ color: 'red' }} />,
@@ -70,6 +69,9 @@ function ListSchema() {
       onOk() {
         schemaDelete({
           url: `/schema/${schemaSlug}`,
+          params: {
+            schemaId,
+          },
         }).then(() => {
           message.success('Deleted Successfully');
         }).catch((err) => {
@@ -140,7 +142,7 @@ function ListSchema() {
           {((data && data.list) || []).map((schema) => (
             <SchemaCard
               key={schema.id}
-              id={schema.id}
+              schemaId={schema.id}
               schemaSlug={schema.slug}
               schemaName={schema.title}
               schemaDesc={schema.description}
