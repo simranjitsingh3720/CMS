@@ -24,7 +24,7 @@ export default function ContentTable({
 
   useEffect(() => {
     getContent();
-  }, []);
+  }, [getContent]);
 
   const handleDeleteContent = (content) => {
     confirm({
