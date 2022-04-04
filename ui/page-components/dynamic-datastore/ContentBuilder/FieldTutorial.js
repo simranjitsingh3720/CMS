@@ -6,6 +6,21 @@ function FieldTutorial() {
   const { session } = useContext(SessionContext);
   const steps = [
     {
+      target: '#structure-tut',
+      content: 'View your structure here',
+      disableBeacon: 'true',
+    },
+    {
+      target: '.first-step',
+      content: 'Edit your structure here',
+      disableBeacon: 'true',
+    },
+    {
+      target: '.share',
+      content: 'Share your structure here',
+      disableBeacon: 'true',
+    },
+    {
       target: '#edit_structure',
       content: 'Edit your structure here',
       disableBeacon: 'true',

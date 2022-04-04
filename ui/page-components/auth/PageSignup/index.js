@@ -42,8 +42,8 @@ function PageSignup() {
     <Row>
       <Col className={styles.overlay} span={12} style={{ backgroundColor: 'red', height: '100vh' }}>
         <Typography style={{ textAlign: 'center' }}>
-          <Title style={{ color: 'white' }}>Hello Machas!!</Title>
-          <Paragraph style={{ color: 'white' }}>Enter Your Details and start Exploring</Paragraph>
+          <Title style={{ color: 'white' }}>Welcome Back!</Title>
+          <Paragraph style={{ color: 'white' }}>To keep connected with us please login with your personal info.</Paragraph>
           <Button
             ghost
             shape="round"

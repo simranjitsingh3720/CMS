@@ -1,16 +1,16 @@
 // const { Sequelize } = require('sequelize');
 const db = require('../../db/models');
-const { MissingError } = require('../helpers/error-helper');
+const { MissingError, ServerError } = require('../helpers/error-helper');
+const { createLog } = require('./createLog-controller');
 
 const getFormById = async (req, res) => {
   const { query } = req;
   const { formId, embed } = query;
-
   if (!formId) {
     throw new MissingError('Invalid form id');
   }
   try {
-    const schema = await db.Schema.findOne({ where: { id: formId } });
+    const schema = await db.Field.findAll({ where: { schemaId: formId } });
     if (schema) {
       return res.status(200).json(schema);
     }
@@ -24,13 +24,6 @@ const addFormContent = async (req, res) => {
   const { body, query } = req;
   const { schemaSlug } = query;
 
-  let data = {};
-  try {
-    data = JSON.parse(body);
-  } catch (e) {
-    data = body;
-  }
-
   const schema = await db.Schema.findOne({
     where: {
       slug: schemaSlug,
@@ -38,11 +31,37 @@ const addFormContent = async (req, res) => {
   });
 
   if (schema) {
-    const content = await db.Content.create({
-      ...data,
-      schemaId: schema.toJSON().id,
-    });
-    return res.status(201).json({ id: content.id });
+    const schemaJSON = { ...schema.toJSON() || undefined };
+    try {
+      const content = await db.Content.create({
+        schemaId: schemaJSON.id, schemaSlug,
+      });
+
+      const contentJSON = { ...content.toJSON() } || undefined;
+      if (contentJSON) {
+        let contentData = [];
+        Object.keys(body).map((key) => {
+          contentData = [...contentData, {
+            attributeValue: body[key],
+            attributeKey: key,
+            contentId: content.id,
+          }];
+          return null;
+        });
+        try {
+          const contentDatas = await db.ContentData.bulkCreate(contentData);
+
+          if (contentDatas) {
+            createLog('UPDATE', req.session.user.id, content.id, 'CONTENT');
+            return res.status(201).json({ id: content.id });
+          }
+        } catch (error) {
+          throw new ServerError('Unable to Create Content. Please try again.');
+        }
+      }
+    } catch (error) {
+      throw new ServerError('Server Error: Unable to add Content. Please try again');
+    }
   }
   throw new MissingError('Schema Not Found');
 };

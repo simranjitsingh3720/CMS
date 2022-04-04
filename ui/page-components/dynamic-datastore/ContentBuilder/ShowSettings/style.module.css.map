@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,aAAa,CAAA;EACX,OAAO,EAAE,IAAI;EACZ,eAAe,EAAE,QAAQ;EACzB,WAAW,EAAE,QAChB;CAAC",
+    "sources": [
+        "style.module.scss"
+    ],
+    "names": [],
+    "file": "style.module.css"
+}

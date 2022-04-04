@@ -1,0 +1,109 @@
+.card-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  margin: 20px 20px;
+}
+
+.card-component {
+  padding: 10px 10px;
+}
+
+.action-searchBar {
+  width: 20rem;
+  border-radius: 15px;
+}
+
+.ant-page-header-heading-title {
+  font-size: 2rem;
+  height: 2.3rem;
+}
+
+.ant-card-bordered {
+  border: 3px solid #f0f0f0;
+}
+
+.ant-card-cover {
+  margin: 0 !important;
+}
+
+.ant-card.ant-card-bordered {
+  border-radius: 12px;
+  width: 100%;
+  margin: 0;
+}
+
+.ant-tabs-nav-wrap {
+  width: 100%;
+  border-bottom: 1px solid #d4c5c5 !important;
+}
+
+.ant-card-body {
+  padding: 6px !important;
+}
+
+.card_component_container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: auto -20px auto -8px;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.card_title {
+  margin: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  cursor: pointer;
+  padding-top: 6px;
+}
+
+.card_description {
+  margin: 0;
+}
+
+.card_action {
+  padding: 8px 0 0 0;
+  margin-top: 8px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-top: 1px solid #ece9e9;
+}
+
+.flex-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.ant-modal-close-x {
+  width: 30px;
+  line-height: 28px;
+}
+/*# sourceMappingURL=globals.css.map */

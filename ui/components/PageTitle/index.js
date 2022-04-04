@@ -1,17 +1,25 @@
 import React from 'react';
 import { PageHeader } from 'antd';
+import { useRouter } from 'next/router';
+import styles from './style.module.scss';
 
 function PageTitle({
   title = null, onBack, subTitle = null, extra = [],
 }) {
+  const router = useRouter();
+  const { pathname } = router;
+  const blockRoute = ['/admin/page-manager', '/admin/datastore', '/admin/assets', '/admin/users', '/form/[formId]'];
+
   return (
     <div>
       <PageHeader
-        onBack={onBack || function goBack() { window.history.back(); }}
+        onBack={!blockRoute.includes(pathname)
+          ? onBack || function goBack() { router.back(); } : null}
         title={title}
         subTitle={subTitle}
         extra={extra}
-        style={{ fontSize: '200px' }}
+        notDisplay={false}
+        className={styles.page_title}
       />
     </div>
   );

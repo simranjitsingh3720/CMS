@@ -13,7 +13,7 @@ function PageManagerTutorial() {
     },
     {
       target: '.second-step',
-      content: 'Search your page here',
+      content: 'Search your pages here',
       disableBeacon: 'true',
       hideCloseButton: 'true',
     },
@@ -25,6 +25,12 @@ function PageManagerTutorial() {
     },
     {
       target: '#card',
+      content: 'This is the format of your page card.',
+      disableBeacon: 'true',
+      hideCloseButton: 'true',
+    },
+    {
+      target: '#section',
       content: 'Work on your page here',
       disableBeacon: 'true',
       hideCloseButton: 'true',
@@ -39,7 +45,6 @@ function PageManagerTutorial() {
   ];
   return (
     <div>
-      {console.log('session', session)}
       {session && session.demo.pageManager && <Tutorial steps={steps} tutorialKey="pageManager" />}
     </div>
   );

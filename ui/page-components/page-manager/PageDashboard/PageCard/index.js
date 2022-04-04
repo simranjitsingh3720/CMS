@@ -101,6 +101,7 @@ function PageCard({ searchValue }) {
                 className={styles.card_image}
                 onClick={() => { handleEdit(page.slug); }}
                 role="button"
+                id="section"
               >
                 <div
                   className={styles.card_image}

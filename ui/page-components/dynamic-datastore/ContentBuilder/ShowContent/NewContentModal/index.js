@@ -11,12 +11,17 @@ export default function NewContentModal({
   schemaDetails, getContent, isEditable, editableData,
   isContentModal,
 }) {
-  const fields = schemaDetails.schema || [];
-  const initialValues = getInitialValues(schemaDetails.schema, editableData, isEditable);
-  const schemaSlug = schemaDetails.slug;
+  const fields = schemaDetails.list || [];
+  const initialValues = getInitialValues(schemaDetails.list, editableData, isEditable);
+  const schemaSlug = schemaDetails
+  && schemaDetails.list && schemaDetails.list[0].schemaSlug; // need schema slug
+  const schemaId = schemaDetails
+  && schemaDetails.list && schemaDetails.list[0].id;
   const [loading, setLoading] = useState(false);
   const [storeData, setStoreData] = useState(null);
-  const multipleAssets = [];
+  const [disable, setDisable] = useState(false);
+  let isAsset = false;
+  let multipleAssets = [];
 
   const [{ }, executePost] = useRequest({ method: 'POST' }, { manual: true });
 
@@ -36,15 +41,22 @@ export default function NewContentModal({
   );
 
   useEffect(() => {
-    console.log(storeData);
     if (storeData !== null) {
       addContent({
         url: `/content/${schemaSlug}`,
-        data: { data: storeData },
-      }).then((res) => {
+        data: { ...storeData },
+        params: {
+          schemaId,
+        },
+      }).then(() => {
         message.success('Added Successfully');
+        if (!isAsset) {
+          setLoading(false);
+          closeContentModal();
+        }
         getContent();
-      }).catch((err) => {
+      }).catch(() => {
+        message.success('Added Successfully in catch');
         getContent();
       });
     }
@@ -53,19 +65,18 @@ export default function NewContentModal({
   const handleAddContent = (contentData) => {
     const x = { ...contentData };
     let uploadData = [];
-    let count = 0;
     const handleReadURLs = [];
     console.log('x is here: ', x);
 
-    schemaDetails.schema.forEach((field) => {
+    schemaDetails.list.forEach((field) => {
       if (field.type === 'Date and Time') {
-        x[field.id] = moment(x[field.id]).toISOString(true);
-        console.log('x[field.id]: ', x[field.id]);
+        x[field.fieldId] = moment(x[field.fieldId]).toISOString(true);
       }
       if (field.type === 'Assets') {
-        if (x[field.id]) {
-          handleReadURLs.push({ [field.id]: x[field.id].fileList.length });
-          x[field.id].fileList.forEach((singleFile) => {
+        if (x[field.fieldId]) {
+          isAsset = true;
+          handleReadURLs.push({ [field.fieldId]: x[field.fieldId].fileList.length });
+          x[field.fieldId].fileList.forEach((singleFile) => {
             uploadData = [...uploadData, singleFile];
             const { name } = singleFile;
             const mimeType = singleFile.type;
@@ -76,18 +87,18 @@ export default function NewContentModal({
         }
       }
       if (field.type === 'Boolean' && field.appearanceType === 'Boolean radio') {
-        if (x[field.id] === field.Truelabel) {
-          x[field.id] = true;
-        } else if (x[field.id] === field.Falselabel) {
-          x[field.id] = false;
+        if (x[field.fieldId] === field.Truelabel) {
+          x[field.fieldId] = true;
+        } else if (x[field.fieldId] === field.Falselabel) {
+          x[field.fieldId] = false;
         } else {
-          x[field.id] = '';
+          x[field.fieldId] = '';
         }
       }
 
       if (field.type === 'Boolean' && field.appearanceType === 'Switch') {
-        if (x[field.id] !== true && x[field.id] !== false) {
-          x[field.id] = false;
+        if (x[field.fieldId] !== true && x[field.fieldId] !== false) {
+          x[field.fieldId] = false;
         }
       }
     });
@@ -98,7 +109,7 @@ export default function NewContentModal({
         data: multipleAssets,
       })
         .then((res) => {
-          const { writeUrlList, assetIdList, readUrlArr } = res.data;
+          const { writeUrlList, readUrlArr } = res.data;
 
           let usedUrls = 0;
           handleReadURLs.forEach((obj, index) => {
@@ -112,8 +123,7 @@ export default function NewContentModal({
               }];
               usedUrls += 1;
             }
-            x[id] = urlList;
-            console.log('kwrfgewiufbewfbewuiofg ', x);
+            x[id] = JSON.stringify(urlList);
           });
 
           writeUrlList.forEach((writeUrl, index) => {
@@ -124,8 +134,7 @@ export default function NewContentModal({
                 headers: { type: uploadData[index].originFileObj.type, 'Content-Type': `${uploadData[index].originFileObj.type}` },
               },
             )
-              .then((result) => {
-                count += 1;
+              .then(() => {
                 setLoading(false);
                 setStoreData(x);
                 closeContentModal();
@@ -133,30 +142,43 @@ export default function NewContentModal({
           });
         });
     }
+
+    if (!isAsset) {
+      setStoreData(x);
+    }
   };
 
   const handleUpdateContent = (contentData) => {
     const x = { ...contentData };
 
-    schemaDetails.schema.forEach((field) => {
+    schemaDetails.list.forEach((field) => {
       if (field.type === 'Date and Time') {
-        x[field.id] = moment(x[field.id]).toISOString(true);
+        x[field.fieldId] = moment(x[field.fieldId]).toISOString(true);
       }
 
       if (field.type === 'Boolean' && field.appearanceType === 'Boolean radio') {
-        if (x[field.id] === field.Truelabel) {
-          x[field.id] = true;
-        } else if (x[field.id] === field.Falselabel) {
-          x[field.id] = false;
+        if (x[field.fieldId] === field.Truelabel) {
+          x[field.fieldId] = true;
+        } else if (x[field.fieldId] === field.Falselabel) {
+          x[field.fieldId] = false;
         } else {
-          x[field.id] = '';
+          x[field.fieldId] = '';
+        }
+      }
+
+      if (field.type === 'Boolean' && field.appearanceType === 'Switch') {
+        if (x[field.fieldId] === field.Truelabel) {
+          x[field.fieldId] = true;
+        } else if (x[field.fieldId] === field.Falselabel) {
+          x[field.fieldId] = false;
         }
       }
     });
+
     if (schemaSlug) {
       updateContent({
         url: `/content/${schemaSlug}/${editableData.id}`,
-        data: { data: x },
+        data: { ...x },
       }).then(() => {
         closeContentModal();
         message.success('Updated Successfully');
@@ -178,6 +200,7 @@ export default function NewContentModal({
 
   const onFinishFailed = () => {
     setLoading(false);
+    setDisable(false);
     message.error('Fields are required');
   };
 
@@ -196,6 +219,7 @@ export default function NewContentModal({
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
+
       >
         {fields && fields.map((field) => (
           GetFields(field.appearanceType, field, isEditable)
@@ -219,16 +243,16 @@ export default function NewContentModal({
           </Form.Item>
         ) : (
           <div>
-            {schemaDetails.schema && schemaDetails.schema.length >= 1 ? (
+            {schemaDetails.list && schemaDetails.list.length >= 1 ? (
               <Form.Item
                 style={{ marginBottom: '0px' }}
               >
                 <div className={styles.actionButton}>
                   <Space wrap>
-                    <Button key="back" onClick={closeContentModal}>
+                    <Button key="back" onClick={closeContentModal} disabled={disable}>
                       Cancel
                     </Button>
-                    <Button type="primary" htmlType="submit" loading={loading} onClick={() => setLoading(true)}>
+                    <Button type="primary" htmlType="submit" loading={loading} onClick={() => { setDisable(true); setLoading(true); }}>
                       Submit
                     </Button>
 

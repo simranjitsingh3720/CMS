@@ -5,21 +5,20 @@ import styles from './style.module.scss';
 export default function getColumns(tableSchema, handleEditContent, handleDeleteContent) {
   let columns = [];
 
-  columns = ((tableSchema && tableSchema.schema) || []).map((field, index) => {
-    // console.log('tableSchema');
-    if (tableSchema.schema[index].type === 'Assets') {
+  columns = ((tableSchema && tableSchema.list) || []).map((field, index) => {
+    if (tableSchema.list[index].type === 'Assets') {
       return {
         title: field.name,
-        dataIndex: field.id,
-        key: field.id,
+        dataIndex: field.fieldId,
+        key: field.fieldId,
         render: (actions) => (
           <div>
 
             {actions ? (
               <div>
-                {actions.map((item) => (
+                {JSON.parse(actions).map((item) => (
                   <div>
-                    <a href={item.url}>
+                    <a href={item.url} target="_blank" rel="noreferrer">
                       {item.name}
                     </a>
                     <br />
@@ -37,8 +36,8 @@ export default function getColumns(tableSchema, handleEditContent, handleDeleteC
 
     return {
       title: field.name,
-      dataIndex: field.id,
-      key: field.id,
+      dataIndex: field.fieldId,
+      key: field.fieldId,
       render: '',
     };
   });

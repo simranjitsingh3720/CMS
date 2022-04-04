@@ -1,0 +1,156 @@
+.home_container {
+  padding: 8px;
+}
+
+.title {
+  font-size: 50px;
+  font-family: system-ui;
+  text-align: center;
+}
+
+.site_card_border_less_wrapper {
+  padding: 30px;
+  background: #ececec;
+}
+
+.schema_card {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.button {
+  margin: 5px 5px 0 5px;
+  border: none;
+  border-radius: 15px;
+}
+
+.card_container {
+  -webkit-box-flex: calc(34% - 16px);
+      -ms-flex: calc(34% - 16px);
+          flex: calc(34% - 16px);
+  -webkit-box-flex: 0;
+      -ms-flex-positive: 0;
+          flex-grow: 0;
+  display: none;
+}
+
+.card {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  max-height: -webkit-fit-content;
+  max-height: -moz-fit-content;
+  max-height: fit-content;
+  padding: 4px;
+  margin: 16px;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+.card_footer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 4px 15px;
+  font-weight: bold;
+  border-top: 1px solid #f0f0f0;
+}
+
+.card_colorGray {
+  color: #999;
+}
+
+.card_fields {
+  font-size: 0.9em;
+}
+
+.card_heading {
+  margin-bottom: -5px;
+}
+
+.card_body {
+  padding: 4px 15px;
+  height: 200px;
+  overflow: scroll;
+  cursor: pointer;
+}
+
+.card_para {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+}
+
+.card button {
+  background-color: #7d4ccd;
+  color: #fff;
+  border: none;
+  padding: 4px 20px;
+  border-radius: 15px;
+}
+
+.card_action {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 4px 15px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.tableIcon {
+  font-size: 1.4rem;
+  color: #999;
+}
+
+.card_button {
+  background-color: white;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.card_button:focus {
+  outline: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.list {
+  padding: 0;
+}
+
+.list li {
+  list-style: none;
+  color: black;
+}
+
+.list li a {
+  color: black;
+}
+/*# sourceMappingURL=styles.module.css.map */

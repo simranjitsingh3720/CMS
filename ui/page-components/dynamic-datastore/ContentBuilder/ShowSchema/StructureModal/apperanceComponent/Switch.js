@@ -8,6 +8,7 @@ export default function Switch() {
       <Form.Item
         label="True Label"
         name="Truelabel"
+        // name="trueLabel"
         rules={[
           {
             required: true,
@@ -21,6 +22,7 @@ export default function Switch() {
       <Form.Item
         label="False Label"
         name="Falselabel"
+        // name="falseLabel"
         rules={[
           {
             required: true,

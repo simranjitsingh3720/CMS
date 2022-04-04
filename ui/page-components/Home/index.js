@@ -15,22 +15,16 @@ function Home() {
     method: 'GET',
     url: '/dashboard',
   });
-  console.log(getData?.data);
 
   return (
     <div className={styles.home_container}>
       <div className={styles.title}>
-        Hello!
-        {' '}
         {session ? (
-          <span>
-            {session.user.firstName}
-            {' '}
-            {session.user.lastName}
+          <span className={styles.title}>
+            WELCOME TO COGO-CMS
           </span>
         ) : <span>Please Login or Signup to continue</span>}
       </div>
-
       <div className="card_component_container">
         <CardWrapper>
           <div
@@ -42,8 +36,13 @@ function Home() {
               </h2>
             </div>
             <p className={styles.card_colorGray}>
-              <span>Number of Pages :</span>
-              {getData?.data?.pages?.length}
+              {getData?.data?.pages?.length <= 0 ? <span>No Page Found</span>
+                : (
+                  <>
+                    <span>Number of Pages :</span>
+                    {getData?.data?.pages?.length}
+                  </>
+                )}
             </p>
 
             <ul className={styles.list}>
@@ -66,25 +65,20 @@ function Home() {
               </h2>
             </div>
             <p className={styles.card_colorGray}>
-              <span>Number of tables :</span>
-              {getData?.data?.schemas?.length}
+              {getData?.data?.schemas?.length <= 0 ? <span>No Table Found</span>
+                : (
+                  <>
+                    <span>Number of Tables :</span>
+                    {getData?.data?.schemas?.length}
+                  </>
+                )}
+
             </p>
             <ul className={styles.list}>
               {getData?.data?.schemas?.map((item) => (
                 <li>
                   <TableOutlined style={{ marginRight: '10px' }} />
                   <a href={`admin/datastore/content-builder/${item.slug}`}>{item.title}</a>
-                  {/* {item.title} */}
-                  {' '}
-                  {' '}
-                  -
-
-                  <span title="Number of fields" style={{ color: 'gray' }}>
-                    {' '}
-                    [
-                    {item.schema.length}
-                    ]
-                  </span>
                 </li>
               ))}
             </ul>
@@ -100,8 +94,14 @@ function Home() {
               </h2>
             </div>
             <p className={styles.card_colorGray}>
-              <span>Number of Assets :</span>
-              {getData?.data?.assets?.length}
+              {getData?.data?.assets?.length <= 0 ? <span>No Asset Found</span>
+                : (
+                  <>
+                    <span>Number of Assets :</span>
+                    {getData?.data?.assets?.length}
+                  </>
+                )}
+
             </p>
             <ul className={styles.list}>
 
@@ -124,8 +124,14 @@ function Home() {
               </h2>
             </div>
             <p className={styles.card_colorGray}>
-              <span>Number of Users :</span>
-              {getData?.data?.users?.length}
+              {getData?.data?.users?.length <= 0 ? <span>No User Found</span>
+                : (
+                  <>
+                    <span>Number of Users :</span>
+                    {getData?.data?.users?.length}
+                  </>
+                )}
+
             </p>
             <ul className={styles.list}>
               {getData?.data?.users?.map((item) => (

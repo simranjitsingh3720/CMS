@@ -12,8 +12,7 @@ module.exports = (sequelize, DataTypes) => {
   Schema.init(
     {
       id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
-      slug: { type: DataTypes.STRING, unique: true },
-      schema: { type: DataTypes.JSON, defaultValue: [] },
+      slug: { type: DataTypes.STRING, unique: true, allowNull: false },
       title: { type: DataTypes.STRING },
       description: { type: DataTypes.STRING },
       createdBy: { type: DataTypes.UUID, allowNull: false },
