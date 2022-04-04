@@ -1,5 +1,6 @@
 const db = require('../../db/models');
-const { ValidityError, MissingError, ServerError } = require('../helpers/error-helper');
+const { ForbiddenError, MissingError, ServerError, ValidityError } = require('../helpers/error-helper');
+const { createLog } = require('./createLog-controller');
 
 const getSingleField = async (req, res) => {
   const { query } = req;
@@ -53,6 +54,8 @@ const createField = async (req, res) => {
   });
 
   if (field) {
+    createLog('CREATE', req.session.user.id, field.id, 'FIELD');
+
     return res.status(201).json({ id: field.id });
   }
 
@@ -76,6 +79,8 @@ const updateField = async (req, res) => {
   const updatedField = await db.Field.update({ ...body }, { where: { schemaSlug, fieldId } });
 
   if (updatedField) {
+    createLog('UPDATE', req.session.user.id, fieldId, 'FIELD');
+
     return res.status(200).json({ id: fieldId });
   }
   throw new MissingError('Schema not found');
@@ -91,12 +96,32 @@ const deleteField = async (req, res) => {
     throw new MissingError('Table Not Found');
   }
 
-  const deletedField = await db.Field.destroy({ where: { schemaSlug, fieldId } });
+  try {
+    const allContents = await db.ContentData.findAll({
+      include: {
+        model: db.Content,
+        attributes: ['id'],
+        where: {
+          schemaSlug,
+        },
+      },
+      where: {
+        attributeKey: fieldId,
+      },
+    });
 
-  if (deletedField) {
-    return res.status(200).json({ id: fieldId });
+    if (allContents.length === 0) {
+      const deletedField = await db.Field.destroy({ where: { schemaSlug, fieldId } });
+      if (deletedField) {
+        createLog('DELETE', req.session.user.id, fieldId, 'FIELD');
+
+        return res.status(200).json({ id: fieldId });
+      }
+    }
+    throw new ForbiddenError('There are some content for this field. Not allowed to delete. First delete all the content');
+  } catch (error) {
+    throw new ForbiddenError('There are some content for this field. Not allowed to delete. First delete all the content');
   }
-  throw new ServerError('Not able to connect with Server');
 };
 
 const reOrderFields = async (req, res) => {
