@@ -132,11 +132,6 @@ function ShowSchema() {
       icon: <PlusOutlined />,
       onClick: showSchemaModal,
     },
-    //  {
-    //   name: 'Share',
-    //   icon: <ShareAltOutlined />,
-    //   onClick: shareFormModal,
-    // }
     ],
   };
 
