@@ -47,7 +47,6 @@ const addContent = async (req, res) => {
 
   if (schema) {
     const schemaJSON = { ...schema.toJSON() || undefined };
-    console.log('schemaJSON: ', schemaJSON);
     try {
       const content = await db.Content.create({
         schemaId: schemaJSON.id, schemaSlug,
