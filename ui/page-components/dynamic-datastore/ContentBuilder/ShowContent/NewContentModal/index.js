@@ -56,7 +56,7 @@ export default function NewContentModal({
         }
         getContent();
       }).catch(() => {
-        message.success('Added Successfully in catch');
+        message.success('Added Successfully !');
         getContent();
       });
     }
