@@ -26,23 +26,12 @@ function ShowContent({ schema, setDefaultKey }) {
     setDefaultChecked(false);
   }, [schema]);
 
-  const [{ data, loading, error }, getContent] = useRequest(
+  const [{ data, loading }, getContent] = useRequest(
     {
       method: 'GET',
       url: `/content/${schemaSlug}`,
     },
   );
-
-  const [{ }, listContent] = useRequest(
-    {
-      method: 'GET',
-      url: '/content',
-    },
-  );
-
-  if (data) {
-    console.log('DDDDDDFDFDFDDFDFDUFGUSUVCUSVCUVCVUSVCIH ', data.list);
-  }
 
   const [{}, deleteContent] = useRequest(
     {
@@ -75,12 +64,12 @@ function ShowContent({ schema, setDefaultKey }) {
       newFieldss.splice(index, 0, field);
       if (e.target.checked) {
         setShowFields((prev) => ({
-          ...prev, list: [...newFieldss], // schema to list done need check once
+          ...prev, list: [...newFieldss],
         }));
       } else {
         const newFields = showFields.list.filter((ele) => ele.id !== field.id);
         setShowFields((prev) => ({
-          ...prev, list: [...newFields], // schema to list done need check once
+          ...prev, list: [...newFields],
         }));
       }
     }
@@ -146,7 +135,6 @@ function ShowContent({ schema, setDefaultKey }) {
           closeContentModal={closeContentModal}
           schemaDetails={schema || []}
           getContent={getContent}
-          listContent={listContent}
           isEditable={isEditable}
           editableData={editableData}
           isContentModal={isContentModal}

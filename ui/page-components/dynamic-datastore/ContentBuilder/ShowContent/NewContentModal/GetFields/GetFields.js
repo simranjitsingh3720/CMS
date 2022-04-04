@@ -30,13 +30,20 @@ export const getInitialValues = (fields, editableData, isEditable) => {
         }
 
         if (data.appearanceType === 'Boolean radio') {
-          if (editableData[data.fieldId] === true) {
+          if (editableData[data.fieldId] === 'true') {
             values[[data.fieldId]] = data.Truelabel;
-            // values[[data.fieldId]] = data.trueLabel;
-          } else if (editableData[data.fieldId] === false) {
+          } else if (editableData[data.fieldId] === 'false') {
             values[[data.fieldId]] = data.Falselabel;
           } else {
             values[[data.fieldId]] = '';
+          }
+        }
+
+        if (data.appearanceType === 'Switch') {
+          if (editableData[data.fieldId] === 'true') {
+            values[[data.fieldId]] = true;
+          } else {
+            values[[data.fieldId]] = false;
           }
         }
       } else {
@@ -54,7 +61,7 @@ export const getInitialValues = (fields, editableData, isEditable) => {
 function GetFields(appearenceType, field, isEditable) {
   const {
     name, isRequired, options, Truelabel, Falselabel, fieldId,
-  } = field; // trueLabel
+  } = field;
 
   let values = [];
   if (options) {

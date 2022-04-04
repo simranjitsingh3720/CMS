@@ -9,7 +9,7 @@ import styles from './style.module.scss';
 export default function NewContentModal({
   closeContentModal,
   schemaDetails, getContent, isEditable, editableData,
-  isContentModal, listContent,
+  isContentModal,
 }) {
   const fields = schemaDetails.list || [];
   const initialValues = getInitialValues(schemaDetails.list, editableData, isEditable);
@@ -55,22 +55,16 @@ export default function NewContentModal({
           closeContentModal();
         }
         getContent();
-        // listContent();
       }).catch(() => {
         message.success('Added Successfully');
-
         getContent();
-        // listContent();
       });
     }
   }, [storeData]);
 
   const handleAddContent = (contentData) => {
-    console.log('CONTENTD ATATATAATAAT ', contentData);
-
     const x = { ...contentData };
     let uploadData = [];
-    let count = 0;
     const handleReadURLs = [];
 
     schemaDetails.list.forEach((field) => {
@@ -92,7 +86,7 @@ export default function NewContentModal({
         }
       }
       if (field.type === 'Boolean' && field.appearanceType === 'Boolean radio') {
-        if (x[field.fieldId] === field.Truelabel) { // trueLabel
+        if (x[field.fieldId] === field.Truelabel) {
           x[field.fieldId] = true;
         } else if (x[field.fieldId] === field.Falselabel) {
           x[field.fieldId] = false;
@@ -113,7 +107,7 @@ export default function NewContentModal({
         data: multipleAssets,
       })
         .then((res) => {
-          const { writeUrlList, assetIdList, readUrlArr } = res.data;
+          const { writeUrlList, readUrlArr } = res.data;
 
           let usedUrls = 0;
           handleReadURLs.forEach((obj, index) => {
@@ -138,10 +132,7 @@ export default function NewContentModal({
                 headers: { type: uploadData[index].originFileObj.type, 'Content-Type': `${uploadData[index].originFileObj.type}` },
               },
             )
-              .then((result) => {
-                // console.log(result);
-                console.log('kwrfgewiufbewfbewuiofg ', x);
-                count += 1;
+              .then(() => {
                 setLoading(false);
                 setStoreData(x);
                 closeContentModal();
@@ -164,7 +155,7 @@ export default function NewContentModal({
       }
 
       if (field.type === 'Boolean' && field.appearanceType === 'Boolean radio') {
-        if (x[field.fieldId] === field.Truelabel) { // trueLabel
+        if (x[field.fieldId] === field.Truelabel) {
           x[field.fieldId] = true;
         } else if (x[field.fieldId] === field.Falselabel) {
           x[field.fieldId] = false;
@@ -172,11 +163,17 @@ export default function NewContentModal({
           x[field.fieldId] = '';
         }
       }
+
+      if (field.type === 'Boolean' && field.appearanceType === 'Switch') {
+        if (x[field.fieldId] === field.Truelabel) {
+          x[field.fieldId] = true;
+        } else if (x[field.fieldId] === field.Falselabel) {
+          x[field.fieldId] = false;
+        }
+      }
     });
 
     if (schemaSlug) {
-      console.log('UPDATED DATA ', x);
-
       updateContent({
         url: `/content/${schemaSlug}/${editableData.id}`,
         data: { ...x },
