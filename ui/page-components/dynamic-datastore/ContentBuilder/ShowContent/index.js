@@ -81,6 +81,7 @@ function ShowContent({ schema, setDefaultKey }) {
         name: 'Add new content',
         icon: <PlusOutlined />,
         onClick: addNewContent,
+
       },
     ],
   };
@@ -91,6 +92,7 @@ function ShowContent({ schema, setDefaultKey }) {
 
   return (
     <div>
+
       <div>
         {(schema && schema.list.length !== 0 && data && data.list.length > 0)
           ? (
@@ -114,7 +116,7 @@ function ShowContent({ schema, setDefaultKey }) {
                   title="Select Column to Show"
                   trigger="click"
                 >
-                  <Button>
+                  <Button className="select">
                     Select Columns
                     {' '}
                     <DownOutlined />

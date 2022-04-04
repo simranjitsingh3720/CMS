@@ -7,6 +7,7 @@ import {
 import React from 'react';
 import moment from 'moment';
 import getColumns from './getColumns/getColumns';
+import ContentTutorial from '../../ContentTutorial';
 
 const { confirm } = Modal;
 
@@ -126,6 +127,7 @@ export default function ContentTable({
   }
   return (
     <div>
+      <ContentTutorial />
       <Table
         columns={columns}
         dataSource={finalData}

@@ -8,18 +8,18 @@ function SchemaTutorial() {
   const steps = [
     {
       target: '.first-step',
-      content: 'Add your schemas from here',
+      content: 'Add your new data table from here',
       disableBeacon: 'true',
     },
     {
       target: '.second-step',
-      content: 'Search your schemas here',
+      content: 'Search your schema here',
       disableBeacon: 'true',
 
     },
     {
-      target: '#fourth-step',
-      content: 'This is format of schema you added and also onclick you will get details',
+      target: '#card',
+      content: 'This is format of your schema. Click on it to get details.',
       disableBeacon: 'true',
 
     },

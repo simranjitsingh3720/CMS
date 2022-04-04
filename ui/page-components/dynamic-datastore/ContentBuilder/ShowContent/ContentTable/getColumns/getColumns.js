@@ -21,6 +21,7 @@ export default function getColumns(tableSchema, handleEditContent, handleDeleteC
                     <a href={item.url} target="_blank" rel="noreferrer">
                       {item.name}
                     </a>
+                    <br />
                   </div>
                 ))}
               </div>

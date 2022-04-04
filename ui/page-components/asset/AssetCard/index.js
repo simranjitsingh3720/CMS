@@ -103,6 +103,7 @@ function AssetCard({ data, refetch }) {
             <button
               type="button"
               className={styles.card_button}
+              id="options"
             >
               <MoreOutlined />
             </button>

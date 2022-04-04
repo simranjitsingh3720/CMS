@@ -6,9 +6,7 @@ import ShowContent from './ShowContent';
 import ShowSettings from './ShowSettings';
 import styles from './style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
-import ContentTutorial from './ContentTutorial';
 import Error from '../../../components/Error/Error';
-import FieldTutorial from './FieldTutorial';
 
 const { TabPane } = Tabs;
 
@@ -64,7 +62,6 @@ export default function ContentBuilder() {
           setDefaultKey('1');
         } else {
           setDefaultKey('2');
-            <FieldTutorial />;
         }
       }).catch((err) => {
         if (err.response.data.code === 'MissingError') {
@@ -80,18 +77,18 @@ export default function ContentBuilder() {
     <div>
       {notFound ? <Error message="Page Not Found" code={404} /> : (
         <>
-          {/* <ContentTutorial /> */}
+          {' '}
           {defaultKey ? (
             <div className={styles.content_builder_wrapper}>
               <Tabs defaultActiveKey={defaultKey} onChange={callback} size="large" activeKey={defaultKey}>
-                <TabPane tab="Contents" key="1">
+                <TabPane tab={<span id="contents-tut">Contents</span>} key="1">
                   <ShowContent
                     schema={schema}
                     setDefaultKey={setDefaultKey}
                     defaultKey={defaultKey}
                   />
                 </TabPane>
-                <TabPane tab="Structure" key="2">
+                <TabPane tab={<span id="structure-tut">Structure</span>} key="2">
                   {schema ? <ShowSchema schema={schema} /> : <>NO SCHEMA FOUND</>}
                 </TabPane>
                 <TabPane tab="Settings" key="3">
