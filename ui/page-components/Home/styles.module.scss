@@ -60,7 +60,7 @@ border-radius: 8px;
 }
 
 &_body{
-  padding: 4px 15px;
+  padding: 4px 6px;
   height: 200px;
   overflow: scroll;
   cursor: pointer;
@@ -118,4 +118,13 @@ color: #999;
       color: black;
     }
   }
+}
+
+.primary_heading{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #eee;
+  padding: 5px;
+  border-radius: 4px;
 }
