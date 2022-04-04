@@ -64,45 +64,52 @@ const updateSchema = async (req, res) => {
   const { slug } = body;
   const { schemaSlug, schemaId } = query;
 
-  if (slug) {
-    const isSchemaSlug = await db.Schema.findAll({ where: { slug } });
-
-    if (!isSchemaSlug) {
-      throw new MissingError('Table not Found');
-    }
-    if (isSchemaSlug) {
-      if (isSchemaSlug.slug === body.slug
-      && isSchemaSlug.title === body.title
-      && isSchemaSlug.description === body.description) {
-        throw new DuplicateError('This table slug already taken');
-      }
-    }
-
-    try {
-      await db.Schema.update({
-        ...body,
-        updatedBy: req.session.user.id,
-      }, { where: { slug: schemaSlug } });
-
-      await db.Field.update({ schemaSlug: slug }, {
-        where: {
-          schemaSlug,
-        },
-      });
-
-      await db.Content.update({ schemaSlug: slug }, {
-        where: {
-          schemaSlug,
-        },
-      });
-
-      createLog('UPDATE', req.session.user.id, schemaId, 'SCHEMA');
-      return res.status(200).json({ id: slug });
-    } catch (error) {
-      throw new ServerError('This table slug already taken');
-    }
+  if (!slug) {
+    throw new MissingError('slug cannot be empty. Add slug in body');
   }
-  throw new MissingError('Schema not found');
+
+  if (!schemaSlug) {
+    throw new MissingError('schema slug is required');
+  }
+
+  const isSchemaSlug = await db.Schema.findAll({ where: { slug: schemaSlug } });
+
+  if (!isSchemaSlug) {
+    throw new MissingError('Table not Found');
+  }
+
+  const isSlug = await db.Schema.findAll({ where: { slug } });
+
+  if (slug === schemaSlug && isSlug.length > 1) {
+    throw new DuplicateError('This table slug already taken. Try with another slug name');
+  }
+  if (isSlug === [] && slug !== schemaSlug) {
+    throw new DuplicateError('This table slug already taken. Try with another slug name');
+  }
+
+  try {
+    await db.Schema.update({
+      ...body,
+      updatedBy: req.session.user.id,
+    }, { where: { slug: schemaSlug } });
+
+    await db.Field.update({ schemaSlug: slug }, {
+      where: {
+        schemaSlug,
+      },
+    });
+
+    await db.Content.update({ schemaSlug: slug }, {
+      where: {
+        schemaSlug,
+      },
+    });
+
+    createLog('UPDATE', req.session.user.id, schemaId, 'SCHEMA');
+    return res.status(200).json({ id: slug });
+  } catch (error) {
+    throw new DuplicateError('This table slug already taken. Try with another slug name');
+  }
 };
 
 const deleteSchema = async (req, res) => {

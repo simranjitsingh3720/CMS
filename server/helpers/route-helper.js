@@ -32,7 +32,6 @@ const route = (methodControllers) => async (req, res) => {
     if (methodControllers.authRequired && !req.session.user) {
       throw new AuthorizationError('You are not authorized.');
     }
-
     const controller = methodControllers[req.method];
 
     if (!controller) {
