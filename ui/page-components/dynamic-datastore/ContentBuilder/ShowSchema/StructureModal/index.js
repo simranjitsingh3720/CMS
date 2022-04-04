@@ -56,17 +56,6 @@ function StructureModal({
     { manual: true },
   );
 
-  // const [{ },
-  //   executeFieldCreate,
-  // ] = useRequest(
-  //   {
-  //     url: `/schema/${data.slug}`,
-  //     method: 'POST',
-
-  //   },
-  //   { manual: true },
-  // );
-
   const [{ },
     executeFieldUpdate,
   ] = useRequest(
@@ -80,7 +69,6 @@ function StructureModal({
   const toFindDuplicates = (arr) => arr.filter((item, index) => arr.indexOf(item) !== index);
 
   const onFinish = async (values) => {
-    console.log(values);
     let hasDuplicateValues = false;
     if (values.values) {
       const lower = values.values.map((element) => element.toLowerCase());

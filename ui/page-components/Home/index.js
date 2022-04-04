@@ -30,7 +30,7 @@ function Home() {
           <div
             className={styles.card_body}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div className={styles.primary_heading}>
               <h2 className={styles.card_heading}>
                 Pages
               </h2>
@@ -59,7 +59,7 @@ function Home() {
           <div
             className={styles.card_body}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div className={styles.primary_heading}>
               <h2 className={styles.card_heading}>
                 Data Table
               </h2>
@@ -88,7 +88,7 @@ function Home() {
           <div
             className={styles.card_body}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div className={styles.primary_heading}>
               <h2 className={styles.card_heading}>
                 Assets
               </h2>
@@ -118,7 +118,7 @@ function Home() {
           <div
             className={styles.card_body}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div className={styles.primary_heading}>
               <h2 className={styles.card_heading}>
                 Users
               </h2>

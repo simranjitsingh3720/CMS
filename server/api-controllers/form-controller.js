@@ -31,6 +31,13 @@ const addFormContent = async (req, res) => {
   });
 
   if (schema) {
+    let responseData = body;
+    try {
+      responseData = JSON.parse(body);
+    } catch (e) {
+      responseData = body;
+    }
+
     const schemaJSON = { ...schema.toJSON() || undefined };
     try {
       const content = await db.Content.create({
@@ -40,9 +47,9 @@ const addFormContent = async (req, res) => {
       const contentJSON = { ...content.toJSON() } || undefined;
       if (contentJSON) {
         let contentData = [];
-        Object.keys(body).map((key) => {
+        Object.keys(responseData).map((key) => {
           contentData = [...contentData, {
-            attributeValue: body[key],
+            attributeValue: responseData[key],
             attributeKey: key,
             contentId: content.id,
           }];
@@ -52,7 +59,9 @@ const addFormContent = async (req, res) => {
           const contentDatas = await db.ContentData.bulkCreate(contentData);
 
           if (contentDatas) {
-            createLog('UPDATE', req.session.user.id, content.id, 'CONTENT');
+            if (req.session.user) {
+              createLog('UPDATE', req.session.user.id, content.id, 'CONTENT');
+            }
             return res.status(201).json({ id: content.id });
           }
         } catch (error) {

@@ -4,9 +4,9 @@ const db = require('../../db/models');
 const { MissingError, ServerError } = require('../helpers/error-helper');
 
 const getContent = async (req, res) => {
-  const { schemaSlug, contentId } = req.query;
+  const { contentId } = req.query;
 
-  const contentData = await db.ContentData.findOne({ where: { id: contentId } });
+  const contentData = await db.ContentData.findOne({ where: { contentId } });
   if (contentData) {
     return res.status(200).json(contentData);
   }
@@ -46,14 +46,13 @@ const addContent = async (req, res) => {
   });
 
   if (schema) {
-    const schemaJSON = { ...schema.toJSON() || undefined };
+    const schemaJSON = JSON.parse(JSON.stringify(schema));
     try {
       const content = await db.Content.create({
         schemaId: schemaJSON.id, schemaSlug,
       });
 
-      const contentJSON = { ...content.toJSON() } || undefined;
-      if (contentJSON) {
+      if (content) {
         let contentData = [];
         Object.keys(body).map((key) => {
           contentData = [...contentData, {
@@ -64,19 +63,15 @@ const addContent = async (req, res) => {
           return null;
         });
 
-        try {
-          const contentDatas = await db.ContentData.bulkCreate(contentData);
+        const contentDatas = await db.ContentData.bulkCreate(contentData);
 
-          if (contentDatas) {
-            createLog('UPDATE', req.session.user.id, content.id, 'CONTENT');
-            return res.status(201).json({ id: content.id });
-          }
-        } catch (error) {
-          throw new ServerError('Unable to Create Content. Please try again.');
+        if (contentDatas) {
+          createLog('UPDATE', (req.session.user && req.session.user.id) || null, content.id, 'CONTENT');
+          return res.status(201).json({ id: content.id });
         }
       }
     } catch (error) {
-      throw new ServerError('Server Error: Unable to add Content. Please try again');
+      throw new ServerError('Server Error: Unable to add Content. Please try againss');
     }
   }
   throw new MissingError('Schema Not Found');
@@ -141,7 +136,6 @@ const updateContent = async (req, res) => {
 
 const deleteContent = async (req, res) => {
   const { schemaSlug, contentId } = req.query;
-
   const schema = await db.Schema.findOne(
     {
       where: {
