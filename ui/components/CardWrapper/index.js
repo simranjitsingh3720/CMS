@@ -5,7 +5,7 @@ import styles from './style.module.scss';
 function CardWrapper({ children }) {
   return (
     <div className={styles.card_wrapper}>
-      <Card {...children}>{children}</Card>
+      <Card {...children} id="card">{children}</Card>
     </div>
   );
 }

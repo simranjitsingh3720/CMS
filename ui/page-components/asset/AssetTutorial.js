@@ -17,13 +17,13 @@ function AssetTutorial() {
       disableBeacon: 'true',
     },
     {
-      target: '.third-step',
-      content: 'Edit your asset from here',
+      target: '#card',
+      content: 'Asset Card',
       disableBeacon: 'true',
     },
     {
-      target: '.fourth-step',
-      content: 'Delete your asset from here',
+      target: '#options',
+      content: 'Options',
       disableBeacon: 'true',
     },
   ];

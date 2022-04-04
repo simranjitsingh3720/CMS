@@ -10,7 +10,7 @@ import SessionContext from '../../context/SessionContext';
 function Profile() {
   const [form] = Form.useForm();
   const [dataForm] = Form.useForm();
-  const { refetch: sessionRefetch } = useContext(SessionContext);
+  const { refetch: sessionRefetch, session } = useContext(SessionContext);
 
   const [data, setData] = useState({});
   const [url, setUrl] = useState('');
@@ -111,6 +111,8 @@ function Profile() {
 
     setButtonFlag(true);
   };
+
+  console.log(session);
 
   const changePassword = (values) => {
     passwordPatch({

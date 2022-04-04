@@ -11,18 +11,13 @@ function ContentTutorial() {
       disableBeacon: 'true',
     },
     {
-      target: '#structure-tut',
-      content: 'View your structure here',
-      disableBeacon: 'true',
-    },
-    {
       target: '.first-step',
       content: 'Add new content here',
       disableBeacon: 'true',
     },
     {
-      target: '.second-step',
-      content: 'Search your content here',
+      target: '.select',
+      content: 'Select the columns to be displayed',
       disableBeacon: 'true',
     },
     {

@@ -131,6 +131,7 @@ function ShowSchema() {
       name: 'Add new Field',
       icon: <PlusOutlined />,
       onClick: showSchemaModal,
+      className: 'first-step',
     },
     ],
   };
@@ -140,7 +141,13 @@ function ShowSchema() {
       {fields.length !== 0
         ? (
           <ActionBar actions={actions}>
-            <Button type="primary" shape="round" key="share" onClick={shareFormModal}>
+            <Button
+              type="primary"
+              shape="round"
+              key="share"
+              className="share"
+              onClick={shareFormModal}
+            >
               <ShareAltOutlined />
               Share
             </Button>

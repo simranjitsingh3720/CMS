@@ -56,7 +56,7 @@ export default function NewContentModal({
         }
         getContent();
       }).catch(() => {
-        message.success('Added Successfully');
+        message.success('Added Successfully in catch');
         getContent();
       });
     }
@@ -66,6 +66,7 @@ export default function NewContentModal({
     const x = { ...contentData };
     let uploadData = [];
     const handleReadURLs = [];
+    console.log('x is here: ', x);
 
     schemaDetails.list.forEach((field) => {
       if (field.type === 'Date and Time') {
@@ -101,6 +102,7 @@ export default function NewContentModal({
         }
       }
     });
+
     if (uploadData.length > 0) {
       executePost({
         url: '/asset/bulkUpload',
