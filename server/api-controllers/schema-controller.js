@@ -70,9 +70,12 @@ const updateSchema = async (req, res) => {
     if (!isSchemaSlug) {
       throw new MissingError('Table not Found');
     }
-
-    if (schemaSlug === slug && isSchemaSlug.length <= 1) {
-      throw new DuplicateError('This table slug already taken');
+    if (isSchemaSlug) {
+      if (isSchemaSlug.slug === body.slug
+      && isSchemaSlug.title === body.title
+      && isSchemaSlug.description === body.description) {
+        throw new DuplicateError('This table slug already taken');
+      }
     }
 
     try {
@@ -96,7 +99,7 @@ const updateSchema = async (req, res) => {
       createLog('UPDATE', req.session.user.id, schemaId, 'SCHEMA');
       return res.status(200).json({ id: slug });
     } catch (error) {
-      throw new ServerError('Unable to update, try again later');
+      throw new ServerError('This table slug already taken');
     }
   }
   throw new MissingError('Schema not found');
