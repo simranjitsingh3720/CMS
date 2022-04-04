@@ -24,14 +24,6 @@ function ShowSchema() {
   const [isFieldReordering, setIsFieldReordering] = useState(false);
   const [showShareFormModal, setshowShareFormModal] = useState(false);
 
-  const [{}, getAllFields] = useRequest(
-    {
-      method: 'GET',
-
-    },
-    { manual: true },
-  );
-
   const showSchemaModal = () => {
     setIsEditable(false);
     setIsSchemaModal(true);
@@ -40,6 +32,7 @@ function ShowSchema() {
   const shareFormModal = () => {
     setshowShareFormModal(true);
   };
+
   const closeShareFormModal = () => {
     setshowShareFormModal(false);
   };
@@ -56,22 +49,6 @@ function ShowSchema() {
   const closeEditSchemaModal = () => {
     setEditSchemaModal(false);
   };
-
-  // const [{}, fieldDelete] = useRequest(
-  //   {
-  //     method: 'DELETE',
-
-  //   },
-  //   { manual: true },
-  // );
-
-  // const [{ data }, getSchema] = useRequest(
-  //   {
-  //     method: 'GET',
-  //     url: `/schema/${schemaSlug}`,
-  //   },
-  //   { manual: true },
-  // );
 
   const [{}, fieldDelete] = useRequest(
     {
@@ -100,7 +77,6 @@ function ShowSchema() {
   );
 
   const deleteField = (id) => {
-    console.log('DELETE ID ', id);
     confirm({
       title: 'Do you Want to delete this Field',
       icon: <ExclamationCircleOutlined style={{ color: 'red' }} />,
