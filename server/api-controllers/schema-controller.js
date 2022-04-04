@@ -76,27 +76,25 @@ const updateSchema = async (req, res) => {
     }
 
     try {
-      const updatedSchema = await db.Schema.update({
+      await db.Schema.update({
         ...body,
         updatedBy: req.session.user.id,
       }, { where: { slug: schemaSlug } });
 
-      const updatedFieldSchema = await db.Field.update({ schemaSlug: slug }, {
+      await db.Field.update({ schemaSlug: slug }, {
         where: {
           schemaSlug,
         },
       });
 
-      const updatedContentSchema = await db.Content.update({ schemaSlug: slug }, {
+      await db.Content.update({ schemaSlug: slug }, {
         where: {
           schemaSlug,
         },
       });
 
-      if (updatedSchema[0] && updatedFieldSchema[0] && updatedContentSchema[0]) {
-        createLog('UPDATE', req.session.user.id, schemaId, 'SCHEMA');
-        return res.status(200).json({ id: slug });
-      }
+      createLog('UPDATE', req.session.user.id, schemaId, 'SCHEMA');
+      return res.status(200).json({ id: slug });
     } catch (error) {
       throw new ServerError('Unable to update, try again later');
     }

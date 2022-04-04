@@ -200,8 +200,6 @@ function StructureModal({
           values: ((fieldData && fieldData.options && fieldData.options.values) || ''),
           Truelabel: (fieldData && fieldData.Truelabel),
           Falselabel: (fieldData && fieldData.Falselabel),
-          // trueLabel: (fieldData && fieldData.trueLabel),
-          // falseLabel: (fieldData && fieldData.falseLabel),
           isMultiple: ((fieldData && fieldData.options && fieldData.options.isMultiple) || ''),
         }}
         onFinish={onFinish}
@@ -258,7 +256,6 @@ function StructureModal({
                 },
               ]}
             >
-
               <Input defaultValue={(fieldData && fieldData.defaultValue) || ''} />
             </Form.Item>
             <Form.Item
