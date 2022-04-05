@@ -7,23 +7,23 @@ function AssetTutorial() {
   const steps = [
     {
       target: '.first-step',
-      content: 'Add your assets from here',
+      content: 'Add a new asset from here.',
       disableBeacon: 'true',
 
     },
     {
       target: '.second-step',
-      content: 'Search your assets here',
+      content: 'Search your assets.',
       disableBeacon: 'true',
     },
     {
       target: '#card',
-      content: 'Asset Card',
+      content: 'This is your asset.',
       disableBeacon: 'true',
     },
     {
       target: '#options',
-      content: 'Options',
+      content: 'Get more options here.',
       disableBeacon: 'true',
     },
   ];

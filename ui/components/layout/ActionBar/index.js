@@ -11,7 +11,6 @@ function ActionBar({ children = null, actions = {} }) {
         {button.icon}
         {button.name}
       </Button>
-
     ));
   }
 
