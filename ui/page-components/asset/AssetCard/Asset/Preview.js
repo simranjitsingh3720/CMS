@@ -28,12 +28,21 @@ export function CardPreview({ data, showAssetPreviewModal }) {
     return (
       <div
         style={{
-          height: '200px', backgroundColor: '#000', textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center',
+          height: '200px',
+          backgroundColor: '#000',
+          textAlign: 'center',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
         onClick={showAssetPreviewModal}
         role="button"
       >
-        <img src={data.url} alt="asset" style={{ maxWidth: '100%', height: '100%' }} />
+        <img
+          src={data.url}
+          alt="asset"
+          style={{ maxWidth: '100%', height: 'auto', maxHeight: '100%' }}
+        />
       </div>
     );
   }
@@ -54,7 +63,12 @@ export function CardPreview({ data, showAssetPreviewModal }) {
       <div onClick={showAssetPreviewModal} role="button">
         <SoundOutlined
           style={{
-            height: '200px', fontSize: '50px', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column',
+            height: '200px',
+            fontSize: '50px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
           }}
         />
 
@@ -68,7 +82,13 @@ export function CardPreview({ data, showAssetPreviewModal }) {
         imageStyle={{
           height: 80,
         }}
-        style={{ height: '200px', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}
+        style={{
+          height: '200px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+        }}
         description={(
           <span>
             Thumbnail Not Available
@@ -84,9 +104,20 @@ export function Preview({ data }) {
   if (data && data.type === 'image') {
     return (
       <div
-        style={{ height: '80vh', backgroundColor: '#000', textAlign: 'center' }}
+        style={{
+          height: '80vh',
+          backgroundColor: '#000',
+          textAlign: 'center',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
       >
-        <img src={data.url} alt="asset" style={{ maxWidth: '100%', height: '100%' }} />
+        <img
+          src={data.url}
+          alt="asset"
+          style={{ maxWidth: '100%', height: 'auto', maxHeight: '100%' }}
+        />
       </div>
     );
   } if (data && data.type === 'video') {

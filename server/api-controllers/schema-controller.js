@@ -46,6 +46,16 @@ const addSchema = async (req, res) => {
     throw new ValidityError(message);
   }
 
+  const isSlug = await db.Schema.findOne({
+    where: {
+      slug,
+    },
+  });
+
+  if (isSlug) {
+    throw new ValidityError(`Table with slug name ${slug} already exists`);
+  }
+
   try {
     const schema = await db.Schema.create({
       ...body,
@@ -55,6 +65,7 @@ const addSchema = async (req, res) => {
     createLog('CREATE', req.session.user.id, schema.id, 'SCHEMA');
     return res.status(201).json({ id: schema.id, slug: schema.slug });
   } catch (error) {
+    console.log(error);
     throw new DuplicateError(`Table with slug name ${slug} already exists`);
   }
 };

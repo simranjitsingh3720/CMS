@@ -207,19 +207,26 @@ function StructureModal({
                     required: true,
                     message: 'Please input your field name!',
                   },
+                  { max: 100, message: 'Name cannot be longer than 100 characters' },
+
                 ]}
               >
 
-                <Input />
+                <Input maxLength={101} />
               </Form.Item>
 
               <Form.Item
                 label="Field ID"
                 name="fieldId"
                 style={{ display: 'inline-block', width: 'calc(50% - 8px)', margin: '0 8px' }}
-                rules={[{ required: true, message: 'Please input your field ID!' }]}
+                rules={[{
+                  required: true,
+                  message: 'Please input your field ID!',
+                },
+                { max: 100, message: 'Field Id cannot be longer than 100 characters' },
+                ]}
               >
-                <Input disabled={!!isEditable} />
+                <Input maxLength={101} disabled={!!isEditable} />
 
               </Form.Item>
             </Form.Item>
@@ -231,9 +238,11 @@ function StructureModal({
                 {
                   message: 'Please input your description!',
                 },
+                { max: 200, message: 'Description cannot be longer than 200 characters' },
+
               ]}
             >
-              <TextArea rows={2} defaultValue={(fieldData && fieldData.description) || ''} />
+              <TextArea rows={2} defaultValue={(fieldData && fieldData.description) || ''} showCount maxLength={201} />
             </Form.Item>
             <Form.Item
               label="Default Value"
@@ -244,7 +253,7 @@ function StructureModal({
                 },
               ]}
             >
-              <Input defaultValue={(fieldData && fieldData.defaultValue) || ''} />
+              <Input defaultValue={(fieldData && fieldData.defaultValue) || ''} disabled={dataType === 'List' || dataType === 'Boolean' || dataType === 'Date and Time' || dataType === 'Assets'} />
             </Form.Item>
             <Form.Item
               name="isRequired"
@@ -265,7 +274,6 @@ function StructureModal({
               <Select
                 defaultValue={(fieldData && fieldData.type)}
                 size="medium"
-                // style={{ width: 200 }}
                 placeholder="Select type of field..."
                 onChange={(value) => handleOnDataTypeChange(value)}
                 allowClear

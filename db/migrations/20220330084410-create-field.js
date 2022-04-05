@@ -5,7 +5,7 @@ module.exports = {
       schemaId: { type: Sequelize.UUID },
       schemaSlug: { type: Sequelize.STRING },
       name: { type: Sequelize.STRING, allowNull: false },
-      fieldId: { type: Sequelize.STRING, unique: true, allowNull: false },
+      fieldId: { type: Sequelize.STRING, allowNull: false },
       description: { type: Sequelize.STRING },
       defaultValue: { type: Sequelize.STRING },
       isRequired: { type: Sequelize.BOOLEAN },
