@@ -7,27 +7,27 @@ function FieldTutorial() {
   const steps = [
     {
       target: '#structure-tut',
-      content: 'View your structure here',
+      content: 'View your structure here.',
       disableBeacon: 'true',
     },
-    {
-      target: '.first-step',
-      content: 'Add new structure here',
-      disableBeacon: 'true',
-    },
+    // {
+    //   target: '.first-step',
+    //   content: 'Add new structure here.',
+    //   disableBeacon: 'true',
+    // },
     {
       target: '.share',
-      content: 'Share your structure as a form',
+      content: 'Share your structure as a form.',
       disableBeacon: 'true',
     },
     {
       target: '#edit_structure',
-      content: 'Edit your structure here',
+      content: 'Edit your structure here.',
       disableBeacon: 'true',
     },
     {
       target: '#delete_structure',
-      content: 'Delete your structure here',
+      content: 'Delete your structure here.',
       disableBeacon: 'true',
     },
   ];

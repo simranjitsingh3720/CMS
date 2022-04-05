@@ -207,13 +207,13 @@ function GetFields(appearenceType, field, isEditable) {
         >
           {isEditable ? (
             <div>
-              <Upload action="https://www.mocky.io/v2/5cc8019d300000980a055e76" disabled={!!isEditable} maxCount={options ? 10 : 1}>
+              <Upload action="##" disabled={!!isEditable} maxCount={options ? 10 : 1}>
                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
               </Upload>
               <span style={{ color: 'red' }}>Asset cannot be updated.</span>
             </div>
           ) : (
-            <Upload action="https://www.mocky.io/v2/5cc8019d300000980a055e76" maxCount={options ? 10 : 1}>
+            <Upload action="##" maxCount={options ? 10 : 1}>
               <Button icon={<UploadOutlined />}>Click to Upload</Button>
             </Upload>
           )}

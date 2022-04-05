@@ -7,27 +7,27 @@ function ContentTutorial() {
   const steps = [
     {
       target: '#contents-tut',
-      content: 'View the contents of your table here',
+      content: 'View the contents of your table here.',
       disableBeacon: 'true',
     },
     {
       target: '.first-step',
-      content: 'Add new content here',
+      content: 'Add a new content here.',
       disableBeacon: 'true',
     },
     {
       target: '.select',
-      content: 'Select the columns to be displayed',
+      content: 'Select the columns to be displayed.',
       disableBeacon: 'true',
     },
     {
       target: '#edit-content',
-      content: 'Edit your content here',
+      content: 'Edit your content here.',
       disableBeacon: 'true',
     },
     {
       target: '#delete-content',
-      content: 'Delete your content here',
+      content: 'Delete your content here.',
       disableBeacon: 'true',
     },
   ];

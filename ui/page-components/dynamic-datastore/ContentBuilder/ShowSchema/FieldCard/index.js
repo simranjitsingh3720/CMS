@@ -1,7 +1,6 @@
 import { Card, Button, Space, Tooltip } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import style from './style.module.scss';
-import FieldTutorial from '../../FieldTutorial';
 
 function FieldCard({
   fields, setIsEditable, setFieldsId,
