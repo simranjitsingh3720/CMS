@@ -116,13 +116,13 @@ function PageCard({ searchValue }) {
                   onClick={() => { handleEdit(page.slug); }}
                   role="button"
                 >
-                  <Text style={{ margin: '0 ' }}>
+                  <Text style={{ margin: '0 ', wordBreak: 'break-word' }}>
                     Title:
                     {' '}
                     {page.name}
                   </Text>
                   <br />
-                  <Text style={{ color: 'gray', margin: '0' }}>
+                  <Text style={{ color: 'gray', margin: '0', wordBreak: 'break-word' }}>
                     Slug: /
                     {page.slug}
                   </Text>

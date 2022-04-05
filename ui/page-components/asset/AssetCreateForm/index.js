@@ -108,7 +108,7 @@ function AssetCreateForm({ closeModal, refetch }) {
         name="description"
         label="Description"
       >
-        <TextArea rows={2} />
+        <TextArea rows={2} maxLength={100} />
       </Form.Item>
 
       <Form.Item

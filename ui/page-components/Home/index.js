@@ -39,7 +39,7 @@ function Home() {
               {getData?.data?.pages?.length <= 0 ? <span>No Page Found</span>
                 : (
                   <>
-                    <span>Number of Pages :</span>
+                    <span>Number of Pages: </span>
                     {getData?.data?.pages?.length}
                   </>
                 )}
@@ -68,7 +68,7 @@ function Home() {
               {getData?.data?.schemas?.length <= 0 ? <span>No Table Found</span>
                 : (
                   <>
-                    <span>Number of Tables :</span>
+                    <span>Number of Tables: </span>
                     {getData?.data?.schemas?.length}
                   </>
                 )}
@@ -97,7 +97,7 @@ function Home() {
               {getData?.data?.assets?.length <= 0 ? <span>No Asset Found</span>
                 : (
                   <>
-                    <span>Number of Assets :</span>
+                    <span>Number of Assets: </span>
                     {getData?.data?.assets?.length}
                   </>
                 )}
@@ -127,7 +127,7 @@ function Home() {
               {getData?.data?.users?.length <= 0 ? <span>No User Found</span>
                 : (
                   <>
-                    <span>Number of Users :</span>
+                    <span>Number of Users: </span>
                     {getData?.data?.users?.length}
                   </>
                 )}
