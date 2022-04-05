@@ -2,7 +2,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Datastore_Schemas', {
       id: { type: Sequelize.UUID, primaryKey: true, defaultValue: Sequelize.UUIDV4 },
-      slug: { type: Sequelize.STRING, unique: true, allowNull: false },
+      slug: { type: Sequelize.STRING, allowNull: false },
       title: { type: Sequelize.STRING },
       description: { type: Sequelize.STRING },
       createdBy: { type: Sequelize.UUID },

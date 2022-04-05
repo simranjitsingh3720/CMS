@@ -66,7 +66,6 @@ export default function NewContentModal({
     const x = { ...contentData };
     let uploadData = [];
     const handleReadURLs = [];
-    console.log('x is here: ', x);
 
     schemaDetails.list.forEach((field) => {
       if (field.type === 'Date and Time') {
@@ -201,7 +200,6 @@ export default function NewContentModal({
   const onFinishFailed = () => {
     setLoading(false);
     setDisable(false);
-    message.error('Fields are required');
   };
 
   return (
