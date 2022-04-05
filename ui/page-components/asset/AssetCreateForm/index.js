@@ -93,7 +93,13 @@ function AssetCreateForm({ closeModal, refetch }) {
         rules={[{ required: true }]}
         getValueFromEvent={normFile}
       >
-        <Upload name="logo" action="/upload.do" listType="picture" maxCount={1}>
+        <Upload
+          name="logo"
+          action="/upload.do"
+          listType="picture"
+          maxCount={1}
+          accept="image/*,video/*,audio/*,.pdf"
+        >
           <Button icon={<UploadOutlined />}>Click to upload</Button>
         </Upload>
       </Form.Item>
