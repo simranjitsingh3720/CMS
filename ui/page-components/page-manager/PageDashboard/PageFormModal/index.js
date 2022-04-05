@@ -87,7 +87,7 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
           onChange={(e) => setPageDetails({ ...pageDetails, name: e.target.value })}
           rules={[{ required: true, message: 'Please enter Page Name!' }]}
         >
-          <Input autoFocus />
+          <Input autoFocus maxLength={30} />
         </Form.Item>
 
         <Form.Item
@@ -107,7 +107,7 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
             },
           ]}
         >
-          <Input disabled={checked} />
+          <Input disabled={checked} maxLength={30} />
         </Form.Item>
 
         { pageDetails.slug

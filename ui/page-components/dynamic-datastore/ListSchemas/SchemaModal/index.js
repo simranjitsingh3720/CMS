@@ -101,7 +101,7 @@ function SchemaModal({
               },
             ]}
           >
-            <Input autoFocus />
+            <Input autoFocus maxLength={30} />
           </Form.Item>
 
           <Form.Item
@@ -117,7 +117,7 @@ function SchemaModal({
             },
             ]}
           >
-            <Input />
+            <Input maxLength={30} />
 
           </Form.Item>
 
@@ -130,7 +130,7 @@ function SchemaModal({
               },
             ]}
           >
-            <TextArea rows={2} />
+            <TextArea rows={2} maxLength={100} />
 
           </Form.Item>
 

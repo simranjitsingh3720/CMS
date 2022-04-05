@@ -3,6 +3,7 @@ const db = require('../../db/models');
 const { MissingError } = require('../helpers/error-helper');
 
 const getContent = async (req, res) => {
+  console.log('\n-----getContent-----------\n');
   const { schemaSlug, contentId } = req.query;
 
   let content = await db.Content.findOne({
@@ -25,6 +26,8 @@ const getContent = async (req, res) => {
 };
 
 const listContents = async (req, res) => {
+  console.log('\n-----listContents-----------\n');
+
   const { schemaSlug } = req.query;
   if (schemaSlug) {
     const contents = await db.Content.findAll({
@@ -43,6 +46,8 @@ const listContents = async (req, res) => {
 };
 
 const addContent = async (req, res) => {
+  console.log('\n-----addContent-----------\n');
+
   const { body, query } = req;
   const { schemaSlug } = query;
   // to get schema id from schema table
@@ -67,6 +72,8 @@ const addContent = async (req, res) => {
 };
 
 const updateContent = async (req, res) => {
+  console.log('\n-----updateContent-----------\n');
+
   const { body, query } = req;
   const { schemaSlug, contentId } = query;
 
@@ -95,6 +102,8 @@ const updateContent = async (req, res) => {
 };
 
 const deleteContent = async (req, res) => {
+  console.log('\n-----deleteContent-----------\n');
+
   const { schemaSlug, contentId } = req.query;
 
   const schema = await db.Schema.findOne(

@@ -155,7 +155,7 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
           name="name"
           rules={[{ required: true, message: 'Please enter Page Name!' }]}
         >
-          <Input />
+          <Input maxLength={30} />
         </Form.Item>
 
         <Form.Item
@@ -176,7 +176,7 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
             },
           ]}
         >
-          <Input disabled={pageData.slug === ''} />
+          <Input disabled={pageData.slug === ''} maxLength={30} />
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 15 }}>
