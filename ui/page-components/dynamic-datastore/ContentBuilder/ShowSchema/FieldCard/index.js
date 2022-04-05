@@ -22,7 +22,6 @@ function FieldCard({
           <div className={style.Fields}>
             <div style={{ fontWeight: 'bold' }}>{fields.name}</div>
             <div>{fields.type}</div>
-            {/* <div>{fields.appearanceType}</div> */}
           </div>
           <div>
             <Tooltip title="Edit field">
