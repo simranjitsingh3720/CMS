@@ -59,7 +59,7 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
 
   const handleValuesChange = (changedValues) => {
     if (changedValues.slug) {
-      const suggestedID = (changedValues.slug || '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+      const suggestedID = (changedValues.slug || '').replace(/[^a-zA-Z0-9_]/g, '').toLowerCase();
       setSlugName(suggestedID);
     }
   };
@@ -85,9 +85,13 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
           name="page"
           value={pageDetails.name}
           onChange={(e) => setPageDetails({ ...pageDetails, name: e.target.value })}
-          rules={[{ required: true, message: 'Please enter Page Name!' }]}
+          rules={[
+            { required: true, message: 'Please enter Page Name!' }, {
+              max: 30,
+              message: 'Page name cannot be longer than 30 characters',
+            }]}
         >
-          <Input autoFocus maxLength={30} />
+          <Input autoFocus maxLength={31} />
         </Form.Item>
 
         <Form.Item
@@ -98,16 +102,20 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
           rules={[
             { required: slugRule, message: 'Please enter Page Slug!' },
             {
-              pattern: new RegExp('^[A-Za-z0-9]*$'),
+              pattern: new RegExp('^[A-Za-z0-9_]*$'),
               message: 'Only Letters and Numbers are accepted',
             },
             {
               pattern: new RegExp('^(?!.*admin).*$'),
               message: 'Cannot use admin as slug',
             },
+            {
+              max: 30,
+              message: 'Slug cannot be longer than 30 characters',
+            },
           ]}
         >
-          <Input disabled={checked} maxLength={30} />
+          <Input disabled={checked} maxLength={31} />
         </Form.Item>
 
         { pageDetails.slug

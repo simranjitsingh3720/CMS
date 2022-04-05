@@ -4,11 +4,9 @@ const db = require('../../db/models');
 const { MissingError, ServerError } = require('../helpers/error-helper');
 
 const getContent = async (req, res) => {
-  console.log('\n-----getContent-----------\n');
+  const { contentId } = req.query;
 
-  const { schemaSlug, contentId } = req.query;
-
-  const contentData = await db.ContentData.findOne({ where: { id: contentId } });
+  const contentData = await db.ContentData.findOne({ where: { contentId } });
   if (contentData) {
     return res.status(200).json(contentData);
   }
@@ -16,8 +14,6 @@ const getContent = async (req, res) => {
 };
 
 const listContents = async (req, res) => {
-  console.log('\n-----listContents-----------\n');
-
   const { schemaSlug } = req.query;
 
   try {
@@ -40,8 +36,6 @@ const listContents = async (req, res) => {
 };
 
 const addContent = async (req, res) => {
-  console.log('\n-----addContent-----------\n');
-
   const { body, query } = req;
   const { schemaSlug } = query;
 
@@ -52,21 +46,13 @@ const addContent = async (req, res) => {
   });
 
   if (schema) {
-    const schemaJSON = { ...schema.toJSON() || undefined };
-    console.log('schemaJSON: ', schemaJSON);
+    const schemaJSON = JSON.parse(JSON.stringify(schema));
     try {
       const content = await db.Content.create({
         schemaId: schemaJSON.id, schemaSlug,
       });
 
-      console.log('\n1----------');
-
-      const contentJSON = { ...content.toJSON() } || undefined;
-      console.log('\n2----------');
-
-      if (contentJSON) {
-        console.log('\n3----------');
-
+      if (content) {
         let contentData = [];
         Object.keys(body).map((key) => {
           contentData = [...contentData, {
@@ -77,39 +63,21 @@ const addContent = async (req, res) => {
           return null;
         });
 
-        console.log('\n4----------');
+        const contentDatas = await db.ContentData.bulkCreate(contentData);
 
-        try {
-          console.log('\n5----------');
-
-          const contentDatas = await db.ContentData.bulkCreate(contentData);
-
-          console.log('\n6----------');
-
-          if (contentDatas) {
-            console.log('\n7----------');
-
-            createLog('UPDATE', req.session.user.id, content.id, 'CONTENT');
-            console.log('\n8----------');
-
-            return res.status(201).json({ id: content.id });
-          }
-          console.log('\n9----------');
-        } catch (error) {
-          throw new ServerError('Unable to Create Content. Please try again.');
+        if (contentDatas) {
+          createLog('UPDATE', (req.session.user && req.session.user.id) || null, content.id, 'CONTENT');
+          return res.status(201).json({ id: content.id });
         }
       }
     } catch (error) {
-      console.log('catch error backend');
-      throw new ServerError('Server Error: Unable to add Content. Please try again');
+      throw new ServerError('Server Error: Unable to add Content. Please try againss');
     }
   }
   throw new MissingError('Schema Not Found');
 };
 
 const updateContent = async (req, res) => {
-  console.log('\n-----updateContent-----------\n');
-
   const { body, query } = req;
   const { schemaSlug, contentId } = query;
 
@@ -167,10 +135,7 @@ const updateContent = async (req, res) => {
 };
 
 const deleteContent = async (req, res) => {
-  console.log('\n-----deleteContent-----------\n');
-
   const { schemaSlug, contentId } = req.query;
-
   const schema = await db.Schema.findOne(
     {
       where: {

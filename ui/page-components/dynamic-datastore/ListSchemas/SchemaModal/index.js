@@ -98,10 +98,15 @@ function SchemaModal({
               {
                 required: true,
                 message: 'Please input your Schema Name!',
+
+              },
+              {
+                max: 30,
+                message: 'Schema Name cannot be longer than 30 characters',
               },
             ]}
           >
-            <Input autoFocus maxLength={30} />
+            <Input autoFocus maxLength={31} />
           </Form.Item>
 
           <Form.Item
@@ -112,12 +117,16 @@ function SchemaModal({
               message: 'Please input your Slug!',
             },
             {
+              max: 30,
+              message: 'Slug cannot be longer than 30 characters',
+            },
+            {
               pattern: new RegExp('^[A-Za-z0-9_]*$'),
               message: 'Only Letters and Numbers are accepted',
             },
             ]}
           >
-            <Input maxLength={30} />
+            <Input showCount maxLength={31} />
 
           </Form.Item>
 
@@ -130,7 +139,7 @@ function SchemaModal({
               },
             ]}
           >
-            <TextArea rows={2} maxLength={100} />
+            <TextArea rows={2} showCount maxLength={100} />
 
           </Form.Item>
 

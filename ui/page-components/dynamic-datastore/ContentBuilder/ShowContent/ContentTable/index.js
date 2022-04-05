@@ -4,7 +4,7 @@ import {
   Modal,
   message,
 } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
 import moment from 'moment';
 import getColumns from './getColumns/getColumns';
 import ContentTutorial from '../../ContentTutorial';
@@ -21,6 +21,10 @@ export default function ContentTable({
     showContentModal(true);
     setIsEditable(true);
   };
+
+  useEffect(() => {
+    getContent();
+  }, [getContent]);
 
   const handleDeleteContent = (content) => {
     confirm({

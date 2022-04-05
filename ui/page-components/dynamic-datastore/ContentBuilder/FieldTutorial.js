@@ -12,12 +12,12 @@ function FieldTutorial() {
     },
     {
       target: '.first-step',
-      content: 'Edit your structure here',
+      content: 'Add new structure here',
       disableBeacon: 'true',
     },
     {
       target: '.share',
-      content: 'Share your structure here',
+      content: 'Share your structure as a form',
       disableBeacon: 'true',
     },
     {

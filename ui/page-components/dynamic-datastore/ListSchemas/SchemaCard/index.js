@@ -24,12 +24,16 @@ function SchemaCard({
     </div>
   );
 
+  const handleShowSchema = () => {
+    showSchema(schemaSlug);
+  };
+
   return (
     <CardWrapper id="fourth-step">
 
       <div
         className={styles.card_body}
-        onClick={() => showSchema(schemaSlug)}
+        onClick={handleShowSchema}
         role="button"
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

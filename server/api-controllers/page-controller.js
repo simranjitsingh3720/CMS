@@ -237,12 +237,13 @@ export const deletePage = async (req, res) => {
 export const updatePageData = async (req, res) => {
   const { pageSlug, pageId } = req.query || '';
   const pageData = req.body;
-
   try {
     if (pageSlug) {
       const isSlug = await db.Page.findOne({ where: { slug: pageData.slug } });
-
-      if (isSlug) {
+      if (pageData.slug === pageSlug && isSlug.length > 1) {
+        throw new DuplicateError('Slug name already taken. Try with another slug name');
+      }
+      if (isSlug && pageData.slug !== pageSlug) {
         throw new DuplicateError('Slug name already taken. Try with another slug name');
       }
       const result = await db.Page.update(
