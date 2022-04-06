@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       Truelabel: { type: DataTypes.STRING },
       Falselabel: { type: DataTypes.STRING },
       options: { type: DataTypes.JSONB },
+      order: { type: DataTypes.INTEGER, autoIncrement: true },
       createdBy: { type: DataTypes.UUID },
       createdAt: { type: DataTypes.DATE },
       updatedBy: { type: DataTypes.UUID },
