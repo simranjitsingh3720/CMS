@@ -53,7 +53,6 @@ function ShowSettings({ schemaDetails }) {
   };
 
   const handleValuesChange = (changedValues) => {
-    console.log('changesValues', changedValues);
     setError('');
 
     if (changedValues.title !== '' && changedValues.title !== undefined) {
@@ -92,9 +91,13 @@ function ShowSettings({ schemaDetails }) {
                   required: true,
                   message: 'Please input your Schema Name!',
                 },
+                {
+                  max: 30,
+                  message: 'Schema Name cannot be longer than 30 characters',
+                },
               ]}
             >
-              <Input />
+              <Input autoFocus maxLength={31} />
             </Form.Item>
 
             <Form.Item
@@ -105,12 +108,16 @@ function ShowSettings({ schemaDetails }) {
                 message: 'Please input your Slug!',
               },
               {
+                max: 30,
+                message: 'Slug cannot be longer than 30 characters',
+              },
+              {
                 pattern: new RegExp('^[A-Za-z0-9_]*$'),
                 message: 'Only Letters and Numbers are accepted',
               },
               ]}
             >
-              <Input />
+              <Input maxLength={31} />
 
             </Form.Item>
 
@@ -123,7 +130,7 @@ function ShowSettings({ schemaDetails }) {
                 },
               ]}
             >
-              <TextArea rows={2} />
+              <TextArea rows={2} showCount maxLength={100} />
 
             </Form.Item>
 
