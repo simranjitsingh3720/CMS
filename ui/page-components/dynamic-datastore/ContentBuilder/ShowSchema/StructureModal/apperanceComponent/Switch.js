@@ -1,4 +1,4 @@
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input } from 'antd';
 
 import React from 'react';
 
@@ -8,7 +8,6 @@ export default function Switch() {
       <Form.Item
         label="True Label"
         name="Truelabel"
-        // name="trueLabel"
         rules={[
           {
             required: true,
@@ -22,15 +21,16 @@ export default function Switch() {
       <Form.Item
         label="False Label"
         name="Falselabel"
-        // name="falseLabel"
         rules={[
           {
             required: true,
             message: 'Please input your False Label!',
           },
+          { max: 100, message: 'Data cannot be longer than 200 characters' },
+
         ]}
       >
-        <Input />
+        <Input maxLength={101} />
       </Form.Item>
 
     </div>

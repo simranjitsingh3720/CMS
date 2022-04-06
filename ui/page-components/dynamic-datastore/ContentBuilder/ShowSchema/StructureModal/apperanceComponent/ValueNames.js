@@ -35,6 +35,8 @@ function ValueNames() {
                     whitespace: true,
                     message: 'Please input values or delete this field.',
                   },
+                  { max: 100, message: 'Data cannot be longer than 200 characters' },
+
                 ]}
                 noStyle
               >
@@ -42,6 +44,7 @@ function ValueNames() {
                   placeholder="Value"
                   autoFocus
                   style={{ width: '60%' }}
+                  maxLength={101}
                 />
               </Form.Item>
               {fields.length > 1 ? (
@@ -74,8 +77,6 @@ function ValueNames() {
       )}
 
     </Form.List>
-
-  // </Form>
 
   );
 }

@@ -131,7 +131,6 @@ function ShowSchema() {
       name: 'Add new Field',
       icon: <PlusOutlined />,
       onClick: showSchemaModal,
-      className: 'first-step',
     },
     ],
   };

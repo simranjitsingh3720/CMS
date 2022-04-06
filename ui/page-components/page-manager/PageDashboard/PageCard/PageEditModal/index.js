@@ -153,9 +153,12 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
         <Form.Item
           label="Page Name"
           name="name"
-          rules={[{ required: true, message: 'Please enter Page Name!' }]}
+          rules={[{ required: true, message: 'Please enter Page Name!' }, {
+            max: 30,
+            message: 'Page name cannot be longer than 30 characters',
+          }]}
         >
-          <Input />
+          <Input maxLength={31} />
         </Form.Item>
 
         <Form.Item
@@ -174,9 +177,13 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
               pattern: new RegExp('^(?!.*admin).*$'),
               message: 'Cannot use admin as slug',
             },
+            {
+              max: 30,
+              message: 'Slug cannot be longer than 30 characters',
+            },
           ]}
         >
-          <Input disabled={pageData.slug === ''} />
+          <Input disabled={pageData.slug === ''} maxLength={31} />
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 15 }}>

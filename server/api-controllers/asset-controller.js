@@ -88,6 +88,8 @@ const createAsset = async (req, res) => {
 };
 
 const createAssetsInBulk = async (req, res) => {
+  console.log('\n-----createAssetsInBulk-----------\n');
+
   // const { body } = req;
   const multipleAssets = req.body;
   let assetIdList = [];

@@ -175,7 +175,6 @@ export default function EmbedableForm() {
   const onFinishFailed = () => {
     setLoading(false);
     setDisable(false);
-    message.error('Fields are required');
   };
 
   return (

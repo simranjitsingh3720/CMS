@@ -71,21 +71,21 @@ function GetFields(appearenceType, field, isEditable) {
   switch (appearenceType) {
     case 'Short':
       return (
-        <Form.Item name={fieldId} label={name} rules={[{ required: isRequired }]}>
+        <Form.Item name={fieldId} label={name} rules={[{ required: isRequired, message: `${name} is required` }]}>
           <Input />
         </Form.Item>
       );
 
     case 'Long':
       return (
-        <Form.Item name={fieldId} label={name} rules={[{ required: isRequired }]}>
+        <Form.Item name={fieldId} label={name} rules={[{ required: isRequired, message: `${name} is required` }]}>
           <TextArea rows={2} />
         </Form.Item>
       );
 
     case 'Number':
       return (
-        <Form.Item name={fieldId} label={name} rules={[{ required: isRequired }]}>
+        <Form.Item name={fieldId} label={name} rules={[{ required: isRequired, message: `${name} is required` }]}>
           <InputNumber style={{
             width: '100%',
           }}
@@ -98,7 +98,7 @@ function GetFields(appearenceType, field, isEditable) {
         <Form.Item
           name={fieldId}
           label={name}
-          rules={[{ required: isRequired }]}
+          rules={[{ required: isRequired, message: `${name} is required` }]}
         >
           <Checkbox.Group options={values} />
         </Form.Item>
@@ -109,7 +109,7 @@ function GetFields(appearenceType, field, isEditable) {
         <Form.Item
           name={fieldId}
           label={name}
-          rules={[{ required: isRequired }]}
+          rules={[{ required: isRequired, message: `${name} is required` }]}
         >
           <Radio.Group>
             {values.map((radioValue) => <Radio value={radioValue}>{radioValue}</Radio>)}
@@ -122,7 +122,7 @@ function GetFields(appearenceType, field, isEditable) {
         <Form.Item
           name={fieldId}
           label={name}
-          rules={[{ required: isRequired }]}
+          rules={[{ required: isRequired, message: `${name} is required` }]}
         >
           <Select>
             {values.map((dropDownValue) => (
@@ -140,7 +140,7 @@ function GetFields(appearenceType, field, isEditable) {
         <Form.Item
           name={fieldId}
           label={name}
-          rules={[{ required: isRequired }]}
+          rules={[{ required: isRequired, message: `${name} is required` }]}
         >
           <DatePicker
             name="Date"
@@ -154,7 +154,7 @@ function GetFields(appearenceType, field, isEditable) {
         <Form.Item
           name={fieldId}
           label={name}
-          rules={[{ required: isRequired }]}
+          rules={[{ required: isRequired, message: `${name} is required` }]}
         >
           <DatePicker
             name="Date and Time"
@@ -169,7 +169,7 @@ function GetFields(appearenceType, field, isEditable) {
         <Form.Item
           name={fieldId}
           label={name}
-          rules={[{ required: isRequired }]}
+          rules={[{ required: isRequired, message: `${name} is required` }]}
           valuePropName="checked"
         >
           <Switch
@@ -187,13 +187,11 @@ function GetFields(appearenceType, field, isEditable) {
         <Form.Item
           name={fieldId}
           label={name}
-          rules={[{ required: isRequired }]}
+          rules={[{ required: isRequired, message: `${name} is required` }]}
         >
           <Radio.Group>
             <Radio value={Truelabel}>{Truelabel}</Radio>
             <Radio value={Falselabel}>{Falselabel}</Radio>
-            {/* <Radio value={trueLabel}>{trueLabel}</Radio>
-            <Radio value={falseLabel}>{falseLabel}</Radio> */}
           </Radio.Group>
         </Form.Item>
       );
@@ -203,17 +201,17 @@ function GetFields(appearenceType, field, isEditable) {
         <Form.Item
           name={fieldId}
           label={name}
-          rules={[{ required: isEditable ? false : isRequired }]}
+          rules={[{ required: isEditable ? false : isRequired, message: `${name} is required` }]}
         >
           {isEditable ? (
             <div>
-              <Upload action="https://www.mocky.io/v2/5cc8019d300000980a055e76" disabled={!!isEditable} maxCount={options ? 10 : 1}>
+              <Upload action="##" disabled={!!isEditable} maxCount={options ? 10 : 1}>
                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
               </Upload>
               <span style={{ color: 'red' }}>Asset cannot be updated.</span>
             </div>
           ) : (
-            <Upload action="https://www.mocky.io/v2/5cc8019d300000980a055e76" maxCount={options ? 10 : 1}>
+            <Upload action="##" maxCount={options ? 10 : 1}>
               <Button icon={<UploadOutlined />}>Click to Upload</Button>
             </Upload>
           )}
