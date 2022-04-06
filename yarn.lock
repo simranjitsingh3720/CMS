@@ -791,6 +791,11 @@ chownr@^2.0.0:
   resolved "https://registry.yarnpkg.com/chownr/-/chownr-2.0.0.tgz#15bfbe53d2eab4cf70f18a8cd68ebe5b3cb1dece"
   integrity sha512-bIomtDF5KGpdogkLd9VspvFzk9KfpyyGlS8YFVZl7TGPBHL5snIOnxeshwVgPteQ9b4Eydl+pVbIyE1DcvCWgQ==
 
+ckeditor@^4.12.1:
+  version "4.12.1"
+  resolved "https://registry.yarnpkg.com/ckeditor/-/ckeditor-4.12.1.tgz#954a7b028dd611e44ba51cc7c2fe051cf1052186"
+  integrity sha512-pH2Su4oi0D4iN/3U8nUcwI7/lXHoOJi0aiN8e2zxnm4Ow5kq8eZP2ZGmpYyuqRyKZ2tHaU8+OyYi7laXcjiq9Q==
+
 classnames@2.x, classnames@^2.2.1, classnames@^2.2.3, classnames@^2.2.5, classnames@^2.2.6:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.1.tgz#dfcfa3891e306ec1dad105d0e88f4417b8535e8e"
@@ -1961,6 +1966,11 @@ grapesjs-navbar@^0.1.5:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/grapesjs-navbar/-/grapesjs-navbar-0.1.5.tgz#62e35eca0f391f94d455e96c206b74b5f495fa6e"
   integrity sha512-tVKPtzlTUNCpzk3lHW69II2NsSzLNQd3K32CXssWCP3M1V8fvc9jG/MQECBkd/gMS+DjldD4/4b00ri9F3tKSg==
+
+grapesjs-plugin-ckeditor@^0.0.10:
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/grapesjs-plugin-ckeditor/-/grapesjs-plugin-ckeditor-0.0.10.tgz#9ce8b32cfd175ea040f8ea324910ce91d08759a2"
+  integrity sha512-WWKure+ptpssV6rFJZ006diL87IeU38cm1pMA4SI5C2i8DoTHui0IM7J5NG5Vit7/PMqDcn9/hHLJwt1IRsqDg==
 
 grapesjs-plugin-export@^0.1.5:
   version "0.1.5"
