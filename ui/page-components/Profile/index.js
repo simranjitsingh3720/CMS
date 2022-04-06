@@ -112,8 +112,6 @@ function Profile() {
     setButtonFlag(true);
   };
 
-  console.log(session);
-
   const changePassword = (values) => {
     passwordPatch({
       url: '/user',
