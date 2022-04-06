@@ -7,13 +7,13 @@ function PageManagerTutorial() {
   const steps = [
     {
       target: '.first-step',
-      content: 'Add a new page from here',
+      content: 'Add a new page from here.',
       disableBeacon: 'true',
       hideCloseButton: 'true',
     },
     {
       target: '.second-step',
-      content: 'Search your pages here',
+      content: 'Search your pages here.',
       disableBeacon: 'true',
       hideCloseButton: 'true',
     },
@@ -31,13 +31,13 @@ function PageManagerTutorial() {
     },
     {
       target: '#section',
-      content: 'Work on your page here',
+      content: 'Click here to work on your page.',
       disableBeacon: 'true',
       hideCloseButton: 'true',
     },
     {
       target: '#options',
-      content: 'View your page here',
+      content: 'Get more options here.',
       disableBeacon: 'true',
       hideCloseButton: 'true',
     },

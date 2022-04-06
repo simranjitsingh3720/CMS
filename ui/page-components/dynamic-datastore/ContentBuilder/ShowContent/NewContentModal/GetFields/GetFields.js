@@ -205,13 +205,13 @@ function GetFields(appearenceType, field, isEditable) {
         >
           {isEditable ? (
             <div>
-              <Upload action={null} disabled={!!isEditable} maxCount={options ? 10 : 1}>
+              <Upload action="##" disabled={!!isEditable} maxCount={options ? 10 : 1}>
                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
               </Upload>
               <span style={{ color: 'red' }}>Asset cannot be updated.</span>
             </div>
           ) : (
-            <Upload action={null} maxCount={options ? 10 : 1}>
+            <Upload action="##" maxCount={options ? 10 : 1}>
               <Button icon={<UploadOutlined />}>Click to Upload</Button>
             </Upload>
           )}
