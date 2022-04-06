@@ -115,10 +115,16 @@ function ShowSchema() {
   }, [reFetchSchema]);
 
   useEffect(() => {
-    if (fields.length > 0) {
+    if (fields.length > 0 && isFieldReordering) {
+      const reorderedList = [];
+
+      fields.forEach((field, index) => {
+        reorderedList.push({ ...field, order: index + 1 });
+      });
+
       executeFieldsReordering({
         data: {
-          schema: fields,
+          reorderedList,
         },
       }).then(() => {
         setIsFieldReordering(false);
@@ -214,6 +220,19 @@ function ShowSchema() {
                 <span>
                   Oops!! No Fields Found.
                   <br />
+                  {/* <DragableList
+              useDragHandle
+              fieldActions={{
+                setEditSchemaModal,
+                closeSchemaModal,
+                setFieldsId,
+                setIsEditable,
+                setFieldData,
+                deleteField,
+              }}
+              items={fields}
+              onSortEnd={onSortEnd}
+            /> */}
                   <br />
                   <Button type="primary" shape="round" onClick={showSchemaModal}>
                     <PlusOutlined />

@@ -1,5 +1,5 @@
 const db = require('../../db/models');
-const { ForbiddenError, MissingError, ServerError, ValidityError } = require('../helpers/error-helper');
+const { ForbiddenError, MissingError, ValidityError, ServerError } = require('../helpers/error-helper');
 const { createLog } = require('./createLog-controller');
 
 const getSingleField = async (req, res) => {
@@ -22,7 +22,7 @@ const listAllFields = async (req, res) => {
     throw new MissingError('Table Not Found');
   }
 
-  const allFields = await db.Field.findAll({ where: { schemaSlug } });
+  const allFields = await db.Field.findAll({ where: { schemaSlug }, order: ['order'] });
   return res.status(200).json({ list: allFields });
 };
 
@@ -127,14 +127,36 @@ const deleteField = async (req, res) => {
 const reOrderFields = async (req, res) => {
   const { body, query } = req;
   const { schemaSlug } = query;
-  const { schema } = body;
+  const { reorderedList } = body;
 
-  const updatedSchema = await db.Schema.update({ schema }, { where: { slug: schemaSlug } });
-
-  if (updatedSchema) {
-    return res.status(200).json({ id: schemaSlug });
+  if (!schemaSlug) {
+    throw new MissingError('Invalid URL. Schema Slug is Required');
   }
-  return res.status(404).json({ message: 'Schema not found' });
+
+  const isSchema = await db.Schema.findOne({
+    where: {
+      slug: schemaSlug,
+    },
+  });
+
+  if (!isSchema) {
+    throw new MissingError('Schema not found');
+  }
+
+  try {
+    const reorderList = await db.Field.bulkCreate(reorderedList, {
+      updateOnDuplicate: ['order'],
+    });
+
+    // console.log(reorderList);
+
+    if (reorderList) {
+      createLog('DELETE', req.session.user.id, isSchema.id, 'FIELD');
+    }
+    return res.status(200).json({ id: reorderList });
+  } catch (error) {
+    throw new ServerError('Unbale to reorder the fileds. try again ');
+  }
 };
 
 module.exports = {
