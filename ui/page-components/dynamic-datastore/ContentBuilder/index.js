@@ -25,7 +25,7 @@ export default function ContentBuilder() {
     { manual: true },
   );
 
-  const [{ data: schema }, getSchema] = useRequest(
+  const [{ data: schema }, getSchemaFields] = useRequest(
     {
       method: 'GET',
       url: `/schema/${schemaSlug}/field`,
@@ -34,14 +34,14 @@ export default function ContentBuilder() {
   );
   const callback = (key) => {
     if (key === '1') {
-      getSchema().then(() => {}).catch((err) => {
+      getSchemaFields().then(() => {}).catch((err) => {
         if (err.response.data.code === 'MissingError') {
           setNotFound(true);
         } else {
           message.error(err.response.data.message || err.response.data.messages[0]);
         }
       });
-    } else if (key === '3') {
+    } else if (key === '3' || key === '2') {
       getSchemaDetails().then((res) => {
         setSchemaDetails(res.data);
       }).catch((err) => {
@@ -57,7 +57,7 @@ export default function ContentBuilder() {
 
   useEffect(() => {
     if (schemaSlug) {
-      getSchema().then((res) => {
+      getSchemaFields().then((res) => {
         if (res.data.list.length > 0) {
           setDefaultKey('1');
         } else {
@@ -89,7 +89,8 @@ export default function ContentBuilder() {
                   />
                 </TabPane>
                 <TabPane tab={<span id="structure-tut">Structure</span>} key="2">
-                  {schema ? <ShowSchema schema={schema} /> : <>NO SCHEMA FOUND</>}
+                  {schema ? <ShowSchema schema={schema} schemaDetails={schemaDetails} />
+                    : <>NO SCHEMA FOUND</>}
                 </TabPane>
                 <TabPane tab="Settings" key="3">
                   {schemaDetails ? (
