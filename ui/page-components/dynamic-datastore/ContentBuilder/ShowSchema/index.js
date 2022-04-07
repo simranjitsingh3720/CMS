@@ -13,7 +13,7 @@ import ShareFormModal from './ShareFormModal';
 
 const { confirm } = Modal;
 
-function ShowSchema() {
+function ShowSchema({ schemaDetails }) {
   const router = useRouter();
   const { schemaSlug } = router.query;
   const [isSchemaModal, setIsSchemaModal] = useState(false);
@@ -171,7 +171,7 @@ function ShowSchema() {
               closeShareFormModal={closeShareFormModal}
               loading
               formId={data.list && data.list[0].schemaId}
-              title={data.title}
+              title={schemaDetails.title}
             />
           </div>
         ) : null}

@@ -1,3 +1,4 @@
+/* eslint-disable no-empty-pattern */
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button, Form, message, Space } from 'antd';
@@ -21,12 +22,12 @@ export default function EmbedableForm() {
   let isAsset = false;
   let multipleAssets = [];
 
-  const [{ }, fetchFormData] = useRequest({
+  const [{}, fetchFormData] = useRequest({
     method: 'GET',
   }, {
     manual: true,
   });
-  const [{ }, executePost] = useRequest({ method: 'POST' }, { manual: true });
+  const [{}, executePost] = useRequest({ method: 'POST' }, { manual: true });
 
   const [{}, addContent] = useRequest(
     {
@@ -63,7 +64,6 @@ export default function EmbedableForm() {
           setLoading(false);
         }
         setFormSubmitSuccess(true);
-        // getContent();
       }).catch((err) => {
         message.error(err.response.data.message || err.response.data.messages[0]);
       });
@@ -110,24 +110,13 @@ export default function EmbedableForm() {
       }
     });
 
-    // if (formDetails && formDetails[0].schemaSlug) {
-    //   addContent({
-    //     url: `/form/content/${formDetails[0].schemaSlug}`,
-    //     data: { data: x },
-    //   }).then(() => {
-    //     setFormSubmitSuccess(true);
-    //   }).catch((err) => {
-    //     message.error(err.response.data.message || err.response.data.messages[0]);
-    //   });
-    // }
-
     if (uploadData.length > 0) {
       executePost({
         url: '/asset/bulkUpload',
         data: multipleAssets,
       })
         .then((res) => {
-          const { writeUrlList, assetIdList, readUrlArr } = res.data;
+          const { writeUrlList, readUrlArr } = res.data;
 
           let usedUrls = 0;
           handleReadURLs.forEach((obj, index) => {
@@ -224,7 +213,14 @@ export default function EmbedableForm() {
                           >
                             <div className={styles.actionButton}>
                               <Space wrap>
-                                <Button type="primary" htmlType="submit">
+                                <Button
+                                  type="primary"
+                                  loading={loading}
+                                  htmlType="submit"
+                                  onClick={() => {
+                                    setDisable(true); setLoading(true);
+                                  }}
+                                >
                                   Submit
                                 </Button>
                               </Space>
