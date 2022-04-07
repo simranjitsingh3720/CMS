@@ -1,25 +1,20 @@
+/* eslint-disable no-empty-pattern */
 import React, { useState } from 'react';
 import {
   Button,
   Form,
   Input,
   message,
-  Checkbox,
   Modal,
   Space,
 } from 'antd';
+import _ from 'lodash';
 import { useRouter } from 'next/router';
 import { useRequest } from '../../../../helpers/request-helper';
 import styles from '../style.module.scss';
 
 function PageFormModal({ onFormClose, visible, setVisible }) {
-  const [pageDetails, setPageDetails] = useState({
-    name: '',
-    slug: '',
-    isHome: 0,
-  });
-  const [checked, setChecked] = useState(false);
-  const [slugRule, setSlugRule] = useState(true);
+  const [slugName, setSlugName] = useState('');
 
   const [form] = Form.useForm();
   const { push } = useRouter();
@@ -34,19 +29,19 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
     },
   );
 
-  const handleCreatePage = () => {
+  const onFinish = (values) => {
     executePost({
       data: {
-        ...pageDetails,
+        ...values,
       },
     })
       .then(() => {
         setVisible(false);
         message.success('Page Created Successfully', 5);
-        if (pageDetails.slug) {
+        if (values.slug) {
           push(
             '/admin/page-manager/builder/[pageID]',
-            `/admin/page-manager/builder/${pageDetails.slug}`,
+            `/admin/page-manager/builder/${values.slug}`,
           );
         }
         push('/admin/page-manager/builder');
@@ -55,13 +50,24 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
         message.info(err.response.data.message || err.response.data.messages[0]);
       });
   };
-  const [slugName, setSlugName] = useState('');
 
   const handleValuesChange = (changedValues) => {
     if (changedValues.slug) {
-      const suggestedID = (changedValues.slug || '').replace(/[^a-zA-Z0-9_]/g, '').toLowerCase();
-      setSlugName(suggestedID);
+      setSlugName(changedValues.slug);
+    } else {
+      setSlugName('');
     }
+    if (changedValues.name !== '' && changedValues.name !== undefined) {
+      form.setFieldsValue({ slug: _.snakeCase(changedValues.name) });
+    }
+
+    if (changedValues.name === '') {
+      form.setFieldsValue({ slug: '' });
+    }
+  };
+
+  const manipulateSlugString = (title) => {
+    setSlugName(_.snakeCase(title));
   };
 
   return (
@@ -75,16 +81,15 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
         name="basic"
         form={form}
         layout="vertical"
-        onFinish={handleCreatePage}
+        onFinish={onFinish}
         initialValues={{ remember: true }}
         autoComplete="off"
         onValuesChange={handleValuesChange}
       >
         <Form.Item
           label="Page Name"
-          name="page"
-          value={pageDetails.name}
-          onChange={(e) => setPageDetails({ ...pageDetails, name: e.target.value })}
+          name="name"
+          onChange={(e) => manipulateSlugString(e.target.value)}
           rules={[
             { required: true, message: 'Please enter Page Name!' },
             {
@@ -103,10 +108,8 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
         <Form.Item
           label="Slug"
           name="slug"
-          value={pageDetails.slug}
-          onChange={(e) => setPageDetails({ ...pageDetails, slug: e.target.value })}
           rules={[
-            { required: slugRule, message: 'Please enter Page Slug!' },
+            { required: true, message: 'Please enter Page Slug!' },
             {
               pattern: /^[A-Za-z0-9_]*$/,
               message: 'Only Letters and Numbers are accepted',
@@ -121,10 +124,10 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
             },
           ]}
         >
-          <Input disabled={checked} maxLength={31} />
+          <Input maxLength={31} />
         </Form.Item>
 
-        { pageDetails.slug
+        { slugName !== ''
           ? (
             <p>
               This page will be hosted on
@@ -135,24 +138,24 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
                 {slugName}
               </span>
             </p>
-          ) : ''}
+          ) : null}
 
-        <Form.Item
-          name="index"
+        {/* <Form.Item
+          name="isHome"
           valuePropName="checked"
-          onChange={() => {
-            if (!checked) {
-              setPageDetails({ ...pageDetails, slug: '', isHome: 1 });
-            } else {
-              setPageDetails({ ...pageDetails, isHome: 0 });
-              form.resetFields();
-            }
-            setChecked(!checked);
-            setSlugRule(!slugRule);
-          }}
+          // onChange={() => {
+          //   if (!checked) {
+          //     setPageDetails({ ...pageDetails, slug: '', isHome: 1 });
+          //   } else {
+          //     setPageDetails({ ...pageDetails, isHome: 0 });
+          //     form.resetFields();
+          //   }
+          //   setChecked(!checked);
+          //   setSlugRule(!slugRule);
+          // }}
         >
           <Checkbox>Make this Page Home</Checkbox>
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item
           wrapperCol={{ offset: 15, span: 15 }}

@@ -114,7 +114,7 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
         onOk() {
           handleDeletePage({
             url: `/page/${slugForDelete}`,
-          }).then((re) => {
+          }).then(() => {
             message.success('Page Deleted Successfully!');
             setVisible(false);
             setTimeout(() => {
