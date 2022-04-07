@@ -1150,16 +1150,16 @@ span.CodeMirror-selectedtext {
 }
 
 .gjs-one-bg {
-	background-color: #444;
+	background-color: #001628;
   
 }
 
 .gjs-one-color {
-	color: #444
+	color: #001628
 }
 
 .gjs-one-color-h:hover {
-	color: #444
+	color: #001628
 }
 
 .gjs-two-bg {
@@ -1191,15 +1191,15 @@ span.CodeMirror-selectedtext {
 }
 
 .gjs-four-bg {
-	background-color: #d278c9
+	background-color: #7d4ccd
 }
 
 .gjs-four-color {
-	color: #d278c9
+	color: #7d4ccd
 }
 
 .gjs-four-color-h:hover {
-	color: #d278c9
+	color: #7d4ccd
 }
 
 .gjs-danger-bg {
@@ -1217,7 +1217,7 @@ span.CodeMirror-selectedtext {
 .gjs-bg-main,
 .gjs-sm-colorp-c,
 .gjs-off-prv {
-	background-color: #444
+	background-color: #001628
 }
 
 .gjs-color-main,
@@ -1387,7 +1387,7 @@ span.CodeMirror-selectedtext {
 }
 
 .gjs-editor-cont ::-webkit-scrollbar-track {
-	background: rgba(0, 0, 0, .1)
+	background: #7d4ccd
 }
 
 .gjs-editor-cont ::-webkit-scrollbar-thumb {
@@ -1449,7 +1449,7 @@ span.CodeMirror-selectedtext {
 }
 
 .gjs-traits-label {
-	border-bottom: 1px solid rgba(0, 0, 0, .2);
+	border-bottom: 1px solid rgba(248, 247, 247, 0.2);
 	font-weight: lighter;
 	margin-bottom: 5px;
 	padding: 10px;
@@ -2054,7 +2054,7 @@ div.gjs-com-hover-move {
 .gjs-com-placeholder-int,
 .gjs-placeholder-int {
 	background-color: #62c462;
-	box-shadow: 0 0 3px rgba(0, 0, 0, .2);
+	box-shadow: 0 0 3px rgba(248, 247, 247, 0.2);
 	height: 100%;
 	width: 100%;
 	pointer-events: none;
@@ -2069,7 +2069,7 @@ div.gjs-com-hover-move {
 	text-align: center;
 	padding: 5px;
 	z-index: 3;
-  /* 6 border-top: 20px solid #444444; */
+  /* 6 border-top: 20px solid #001628444; */
 }
 
 .gjs-pn-panel .icon-undo,
@@ -2083,7 +2083,7 @@ div.gjs-com-hover-move {
 	width: 85%;
 	/* left: 0; */
 	top: 0;
-	box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+	box-shadow: 0 0 5px rgba(248, 247, 247, 0.2);
   position: fixed;
 }
 
@@ -2094,7 +2094,7 @@ div.gjs-com-hover-move {
 }
 
 .gjs-pn-views {
-	border-bottom: 2px solid rgba(0, 0, 0, .2);
+	border-bottom: 2px solid rgba(248, 247, 247, 0.2);
 	right: 0;
 	width: 15%;
 	z-index: 4;
@@ -2109,7 +2109,7 @@ div.gjs-com-hover-move {
 	right: 0;
 	width: 15%;
 	overflow: auto;
-	box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+	box-shadow: 0 0 5px rgba(248, 247, 247, 0.2);
   z-index: 0;
   box-shadow: 5px 5px 5px 5px rgba(110, 110, 110, 0.3);
   /* overflow: hidden; */
@@ -2246,12 +2246,12 @@ div.gjs-com-hover-move {
 .gjs-sm-select option,
 .gjs-fields option,
 .gjs-sm-unit option {
-	background-color: #444;
+	background-color: #001628;
 	color: #ddd
 }
 
 .gjs-field {
-	background-color: rgba(0, 0, 0, .2);
+	background-color: rgba(248, 247, 247, 0.2);
 	border: none;
 	box-shadow: none;
 	border-radius: 2px;
@@ -2310,7 +2310,7 @@ div.gjs-com-hover-move {
 }
 
 .gjs-field-colorp {
-	border-left: 1px solid rgba(0, 0, 0, .2);
+	border-left: 1px solid rgba(248, 247, 247, 0.2);
 	box-sizing: border-box;
 	height: 100%;
 	padding: 2px;
@@ -2339,7 +2339,7 @@ div.gjs-com-hover-move {
 	cursor: pointer;
 	height: 100%;
 	width: 100%;
-	box-shadow: 0 0 1px rgba(0, 0, 0, .2);
+	box-shadow: 0 0 1px rgba(248, 247, 247, 0.2);
 	border-radius: 1px;
 	position: absolute;
 	top: 0
@@ -2366,7 +2366,7 @@ div.gjs-com-hover-move {
 .gjs-radio-item {
 	flex: 1 1 auto;
 	text-align: center;
-	border-left: 1px solid rgba(0, 0, 0, .2)
+	border-left: 1px solid rgba(248, 247, 247, 0.2)
 }
 
 .gjs-radio-item:first-child {
@@ -2374,7 +2374,7 @@ div.gjs-com-hover-move {
 }
 
 .gjs-radio-item:hover {
-	background: rgba(0, 0, 0, .2)
+	background: rgba(248, 247, 247, 0.2)
 }
 
 .gjs-radio-item input {
@@ -2459,7 +2459,7 @@ div.gjs-com-hover-move {
 	margin-top: -4px;
 	height: 10px;
 	width: 10px;
-	border: 1px solid rgba(0, 0, 0, .2);
+	border: 1px solid rgba(248, 247, 247, 0.2);
 	border-radius: 100%;
 	background-color: #ddd;
 	cursor: pointer
@@ -2468,7 +2468,7 @@ div.gjs-com-hover-move {
 .gjs-field-range input::-moz-range-thumb {
 	height: 10px;
 	width: 10px;
-	border: 1px solid rgba(0, 0, 0, .2);
+	border: 1px solid rgba(248, 247, 247, 0.2);
 	border-radius: 100%;
 	background-color: #ddd;
 	cursor: pointer
@@ -2477,28 +2477,28 @@ div.gjs-com-hover-move {
 .gjs-field-range input::-ms-thumb {
 	height: 10px;
 	width: 10px;
-	border: 1px solid rgba(0, 0, 0, .2);
+	border: 1px solid rgba(248, 247, 247, 0.2);
 	border-radius: 100%;
 	background-color: #ddd;
 	cursor: pointer
 }
 
 .gjs-field-range input::-moz-range-track {
-	background-color: rgba(0, 0, 0, .2);
+	background-color: rgba(248, 247, 247, 0.2);
 	border-radius: 1px;
 	margin-top: 3px;
 	height: 3px
 }
 
 .gjs-field-range input::-webkit-slider-runnable-track {
-	background-color: rgba(0, 0, 0, .2);
+	background-color: rgba(248, 247, 247, 0.2);
 	border-radius: 1px;
 	margin-top: 3px;
 	height: 3px
 }
 
 .gjs-field-range input::-ms-track {
-	background-color: rgba(0, 0, 0, .2);
+	background-color: rgba(248, 247, 247, 0.2);
 	border-radius: 1px;
 	margin-top: 3px;
 	height: 3px
@@ -2552,7 +2552,7 @@ div.gjs-com-hover-move {
 }
 
 .gjs-add-trasp:active {
-	background-color: rgba(0, 0, 0, .2)
+	background-color: rgba(248, 247, 247, 0.2)
 }
 
 .gjs-devices-c {
@@ -2587,7 +2587,7 @@ div.gjs-com-hover-move {
 .gjs-block-category .gjs-title,
 .gjs-sm-sector-title {
 	font-weight: lighter;
-	background-color: rgba(0, 0, 0, .1);
+	background-color: #7d4ccd;
 	letter-spacing: 1px;
 	padding: 9px 10px 9px 20px;
 	border-bottom: 1px solid rgba(0, 0, 0, .25);
@@ -2820,8 +2820,8 @@ div.gjs-com-hover-move {
 .gjs-sm-field.gjs-sm-select,
 .gjs-clm-select,
 .gjs-sm-select.gjs-clm-field {
-	background-color: rgba(0, 0, 0, .2);
-	border: 1px solid rgba(0, 0, 0, .1);
+	background-color: rgba(248, 247, 247, 0.2);
+	border: 1px solid #7d4ccd;
 	box-shadow: 1px 1px 0 rgba(255, 255, 255, .1);
 	color: rgba(255, 255, 255, .7);
 	border-radius: 2px;
@@ -2856,7 +2856,7 @@ div.gjs-com-hover-move {
 .gjs-sm-field.gjs-sm-composite,
 .gjs-sm-composite.gjs-clm-select,
 .gjs-sm-composite.gjs-clm-field {
-	background-color: rgba(0, 0, 0, .1);
+	background-color: #001628;
 	border: 1px solid rgba(0, 0, 0, .25)
 }
 
@@ -2907,7 +2907,7 @@ div.gjs-com-hover-move {
 
 .gjs-sm-list .gjs-sm-el {
 	float: left;
-	border-left: 1px solid rgba(0, 0, 0, .2)
+	border-left: 1px solid rgba(248, 247, 247, 0.2)
 }
 
 .gjs-sm-list .gjs-sm-el:first-child {
@@ -2915,7 +2915,7 @@ div.gjs-com-hover-move {
 }
 
 .gjs-sm-list .gjs-sm-el:hover {
-	background: rgba(0, 0, 0, .2)
+	background: rgba(248, 247, 247, 0.2)
 }
 
 .gjs-sm-slider .gjs-field-integer {
@@ -2952,7 +2952,7 @@ div.gjs-com-hover-move {
 	cursor: pointer;
 	color: #ddd;
 	box-sizing: border-box;
-	text-shadow: -1px -1px 0 rgba(0, 0, 0, .2);
+	text-shadow: -1px -1px 0 rgba(248, 247, 247, 0.2);
 	border: none;
 	opacity: .85;
 	filter: alpha(opacity=85)
@@ -3111,7 +3111,7 @@ div.gjs-com-hover-move {
 	height: 16px;
 	width: 100%;
 	margin-top: -16px;
-	box-shadow: 0 0 1px rgba(0, 0, 0, .2);
+	box-shadow: 0 0 1px rgba(248, 247, 247, 0.2);
 	border-radius: 1px
 }
 
@@ -3180,7 +3180,7 @@ div.gjs-com-hover-move {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	border: 1px solid rgba(0, 0, 0, .2);
+	border: 1px solid rgba(248, 247, 247, 0.2);
 	border-radius: 3px;
 	margin: 10px 2.5% 5px;
 	box-shadow: 0 1px 0 0 rgba(0, 0, 0, .15);
@@ -3244,7 +3244,7 @@ div.gjs-com-hover-move {
 	font-weight: lighter;
 	text-align: left;
 	position: relative;
-	background-color: rgba(0, 0, 0, .1);
+	background-color: #7d4ccd;
 	font-size: .75rem;
 	display: grid
 }
@@ -3555,7 +3555,7 @@ div.gjs-com-hover-move {
 
 .gjs-mdl-header {
 	position: relative;
-	border-bottom: 1px solid rgba(0, 0, 0, .2);
+	border-bottom: 1px solid rgba(248, 247, 247, 0.2);
 	padding: 15px 15px 7px
 }
 
@@ -3612,7 +3612,7 @@ div.gjs-com-hover-move {
 	position: relative;
 	height: 70px;
 	width: 30%;
-	background-color: #444;
+	background-color: #001628;
 	border-radius: 2px;
 	float: left;
 	overflow: hidden
@@ -3664,7 +3664,7 @@ div.gjs-com-hover-move {
 }
 
 .gjs-am-asset {
-	border-bottom: 1px solid rgba(0, 0, 0, .2);
+	border-bottom: 1px solid rgba(248, 247, 247, 0.2);
 	padding: 5px;
 	cursor: pointer;
 	position: relative;
@@ -3681,7 +3681,7 @@ div.gjs-com-hover-move {
 }
 
 .gjs-am-assets-cont {
-	background-color: rgba(0, 0, 0, .1);
+	background-color: #7d4ccd;
 	border-radius: 3px;
 	box-sizing: border-box;
 	padding: 10px;
@@ -3697,7 +3697,7 @@ div.gjs-com-hover-move {
 }
 
 .gjs-am-file-uploader>form {
-	background-color: rgba(0, 0, 0, .1);
+	background-color: #7d4ccd;
 	border: 2px dashed;
 	border-radius: 3px;
 	position: relative;
@@ -3744,7 +3744,7 @@ div.gjs-com-hover-move {
 
 .gjs-cm-editor#gjs-cm-htmlmixed {
 	padding-right: 10px;
-	border-right: 1px solid rgba(0, 0, 0, .2)
+	border-right: 1px solid rgba(248, 247, 247, 0.2)
 }
 
 .gjs-cm-editor#gjs-cm-htmlmixed #gjs-cm-title {
@@ -3760,14 +3760,14 @@ div.gjs-com-hover-move {
 }
 
 .gjs-cm-editor #gjs-cm-title {
-	background-color: rgba(0, 0, 0, .2);
+	background-color: rgba(248, 247, 247, 0.2);
 	font-size: 12px;
 	padding: 5px 10px 3px;
 	text-align: right
 }
 
 .gjs-rte-toolbar {
-	border: 1px solid rgba(0, 0, 0, .2);
+	border: 1px solid rgba(248, 247, 247, 0.2);
 	position: absolute;
 	border-radius: 3px;
 	z-index: 10
@@ -3783,7 +3783,7 @@ div.gjs-com-hover-move {
 	justify-content: center;
 	padding: 5px;
 	width: 25px;
-	border-right: 1px solid rgba(0, 0, 0, .2);
+	border-right: 1px solid rgba(248, 247, 247, 0.2);
 	text-align: center;
 	cursor: pointer;
 	outline: none
@@ -3834,8 +3834,8 @@ div.gjs-com-hover-move {
 }
 
 .gjs-editor-cont .sp-container {
-	border: 1px solid rgba(0, 0, 0, .2);
-	box-shadow: 0 0 7px rgba(0, 0, 0, .2);
+	border: 1px solid rgba(248, 247, 247, 0.2);
+	box-shadow: 0 0 7px rgba(248, 247, 247, 0.2);
 	border-radius: 3px
 }
 
@@ -3844,7 +3844,7 @@ div.gjs-com-hover-move {
 }
 
 .gjs-editor-cont .colpick_dark .colpick_color {
-	outline: 1px solid rgba(0, 0, 0, .2)
+	outline: 1px solid rgba(248, 247, 247, 0.2)
 }
 
 .gjs-editor-cont .sp-cancel,
@@ -3891,8 +3891,8 @@ div.gjs-com-hover-move {
 .gjs-editor-cont .sp-container button,
 .gjs-editor-cont .sp-container button:hover,
 .gjs-editor-cont .sp-container button:active {
-	background: rgba(0, 0, 0, .2);
-	border-color: rgba(0, 0, 0, .2);
+	background: rgba(248, 247, 247, 0.2);
+	border-color: rgba(248, 247, 247, 0.2);
 	color: #ddd;
 	text-shadow: none;
 	box-shadow: none;
