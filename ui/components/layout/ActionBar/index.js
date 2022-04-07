@@ -5,6 +5,7 @@ import styles from './style.module.scss';
 function ActionBar({ children = null, actions = {} }) {
   let buttons = null;
   let search = null;
+
   if (actions.buttons) {
     buttons = actions.buttons.map((button) => (
       <Button type="primary" shape="round" key={button.name} onClick={button.onClick} className={styles.actionButtons}>
@@ -31,7 +32,6 @@ function ActionBar({ children = null, actions = {} }) {
       </div>
       <div className="second-step">
         <div>{children}</div>
-
         <div>
           {search}
         </div>

@@ -1,12 +1,7 @@
 // eslint-disable-next-line import/no-import-module-exports
-// const { addMinutes } = require('date-fns');
-
-// const validator = require('validator');
 const bcrypt = require('bcrypt');
-// const { request } = require('express');
 const randtoken = require('rand-token');
 const { createLog } = require('./createLog-controller');
-
 const db = require('../../db/models/index');
 const { ValidityError, ServerError } = require('../helpers/error-helper');
 
@@ -163,9 +158,8 @@ const signin = async (req, res) => {
       },
     });
   } catch (err) {
-    console.log(err);
+    throw new ServerError('unbale to update User Demo');
   }
-
   req.session.demoPreference = demo;
   req.session.user = user;
   if (remember) {
@@ -263,5 +257,10 @@ const checkChangePasswordToken = async (req, res) => {
 };
 
 module.exports = {
-  signup, signin, signout, recoverPassword, changePassword, checkChangePasswordToken,
+  signup,
+  signin,
+  signout,
+  recoverPassword,
+  changePassword,
+  checkChangePasswordToken,
 };

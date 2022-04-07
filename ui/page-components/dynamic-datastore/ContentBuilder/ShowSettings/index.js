@@ -1,3 +1,4 @@
+/* eslint-disable no-empty-pattern */
 import { Button, Form, Input, message, Space } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import { useRouter } from 'next/router';
@@ -9,13 +10,6 @@ import styles from './style.module.scss';
 function ShowSettings({ schemaDetails }) {
   const [form] = Form.useForm();
   const [disable, setDisable] = useState(true);
-  // form.setFieldsValue({
-  //   title: schemaDetails.title,
-  //   slug: schemaDetails.slug,
-  //   description: schemaDetails.description,
-  // });
-
-  const [error, setError] = useState('');
   const { push } = useRouter();
 
   const [{}, updateDatatableDetails] = useRequest(
@@ -48,16 +42,10 @@ function ShowSettings({ schemaDetails }) {
       });
   };
 
-  const onFinishFailed = (errorInfo) => {
-    setError(errorInfo.message);
-  };
-
   const handleValuesChange = (changedValues) => {
-    setError('');
     if (changedValues.title !== '' && changedValues.title !== undefined) {
       form.setFieldsValue({ slug: _.snakeCase(changedValues.title) });
     }
-
     if (changedValues.title === '') {
       form.setFieldsValue({ slug: '' });
     }
@@ -78,7 +66,6 @@ function ShowSettings({ schemaDetails }) {
               description: schemaDetails.description,
             }}
             onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
             autoComplete="off"
             onValuesChange={handleValuesChange}
           >
@@ -91,12 +78,16 @@ function ShowSettings({ schemaDetails }) {
                   message: 'Please input your Schema Name!',
                 },
                 {
-                  pattern: new RegExp('^[A-Za-z0-9]+(?: +[A-Za-z0-9]+)*$'),
+                  pattern: /^[A-Za-z0-9]+(?: +[A-Za-z0-9]+)*$/,
                   message: 'No Trailing and leading space allowed',
+                },
+                {
+                  max: 30,
+                  message: 'Schema Name cannot be longer than 30 characters',
                 },
               ]}
             >
-              <Input />
+              <Input autoFocus maxLength={31} />
             </Form.Item>
 
             <Form.Item
@@ -107,12 +98,16 @@ function ShowSettings({ schemaDetails }) {
                 message: 'Please input your Slug!',
               },
               {
-                pattern: new RegExp('^[A-Za-z0-9_]*$'),
+                max: 30,
+                message: 'Slug cannot be longer than 30 characters',
+              },
+              {
+                pattern: /^[A-Za-z0-9_]*$/,
                 message: 'Only Letters and Numbers are accepted',
               },
               ]}
             >
-              <Input />
+              <Input maxLength={31} />
 
             </Form.Item>
 
@@ -125,7 +120,7 @@ function ShowSettings({ schemaDetails }) {
                 },
               ]}
             >
-              <TextArea rows={2} />
+              <TextArea rows={2} showCount maxLength={100} />
 
             </Form.Item>
 

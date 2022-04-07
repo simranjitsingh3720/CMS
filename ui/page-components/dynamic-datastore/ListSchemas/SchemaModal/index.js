@@ -175,7 +175,7 @@ function SchemaModal({
             },
             ]}
           >
-            <Input showCount maxLength={31} />
+            <Input maxLength={31} />
 
           </Form.Item>
 

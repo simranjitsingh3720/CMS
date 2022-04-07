@@ -1,3 +1,4 @@
+/* eslint-disable no-empty-pattern */
 import {
   Layout, Menu, Button, Avatar, Popover,
 } from 'antd';
@@ -24,6 +25,7 @@ function PageSider() {
   // const onCollapse = (isCollapsed) => {
   //   setCollapsed(isCollapsed);
   // };
+
   const hide = () => {
     setVisible(false);
   };
@@ -32,6 +34,7 @@ function PageSider() {
     setVisible(value);
   };
   const [{}, handleGet] = useRequest({ method: 'GET' }, { manual: true });
+
   const signout = () => {
     setTimeout(() => {
       handleGet({ url: '/auth/signout' })
@@ -40,6 +43,7 @@ function PageSider() {
         });
     }, 60);
   };
+
   const handleClick = () => {
     Router.push('/admin/profile');
     hide();

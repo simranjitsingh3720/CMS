@@ -38,7 +38,7 @@ function Profile() {
       .catch((err) => {
         message.error(err.response.data.message || err.response.data.messages[0]);
       });
-  }, []);
+  }, [handleGet, dataForm]);
 
   const [{ loading: detailsLoading },
     detailPatch,
@@ -111,8 +111,6 @@ function Profile() {
 
     setButtonFlag(true);
   };
-
-  console.log(session);
 
   const changePassword = (values) => {
     passwordPatch({

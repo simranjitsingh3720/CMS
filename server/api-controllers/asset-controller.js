@@ -1,9 +1,7 @@
 const dotenv = require('dotenv');
-// const axios = require('axios');
 const aws = require('aws-sdk');
 const { Sequelize } = require('sequelize');
 const db = require('../../db/models');
-
 const { createLog } = require('./createLog-controller');
 const { ValidityError, ServerError } = require('../helpers/error-helper');
 
@@ -88,9 +86,6 @@ const createAsset = async (req, res) => {
 };
 
 const createAssetsInBulk = async (req, res) => {
-  console.log('\n-----createAssetsInBulk-----------\n');
-
-  // const { body } = req;
   const multipleAssets = req.body;
   let assetIdList = [];
 
@@ -103,12 +98,10 @@ const createAssetsInBulk = async (req, res) => {
 
     const writeUrl = await s3.getSignedUrlPromise('putObject', params);
 
-    // const readUrl = writeUrl.split('?')[0];
-
     return writeUrl;
   };
 
-  multipleAssets.forEach((singleFile, index) => {
+  multipleAssets.forEach((index) => {
     multipleAssets[index] = {
       ...multipleAssets[index],
       createdBy: req.session.user.id,
