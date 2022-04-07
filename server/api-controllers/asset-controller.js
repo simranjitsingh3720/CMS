@@ -69,7 +69,6 @@ const createAsset = async (req, res) => {
     throw new ValidityError('name, type and mimeType, all are required.');
   }
   const asset = await db.Asset.create({ ...body, createdBy: req.session.user.id });
-  createLog('CREATE', req.session.user.id, asset.id, 'ASSET');
   const params = ({
     Bucket: bucketName,
     Key: `asset/${asset.id}`,
@@ -81,12 +80,15 @@ const createAsset = async (req, res) => {
     { url: readUrl, updatedBy: req.session.user.id },
     { where: { id: asset.id } },
   );
-  createLog('UPDATE', req.session.user.id, asset.id, 'ASSET');
+  if (req.session.user) {
+    createLog('CREATE', req.session.user.id, asset.id, 'ASSET');
+  }
   return res.status(201).json({ id: asset.id, writeUrl: uploadURL, readUrl });
 };
 
 const createAssetsInBulk = async (req, res) => {
   const multipleAssets = req.body;
+
   let assetIdList = [];
 
   const generateWriteUrl = async (id) => {
@@ -104,7 +106,7 @@ const createAssetsInBulk = async (req, res) => {
   multipleAssets.forEach((index) => {
     multipleAssets[index] = {
       ...multipleAssets[index],
-      createdBy: req.session.user.id,
+      createdBy: (req.session.user && req.session.user.id) || null,
     };
   });
 
@@ -124,11 +126,15 @@ const createAssetsInBulk = async (req, res) => {
     readUrlArr.push(readUrl);
     assetIdList = [...assetIdList, assets[i].id];
 
-    db.Asset.update(
-      { url: readUrl, updatedBy: req.session.user.id },
+    const assetupdate = db.Asset.update(
+      { url: readUrl, updatedBy: (req.session.user && req.session.user.id) || null },
       { where: { id: assets[i].id } },
     );
+    if (req.session.user) {
+      createLog('CREATE', req.session.user.id, assetupdate.id, 'ASSET');
+    }
   }
+
   return res.status(201).json({ assetIdList, writeUrlList, readUrlArr });
 };
 
@@ -146,7 +152,7 @@ const updateAsset = async (req, res) => {
 
   try {
     await db.Asset.update({ ...data }, { where: { id: assetId } });
-    createLog('CREATE', req.session.user.id, assetId, 'ASSET');
+    if (req.session.user) { createLog('CREATE', req.session.user.id, assetId, 'ASSET'); }
     res.status(200).json({ id: assetId });
   } catch (error) {
     throw new ServerError('Not able to connect with server');
@@ -161,7 +167,9 @@ const deleteAsset = async (req, res) => {
 
   try {
     await db.Asset.destroy({ where: { id: assetId } });
-    createLog('CREATE', req.session.user.id, assetId, 'ASSET');
+    if (req.session.user) {
+      createLog('CREATE', req.session.user.id, assetId, 'ASSET');
+    }
     return res.status(200).json({ id: assetId });
   } catch (err) {
     if (err?.parent?.code === '22P02') {

@@ -150,8 +150,8 @@ function SchemaModal({
                 message: 'Schema Name cannot be longer than 30 characters',
               },
               {
-                pattern: new RegExp('^[A-Za-z0-9]+(?: +[A-Za-z0-9]+)*$'),
-                message: 'No Trailing and leading space allowed',
+                pattern: /^[A-Za-z0-9._@./#&+-/\\!\\=%^~`$*()"'<>:;?{}|]+(?: +[A-Za-z0-9._@./#&+-/\\!\\=%^~`$*()"'<>:;?{}|]+)*$/,
+                message: 'Whitespace are not allowed at start and end of Schema Name',
               },
             ]}
           >

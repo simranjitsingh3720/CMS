@@ -1,10 +1,10 @@
+/* eslint-disable no-empty-pattern */
 import React, { useState } from 'react';
 import {
   Button,
   Form,
   Input,
   message,
-  Checkbox,
   Modal,
   Space,
 } from 'antd';
@@ -14,15 +14,7 @@ import { useRequest } from '../../../../helpers/request-helper';
 import styles from '../style.module.scss';
 
 function PageFormModal({ onFormClose, visible, setVisible }) {
-  // const [pageDetails, setPageDetails] = useState({
-  //   name: '',
-  //   slug: '',
-  //   isHome: 0,
-  // });
-  const [checked, setChecked] = useState(false);
   const [slugName, setSlugName] = useState('');
-
-  const [slugRule, setSlugRule] = useState(true);
 
   const [form] = Form.useForm();
   const { push } = useRouter();
@@ -38,7 +30,6 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
   );
 
   const onFinish = (values) => {
-    console.log(values);
     executePost({
       data: {
         ...values,
@@ -62,15 +53,11 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
 
   const handleValuesChange = (changedValues) => {
     if (changedValues.slug) {
-      // const suggestedID = (changedValues.slug || '').replace(/[^a-zA-Z0-9_]/g, '').toLowerCase();
-      // form.setFieldsValue({ slug: suggestedID });
-      // setSlugName(_.snakeCase(changedValues.slug));
       setSlugName(changedValues.slug);
     } else {
       setSlugName('');
     }
     if (changedValues.name !== '' && changedValues.name !== undefined) {
-      console.log('changedValues.name ');
       form.setFieldsValue({ slug: _.snakeCase(changedValues.name) });
     }
 
@@ -80,7 +67,6 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
   };
 
   const manipulateSlugString = (title) => {
-    // const manipulatedSlug = (title || '').replace(/[^a-zA-Z0-9_]/g, '').toLowerCase();
     setSlugName(_.snakeCase(title));
   };
 
@@ -111,8 +97,8 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
               message: 'Page name cannot be longer than 30 characters',
             },
             {
-              pattern: new RegExp('^[A-Za-z0-9]+(?: +[A-Za-z0-9]+)*$'),
-              message: 'No Trailing and leading space allowed',
+              pattern: /^[A-Za-z0-9._@./#&+-/\\!\\=%^~`$*()"'<>:;?{}|]+(?: +[A-Za-z0-9._@./#&+-/\\!\\=%^~`$*()"'<>:;?{}|]+)*$/,
+              message: 'Whitespace are not allowed at start and end of Page Name',
             },
           ]}
         >
@@ -123,13 +109,13 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
           label="Slug"
           name="slug"
           rules={[
-            { required: slugRule, message: 'Please enter Page Slug!' },
+            { required: true, message: 'Please enter Page Slug!' },
             {
-              pattern: new RegExp('^[A-Za-z0-9_]*$'),
-              message: 'Only Letters, Numbers and underscore are accepted',
+              pattern: /^[A-Za-z0-9_]*$/,
+              message: 'Only Letters and Numbers are accepted',
             },
             {
-              pattern: new RegExp('^(?!.*admin).*$'),
+              pattern: /^(?!.*admin).*$/,
               message: 'Cannot use admin as slug',
             },
             {
@@ -141,7 +127,6 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
           <Input maxLength={31} />
         </Form.Item>
 
-        {console.log(slugName)}
         { slugName !== ''
           ? (
             <p>

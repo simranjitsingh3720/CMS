@@ -2,6 +2,8 @@ import {
   LayoutOutlined, TableOutlined, PictureOutlined, UserOutlined, HomeOutlined,
 } from '@ant-design/icons';
 
+const navRoute = ['/admin', '/admin/page-manager', '/admin/datastore', '/admin/assets', '/admin/users'];
+
 const navData = [{
   name: 'Home',
   path: '/admin',
@@ -29,4 +31,5 @@ const navData = [{
 },
 
 ];
+export { navRoute };
 export default navData;
