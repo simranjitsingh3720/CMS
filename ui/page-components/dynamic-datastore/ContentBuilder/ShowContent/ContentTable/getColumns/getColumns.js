@@ -17,7 +17,7 @@ export default function getColumns(tableSchema, handleEditContent, handleDeleteC
             {actions ? (
               <div>
                 {JSON.parse(actions).map((item) => (
-                  <div>
+                  <div key={item.url}>
                     <a href={item.url} target="_blank" rel="noreferrer">
                       {item.name}
                     </a>
@@ -29,7 +29,6 @@ export default function getColumns(tableSchema, handleEditContent, handleDeleteC
             ) : 'No asset content'}
           </div>
         )
-
         ,
       };
     }

@@ -1,10 +1,8 @@
 import Head from 'next/head';
-import axios from 'axios';
 import { ConfigProvider } from 'antd';
 import React from 'react';
 import PageLayout from '../../components/layout/PageLayout';
 import theme from '../../theme';
-// import RouteGuard from './RouteGuard';
 import { SessionProvider } from '../../context/SessionContext';
 import { request } from '../../helpers/request-helper';
 
@@ -29,11 +27,9 @@ function CMSApp({ Component, pageProps, session }) {
         <title>{title}</title>
       </Head>
       <ConfigProvider>
-        {/* <RouteGuard session={session}> */}
         <PageLayout>
           <Component {...pageProps} />
         </PageLayout>
-        {/* </RouteGuard> */}
       </ConfigProvider>
     </SessionProvider>
   );

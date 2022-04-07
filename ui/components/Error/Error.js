@@ -12,7 +12,7 @@ export default function Error({ message, code }) {
         {message}
       </h1>
       <Link href="/admin" className={styles.errorHomelink}>
-        Go back home
+        Go back to home
       </Link>
     </div>
   );

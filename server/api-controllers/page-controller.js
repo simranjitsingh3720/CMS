@@ -3,7 +3,7 @@ const { DuplicateError, MissingError, ValidityError } = require('../helpers/erro
 const { createLog } = require('./createLog-controller');
 const db = require('../../db/models');
 
-export const createPage = async (req, res) => {
+const createPage = async (req, res) => {
   const { body } = req;
 
   const { name, slug } = body;
@@ -42,7 +42,7 @@ export const createPage = async (req, res) => {
   return res.status(201).json({ data: result });
 };
 
-export const listPagesBySlug = async (req, res) => {
+const listPagesBySlug = async (req, res) => {
   const { query } = req;
   const { q, isHome } = query || '';
 
@@ -75,7 +75,7 @@ export const listPagesBySlug = async (req, res) => {
   return res.status(404).json({ message: 'Page Not Found' });
 };
 
-export const renderSingleData = async (req, res) => {
+const renderSingleData = async (req, res) => {
   const { pageSlug } = req.query || '';
 
   if (pageSlug) {
@@ -87,7 +87,7 @@ export const renderSingleData = async (req, res) => {
   throw new MissingError('Page Not Found');
 };
 
-export const updateData = async (req, res) => {
+const updateData = async (req, res) => {
   const { pageSlug } = req.query;
   const code = req.body;
 
@@ -129,7 +129,7 @@ export const updateData = async (req, res) => {
   }
 };
 
-export const updateHomeData = async (req, res) => {
+const updateHomeData = async (req, res) => {
   const code = req.body;
 
   const assets = code['CMS-assets'];
@@ -169,7 +169,7 @@ export const updateHomeData = async (req, res) => {
   throw new MissingError('Page Not Found');
 };
 
-export const updateHome = async (req, res) => {
+const updateHome = async (req, res) => {
   const { pageSlug, pageId } = req.query;
 
   const findOldHome = await db.Page.findOne({
@@ -218,7 +218,7 @@ export const updateHome = async (req, res) => {
   throw new MissingError('Page Not Found');
 };
 
-export const deletePage = async (req, res) => {
+const deletePage = async (req, res) => {
   const { pageSlug, pageId } = req.query;
 
   const deletedPage = await db.Page.destroy({ where: { slug: pageSlug } });
@@ -236,9 +236,14 @@ export const deletePage = async (req, res) => {
   throw new MissingError('Page Not Found');
 };
 
-export const updatePageData = async (req, res) => {
+const updatePageData = async (req, res) => {
   const { pageSlug, pageId } = req.query || '';
   const pageData = req.body;
+
+  if (pageData.name.trim().length < 1) {
+    throw new MissingError('Page Name required');
+  }
+
   try {
     if (pageSlug) {
       const isSlug = await db.Page.findOne({ where: { slug: pageData.slug } });
@@ -275,4 +280,15 @@ export const updatePageData = async (req, res) => {
   } catch (error) {
     throw new DuplicateError('Slug name already taken. Try with another slug name');
   }
+};
+
+module.exports = {
+  createPage,
+  listPagesBySlug,
+  renderSingleData,
+  updateData,
+  updateHomeData,
+  updateHome,
+  deletePage,
+  updatePageData,
 };

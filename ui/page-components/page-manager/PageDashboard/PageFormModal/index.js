@@ -105,10 +105,16 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
           name="name"
           onChange={(e) => manipulateSlugString(e.target.value)}
           rules={[
-            { required: true, message: 'Please enter Page Name!' }, {
+            { required: true, message: 'Please enter Page Name!' },
+            {
               max: 30,
               message: 'Page name cannot be longer than 30 characters',
-            }]}
+            },
+            {
+              pattern: new RegExp('^[A-Za-z0-9]+(?: +[A-Za-z0-9]+)*$'),
+              message: 'No Trailing and leading space allowed',
+            },
+          ]}
         >
           <Input autoFocus maxLength={31} />
         </Form.Item>

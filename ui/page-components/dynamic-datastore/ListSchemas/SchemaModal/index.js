@@ -6,6 +6,7 @@ import TextArea from 'antd/lib/input/TextArea';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import _ from 'lodash';
+import confirm from 'antd/lib/modal/confirm';
 import styles from './style.module.scss';
 import { useRequest } from '../../../../helpers/request-helper';
 
@@ -18,9 +19,10 @@ function SchemaModal({
   const [loading, setLoading] = useState(false);
 
   const { push } = useRouter();
+
   const [form] = Form.useForm();
 
-  const [{}, executePost] = useRequest(
+  const [{}, createDataTable] = useRequest(
     {
       url: '/schema',
       method: 'POST',
@@ -30,24 +32,66 @@ function SchemaModal({
     },
   );
 
+  const [{}, fieldDelete] = useRequest(
+    {
+      method: 'DELETE',
+
+    },
+    { manual: true },
+  );
+
   const onFinish = (values) => {
     setLoading(true);
-    executePost({
+    createDataTable({
       data: {
         title: values.title,
         slug: values.slug,
         description: values.description,
       },
     }).then((res) => {
-      setLoading(false);
-      message.success('Table created successfully !!!');
-      setIsModalVisible(false);
-      fetchAllSchema();
-      push('/admin/datastore/content-builder/[schemaId]', `/admin/datastore/content-builder/${res.data.slug}`);
+      if (res.data.isRestorable) {
+        confirm({
+          title: `There are some fields exist for table ${values.title} . Do you want to restore those Fields`,
+          content: <div>These fields was part of your previous Table with same slug.</div>,
+          okText: 'Yes',
+          okType: 'danger',
+          cancelText: 'No',
+          onOk() {
+            setLoading(false);
+            message.success('Table created successfully !!!');
+            setIsModalVisible(false);
+            fetchAllSchema();
+            push('/admin/datastore/content-builder/[schemaId]', `/admin/datastore/content-builder/${res.data.slug}`);
+          },
+          onCancel() {
+            fieldDelete({
+              url: `/schema/${values.slug}/field/`,
+              params: {
+                restorable: true,
+              },
+            }).then(() => {
+              setLoading(false);
+              message.success('Table created successfully !!!');
+              setIsModalVisible(false);
+              fetchAllSchema();
+              push('/admin/datastore/content-builder/[schemaId]', `/admin/datastore/content-builder/${res.data.slug}`);
+            }).catch((err) => {
+              setLoading(false);
+              message.error(err.response.data.message
+          || err.response.data.messages[0]);
+            });
+          },
+        });
+      } else {
+        setLoading(false);
+        message.success('Table created successfully !!!');
+        setIsModalVisible(false);
+        fetchAllSchema();
+        push('/admin/datastore/content-builder/[schemaId]', `/admin/datastore/content-builder/${res.data.slug}`);
+      }
     })
       .catch((err) => {
         setLoading(false);
-
         setError(err.response.data.message || err.response.data.messages[0]);
       });
   };
@@ -67,6 +111,7 @@ function SchemaModal({
       form.setFieldsValue({ slug: '' });
     }
   };
+
   return (
     <Modal
       title="Add new data table"
@@ -103,6 +148,10 @@ function SchemaModal({
               {
                 max: 30,
                 message: 'Schema Name cannot be longer than 30 characters',
+              },
+              {
+                pattern: new RegExp('^[A-Za-z0-9]+(?: +[A-Za-z0-9]+)*$'),
+                message: 'No Trailing and leading space allowed',
               },
             ]}
           >

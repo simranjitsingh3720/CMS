@@ -70,10 +70,8 @@ export default function ContentTable({
           if (updatedContent[field.fieldId] !== undefined) {
             if (updatedContent[field.fieldId] === 'true') {
               updatedContent[field.fieldId] = field.Truelabel;
-              // updatedContent[field.fieldId] = field.trueLabel;
             } else {
               updatedContent[field.fieldId] = field.Falselabel;
-              // updatedContent[field.fieldId] = field.falseLabel;
             }
           }
         });
@@ -85,10 +83,8 @@ export default function ContentTable({
             if (updatedContent[field.fieldId] !== '') {
               if (updatedContent[field.fieldId] === 'true') {
                 updatedContent[field.fieldId] = field.Truelabel;
-                // updatedContent[field.fieldId] = field.trueLabel;
               } else {
                 updatedContent[field.fieldId] = field.Falselabel;
-                // updatedContent[field.fieldId] = field.falseLabel;
               }
             }
           }
@@ -98,7 +94,7 @@ export default function ContentTable({
       if (dateAndTimeFieldsId.length > 0) {
         dateAndTimeFieldsId.forEach((field) => {
           if (updatedContent[field.fieldId] !== undefined
-             && updatedContent[field.fieldId] !== null) {
+            && updatedContent[field.fieldId] !== null) {
             const dateFormat = 'YYYY/MM/DD HH:mm:ss';
             const testDateUtc = moment.utc(updatedContent[field.fieldId]);
             const localDate = testDateUtc.local();
@@ -138,7 +134,6 @@ export default function ContentTable({
         pagination={finalData.length > 10 ? { pageSize: 10 } : false}
         scroll={{ y: 700 }}
       />
-
     </div>
   );
 }

@@ -27,16 +27,19 @@ const listUser = async (req, res) => {
 
 const getMe = async (req, res) => {
   const { session, sessionID } = req;
-  // console.log('sessions', session);
   if (!session.user) {
-    throw new AuthorizationError('No session exists');
+    return res.status(200).json({
+      sessionId: undefined,
+      user: session.user || undefined,
+      demo: session.demoPreference || undefined,
+    });
   }
-  // return res.status(200).json({ sessionId: sessionID, user: session.user });
   const demo = await db.UserDemoPreference.findOne({
     where: {
       userId: req.session.user.id,
     },
   });
+
   req.session.demoPreference = demo;
   return res.status(200).json({
     sessionId: sessionID,
@@ -73,7 +76,6 @@ const findUser = async (req, res) => {
 const changePassword = async (req, res) => {
   const { id, password } = req.session.user;
   const { currentPassword, newPassword } = req.body;
-  // try {
   const isPasswordSame = await bcrypt.compare(currentPassword, password);
   if (!isPasswordSame) {
     throw new ValidityError('Old Password is incorrect');
@@ -91,4 +93,10 @@ const changePassword = async (req, res) => {
   }
 };
 
-module.exports = { listUser, getMe, updateUser, findUser, changePassword };
+module.exports = {
+  listUser,
+  getMe,
+  updateUser,
+  findUser,
+  changePassword,
+};

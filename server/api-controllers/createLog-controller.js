@@ -1,6 +1,6 @@
-import db from '../../db/models';
+const db = require('../../db/models');
 
-export const createLog = async (actionName, performedBy, objectId, objectType) => {
+const createLog = async (actionName, performedBy, objectId, objectType) => {
   await db.Log.create({
     actionName,
     performedBy,
@@ -8,3 +8,5 @@ export const createLog = async (actionName, performedBy, objectId, objectType) =
     objectType,
   });
 };
+
+module.exports = { createLog };

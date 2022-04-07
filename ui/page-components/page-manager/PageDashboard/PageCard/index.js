@@ -96,7 +96,7 @@ function PageCard({ searchValue }) {
           </div>
         )
           : ((data && data.list) || []).map((page) => (
-            <CardWrapper>
+            <CardWrapper key={page.id}>
               <div
                 className={styles.card_image}
                 onClick={() => { handleEdit(page.slug); }}
