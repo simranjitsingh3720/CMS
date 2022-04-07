@@ -3681,7 +3681,7 @@ div.gjs-com-hover-move {
 }
 
 .gjs-am-assets-cont {
-	background-color: #7d4ccd;
+	background-color: transparent;
 	border-radius: 3px;
 	box-sizing: border-box;
 	padding: 10px;
@@ -3697,7 +3697,7 @@ div.gjs-com-hover-move {
 }
 
 .gjs-am-file-uploader>form {
-	background-color: #7d4ccd;
+	background-color: rgba(248, 247, 247, 0.2);
 	border: 2px dashed;
 	border-radius: 3px;
 	position: relative;
