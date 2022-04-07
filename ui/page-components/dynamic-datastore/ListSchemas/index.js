@@ -40,7 +40,7 @@ function ListSchema() {
       method: 'GET',
       url: '/schema',
       params: {
-        q: searchValue.toLowerCase(),
+        q: searchValue.toLowerCase().trim(),
       },
     },
   );

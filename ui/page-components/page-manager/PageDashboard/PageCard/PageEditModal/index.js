@@ -1,3 +1,4 @@
+/* eslint-disable no-empty-pattern */
 import React, { useEffect } from 'react';
 import {
   Form, Input, Button, message, Modal, Space,
@@ -15,7 +16,7 @@ const { confirm } = Modal;
 function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
   const [form] = Form.useForm();
 
-  const [{ }, executePatch] = useRequest(
+  const [{}, executePatch] = useRequest(
     {
       url: `/page/${pageData.slug}`,
       method: 'PATCH',
@@ -82,7 +83,7 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
         });
       },
       onCancel() {
-        console.log('Cancel');
+        form.resetFields();
       },
     });
   }
@@ -124,7 +125,7 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
           });
         },
         onCancel() {
-          console.log('Cancel');
+          form.resetFields();
         },
       });
     }
@@ -158,8 +159,8 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
             message: 'Page name cannot be longer than 30 characters',
           },
           {
-            pattern: new RegExp('^[A-Za-z0-9]+(?: +[A-Za-z0-9]+)*$'),
-            message: 'No Trailing and leading space allowed',
+            pattern: /^[A-Za-z0-9._@./#&+-/\\!\\=%^~`$*()"'<>:;?{}|]+(?: +[A-Za-z0-9._@./#&+-/\\!\\=%^~`$*()"'<>:;?{}|]+)*$/,
+            message: 'Whitespace are not allowed at start and end of Page Name',
           }]}
         >
           <Input maxLength={31} />
@@ -174,11 +175,11 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
               message: 'Please enter the slug!',
             },
             {
-              pattern: new RegExp('^[A-Za-z0-9]*$'),
+              pattern: /^[A-Za-z0-9]*$/,
               message: 'Only Letters and Numbers are accepted',
             },
             {
-              pattern: new RegExp('^(?!.*admin).*$'),
+              pattern: /^(?!.*admin).*$/,
               message: 'Cannot use admin as slug',
             },
             {

@@ -38,7 +38,7 @@ function PageCard({ searchValue }) {
     url: '/page',
     method: 'GET',
     params: {
-      q: searchValue.toLowerCase(),
+      q: searchValue.toLowerCase().trim(),
     },
   });
 

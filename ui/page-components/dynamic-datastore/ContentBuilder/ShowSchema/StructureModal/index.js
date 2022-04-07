@@ -209,8 +209,8 @@ function StructureModal({
                   },
                   { max: 100, message: 'Name cannot be longer than 100 characters' },
                   {
-                    pattern: new RegExp('^[A-Za-z0-9]+(?: +[A-Za-z0-9]+)*$'),
-                    message: 'No Trailing and leading space allowed',
+                    pattern: /^[A-Za-z0-9._@./#&+-/\\!\\=%^~`$*()"'<>:;?{}|]+(?: +[A-Za-z0-9._@./#&+-/\\!\\=%^~`$*()"'<>:;?{}|]+)*$/,
+                    message: 'Whitespace are not allowed at start and end of field Name',
                   },
                 ]}
               >
@@ -228,7 +228,7 @@ function StructureModal({
                 },
                 { max: 100, message: 'Field Id cannot be longer than 100 characters' },
                 {
-                  pattern: new RegExp('^[A-Za-z0-9_]*$'),
+                  pattern: /^[A-Za-z0-9_]*$/,
                   message: 'Only Letters and Numbers are accepted',
                 },
                 ]}

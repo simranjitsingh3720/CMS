@@ -92,8 +92,8 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
               message: 'Page name cannot be longer than 30 characters',
             },
             {
-              pattern: new RegExp('^[A-Za-z0-9]+(?: +[A-Za-z0-9]+)*$'),
-              message: 'No Trailing and leading space allowed',
+              pattern: /^[A-Za-z0-9._@./#&+-/\\!\\=%^~`$*()"'<>:;?{}|]+(?: +[A-Za-z0-9._@./#&+-/\\!\\=%^~`$*()"'<>:;?{}|]+)*$/,
+              message: 'Whitespace are not allowed at start and end of Page Name',
             },
           ]}
         >
@@ -108,11 +108,11 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
           rules={[
             { required: slugRule, message: 'Please enter Page Slug!' },
             {
-              pattern: new RegExp('^[A-Za-z0-9_]*$'),
+              pattern: /^[A-Za-z0-9_]*$/,
               message: 'Only Letters and Numbers are accepted',
             },
             {
-              pattern: new RegExp('^(?!.*admin).*$'),
+              pattern: /^(?!.*admin).*$/,
               message: 'Cannot use admin as slug',
             },
             {
