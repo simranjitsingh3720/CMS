@@ -1,5 +1,3 @@
-import React from 'react';
-
 function CustomTemplates({ editor, data }) {
   if (editor) {
     editor.DomComponents.addType('form-modal', {

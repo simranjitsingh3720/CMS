@@ -1,5 +1,3 @@
-import React from 'react';
-
 function CustomTemplates({ editor }) {
   if (editor) {
     editor.DomComponents.addType('template-modal', {
@@ -22,9 +20,7 @@ function CustomTemplates({ editor }) {
           template1.style.height = '80px';
           template1.style.width = '100px';
           template1.onclick = function () {
-            editor.addComponents(`<!DOCTYPE html>
-            <html lang="en">
-            <head>
+            editor.addComponents(`
             <title>W3.CSS Template</title>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,9 +31,9 @@ function CustomTemplates({ editor }) {
             body {font-family: "Lato", sans-serif}
             .mySlides {display: none}
             </style>
-            </head>
+
             <body>
-      
+
             <!-- Navbar -->
             <div class="w3-top">
               <div class="w3-bar w3-black w3-card">
@@ -57,7 +53,7 @@ function CustomTemplates({ editor }) {
                 <a href="javascript:void(0)" class="w3-padding-large w3-hover-red w3-hide-small w3-right"><i class="fa fa-search"></i></a>
               </div>
             </div>
-      
+
             <!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
             <div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
               <a href="#band" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">BAND</a>
@@ -65,10 +61,10 @@ function CustomTemplates({ editor }) {
               <a href="#contact" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">CONTACT</a>
               <a href="#" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">MERCH</a>
             </div>
-      
+
             <!-- Page content -->
             <div class="w3-content" style="max-width:2000px;margin-top:46px">
-      
+
               <!-- Automatic Slideshow Images -->
               <div class="mySlides w3-display-container w3-center">
                 <img src="https://www.w3schools.com/w3images/la.jpg" style="width:100%">
@@ -91,7 +87,7 @@ function CustomTemplates({ editor }) {
                   <p><b>Thank you, Chicago - A night we won't forget.</b></p>
                 </div>
               </div>
-      
+
               <!-- The Band Section -->
               <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px" id="band">
                 <h2 class="w3-wide">THE BAND</h2>
@@ -114,19 +110,19 @@ function CustomTemplates({ editor }) {
                   </div>
                 </div>
               </div>
-      
+
               <!-- The Tour Section -->
               <div class="w3-black" id="tour">
                 <div class="w3-container w3-content w3-padding-64" style="max-width:800px">
                   <h2 class="w3-wide w3-center">TOUR DATES</h2>
                   <p class="w3-opacity w3-center"><i>Remember to book your tickets!</i></p><br>
-      
+
                   <ul class="w3-ul w3-border w3-white w3-text-grey">
                     <li class="w3-padding">September <span class="w3-tag w3-red w3-margin-left">Sold out</span></li>
                     <li class="w3-padding">October <span class="w3-tag w3-red w3-margin-left">Sold out</span></li>
                     <li class="w3-padding">November <span class="w3-badge w3-right w3-margin-right">3</span></li>
                   </ul>
-      
+
                   <div class="w3-row-padding w3-padding-32" style="margin:0 -16px">
                     <div class="w3-third w3-margin-bottom">
                       <img src="https://www.w3schools.com/w3images/newyork.jpg" alt="New York" style="width:100%" class="w3-hover-opacity">
@@ -158,7 +154,7 @@ function CustomTemplates({ editor }) {
                   </div>
                 </div>
               </div>
-      
+
               <!-- Ticket Modal -->
               <div id="ticketModal" class="w3-modal">
                 <div class="w3-modal-content w3-animate-top w3-card-4">
@@ -178,7 +174,7 @@ function CustomTemplates({ editor }) {
                   </div>
                 </div>
               </div>
-      
+
               <!-- The Contact Section -->
               <div class="w3-container w3-content w3-padding-64" style="max-width:800px" id="contact">
                 <h2 class="w3-wide w3-center">CONTACT</h2>
@@ -205,13 +201,13 @@ function CustomTemplates({ editor }) {
                   </div>
                 </div>
               </div>
-      
+
             <!-- End Page Content -->
             </div>
-      
+
             <!-- Image of location/map -->
             <img src="https://www.w3schools.com/w3images/map.jpg" class="w3-image w3-greyscale-min" style="width:100%">
-      
+
             <!-- Footer -->
             <footer class="w3-container w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge">
               <i class="fa fa-facebook-official w3-hover-opacity"></i>
@@ -221,12 +217,12 @@ function CustomTemplates({ editor }) {
               <i class="fa fa-twitter w3-hover-opacity"></i>
               <i class="fa fa-linkedin w3-hover-opacity"></i>
             </footer>
-      
+
             <script>
             // Automatic Slideshow - change image every 4 seconds
             var myIndex = 0;
             carousel();
-      
+
             function carousel() {
               var i;
               var x = document.getElementsByClassName("mySlides");
@@ -238,7 +234,7 @@ function CustomTemplates({ editor }) {
               x[myIndex-1].style.display = "block";
               setTimeout(carousel, 4000);
             }
-      
+
             // Used to toggle the menu on small screens when clicking on the menu button
             function myFunction() {
               var x = document.getElementById("navDemo");
@@ -248,7 +244,7 @@ function CustomTemplates({ editor }) {
                 x.className = x.className.replace(" w3-show", "");
               }
             }
-      
+
             // When the user clicks anywhere outside of the modal, close it
             var modal = document.getElementById('ticketModal');
             window.onclick = function(event) {
@@ -257,11 +253,10 @@ function CustomTemplates({ editor }) {
               }
             }
             </script>
-      
-            </body>
-            </html>
-            `);
 
+            </body>
+
+            `);
             modal.close();
           };
 
