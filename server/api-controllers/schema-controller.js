@@ -75,9 +75,9 @@ const updateSchema = async (req, res) => {
   const { slug } = body;
   const { schemaSlug, schemaId } = query;
 
-  if (!slug) {
-    throw new MissingError('slug cannot be empty. Add slug in body');
-  }
+  // if (!slug) {
+  //   throw new MissingError('slug cannot be empty. Add slug in body');
+  // }
 
   if (!schemaSlug) {
     throw new MissingError('schema slug is required');
@@ -88,13 +88,15 @@ const updateSchema = async (req, res) => {
   if (!isSchemaSlug) {
     throw new MissingError('Table not Found');
   }
-
-  const isSlug = await db.Schema.findAll({ where: { slug } });
+  let isSlug;
+  if (slug) {
+    isSlug = await db.Schema.findAll({ where: { slug } });
+  }
 
   if (slug === schemaSlug && isSlug.length > 1) {
     throw new DuplicateError('This table slug already taken. Try with another slug name');
   }
-  if (isSlug === [] && slug !== schemaSlug) {
+  if (slug !== schemaSlug && isSlug.length >= 1) {
     throw new DuplicateError('This table slug already taken. Try with another slug name');
   }
 

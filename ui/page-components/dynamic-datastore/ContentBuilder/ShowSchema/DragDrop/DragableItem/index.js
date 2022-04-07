@@ -12,10 +12,9 @@ const DragableItem = SortableElement(({ value, fieldActions }) => (
       setIsEditSchemaModal={fieldActions.setEditSchemaModal}
       onClose={fieldActions.closeSchemaModal}
       key={value.id}
-      // id={value.id}
-      id={value.fieldId}
+      id={value.id}
       fields={value}
-      fieldSlug={value.fieldId}
+      fieldSlug={value.id}
       setFieldsId={fieldActions.setFieldsId}
       setIsEditable={fieldActions.setIsEditable}
       setFieldData={fieldActions.setFieldData}

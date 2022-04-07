@@ -91,6 +91,8 @@ export const updateData = async (req, res) => {
   const { pageSlug } = req.query;
   const code = req.body;
 
+  // console.log('code : ', code);
+
   const assets = code['CMS-assets'];
   const css = code['CMS-css'];
   const components = code['CMS-components'];
@@ -240,12 +242,15 @@ export const updatePageData = async (req, res) => {
   try {
     if (pageSlug) {
       const isSlug = await db.Page.findOne({ where: { slug: pageData.slug } });
+
       if (pageData.slug === pageSlug && isSlug.length > 1) {
         throw new DuplicateError('Slug name already taken. Try with another slug name');
       }
+
       if (isSlug && pageData.slug !== pageSlug) {
         throw new DuplicateError('Slug name already taken. Try with another slug name');
       }
+
       const result = await db.Page.update(
         {
           name: pageData.name,
