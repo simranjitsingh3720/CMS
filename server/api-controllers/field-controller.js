@@ -1,3 +1,4 @@
+const { Sequelize } = require('sequelize');
 const db = require('../../db/models');
 const { ForbiddenError, MissingError, ValidityError, ServerError } = require('../helpers/error-helper');
 const { createLog } = require('./createLog-controller');
@@ -21,7 +22,6 @@ const listAllFields = async (req, res) => {
   if (!data) {
     throw new MissingError('Table Not Found');
   }
-
   const allFields = await db.Field.findAll({ where: { schemaSlug }, order: ['order'] });
   return res.status(200).json({ list: allFields });
 };
@@ -80,7 +80,6 @@ const updateField = async (req, res) => {
 
   if (updatedField) {
     createLog('UPDATE', req.session.user.id, fieldId, 'FIELD');
-
     return res.status(200).json({ id: fieldId });
   }
   throw new MissingError('Schema not found');
@@ -107,6 +106,9 @@ const deleteField = async (req, res) => {
       },
       where: {
         attributeKey: fieldId,
+        attributeValue: {
+          [Sequelize.Op.not]: '',
+        },
       },
     });
 
@@ -122,6 +124,31 @@ const deleteField = async (req, res) => {
   } catch (error) {
     throw new ForbiddenError('There are some content for this field. Not allowed to delete. First delete all the content');
   }
+};
+
+const deleteFields = async (req, res) => {
+  const { query } = req;
+  const { schemaSlug, restorable } = query;
+
+  if (!schemaSlug) {
+    throw new MissingError('Schema Slug is required');
+  }
+
+  if (!restorable) {
+    const data = await db.Schema.findOne({ where: { slug: schemaSlug } });
+    if (!data) {
+      throw new MissingError('Table Not Found');
+    }
+  }
+  try {
+    const deletedFields = await db.Field.destroy({ where: { schemaSlug } });
+    if (deletedFields) {
+      return res.status(200).json({ id: deleteFields });
+    }
+  } catch (error) {
+    throw new ServerError(JSON.stringify(error));
+  }
+  throw new ServerError('Server Error: Unable to Restore fields');
 };
 
 const reOrderFields = async (req, res) => {
@@ -148,8 +175,6 @@ const reOrderFields = async (req, res) => {
       updateOnDuplicate: ['order'],
     });
 
-    // console.log(reorderList);
-
     if (reorderList) {
       createLog('DELETE', req.session.user.id, isSchema.id, 'FIELD');
     }
@@ -166,4 +191,5 @@ module.exports = {
   reOrderFields,
   listAllFields,
   getSingleField,
+  deleteFields,
 };

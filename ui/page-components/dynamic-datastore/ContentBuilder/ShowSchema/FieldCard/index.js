@@ -21,7 +21,6 @@ function FieldCard({
           <div className={style.Fields}>
             <div style={{ fontWeight: 'bold' }}>{fields.name}</div>
             <div>{fields.type}</div>
-            {/* <div>{fields.appearanceType}</div> */}
           </div>
           <div>
             <Tooltip title="Edit field">
@@ -40,7 +39,7 @@ function FieldCard({
                   danger
                   id="delete_structure"
                   className={style.button}
-                  onClick={() => deleteField(id)}
+                  onClick={() => deleteField(fields.fieldId)}
                 >
                   <DeleteOutlined />
                 </Button>

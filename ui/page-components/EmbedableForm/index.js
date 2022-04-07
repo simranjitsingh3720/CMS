@@ -152,12 +152,9 @@ export default function EmbedableForm() {
                 headers: { type: uploadData[index].originFileObj.type, 'Content-Type': `${uploadData[index].originFileObj.type}` },
               },
             )
-              .then((result) => {
-                // console.log(result);
-                console.log('kwrfgewiufbewfbewuiofg ', x);
+              .then(() => {
                 setLoading(false);
                 setStoreData(x);
-                // closeContentModal();
               });
           });
         });

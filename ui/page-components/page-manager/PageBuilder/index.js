@@ -11,7 +11,7 @@ function PageBuilder() {
   const [imgFile, setImgFile] = useState('');
   const [url, setUrl] = useState('');
 
-  const [{ data: getData }, refetchPageData] = useRequest(
+  const [{}, refetchPageData] = useRequest(
     {
       url: `/page/${router.query.pageSlug}`,
       method: 'GET',
@@ -20,7 +20,7 @@ function PageBuilder() {
       manual: true,
     },
   );
-  const [{ data: imgData }, refetch] = useRequest(
+  const [{}, refetch] = useRequest(
     {
       url: '/asset',
       method: 'GET',
@@ -31,7 +31,7 @@ function PageBuilder() {
     },
   );
 
-  const [{ data, loading }, fetchAllSchema] = useRequest(
+  const [{ data }] = useRequest(
     {
       method: 'GET',
       url: '/schema',
@@ -40,12 +40,6 @@ function PageBuilder() {
       },
     },
   );
-
-  // console.log('data : ', data.list[0].title);
-
-  ((data && data.list) || []).map((page) => {
-    console.log('data : ', page);
-  });
 
   // eslint-disable-next-line no-empty-pattern
   const [{ }, executePost] = useRequest(

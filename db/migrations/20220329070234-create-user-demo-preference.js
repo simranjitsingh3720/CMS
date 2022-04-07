@@ -4,7 +4,6 @@ module.exports = {
       id: { type: Sequelize.UUID, primaryKey: true, defaultValue: Sequelize.UUIDV4 },
       userId: {
         type: Sequelize.UUID,
-        // allowNull: false,
       },
       asset: {
         type: Sequelize.BOOLEAN,
@@ -21,7 +20,6 @@ module.exports = {
       datastoreStructure: {
         type: Sequelize.BOOLEAN,
       },
-      // Timestamps
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE,
     });

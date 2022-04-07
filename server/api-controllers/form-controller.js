@@ -1,4 +1,3 @@
-// const { Sequelize } = require('sequelize');
 const db = require('../../db/models');
 const { MissingError, ServerError } = require('../helpers/error-helper');
 const { createLog } = require('./createLog-controller');

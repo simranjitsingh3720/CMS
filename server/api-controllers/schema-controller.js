@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
 const db = require('../../db/models');
-const { MissingError, ValidityError, DuplicateError, ForbiddenError, ServerError } = require('../helpers/error-helper');
+const { MissingError, ValidityError, DuplicateError, ForbiddenError } = require('../helpers/error-helper');
 const { createLog } = require('./createLog-controller');
 
 const getSchema = async (req, res) => {
@@ -38,11 +38,10 @@ const addSchema = async (req, res) => {
     let message = '';
 
     if (!title) {
-      message = 'title required';
+      message = 'Table title required';
     } else if (!slug) {
-      message = 'slug required';
+      message = 'Table slug required';
     }
-
     throw new ValidityError(message);
   }
 
@@ -62,8 +61,20 @@ const addSchema = async (req, res) => {
       createdBy: req.session.user.id,
       updatedBy: req.session.user.id,
     });
+
+    const restorableData = await db.Field.findOne({
+      where: {
+        schemaSlug: slug,
+      },
+    });
+    let isRestorable = false;
+
+    if (restorableData) {
+      isRestorable = true;
+    }
+
     createLog('CREATE', req.session.user.id, schema.id, 'SCHEMA');
-    return res.status(201).json({ id: schema.id, slug: schema.slug });
+    return res.status(201).json({ id: schema.id, slug: schema.slug, isRestorable });
   } catch (error) {
     console.log(error);
     throw new DuplicateError(`Table with slug name ${slug} already exists`);
@@ -74,10 +85,6 @@ const updateSchema = async (req, res) => {
   const { body, query } = req;
   const { slug } = body;
   const { schemaSlug, schemaId } = query;
-
-  // if (!slug) {
-  //   throw new MissingError('slug cannot be empty. Add slug in body');
-  // }
 
   if (!schemaSlug) {
     throw new MissingError('schema slug is required');
@@ -101,6 +108,14 @@ const updateSchema = async (req, res) => {
   }
 
   try {
+    if (slug) {
+      await db.Field.destroy({
+        where: {
+          schemaSlug: slug,
+        },
+      });
+    }
+
     await db.Schema.update({
       ...body,
       updatedBy: req.session.user.id,
@@ -149,6 +164,7 @@ const getSchemaBySlug = async (req, res) => {
 const deleteSchemaBySlug = async (req, res) => {
   const { schemaSlug, schemaId } = req.query;
   const schema = await db.Schema.findOne({ where: { slug: schemaSlug } });
+
   // check if data exits
   if (!schema) {
     throw new MissingError('No Schema Found');
