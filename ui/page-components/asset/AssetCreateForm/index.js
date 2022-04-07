@@ -107,6 +107,10 @@ function AssetCreateForm({ closeModal, refetch }) {
         name="name"
         label="Name"
         rules={[{ required: true, message: 'Please enter name!!' },
+          {
+            pattern: /^[A-Za-z0-9._@./#&+-/\\!\\=%^~`$*()"'<>:;?{}|]+(?: +[A-Za-z0-9._@./#&+-/\\!\\=%^~`$*()"'<>:;?{}|]+)*$/,
+            message: 'Whitespace are not allowed at start and end of Schema Name',
+          },
         ]}
       >
         <Input value={assetTitle} onChange={(e) => setAssetTitle(e.target.value)} />

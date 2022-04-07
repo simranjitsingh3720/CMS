@@ -53,6 +53,10 @@ function AssetEditForm({ refetch, data, closeModal }) {
         name="name"
         label="Name"
         rules={[{ required: true, message: 'Please enter name!!' }, { max: 100 },
+          {
+            pattern: /^[A-Za-z0-9._@./#&+-/\\!\\=%^~`$*()"'<>:;?{}|]+(?: +[A-Za-z0-9._@./#&+-/\\!\\=%^~`$*()"'<>:;?{}|]+)*$/,
+            message: 'Whitespace are not allowed at start and end of Schema Name',
+          },
         ]}
       >
         <Input maxLength={101} />

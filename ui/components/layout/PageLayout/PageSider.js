@@ -8,7 +8,7 @@ import {
 import React, { useContext, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import navData from './sideNavContent';
+import navData, { navRoute } from './sideNavContent';
 import style from './style.module.scss';
 import { useRequest } from '../../../helpers/request-helper';
 import SessionContext from '../../../context/SessionContext';
@@ -48,6 +48,7 @@ function PageSider() {
     Router.push('/admin/profile');
     hide();
   };
+
   const content = (
     (session)
       ? (
@@ -78,6 +79,12 @@ function PageSider() {
     return <UserOutlined />;
   };
 
+  const setSelectedKey = () => {
+    const key = navRoute[
+      navRoute.findIndex((element) => element.includes(Router.pathname.substring(0, 9)))];
+    return key;
+  };
+
   return (
     <Sider
       // collapsible
@@ -88,7 +95,7 @@ function PageSider() {
         height: '100vh',
       }}
     >
-      <Menu theme="dark" mode="inline" selectedKeys={Router.pathname}>
+      <Menu theme="dark" mode="inline" selectedKeys={setSelectedKey()}>
         <Header className="site-layout-background" style={{ color: 'white', paddingLeft: '20px' }}>
           <strong>
             <Link href="/admin"> CMS</Link>
