@@ -141,7 +141,6 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
           <Input maxLength={31} />
         </Form.Item>
 
-        {console.log(slugName)}
         { slugName !== ''
           ? (
             <p>
