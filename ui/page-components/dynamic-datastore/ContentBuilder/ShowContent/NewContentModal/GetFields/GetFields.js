@@ -16,10 +16,15 @@ import moment from 'moment';
 const { TextArea } = Input;
 export const getInitialValues = (fields, editableData, isEditable) => {
   const values = {};
+
   if (isEditable) {
     fields.forEach((data) => {
       if (data.fieldId in editableData) {
-        if (data.type === 'Date and Time') {
+        if (data.type === 'List' && data.appearanceType === 'Checkbox') {
+          // console.log('SSSSSSSS ', JSON.parse(JSON.stringify(editableData[data.fieldId])));
+          // editableData[data.fieldId] = JSON.parse(editableData[data.fieldId]);
+          values[[data.fieldId]] = JSON.parse(editableData[data.fieldId]) || '';
+        } else if (data.type === 'Date and Time') {
           if (editableData[data.fieldId] !== null) {
             values[[data.fieldId]] = moment(editableData[data.fieldId], 'YYYY/MM/DD HH:mm:ss') || '';
           } else {
@@ -71,21 +76,21 @@ function GetFields(appearenceType, field, isEditable) {
   switch (appearenceType) {
     case 'Short':
       return (
-        <Form.Item name={fieldId} label={name} rules={[{ required: isRequired, message: `${name} is required` }]}>
+        <Form.Item key={fieldId} name={fieldId} label={name} rules={[{ required: isRequired, message: `${name} is required` }]}>
           <Input />
         </Form.Item>
       );
 
     case 'Long':
       return (
-        <Form.Item name={fieldId} label={name} rules={[{ required: isRequired, message: `${name} is required` }]}>
+        <Form.Item key={fieldId} name={fieldId} label={name} rules={[{ required: isRequired, message: `${name} is required` }]}>
           <TextArea rows={2} />
         </Form.Item>
       );
 
     case 'Number':
       return (
-        <Form.Item name={fieldId} label={name} rules={[{ required: isRequired, message: `${name} is required` }]}>
+        <Form.Item key={fieldId} name={fieldId} label={name} rules={[{ required: isRequired, message: `${name} is required` }]}>
           <InputNumber style={{
             width: '100%',
           }}
@@ -96,6 +101,7 @@ function GetFields(appearenceType, field, isEditable) {
     case 'Checkbox':
       return (
         <Form.Item
+          key={fieldId}
           name={fieldId}
           label={name}
           rules={[{ required: isRequired, message: `${name} is required` }]}
@@ -107,12 +113,20 @@ function GetFields(appearenceType, field, isEditable) {
     case 'Radio':
       return (
         <Form.Item
+          key={fieldId}
           name={fieldId}
           label={name}
           rules={[{ required: isRequired, message: `${name} is required` }]}
         >
           <Radio.Group>
-            {values.map((radioValue) => <Radio value={radioValue}>{radioValue}</Radio>)}
+            {values.map((radioValue) => (
+              <Radio
+                key={radioValue}
+                value={radioValue}
+              >
+                {radioValue}
+              </Radio>
+            ))}
           </Radio.Group>
         </Form.Item>
       );
@@ -120,6 +134,7 @@ function GetFields(appearenceType, field, isEditable) {
     case 'Dropdown':
       return (
         <Form.Item
+          key={fieldId}
           name={fieldId}
           label={name}
           rules={[{ required: isRequired, message: `${name} is required` }]}
@@ -127,6 +142,7 @@ function GetFields(appearenceType, field, isEditable) {
           <Select>
             {values.map((dropDownValue) => (
               <Select.Option
+                key={dropDownValue}
                 value={dropDownValue}
               >
                 {dropDownValue}
@@ -138,6 +154,7 @@ function GetFields(appearenceType, field, isEditable) {
     case 'Date':
       return (
         <Form.Item
+          key={fieldId}
           name={fieldId}
           label={name}
           rules={[{ required: isRequired, message: `${name} is required` }]}
@@ -152,6 +169,7 @@ function GetFields(appearenceType, field, isEditable) {
     case 'Date and Time':
       return (
         <Form.Item
+          key={fieldId}
           name={fieldId}
           label={name}
           rules={[{ required: isRequired, message: `${name} is required` }]}
@@ -167,6 +185,7 @@ function GetFields(appearenceType, field, isEditable) {
     case 'Switch':
       return (
         <Form.Item
+          key={fieldId}
           name={fieldId}
           label={name}
           rules={[{ required: isRequired, message: `${name} is required` }]}
@@ -185,6 +204,7 @@ function GetFields(appearenceType, field, isEditable) {
     case 'Boolean radio':
       return (
         <Form.Item
+          key={fieldId}
           name={fieldId}
           label={name}
           rules={[{ required: isRequired, message: `${name} is required` }]}
@@ -199,6 +219,7 @@ function GetFields(appearenceType, field, isEditable) {
     case 'FileUpload':
       return (
         <Form.Item
+          key={fieldId}
           name={fieldId}
           label={name}
           rules={[{ required: isEditable ? false : isRequired, message: `${name} is required` }]}

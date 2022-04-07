@@ -18,7 +18,7 @@ function ShowSettings({ schemaDetails }) {
   const [error, setError] = useState('');
   const { push } = useRouter();
 
-  const [{}, executePatch] = useRequest(
+  const [{}, updateDatatableDetails] = useRequest(
     {
       url: `/schema/${schemaDetails.slug}`,
       method: 'PATCH',
@@ -29,7 +29,7 @@ function ShowSettings({ schemaDetails }) {
   );
 
   const onFinish = (values) => {
-    executePatch({
+    updateDatatableDetails({
       data: {
         title: values.title,
         slug: values.slug,
@@ -53,9 +53,7 @@ function ShowSettings({ schemaDetails }) {
   };
 
   const handleValuesChange = (changedValues) => {
-    console.log('changesValues', changedValues);
     setError('');
-
     if (changedValues.title !== '' && changedValues.title !== undefined) {
       form.setFieldsValue({ slug: _.snakeCase(changedValues.title) });
     }
@@ -91,6 +89,10 @@ function ShowSettings({ schemaDetails }) {
                 {
                   required: true,
                   message: 'Please input your Schema Name!',
+                },
+                {
+                  pattern: new RegExp('^[A-Za-z0-9]+(?: +[A-Za-z0-9]+)*$'),
+                  message: 'No Trailing and leading space allowed',
                 },
               ]}
             >

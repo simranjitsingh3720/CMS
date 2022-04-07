@@ -1,3 +1,4 @@
+const { Sequelize } = require('sequelize');
 const db = require('../../db/models');
 const { ForbiddenError, MissingError, ValidityError, ServerError } = require('../helpers/error-helper');
 const { createLog } = require('./createLog-controller');
@@ -90,6 +91,8 @@ const deleteField = async (req, res) => {
   const { query } = req;
   const { schemaSlug, fieldId } = query;
 
+  console.log('QUERYYYY ', query);
+
   const data = await db.Schema.findOne({ where: { slug: schemaSlug } });
 
   if (!data) {
@@ -107,6 +110,9 @@ const deleteField = async (req, res) => {
       },
       where: {
         attributeKey: fieldId,
+        attributeValue: {
+          [Sequelize.Op.not]: '',
+        },
       },
     });
 
@@ -121,6 +127,28 @@ const deleteField = async (req, res) => {
     throw new ForbiddenError('There are some content for this field. Not allowed to delete. First delete all the content');
   } catch (error) {
     throw new ForbiddenError('There are some content for this field. Not allowed to delete. First delete all the content');
+  }
+};
+
+const deleteFields = async (req, res) => {
+  const { query } = req;
+  const { schemaSlug, restorable } = query;
+
+  console.log('QUERYYYY ', query);
+
+  if (!restorable) {
+    const data = await db.Schema.findOne({ where: { slug: schemaSlug } });
+    if (!data) {
+      throw new MissingError('Table Not Found');
+    }
+  }
+  try {
+    const deletedFields = await db.Field.destroy({ where: { schemaSlug } });
+    if (deletedFields) {
+      return res.status(200).json({ id: deleteFields });
+    }
+  } catch (error) {
+    console.log('ERROR IN DELTEING RESTORABLE FIELDS ', error);
   }
 };
 
@@ -166,4 +194,5 @@ module.exports = {
   reOrderFields,
   listAllFields,
   getSingleField,
+  deleteFields,
 };

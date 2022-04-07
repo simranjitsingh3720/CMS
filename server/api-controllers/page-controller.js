@@ -239,6 +239,11 @@ export const deletePage = async (req, res) => {
 export const updatePageData = async (req, res) => {
   const { pageSlug, pageId } = req.query || '';
   const pageData = req.body;
+
+  if (pageData.name.trim().length < 1) {
+    throw new MissingError('Page Name required');
+  }
+
   try {
     if (pageSlug) {
       const isSlug = await db.Page.findOne({ where: { slug: pageData.slug } });

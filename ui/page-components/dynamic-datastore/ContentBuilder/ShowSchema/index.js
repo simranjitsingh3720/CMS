@@ -219,19 +219,6 @@ function ShowSchema() {
                 <span>
                   Oops!! No Fields Found.
                   <br />
-                  {/* <DragableList
-              useDragHandle
-              fieldActions={{
-                setEditSchemaModal,
-                closeSchemaModal,
-                setFieldsId,
-                setIsEditable,
-                setFieldData,
-                deleteField,
-              }}
-              items={fields}
-              onSortEnd={onSortEnd}
-            /> */}
                   <br />
                   <Button type="primary" shape="round" onClick={showSchemaModal}>
                     <PlusOutlined />
