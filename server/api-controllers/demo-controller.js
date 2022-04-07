@@ -1,9 +1,8 @@
-import { ServerError } from '../helpers/error-helper';
-import { createLog } from './createLog-controller';
-
+const { createLog } = require('./createLog-controller');
+const { ServerError } = require('../helpers/error-helper');
 const db = require('../../db/models');
 
-export const updateUser = async (req, res) => {
+const updateUser = async (req, res) => {
   const { userId } = req.query;
   try {
     await db.UserDemoPreference.update({ ...req.body }, { where: { userId } });
@@ -14,3 +13,4 @@ export const updateUser = async (req, res) => {
     throw new ServerError('There was an error updating the user');
   }
 };
+module.exports = { updateUser };

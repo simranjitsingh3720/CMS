@@ -52,15 +52,16 @@ function AssetEditForm({ refetch, data, closeModal }) {
       <Form.Item
         name="name"
         label="Name"
-        rules={[{ required: true, message: 'Please enter name!!' }]}
+        rules={[{ required: true, message: 'Please enter name!!' }, { max: 100 },
+        ]}
       >
-        <Input />
+        <Input maxLength={101} />
       </Form.Item>
       <Form.Item
         name="description"
         label="Description"
       >
-        <TextArea rows={2} />
+        <TextArea rows={2} maxLength={200} showCount />
       </Form.Item>
       <Form.Item
         wrapperCol={{

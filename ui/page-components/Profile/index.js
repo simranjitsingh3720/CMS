@@ -1,7 +1,7 @@
 import {
   Card, Form, Input, Button, message, Upload, Avatar, Switch,
 } from 'antd';
-import { LoadingOutlined, UserAddOutlined } from '@ant-design/icons';
+import { LoadingOutlined, UserAddOutlined, EditFilled } from '@ant-design/icons';
 import { useState, useEffect, useContext } from 'react';
 import { useRequest } from '../../helpers/request-helper';
 import styles from './style.module.scss';
@@ -16,6 +16,7 @@ function Profile() {
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [buttonFlag, setButtonFlag] = useState(true);
+  const [editProfileIcon, setEditProfileIcon] = useState(false);
 
   const [{ }, handleGet, refetch] = useRequest({
     METHOD: 'GET',
@@ -38,7 +39,7 @@ function Profile() {
       .catch((err) => {
         message.error(err.response.data.message || err.response.data.messages[0]);
       });
-  }, []);
+  }, [handleGet, dataForm]);
 
   const [{ loading: detailsLoading },
     detailPatch,
@@ -112,8 +113,6 @@ function Profile() {
     setButtonFlag(true);
   };
 
-  console.log(session);
-
   const changePassword = (values) => {
     passwordPatch({
       url: '/user',
@@ -180,7 +179,6 @@ function Profile() {
                 url: `/user/${data.id}`,
                 data: {
                   profilePicture: res.data.id,
-
                 },
               })
                 .then(() => {
@@ -202,6 +200,14 @@ function Profile() {
         });
     }
   };
+
+  const showEditIcon = () => {
+    setEditProfileIcon(true);
+  };
+  const hideEditIcon = () => {
+    setEditProfileIcon(false);
+  };
+
   const uploadButton = (
     <div>
       {load ? <LoadingOutlined /> : <Avatar size={130} icon={<UserAddOutlined />} />}
@@ -243,9 +249,27 @@ function Profile() {
           accept="image/*"
           action="/admin/profile"
           onChange={handleChange}
+          onMouseEnter={showEditIcon}
+          onMouseLeave={hideEditIcon}
         >
-          {url
-            ? image : uploadButton}
+
+          { editProfileIcon
+            ? (
+              <>
+                <div style={{ position: 'absolute', opacity: '50%' }}>
+                  {url ? image : uploadButton}
+                </div>
+                <div style={{ position: 'relative' }}>
+                  <EditFilled style={{ fontSize: '20px' }} />
+                </div>
+              </>
+            )
+            : (
+              <div style={{ position: 'absolute' }}>
+                {url ? image : uploadButton}
+              </div>
+            )}
+
         </Upload>
         <Form
           form={dataForm}

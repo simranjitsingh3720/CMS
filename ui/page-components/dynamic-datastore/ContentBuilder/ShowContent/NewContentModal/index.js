@@ -66,8 +66,14 @@ export default function NewContentModal({
     const x = { ...contentData };
     let uploadData = [];
     const handleReadURLs = [];
-
     schemaDetails.list.forEach((field) => {
+      if (field.type === 'List' && field.appearanceType === 'Checkbox') {
+        if (x[field.fieldId].length === 0) {
+          x[field.fieldId] = undefined;
+        }
+        x[field.fieldId] = JSON.stringify(x[field.fieldId]);
+      }
+
       if (field.type === 'Date and Time') {
         x[field.fieldId] = moment(x[field.fieldId]).toISOString(true);
       }
@@ -141,7 +147,6 @@ export default function NewContentModal({
           });
         });
     }
-
     if (!isAsset) {
       setStoreData(x);
     }
@@ -151,6 +156,13 @@ export default function NewContentModal({
     const x = { ...contentData };
 
     schemaDetails.list.forEach((field) => {
+      if (field.type === 'List' && field.appearanceType === 'Checkbox') {
+        if (x[field.fieldId].length === 0) {
+          x[field.fieldId] = undefined;
+        }
+        x[field.fieldId] = JSON.stringify(x[field.fieldId]);
+      }
+
       if (field.type === 'Date and Time') {
         x[field.fieldId] = moment(x[field.fieldId]).toISOString(true);
       }

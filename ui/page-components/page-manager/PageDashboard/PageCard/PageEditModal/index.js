@@ -156,6 +156,10 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
           rules={[{ required: true, message: 'Please enter Page Name!' }, {
             max: 30,
             message: 'Page name cannot be longer than 30 characters',
+          },
+          {
+            pattern: new RegExp('^[A-Za-z0-9]+(?: +[A-Za-z0-9]+)*$'),
+            message: 'No Trailing and leading space allowed',
           }]}
         >
           <Input maxLength={31} />
@@ -170,8 +174,8 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
               message: 'Please enter the slug!',
             },
             {
-              pattern: new RegExp('^[A-Za-z0-9]*$'),
-              message: 'Only Letters and Numbers are accepted',
+              pattern: new RegExp('^[A-Za-z0-9_]*$'),
+              message: 'Only Letters, Numbers and underscore are accepted',
             },
             {
               pattern: new RegExp('^(?!.*admin).*$'),

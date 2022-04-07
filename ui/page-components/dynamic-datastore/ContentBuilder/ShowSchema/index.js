@@ -1,3 +1,5 @@
+/* eslint-disable no-empty-pattern */
+
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { PlusOutlined, ExclamationCircleOutlined, ShareAltOutlined } from '@ant-design/icons';
@@ -112,6 +114,7 @@ function ShowSchema() {
         setFields(res.data.list || []);
       });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reFetchSchema]);
 
   useEffect(() => {
@@ -130,6 +133,7 @@ function ShowSchema() {
         setIsFieldReordering(false);
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFieldReordering]);
 
   const actions = {
@@ -219,19 +223,6 @@ function ShowSchema() {
                 <span>
                   Oops!! No Fields Found.
                   <br />
-                  {/* <DragableList
-              useDragHandle
-              fieldActions={{
-                setEditSchemaModal,
-                closeSchemaModal,
-                setFieldsId,
-                setIsEditable,
-                setFieldData,
-                deleteField,
-              }}
-              items={fields}
-              onSortEnd={onSortEnd}
-            /> */}
                   <br />
                   <Button type="primary" shape="round" onClick={showSchemaModal}>
                     <PlusOutlined />

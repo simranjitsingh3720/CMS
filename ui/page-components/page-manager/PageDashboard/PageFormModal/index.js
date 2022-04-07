@@ -8,17 +8,20 @@ import {
   Modal,
   Space,
 } from 'antd';
+import _ from 'lodash';
 import { useRouter } from 'next/router';
 import { useRequest } from '../../../../helpers/request-helper';
 import styles from '../style.module.scss';
 
 function PageFormModal({ onFormClose, visible, setVisible }) {
-  const [pageDetails, setPageDetails] = useState({
-    name: '',
-    slug: '',
-    isHome: 0,
-  });
+  // const [pageDetails, setPageDetails] = useState({
+  //   name: '',
+  //   slug: '',
+  //   isHome: 0,
+  // });
   const [checked, setChecked] = useState(false);
+  const [slugName, setSlugName] = useState('');
+
   const [slugRule, setSlugRule] = useState(true);
 
   const [form] = Form.useForm();
@@ -34,19 +37,20 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
     },
   );
 
-  const handleCreatePage = () => {
+  const onFinish = (values) => {
+    console.log(values);
     executePost({
       data: {
-        ...pageDetails,
+        ...values,
       },
     })
       .then(() => {
         setVisible(false);
         message.success('Page Created Successfully', 5);
-        if (pageDetails.slug) {
+        if (values.slug) {
           push(
             '/admin/page-manager/builder/[pageID]',
-            `/admin/page-manager/builder/${pageDetails.slug}`,
+            `/admin/page-manager/builder/${values.slug}`,
           );
         }
         push('/admin/page-manager/builder');
@@ -55,13 +59,29 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
         message.info(err.response.data.message || err.response.data.messages[0]);
       });
   };
-  const [slugName, setSlugName] = useState('');
 
   const handleValuesChange = (changedValues) => {
     if (changedValues.slug) {
-      const suggestedID = (changedValues.slug || '').replace(/[^a-zA-Z0-9_]/g, '').toLowerCase();
-      setSlugName(suggestedID);
+      // const suggestedID = (changedValues.slug || '').replace(/[^a-zA-Z0-9_]/g, '').toLowerCase();
+      // form.setFieldsValue({ slug: suggestedID });
+      // setSlugName(_.snakeCase(changedValues.slug));
+      setSlugName(changedValues.slug);
+    } else {
+      setSlugName('');
     }
+    if (changedValues.name !== '' && changedValues.name !== undefined) {
+      console.log('changedValues.name ');
+      form.setFieldsValue({ slug: _.snakeCase(changedValues.name) });
+    }
+
+    if (changedValues.name === '') {
+      form.setFieldsValue({ slug: '' });
+    }
+  };
+
+  const manipulateSlugString = (title) => {
+    // const manipulatedSlug = (title || '').replace(/[^a-zA-Z0-9_]/g, '').toLowerCase();
+    setSlugName(_.snakeCase(title));
   };
 
   return (
@@ -75,21 +95,26 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
         name="basic"
         form={form}
         layout="vertical"
-        onFinish={handleCreatePage}
+        onFinish={onFinish}
         initialValues={{ remember: true }}
         autoComplete="off"
         onValuesChange={handleValuesChange}
       >
         <Form.Item
           label="Page Name"
-          name="page"
-          value={pageDetails.name}
-          onChange={(e) => setPageDetails({ ...pageDetails, name: e.target.value })}
+          name="name"
+          onChange={(e) => manipulateSlugString(e.target.value)}
           rules={[
-            { required: true, message: 'Please enter Page Name!' }, {
+            { required: true, message: 'Please enter Page Name!' },
+            {
               max: 30,
               message: 'Page name cannot be longer than 30 characters',
-            }]}
+            },
+            {
+              pattern: new RegExp('^[A-Za-z0-9]+(?: +[A-Za-z0-9]+)*$'),
+              message: 'No Trailing and leading space allowed',
+            },
+          ]}
         >
           <Input autoFocus maxLength={31} />
         </Form.Item>
@@ -97,13 +122,11 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
         <Form.Item
           label="Slug"
           name="slug"
-          value={pageDetails.slug}
-          onChange={(e) => setPageDetails({ ...pageDetails, slug: e.target.value })}
           rules={[
             { required: slugRule, message: 'Please enter Page Slug!' },
             {
               pattern: new RegExp('^[A-Za-z0-9_]*$'),
-              message: 'Only Letters and Numbers are accepted',
+              message: 'Only Letters, Numbers and underscore are accepted',
             },
             {
               pattern: new RegExp('^(?!.*admin).*$'),
@@ -115,10 +138,11 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
             },
           ]}
         >
-          <Input disabled={checked} maxLength={31} />
+          <Input maxLength={31} />
         </Form.Item>
 
-        { pageDetails.slug
+        {console.log(slugName)}
+        { slugName !== ''
           ? (
             <p>
               This page will be hosted on
@@ -129,24 +153,24 @@ function PageFormModal({ onFormClose, visible, setVisible }) {
                 {slugName}
               </span>
             </p>
-          ) : ''}
+          ) : null}
 
-        <Form.Item
-          name="index"
+        {/* <Form.Item
+          name="isHome"
           valuePropName="checked"
-          onChange={() => {
-            if (!checked) {
-              setPageDetails({ ...pageDetails, slug: '', isHome: 1 });
-            } else {
-              setPageDetails({ ...pageDetails, isHome: 0 });
-              form.resetFields();
-            }
-            setChecked(!checked);
-            setSlugRule(!slugRule);
-          }}
+          // onChange={() => {
+          //   if (!checked) {
+          //     setPageDetails({ ...pageDetails, slug: '', isHome: 1 });
+          //   } else {
+          //     setPageDetails({ ...pageDetails, isHome: 0 });
+          //     form.resetFields();
+          //   }
+          //   setChecked(!checked);
+          //   setSlugRule(!slugRule);
+          // }}
         >
           <Checkbox>Make this Page Home</Checkbox>
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item
           wrapperCol={{ offset: 15, span: 15 }}

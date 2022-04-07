@@ -47,7 +47,7 @@ function Home() {
 
             <ul className={styles.list}>
               {getData?.data?.pages?.map((item) => (
-                <li>
+                <li key={item.name}>
                   <FileTextOutlined style={{ marginRight: '10px' }} />
                   <a href={`admin/page-manager/builder/${item.slug}`}>{item.name}</a>
                 </li>
@@ -76,7 +76,7 @@ function Home() {
             </p>
             <ul className={styles.list}>
               {getData?.data?.schemas?.map((item) => (
-                <li>
+                <li key={item.title}>
                   <TableOutlined style={{ marginRight: '10px' }} />
                   <a href={`admin/datastore/content-builder/${item.slug}`}>{item.title}</a>
                 </li>
@@ -135,7 +135,7 @@ function Home() {
             </p>
             <ul className={styles.list}>
               {getData?.data?.users?.map((item) => (
-                <li>
+                <li key={item.firstName}>
                   <UserOutlined style={{ marginRight: '10px' }} />
                   {item.firstName}
                 </li>

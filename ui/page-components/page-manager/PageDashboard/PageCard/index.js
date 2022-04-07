@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useEffect, useState } from 'react';
 import {
-  MoreOutlined,
+  MoreOutlined, EditFilled,
 } from '@ant-design/icons';
 import {
   Empty, Popover, Button,
@@ -18,6 +18,7 @@ function PageCard({ searchValue }) {
   const [ssImage, setSsImage] = useState(null);
   const [visible, setVisible] = useState(false);
   const [pageData, setPageData] = useState('');
+  const [editIconVisibility, setEditIconVisibility] = useState(false);
 
   const { push } = useRouter();
 
@@ -79,6 +80,12 @@ function PageCard({ searchValue }) {
       </Button>
     </div>
   );
+  const showEditIcon = () => {
+    setEditIconVisibility(true);
+  };
+  const hideEditIcon = () => {
+    setEditIconVisibility(false);
+  };
 
   return (
     <>
@@ -96,12 +103,14 @@ function PageCard({ searchValue }) {
           </div>
         )
           : ((data && data.list) || []).map((page) => (
-            <CardWrapper>
+            <CardWrapper key={page.id}>
               <div
                 className={styles.card_image}
                 onClick={() => { handleEdit(page.slug); }}
                 role="button"
                 id="section"
+                onMouseEnter={showEditIcon}
+                onMouseLeave={hideEditIcon}
               >
                 <div
                   className={styles.card_image}

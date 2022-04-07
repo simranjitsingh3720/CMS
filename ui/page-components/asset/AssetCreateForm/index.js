@@ -7,7 +7,7 @@ import {
   message,
   Space,
 } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRequest } from '../../../helpers/request-helper';
 import styles from '../AssetModal/style.module.scss';
 
@@ -65,7 +65,7 @@ function AssetCreateForm({ closeModal, refetch }) {
         })
           .then(() => {
             setLoading(false);
-            form.resetFields();
+            // form.resetFields();
             closeModal();
             message.success('Asset Added Successfully !!!');
             refetch();
@@ -106,7 +106,8 @@ function AssetCreateForm({ closeModal, refetch }) {
       <Form.Item
         name="name"
         label="Name"
-        rules={[{ required: true, message: 'Please enter name!!' }]}
+        rules={[{ required: true, message: 'Please enter name!!' },
+        ]}
       >
         <Input value={assetTitle} onChange={(e) => setAssetTitle(e.target.value)} />
       </Form.Item>

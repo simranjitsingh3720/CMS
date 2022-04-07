@@ -1,3 +1,4 @@
+/* eslint-disable no-empty-pattern */
 import ReactJoyride, { STATUS } from 'react-joyride';
 import { Card, Button } from 'antd';
 import { useState, useContext } from 'react';
@@ -45,7 +46,7 @@ function Tutorial({ steps, tutorialKey }) {
   const { session, refetch } = useContext(SessionContext);
   const [run, setRun] = useState();
 
-  const [{ data }, handlePatch] = useRequest(
+  const [{}, handlePatch] = useRequest(
     {
       method: 'PATCH',
     },
