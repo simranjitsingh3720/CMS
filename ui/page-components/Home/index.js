@@ -16,6 +16,21 @@ function Home() {
     url: '/dashboard',
   });
 
+  const [{ data: logs }] = useRequest({
+    method: 'GET',
+    url: '/logs',
+  });
+
+  const findTime = (updatedAt) => {
+    const currentDate = new Date();
+    let diff = (currentDate.getTime() - updatedAt.getTime()) / 1000;
+    diff /= 60;
+
+    const tokenTime = Math.abs(Math.round(diff));
+
+    return tokenTime;
+  };
+
   return (
     <div className={styles.home_container}>
       <div className={styles.title}>
@@ -143,6 +158,38 @@ function Home() {
             </ul>
           </div>
         </CardWrapper>
+
+      </div>
+
+      <div>
+        <h3>Logs</h3>
+        {((logs && logs.Logs) || []).map((log) => (
+          <div>
+
+            {log.objectType}
+            {' '}
+            is
+            {' '}
+            {log.actionName}
+            {' '}
+            by
+
+            {' '}
+            {log.User.firstName}
+            {' '}
+            {log.User.lastName}
+            {' '}
+            -----
+            {/* {log.updatedAt} */}
+
+            {findTime(new Date(log.updatedAt))}
+            {' '}
+            min ago
+            {}
+            {' '}
+            {/* { ((new Date(log.updatedAt).getTime()) - new Date().getTime()) / 1000 } */}
+          </div>
+        ))}
 
       </div>
 
