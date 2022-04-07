@@ -260,7 +260,7 @@ function Profile() {
                   {url ? image : uploadButton}
                 </div>
                 <div style={{ position: 'relative' }}>
-                  <EditFilled />
+                  <EditFilled style={{ fontSize: '20px' }} />
                 </div>
               </>
             )
