@@ -174,8 +174,8 @@ function PageEditModal({ onFormClose, visible, setVisible, pageData, fetch }) {
               message: 'Please enter the slug!',
             },
             {
-              pattern: new RegExp('^[A-Za-z0-9]*$'),
-              message: 'Only Letters and Numbers are accepted',
+              pattern: new RegExp('^[A-Za-z0-9_]*$'),
+              message: 'Only Letters, Numbers and underscore are accepted',
             },
             {
               pattern: new RegExp('^(?!.*admin).*$'),
