@@ -69,9 +69,6 @@ const createAsset = async (req, res) => {
     throw new ValidityError('name, type and mimeType, all are required.');
   }
   const asset = await db.Asset.create({ ...body, createdBy: req.session.user.id });
-  if (req.session.user) {
-    createLog('CREATE', req.session.user.id, asset.id, 'ASSET');
-  }
   const params = ({
     Bucket: bucketName,
     Key: `asset/${asset.id}`,
@@ -129,11 +126,15 @@ const createAssetsInBulk = async (req, res) => {
     readUrlArr.push(readUrl);
     assetIdList = [...assetIdList, assets[i].id];
 
-    db.Asset.update(
+    const assetupdate = db.Asset.update(
       { url: readUrl, updatedBy: (req.session.user && req.session.user.id) || null },
       { where: { id: assets[i].id } },
     );
+    if (req.session.user) {
+      createLog('CREATE', req.session.user.id, assetupdate.id, 'ASSET');
+    }
   }
+
   return res.status(201).json({ assetIdList, writeUrlList, readUrlArr });
 };
 
