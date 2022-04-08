@@ -31,7 +31,7 @@ function AssetCreateForm({ closeModal, refetch }) {
   // eslint-disable-next-line no-empty-pattern
   const [{}, executePost] = useRequest(
     {
-      url: '/asset/',
+      url: '/asset/bulkUpload',
       method: 'POST',
     },
     { manual: true },
@@ -48,15 +48,16 @@ function AssetCreateForm({ closeModal, refetch }) {
     setDisabled(true);
     setLoading(true);
     executePost({
-      data: {
+      data: [{
         name: values.name,
         description: values.description,
         mimeType: values.upload[0].originFileObj.type,
         type: values.upload[0].originFileObj.type.split('/')[0],
-      },
+      }],
     })
       .then((res) => {
-        const { writeUrl } = res.data;
+        const writeUrl = res.data.writeUrlList[0];
+
         const file = values.upload[0].originFileObj;
         executePut({
           url: writeUrl,
@@ -69,6 +70,7 @@ function AssetCreateForm({ closeModal, refetch }) {
             closeModal();
             message.success('Asset Added Successfully !!!');
             refetch();
+            form.resetFields();
           })
           .catch((err) => {
             setLoading(false);

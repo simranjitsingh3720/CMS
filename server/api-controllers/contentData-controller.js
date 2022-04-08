@@ -18,7 +18,7 @@ const listContents = async (req, res) => {
 
   try {
     const ddd = await db.sequelize.query(
-      'select "contentId", json_object_agg("attributeKey", "attributeValue") as data from (select "Datastore_ContentData"."contentId", "Datastore_ContentData"."attributeKey", "Datastore_ContentData"."attributeValue" from "Datastore_ContentData" join "Datastore_Contents" on "Datastore_ContentData"."contentId"="Datastore_Contents"."id" where "Datastore_Contents"."schemaSlug"=:schemaSlug and "Datastore_ContentData"."deletedAt" is :deletedAt) as json group by "contentId";',
+      'select "contentId", json_object_agg("attributeKey", "attributeValue") as data from (select "Datastore_ContentData"."contentId", "Datastore_ContentData"."attributeKey", "Datastore_ContentData"."attributeValue" from "Datastore_ContentData" join "Datastore_Contents" on "Datastore_ContentData"."contentId"="Datastore_Contents"."id" where "Datastore_Contents"."schemaSlug"=:schemaSlug and "Datastore_ContentData"."deletedAt" is :deletedAt) as json group by "contentId" ;',
       {
         replacements: { schemaSlug, deletedAt: null },
         type: QueryTypes.SELECT,
@@ -31,7 +31,7 @@ const listContents = async (req, res) => {
     }
     throw new MissingError('Invalid slug');
   } catch (error) {
-    throw new ServerError('SomeThing Went Wrong, Pleae try again');
+    throw new ServerError('SomeThing Went Wrong, Please try again');
   }
 };
 
@@ -71,7 +71,7 @@ const addContent = async (req, res) => {
         }
       }
     } catch (error) {
-      throw new ServerError('Server Error: Unable to add Content. Please try againss');
+      throw new ServerError('Server Error: Unable to add Content. Please try again.');
     }
   }
   throw new MissingError('Schema Not Found');
