@@ -128,3 +128,39 @@ color: #999;
   padding: 5px;
   border-radius: 4px;
 }
+
+.container{
+  display: flex;
+}
+
+.admin_card_wrapper{
+  margin: 8px 8px;
+  flex: calc(50% - 16px);
+  flex-grow: inherit;
+  cursor: pointer;
+  background-color: white;
+}
+.card_component_container{
+  display: flex;
+  align-items: center;
+  margin: 0 0px auto -8px !important;
+  flex-wrap: wrap;
+  flex: 60%;
+}
+
+.log_container{
+  width: auto;
+  margin: 8px 8px;
+  background-color: white;
+  padding: 4px 8px;
+  overflow: scroll;
+  height: 85vh;
+}
+.log_box{
+  background-color: #eee;
+  margin: 4px 0;
+  padding: 4px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
