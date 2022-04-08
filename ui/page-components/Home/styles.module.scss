@@ -154,7 +154,8 @@ color: #999;
   background-color: white;
   padding: 4px 8px;
   overflow: scroll;
-  height: 85vh;
+  min-height: fit-content;
+  max-height: 85vh;
 }
 .log_box{
   background-color: #eee;

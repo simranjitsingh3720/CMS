@@ -21,6 +21,8 @@ function Home() {
     url: '/logs',
   });
 
+  console.log(logs);
+
   const findTime = (updatedAt) => {
     const currentDate = new Date();
     let diff = (currentDate.getTime() - updatedAt.getTime()) / 1000;
@@ -197,44 +199,48 @@ function Home() {
 
         </div>
 
-        <div className={styles.log_container}>
-          <h3>Logs</h3>
-          {((logs && logs.Logs) || []).map((log) => (
-            <div>
-              {(log.objectType === 'USER DEMO PREFERENCES' || log.objectType === 'AUTH' || log.objectType === 'USER') ? null
-                : (
-                  <div className={styles.log_box}>
-                    <RocketOutlined />
-                    <div style={{ marginLeft: '4px', padding: '5px' }}>
-                      {Capitalize(log.objectType)}
-                      {' '}
-                      {log.actionName.toLowerCase()}
-                      d
-                      {' '}
-                      by
-                      {' '}
-                      {session.user.id === log.User.id ? <span style={{ fontWeight: 'bold' }}>You</span>
-                        : (
-                          <span style={{ fontWeight: 'bold' }}>
+        {!(logs && (logs.Logs[0].actionName === 'SIGNIN' || logs.Logs[0].actionName === 'SIGNUP'))
+          ? (
+            <div className={styles.log_container}>
+              <h3>Logs</h3>
+              {((logs && logs.Logs) || []).map((log) => (
+                <div>
+                  {(log.objectType === 'USER DEMO PREFERENCES' || log.objectType === 'AUTH' || log.objectType === 'USER') ? null
+                    : (
+                      <div className={styles.log_box}>
+                        <RocketOutlined />
+                        <div style={{ marginLeft: '4px', padding: '5px' }}>
+                          {Capitalize(log.objectType)}
+                          {' '}
+                          {log.actionName.toLowerCase()}
+                          d
+                          {' '}
+                          by
+                          {' '}
+                          {(session && session.user && session.user.id === log.User.id) ? <span style={{ fontWeight: 'bold' }}>You</span>
+                            : (
+                              <span style={{ fontWeight: 'bold' }}>
 
-                            { log.User.firstName}
+                                { log.User.firstName}
+                                {' '}
+                                { log.User.lastName}
+                              </span>
+                            )}
+                          {' '}
+                          <br />
+                          <small style={{ color: 'rgb(134 141 149)' }}>
                             {' '}
-                            { log.User.lastName}
-                          </span>
-                        )}
-                      {' '}
-                      <br />
-                      <small style={{ color: 'rgb(134 141 149)' }}>
-                        {' '}
-                        {findTime(new Date(log.updatedAt))}
-                      </small>
-                    </div>
+                            {findTime(new Date(log.updatedAt))}
+                          </small>
+                        </div>
 
-                  </div>
-                )}
+                      </div>
+                    )}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          )
+          : null}
       </div>
 
     </div>
