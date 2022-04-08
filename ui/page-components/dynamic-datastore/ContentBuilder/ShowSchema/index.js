@@ -138,7 +138,7 @@ function ShowSchema({ schemaDetails }) {
 
   const actions = {
     buttons: [{
-      name: 'Add new Field',
+      name: 'Add new field',
       icon: <PlusOutlined />,
       onClick: showSchemaModal,
     },
