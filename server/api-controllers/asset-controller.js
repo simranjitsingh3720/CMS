@@ -168,7 +168,7 @@ const deleteAsset = async (req, res) => {
   try {
     await db.Asset.destroy({ where: { id: assetId } });
     if (req.session.user) {
-      createLog('CREATE', req.session.user.id, assetId, 'ASSET');
+      createLog('DELETE', req.session.user.id, assetId, 'ASSET');
     }
     return res.status(200).json({ id: assetId });
   } catch (err) {

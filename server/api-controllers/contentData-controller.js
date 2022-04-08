@@ -66,7 +66,7 @@ const addContent = async (req, res) => {
         const contentDatas = await db.ContentData.bulkCreate(contentData);
 
         if (contentDatas) {
-          createLog('UPDATE', (req.session.user && req.session.user.id) || null, content.id, 'CONTENT');
+          createLog('CREATE', (req.session.user && req.session.user.id) || null, content.id, 'CONTENT');
           return res.status(201).json({ id: content.id });
         }
       }
