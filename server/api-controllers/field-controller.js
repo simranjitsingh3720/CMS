@@ -176,7 +176,7 @@ const reOrderFields = async (req, res) => {
     });
 
     if (reorderList) {
-      createLog('DELETE', req.session.user.id, isSchema.id, 'FIELD');
+      createLog('UPDATE', req.session.user.id, isSchema.id, 'FIELD');
     }
     return res.status(200).json({ id: reorderList });
   } catch (error) {

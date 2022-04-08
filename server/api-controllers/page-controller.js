@@ -230,7 +230,7 @@ const deletePage = async (req, res) => {
     },
   );
   if (deletedPage && result) {
-    createLog('UPDATE', req.session.user.id, pageId, 'PAGE');
+    createLog('DELETE', req.session.user.id, pageId, 'PAGE');
     return res.status(200).json({ slug: pageSlug });
   }
   throw new MissingError('Page Not Found');

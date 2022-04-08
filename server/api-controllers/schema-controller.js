@@ -76,7 +76,6 @@ const addSchema = async (req, res) => {
     createLog('CREATE', req.session.user.id, schema.id, 'SCHEMA');
     return res.status(201).json({ id: schema.id, slug: schema.slug, isRestorable });
   } catch (error) {
-    console.log(error);
     throw new DuplicateError(`Table with slug name ${slug} already exists`);
   }
 };

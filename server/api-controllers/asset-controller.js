@@ -152,7 +152,7 @@ const updateAsset = async (req, res) => {
 
   try {
     await db.Asset.update({ ...data }, { where: { id: assetId } });
-    if (req.session.user) { createLog('CREATE', req.session.user.id, assetId, 'ASSET'); }
+    if (req.session.user) { createLog('UPDATE', req.session.user.id, assetId, 'ASSET'); }
     res.status(200).json({ id: assetId });
   } catch (error) {
     throw new ServerError('Not able to connect with server');

@@ -50,7 +50,7 @@ function PageSider() {
   };
 
   const content = (
-    (session)
+    (session && session.user)
       ? (
         <div>
           <h3>
@@ -72,7 +72,7 @@ function PageSider() {
       ) : null
   );
   const profileImage = () => {
-    if (session) {
+    if (session && session.user) {
       if (session.user.ProfilePicture) return <img src={session.user.ProfilePicture.url} alt="profile" />;
       return <UserOutlined />;
     }
@@ -123,7 +123,7 @@ function PageSider() {
             className={style.font}
           >
             <Avatar icon={profileImage()} style={{ marginRight: '10px' }} />
-            {session ? session.user.firstName : null}
+            {(session && session.user) ? session.user.firstName : null}
           </div>
         </div>
       </Popover>

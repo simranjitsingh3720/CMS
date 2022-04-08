@@ -59,7 +59,7 @@ const addFormContent = async (req, res) => {
 
           if (contentDatas) {
             if (req.session.user) {
-              createLog('UPDATE', req.session.user.id, content.id, 'CONTENT');
+              createLog('CREATE', req.session.user.id, content.id, 'CONTENT');
             }
             return res.status(201).json({ id: content.id });
           }
