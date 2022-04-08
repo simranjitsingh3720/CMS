@@ -29,7 +29,7 @@ function Home() {
     const timeDifferenceInMin = Math.abs(Math.round(diff));
     const hours = timeDifferenceInMin / 60;
 
-    if (timeDifferenceInMin > 60) {
+    if (timeDifferenceInMin > 60 && hours < 24) {
       return (
         <span>
           {Math.abs(Math.round(hours))}
