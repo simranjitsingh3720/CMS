@@ -57,7 +57,7 @@ function Home() {
     );
   };
 
-  const Capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  const Capitalize = (str) => str.charAt(0) + str.slice(1).toLowerCase();
 
   return (
     <div className={styles.home_container}>
@@ -213,11 +213,15 @@ function Home() {
                       {' '}
                       by
                       {' '}
-                      <span style={{ fontWeight: 'bold' }}>
-                        { log.User.firstName}
-                        {' '}
-                        { log.User.lastName}
-                      </span>
+                      {session.user.id === log.User.id ? <span style={{ fontWeight: 'bold' }}>You</span>
+                        : (
+                          <span style={{ fontWeight: 'bold' }}>
+
+                            { log.User.firstName}
+                            {' '}
+                            { log.User.lastName}
+                          </span>
+                        )}
                       {' '}
                       <br />
                       <small style={{ color: 'rgb(134 141 149)' }}>
