@@ -97,7 +97,7 @@ function AssetCreateForm({ closeModal, refetch }) {
       >
         <Upload
           name="logo"
-          action="/upload.do"
+          action="##"
           listType="picture"
           maxCount={1}
           accept="image/*,video/*,audio/*,.pdf"
