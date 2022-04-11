@@ -84,7 +84,7 @@ const updateSchema = async (req, res) => {
   const { body, query } = req;
   const { slug } = body;
   const { schemaSlug, schemaId } = query;
-
+  console.log(body);
   if (!schemaSlug) {
     throw new MissingError('schema slug is required');
   }
