@@ -76,13 +76,39 @@ const updateField = async (req, res) => {
     throw new MissingError('Table Not Found');
   }
 
-  const updatedField = await db.Field.update({ ...body }, { where: { schemaSlug, fieldId } });
+  const allContents = await db.ContentData.findAll({
+    include: {
+      model: db.Content,
+      attributes: ['id'],
+      where: {
+        schemaSlug,
+      },
+    },
+    where: {
+      attributeKey: fieldId,
+      attributeValue: {
+        [Sequelize.Op.not]: '',
+      },
+    },
+  });
 
-  if (updatedField) {
-    createLog('UPDATE', req.session.user.id, fieldId, 'FIELD');
-    return res.status(200).json({ id: fieldId });
+  if (allContents.length === 0) {
+    const updatedField = await db.Field.update({ ...body }, { where: { schemaSlug, fieldId } });
+
+    if (updatedField) {
+      createLog('UPDATE', req.session.user.id, fieldId, 'FIELD');
+      return res.status(200).json({ id: fieldId });
+    }
+    throw new ServerError('Unable to update Field. Try again');
+  } else {
+    throw new ForbiddenError('Unable to update. This field contains some Content.');
   }
-  throw new MissingError('Schema not found');
+
+  // const updatedField = await db.Field.update({ ...body }, { where: { schemaSlug, fieldId } });
+  // if (updatedField) {
+  //   createLog('UPDATE', req.session.user.id, fieldId, 'FIELD');
+  //   return res.status(200).json({ id: fieldId });
+  // }
 };
 
 const deleteField = async (req, res) => {

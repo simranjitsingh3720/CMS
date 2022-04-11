@@ -107,7 +107,7 @@ const updateSchema = async (req, res) => {
   }
 
   try {
-    if (slug) {
+    if (slug && slug !== schemaSlug) {
       await db.Field.destroy({
         where: {
           schemaSlug: slug,
