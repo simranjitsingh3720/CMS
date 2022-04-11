@@ -129,6 +129,8 @@ const signup = async (req, res) => {
 const signin = async (req, res) => {
   const { email, password, remember } = req.body;
 
+  console.log(req.body);
+
   if (!email || !password) {
     let message = '';
 
@@ -149,26 +151,25 @@ const signin = async (req, res) => {
   if (!isPasswordSame) {
     throw new ValidityError('Email or password is incorrect');
   }
-
-  let demo;
   try {
-    demo = await db.UserDemoPreference.findOne({
+    const demo = await db.UserDemoPreference.findOne({
       where: {
         userId: user.id,
       },
     });
-  } catch (err) {
-    throw new ServerError('unbale to update User Demo');
+
+    req.session.demoPreference = demo;
+    req.session.user = user;
+    if (remember) {
+      req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000;
+    } else {
+      req.session.cookie.maxAge = 24 * 60 * 60 * 1000;
+    }
+    createLog('SIGNIN', req.session.user.id, user.id, 'AUTH');
+    return res.status(200).json({ sessionId: req.session.id });
+  } catch (error) {
+    throw new ServerError(JSON.stringify(error));
   }
-  req.session.demoPreference = demo;
-  req.session.user = user;
-  if (remember) {
-    req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000;
-  } else {
-    req.session.cookie.maxAge = 24 * 60 * 60 * 1000;
-  }
-  createLog('SIGNIN', req.session.user.id, user.id, 'AUTH');
-  return res.status(200).json({ sessionId: req.session.id });
 };
 
 const signout = async (req, res) => {

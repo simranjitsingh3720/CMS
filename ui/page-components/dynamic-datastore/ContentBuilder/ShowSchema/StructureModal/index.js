@@ -131,17 +131,13 @@ function StructureModal({
           },
         }).then(() => {
           setReFetchSchema(true);
-        }).catch((err) => {
-          message.error(err.response.data.message || err.response.data.messages[0]);
-        });
-
-        if (!error) {
           setLoading(false);
-
           form.resetFields();
           closeSchemaModal();
           message.success('Field Updated Successfully');
-        }
+        }).catch((err) => {
+          message.error(err.response.data.message || err.response.data.messages[0]);
+        });
       }
     } else if (hasDuplicateValues) {
       message.error(`Duplicate values in ${values.appearanceType} is not allowed`);
